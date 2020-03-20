@@ -1,7 +1,7 @@
-# Prova Finale di Ingegneria del Software - a.a. 2018-2019
+# Prova Finale di Ingegneria del Software - a.a. 2019-2020
 ![alt text](https://cf.geekdo-images.com/opengraph/img/aL3ylg4WfWekpXaOq9fij-eRgHg=/fit-in/1200x630/pic3283110.png)
 
-Scopo del progetto è quello di implementare il gioco da tavola [Santorini](https://www.craniocreations.it/prodotto/santorini/) seguendo il pattern architetturale Model View Controller per la realizzazione del modello secondo il paradigma di programmazione orientato agli oggetti. Il risultato finale copre completamente le regole definite dal gioco e permette di interagirci sia con una interfaccia da linea di comando (CLI) che grafica (GUI), la rete è stata gestita sia con il tradizionale approccio delle socket che con una tecnologia specifica di Java (RMI).
+Scopo del progetto è quello di implementare il gioco da tavola [Santorini](https://www.craniocreations.it/prodotto/santorini/) seguendo il pattern architetturale Model View Controller per la realizzazione del modello secondo il paradigma di programmazione orientato agli oggetti. Il risultato finale copre completamente le regole definite dal gioco e permette di interagirci sia con una interfaccia da linea di comando (CLI) che grafica (GUI), la rete è stata gestita con il tradizionale approccio delle socket.
 
 ## Documentazione
 La seguente documentazione comprende i documenti realizzati per la progettazione del problema, verranno prima elencati i diagrammi delle classi in UML poi la documentazione del codice (javadoc).
@@ -12,7 +12,7 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 - [UML Finali](https://github.com/)
 
 ### JavaDoc
-La seguente documentazione include una descrizione per la maggiore parte delle classi e dei metodi utilizzati, segue le tecniche di documentazione di Java e può essere consultata al seguente indirizzo: [Javadoc](https://github.com/giorgiopiazza/ing-sw-2019-27/tree/master/docs)
+La seguente documentazione include una descrizione per la maggiore parte delle classi e dei metodi utilizzati, segue le tecniche di documentazione di Java e può essere consultata al seguente indirizzo: [Javadoc](https://github.com/)
 
 ### Librerie e Plugins
 |Libreria/Plugin|Descrizione|
@@ -25,7 +25,7 @@ La seguente documentazione include una descrizione per la maggiore parte delle c
 |__JavaFx__|libreria grafica di Java|
 
 ### Jars
-I seguenti jar sono stati utilizzati per la consegna del progetto, permettono quindi il lancio del gioco secondo le funzionalità descritte nell'introduzione. Le funzionalità realizzate secondo la specifica del progetto sono elencate nella prossima sezione mentre i dettagli per come lanciare il sistema saranno definiti nella sezione chiamata __Esecuzione dei jar__. La cartella in cui si trovano il software del client e del server si trova al seguente indirizzo: [Jars](https://github.com/giorgiopiazza/ing-sw-2019-27/tree/master/Deliveries/jar).
+I seguenti jar sono stati utilizzati per la consegna del progetto, permettono quindi il lancio del gioco secondo le funzionalità descritte nell'introduzione. Le funzionalità realizzate secondo la specifica del progetto sono elencate nella prossima sezione mentre i dettagli per come lanciare il sistema saranno definiti nella sezione chiamata __Esecuzione dei jar__. La cartella in cui si trovano il software del client e del server si trova al seguente indirizzo: [Jars](https://github.com/).
 
 ## Funzionalità
 ### Funzionalità Sviluppate
