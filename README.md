@@ -14,6 +14,7 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 ### JavaDoc
 La seguente documentazione include una descrizione per la maggiore parte delle classi e dei metodi utilizzati, segue le tecniche di documentazione di Java e può essere consultata al seguente indirizzo: [Javadoc](https://github.com/)
 
+<!--
 ### Librerie e Plugins
 |Libreria/Plugin|Descrizione|
 |---------------|-----------|
@@ -23,6 +24,7 @@ La seguente documentazione include una descrizione per la maggiore parte delle c
 |__mockito__|strumento di supporto al unit testing per realizzare oggetti "dummy"|
 |__gson__|libreria per il supporto al parsing di file in formato json|
 |__JavaFx__|libreria grafica di Java|
+-->
 
 ## Funzionalità
 ### Funzionalità Sviluppate [Obiettivo]
