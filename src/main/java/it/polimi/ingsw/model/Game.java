@@ -6,7 +6,7 @@ public class Game {
 
     private ArrayList playerList;
     private int playerNumber;
-    private Map map;
+    private Board board;
     private Deck godsDeck;
 
     //TODO: Implementare getter e setter

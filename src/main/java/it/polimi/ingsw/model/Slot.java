@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public class Box {
+public class Slot {
 
     private int buildingsStatus;
     private Position boxPosition;

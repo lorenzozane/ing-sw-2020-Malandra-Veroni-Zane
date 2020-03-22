@@ -1,0 +1,263 @@
+<santorini>
+	<!--SampleGod XML
+	<sampleGod>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</sampleGod>
+	-->
+
+	<apollo>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>True</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</apollo>
+
+	<artemis>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>True</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</artemis>
+
+	<athena>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>True</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</athena>
+
+	<atlas>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>True</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</atlas>
+
+	<demeter>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>True</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</demeter>
+
+	<hephaestus>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>True</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</hephaestus>
+
+	<minotaur>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>True</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</minotaur>
+
+	<pan>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>False</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>True</moveDownWin>
+		</winCondition>
+	</pan>
+
+	<prometheus>
+		<movement>
+			<standardMove>True</standardMove>
+			<additionalTimeMove>False</additionalTimeMove>
+			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
+			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
+			<disableOpponentMoveUp>False</disableOpponentMoveUp>
+			<modifiableParameter>
+				<canMoveUp>True</canMoveUp>
+			</modifiableParameter>
+		</movement>
+
+		<contruction>
+			<standardBuild>True</standardBuild>
+			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
+			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
+			<buildDomeAnyLevel>False</buildDomeAnyLevel>
+			<buildBeforeMove>True</buildBeforeMove>
+		</contruction>
+
+		<winCondition>
+			<standardWin>True</standardWin>
+			<moveDownWin>False</moveDownWin>
+		</winCondition>
+	</prometheus>
+</santorini>
