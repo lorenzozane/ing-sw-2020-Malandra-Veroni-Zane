@@ -2,7 +2,8 @@ package it.polimi.ingsw.model;
 
 public class Board {
 
-    private Slot[][] space; //TODO: Ci sono modi migliori per farlo?
+    private final int BOARD_DIMENSION = 5;
 
-    //TODO: Implementare getter e setter
+    private Slot[][] table;
+
 }
