@@ -12,5 +12,37 @@ public class Player {
     private GodsCard playerCard;
     private boolean isPlaying;
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Color getPlayerColor() {
+        return playerColor;
+    }
+
+    public void setPlayerColor(Color playerColor) {
+        this.playerColor = playerColor;
+    }
+
+    public GodsCard getPlayerCard() {
+        return playerCard;
+    }
+
+    public void setPlayerCard(GodsCard playerCard) {
+        this.playerCard = playerCard;
+    }
+
     //TODO: Implementare getter e setter
 }
