@@ -37,10 +37,11 @@ public class Buildings {
         }
     }
 
+    BuildingsLevel level;
+
+    public Buildings(BuildingsLevel level){
+        this.level = level;
+    }
 //    private boolean isScalable;
 //    private int blockType;
-
-
-//    TODO: Implementare getter e setter
 }
-

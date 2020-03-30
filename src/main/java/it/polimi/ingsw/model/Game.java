@@ -8,7 +8,7 @@ public class Game {
     private int playerNumber;
     private Board board;
     private Deck godsDeck;
-    
+
 
     public int getPlayerNumber() {
         return playerNumber;
@@ -17,6 +17,4 @@ public class Game {
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
     }
-
-    //TODO: Implementare getter e setter
 }

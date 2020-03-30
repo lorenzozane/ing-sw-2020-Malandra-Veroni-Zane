@@ -5,19 +5,19 @@ import java.util.Date;
 
 public class Player {
 
-    private String nickname;
+    private final String nickname;
     private Date birthday;
     private Color playerColor;
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
 
-    public String getNickname() {
-        return nickname;
+    public Player(String nickname){
+        this.nickname = nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getNickname() {
+        return nickname;
     }
 
     public Date getBirthday() {
