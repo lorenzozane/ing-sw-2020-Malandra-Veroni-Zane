@@ -1,0 +1,61 @@
+<santorini>
+    <apollo>
+        <descriptio>
+            Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
+        </descriptio>
+    </apollo>
+
+    <artemis>
+        <description>
+            Your Worker may move one additional time, but not back to its initial space.
+        </description>
+    </artemis>
+
+    <athena>
+       <description>
+           If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.
+       </description>
+    </athena>
+
+    <atlas>
+        <description>
+            Your Worker may build a dome at any level.
+        </description>
+    </atlas>
+
+    <demeter>
+        <description>
+            Your Worker may build one additional time, but not on the same space.
+        </description>
+    </demeter>
+
+    <hephaestus>
+        <description>
+            Your Worker may build one additional block (not dome) on top of your first block.
+        </description>
+    </hephaestus>
+
+    <hermes>
+        <description>
+            If your Workers do not move up or down, they may each move any number of times (even zero), and then either builds.
+        </description>
+    </hermes>
+
+    <minotaur>
+        <description>
+            Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.
+        </description>
+    </minotaur>
+
+    <pan>
+        <description>
+            You also win if your Worker moves down two or more levels.
+        </description>
+    </pan>
+
+    <prometheus>
+        <description>
+            If your Worker does not move up, it may build both before and after moving.
+        </description>
+    </prometheus>
+</santorini>>
