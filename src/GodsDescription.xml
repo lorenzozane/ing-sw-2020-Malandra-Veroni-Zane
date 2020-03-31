@@ -58,4 +58,4 @@
             If your Worker does not move up, it may build both before and after moving.
         </description>
     </prometheus>
-</santorini>>
+</santorini>
