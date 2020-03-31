@@ -25,7 +25,7 @@ public class Buildings {
 
         private BuildingsLevel(int levelValue, BuildingsProperty ... buildingsProperties){
             this.levelValue = levelValue;
-            this.buildingsProperties = EnumSet.copyOf(Arrays.asList(buildingsProperties));
+            this.buildingsProperties = buildingsProperties.length == 0 ? EnumSet.noneOf(BuildingsProperty.class) : EnumSet.copyOf(Arrays.asList(buildingsProperties));
         }
 
         public boolean hasProperty(BuildingsProperty property){
