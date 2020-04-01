@@ -6,6 +6,10 @@ public class GodsCard {
     private String cardDescription;
     private String cardPowerDescription;
 
+    public GodsCard(String cardName){
+        this.cardName = cardName;
+    }
+
     public String getCardName() {
         return cardName;
     }
