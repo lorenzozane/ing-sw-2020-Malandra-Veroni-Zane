@@ -1,8 +1,8 @@
 <santorini>
     <apollo>
-        <descriptio>
+        <description>
             Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.
-        </descriptio>
+        </description>
     </apollo>
 
     <artemis>
@@ -34,12 +34,6 @@
             Your Worker may build one additional block (not dome) on top of your first block.
         </description>
     </hephaestus>
-
-    <hermes>
-        <description>
-            If your Workers do not move up or down, they may each move any number of times (even zero), and then either builds.
-        </description>
-    </hermes>
 
     <minotaur>
         <description>
