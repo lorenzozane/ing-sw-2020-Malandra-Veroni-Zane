@@ -39,6 +39,12 @@ public class Deck {
                 Node godNode = godsNameNode.item(i);
                 if (godNode.getNodeType() == Node.ELEMENT_NODE){
                     GodsCard card = new GodsCard(godNode.getNodeName());
+
+                    //TODO: Riuscire a prendere il nodo description ignorando gli \n
+                    Element godElement = (Element)godNode;
+                    Node descriptionNode = godElement.getElementsByTagName("description").item(0);
+                    String godDescription = descriptionNode.getNodeValue();
+                    card.setCardDescription(godDescription);
                     cardList.add(card);
                 }
             }
@@ -48,13 +54,26 @@ public class Deck {
         }
     }
 
-    public GodsCard pickUpCard(){
-
-        return null;
+    public void chooseCards(){
+        try {
+            for (int i = 0; i < 3; i++){
+                //TODO: Implementare chiamata a pickUpCard per le tre carte scelte
+            }
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
     }
 
-    public void chooseCards(){
+    public GodsCard pickUpCard(String godCardName){
+        try {
+            if (cardList.size() != 0){
 
+            }
+            return null;
+        } catch (Exception ex){
+            System.out.println(ex);
+            return null;
+        }
     }
 
     public ArrayList<GodsCard> getCardList(){

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 public class GodsCard {
 
-    private String cardName;
+    private final String cardName;
     private String cardDescription;
     private String cardPowerDescription;
 
@@ -12,10 +12,6 @@ public class GodsCard {
 
     public String getCardName() {
         return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
     }
 
     public String getCardDescription() {
