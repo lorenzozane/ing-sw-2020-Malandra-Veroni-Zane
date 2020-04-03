@@ -44,5 +44,10 @@ public class Player {
         this.playerCard = playerCard;
     }
 
-    //TODO: Implementare getter e setter
+//    public void setupGame(){
+//        if (isFirstPlayer == true){
+//            Deck deck = new Deck();
+//        }
+//        return;
+//    }
 }

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -32,11 +34,11 @@ public class Deck {
 
             //Salva il nodo root e cerca tutti i nodi figli (le divinità)
             Element rootElement = document.getDocumentElement();
-            NodeList godsNameNode = rootElement.getChildNodes();
+            NodeList godsNameNodes = rootElement.getChildNodes();
 
             //Crea un nuovo nodo singolo per ogni divinità e istanzia una carta aggiungendola a cardList
-            for (int i = 0; i < godsNameNode.getLength(); i++){
-                Node godNode = godsNameNode.item(i);
+            for (int i = 0; i < godsNameNodes.getLength(); i++){
+                Node godNode = godsNameNodes.item(i);
                 if (godNode.getNodeType() == Node.ELEMENT_NODE){
                     GodsCard card = new GodsCard(godNode.getNodeName());
 
@@ -48,16 +50,15 @@ public class Deck {
                     cardList.add(card);
                 }
             }
-
         } catch (Exception ex){
             System.out.println(ex);
         }
     }
 
-    public void chooseCards(){
+    public void chooseCards(String ... godsCardName){
         try {
-            for (int i = 0; i < 3; i++){
-                //TODO: Implementare chiamata a pickUpCard per le tre carte scelte
+            for (int i = 0; i < godsCardName.length; i++){
+                chosenCards.add(pickUpCard(godsCardName[i]));
             }
         } catch (Exception ex){
             System.out.println(ex);
@@ -78,5 +79,9 @@ public class Deck {
 
     public ArrayList<GodsCard> getCardList(){
         return cardList;
+    }
+
+    public ArrayList<GodsCard> getChosenCards(){
+        return chosenCards;
     }
 }

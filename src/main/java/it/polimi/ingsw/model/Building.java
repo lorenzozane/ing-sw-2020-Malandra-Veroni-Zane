@@ -40,10 +40,6 @@ public class Building {
         public boolean hasProperty(BuildingProperty property){
             return buildingsProperties.contains(property);
         }
-
-        public int GetBuildingsLevel(){
-            return levelValue;
-        }
     }
 
     BuildingLevel level;
