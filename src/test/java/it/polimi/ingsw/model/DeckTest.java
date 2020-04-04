@@ -24,5 +24,4 @@ public class DeckTest {
             godsName.remove(cardList.get(i).getCardName());
         }
     }
-
 }
