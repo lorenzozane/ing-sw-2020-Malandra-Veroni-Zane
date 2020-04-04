@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
-import org.graalvm.compiler.nodes.extended.ArrayRangeWrite;
 
 public class Player {
 

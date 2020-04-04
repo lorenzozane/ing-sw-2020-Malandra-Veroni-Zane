@@ -60,9 +60,28 @@ public class Deck {
             if (godsCardName.length < 2 || godsCardName.length > 3)
                 throw new IllegalArgumentException();
 
-            for (int i = 0; i < godsCardName.length; i++) {
-                chosenCards.add(pickUpCard(godsCardName[i]));
+            for(String cardName : godsCardName)
+                addCardToChosen(cardName);
+
+        } catch (IllegalArgumentException ex){ //TODO: Check
+            throw ex;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    //TODO: Gestire passaggio della stessa carta due volte
+    private void addCardToChosen(String godCardName) throws IllegalArgumentException {
+        try {
+            if (cardList.size() != 0) {
+                if (cardList.stream().anyMatch(x -> x.getCardName().equals(godCardName))) {
+                    chosenCards.add(cardList.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null));
+                } else {
+                    throw new IllegalArgumentException();
+                }
             }
+        } catch (IllegalArgumentException ex){
+            throw ex;
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -70,14 +89,18 @@ public class Deck {
 
     public GodsCard pickUpCard(String godCardName) throws IllegalArgumentException {
         try {
-            if (cardList.size() != 0) {
-                if (!chosenCards.stream().anyMatch(x -> x.getCardName().equals(godCardName)))
+            if (chosenCards.size() != 0) {
+                if (chosenCards.stream().anyMatch(x -> x.getCardName().equals(godCardName))) {
+                    GodsCard detectedCard = chosenCards.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null);
+                    chosenCards.remove(detectedCard);
+                    return detectedCard;
+                } else {
                     throw new IllegalAccessException();
-
-                //TODO: Rimuovere carta scelta
-                return chosenCards.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null);
+                }
             }
             return null;
+        } catch (IllegalArgumentException ex){
+            throw ex;
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
