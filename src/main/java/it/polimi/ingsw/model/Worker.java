@@ -1,11 +1,22 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Building.BuildingLevel;
 import java.awt.*;
+import java.util.Random;
 
 public class Worker {
 
+    private String idWorker;
     private Color color;
     private Position workerPosition;
+
+    public Worker(String idWorkerPlayer){
+        this.idWorker = idWorkerPlayer;
+    }
+
+    public String getIdWorker() {
+        return idWorker;
+    }
 
     public Color getColor() {
         return color;
@@ -23,5 +34,22 @@ public class Worker {
         this.workerPosition = workerPosition;
     }
 
-    //TODO: Implementare getter e setter
+
+    public void move(Slot moveHere){
+        setWorkerPosition(moveHere.getSlotPosition());
+        //notify alla view
+    }
+
+    public void buildConstruction(Slot buildHere, BuildingLevel level){
+        Building newBuilding = new Building(level);
+        buildHere.setBuildingsStatus(newBuilding.level);
+        //notify alla view
+    }
+
+
+
+
+
+
+
 }

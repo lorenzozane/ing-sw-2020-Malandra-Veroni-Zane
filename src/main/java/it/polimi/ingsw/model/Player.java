@@ -1,13 +1,16 @@
 package it.polimi.ingsw.model;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
+import org.graalvm.compiler.nodes.extended.ArrayRangeWrite;
 
 public class Player {
 
     private final String nickname;
     private Date birthday;
     private Color playerColor;
+    private ArrayList<Worker> workers;
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -35,6 +38,10 @@ public class Player {
     public void setPlayerColor(Color playerColor) {
         this.playerColor = playerColor;
     }
+
+    public void setWorkers(){}
+
+
 
     public GodsCard getPlayerCard() {
         return playerCard;

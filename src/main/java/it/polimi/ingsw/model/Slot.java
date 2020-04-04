@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Building.BuildingLevel;
+
 public class Slot {
 
-    private int buildingsStatus;
+    private BuildingLevel buildingsStatus;
     private Position slotPosition;
 
     public Position getSlotPosition() {
@@ -13,11 +15,11 @@ public class Slot {
         this.slotPosition = slotPosition;
     }
 
-    public int getBuildingsStatus() {
+    public BuildingLevel getBuildingsStatus() {
         return buildingsStatus;
     }
 
-    public void setBuildingsStatus(int buildingsStatus) {
+    public void setBuildingsStatus(BuildingLevel buildingsStatus) {
         this.buildingsStatus = buildingsStatus;
     }
 }
