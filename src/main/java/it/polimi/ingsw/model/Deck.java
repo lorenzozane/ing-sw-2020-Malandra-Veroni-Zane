@@ -74,6 +74,7 @@ public class Deck {
                 if (!chosenCards.stream().anyMatch(x -> x.getCardName().equals(godCardName)))
                     throw new IllegalAccessException();
 
+                //TODO: Rimuovere carta scelta
                 return chosenCards.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null);
             }
             return null;

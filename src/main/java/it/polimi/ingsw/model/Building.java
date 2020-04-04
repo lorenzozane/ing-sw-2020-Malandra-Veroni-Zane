@@ -42,7 +42,7 @@ public class Building {
         }
     }
 
-    BuildingLevel level;
+    private BuildingLevel level;
 
     /**
      * Creates a new Building with the related height level
@@ -51,5 +51,9 @@ public class Building {
      */
     public Building(BuildingLevel level){
         this.level = level;
+    }
+
+    public int getLevel() {
+        return level.levelValue;
     }
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Worker {
 
-    private String idWorker;
+    private final String idWorker;
     private Color color;
     private Position workerPosition;
 
@@ -42,7 +42,7 @@ public class Worker {
 
     public void buildConstruction(Slot buildHere, BuildingLevel level){
         Building newBuilding = new Building(level);
-        buildHere.setBuildingsStatus(newBuilding.level);
+        buildHere.setBuilding(newBuilding);
         //notify alla view
     }
 

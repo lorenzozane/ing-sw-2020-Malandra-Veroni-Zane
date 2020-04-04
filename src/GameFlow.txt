@@ -11,17 +11,20 @@ SETUPGAME GIOCATORE1:
 - Richiesta nickname --> Costruttore crea Player1 (impostare isFirstPlayer)
 - (Data di nascita, colore: a scelta tra 3 colori)
 - Richeista numero giocatori --> setNumberPlayer
-- Instaziazione deck --> View richiede elenco carte (e mostra a display) --> View notifica a controller carta scelta
-- Controller immagazzina carta1, poi carta2 (e carta3) --> Ricevuta l'ultima carta chiama chooseCards (passando il nome delle carte)
-- chooseCard popola chosenCards (attraverso pickUpCard)
 
 SETUPGAME GIOCATORE2/3:
 - Richiedere se utilizzare CLI o GUI
 - Richiesta nickname --> Costruttore crea Player2/3
 - (Data di nascita, colore: a scelta tra quelli rimasti)
 
-SCELTA CARTE GODS:
-- View richiede elenco chosenCards per Player2 --> Player2 sceglie la carta --> View notifica al controller la scelta
+SETUPGAME CHALLENGER (il più giovane?):
+- Instaziazione deck --> View richiede elenco carte (e mostra a display) --> View notifica a controller carta scelta
+- Controller immagazzina carta1, poi carta2 (e carta3) --> Ricevuta l'ultima carta chiama chooseCards (passando il nome delle carte)
+- chooseCard popola chosenCards (attraverso pickUpCard)
+
+SCELTA CARTE GODS/POSIZIONE INIZIALE WORKER:
+- Posizionamento iniziale worker
+- View richiede elenco chosenCards per secondo Player più giovane --> secondo Player più giovane sceglie la carta --> View notifica al controller la scelta
 - Controller chiama pickUpCard --> Viene associata al player la carta scelta e viene rimossa da chosenCards
 - (se giocano in 3) Player3 esegue anch'esso la scelta
 - Rimane 1 sola carta che viene automaticamente assegnata al giocatore Player1 dal Controller

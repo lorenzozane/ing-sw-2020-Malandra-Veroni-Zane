@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Building.BuildingLevel;
-
 public class Slot {
 
-    private BuildingLevel buildingsStatus;
+    private Building[] buildingsStatus = new Building[4];
+    private Player playerInSlot;
     private Position slotPosition;
 
     public Position getSlotPosition() {
@@ -15,11 +14,12 @@ public class Slot {
         this.slotPosition = slotPosition;
     }
 
-    public BuildingLevel getBuildingsStatus() {
-        return buildingsStatus;
-    }
-
-    public void setBuildingsStatus(BuildingLevel buildingsStatus) {
-        this.buildingsStatus = buildingsStatus;
+    public void setBuilding(Building building) {
+        try {
+            int level = building.getLevel();
+            buildingsStatus[level] = building;
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
     }
 }
