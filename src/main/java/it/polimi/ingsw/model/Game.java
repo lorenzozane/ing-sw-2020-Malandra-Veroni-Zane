@@ -47,7 +47,14 @@ public class Game {
         return this.firstPlayer;
     }
 
-    public void challenge(){
+    public void challenge(){ //il controller ha gia popolato Game.godsDeck con 2/3 carte scelte dal challenger
+        for(int i = 1; i<playerList.size(); i++){    //parto da 1 cosi il secondo giocatore piu giovane sceglie
+            //notificare alla view di mostrare le carte disponibili
+
+
+
+        }
+
 
     }
 

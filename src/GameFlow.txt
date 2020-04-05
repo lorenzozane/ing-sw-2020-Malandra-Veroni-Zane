@@ -10,7 +10,7 @@ SETUPGAME GIOCATORE1:
 - Richiedere se utilizzare CLI o GUI
 - Richiesta nickname --> Costruttore crea Player1 (impostare isFirstPlayer)
 - (Data di nascita, colore: a scelta tra 3 colori)
-- Richeista numero giocatori --> setNumberPlayer
+- Richiesta numero giocatori --> setNumberPlayer
 
 SETUPGAME GIOCATORE2/3:
 - Richiedere se utilizzare CLI o GUI
@@ -23,7 +23,7 @@ SETUPGAME CHALLENGER (il più giovane?):
 - chooseCard popola chosenCards (attraverso pickUpCard)
 
 SCELTA CARTE GODS/POSIZIONE INIZIALE WORKER:
-- Posizionamento iniziale worker
+- Posizionamento iniziale worker in ordine di età
 - View richiede elenco chosenCards per secondo Player più giovane --> secondo Player più giovane sceglie la carta --> View notifica al controller la scelta
 - Controller chiama pickUpCard --> Viene associata al player la carta scelta e viene rimossa da chosenCards
 - (se giocano in 3) Player3 esegue anch'esso la scelta
