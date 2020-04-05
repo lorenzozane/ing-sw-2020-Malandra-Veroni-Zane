@@ -2,10 +2,7 @@ package it.polimi.ingsw.model;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -29,12 +26,12 @@ public class DeckTest {
     public void chooseCardsTest() {
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "athena");
-        ArrayList<GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (int i = 0; i < chosenCards.size(); i++) {
-            assertTrue(chosenCardsExpected.contains(chosenCards.get(i).getCardName()));
-            chosenCardsExpected.remove(chosenCards.get(i).getCardName());
+        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+            chosenCardsExpected.remove(godCard.getValue().getCardName());
         }
     }
 
@@ -48,39 +45,52 @@ public class DeckTest {
         assertEquals(godsCardExpected.getCardName(), godsCard.getCardName());
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionArgumentNumber() {
         Deck deck = new Deck();
         deck.chooseCards("apollo");
-        ArrayList<GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (int i = 0; i < chosenCards.size(); i++) {
-            assertTrue(chosenCardsExpected.contains(chosenCards.get(i).getCardName()));
-            chosenCardsExpected.remove(chosenCards.get(i).getCardName());
+        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+            chosenCardsExpected.remove(godCard.getValue().getCardName());
         }
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionWrongCard() {
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "foo");
-        ArrayList<GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (int i = 0; i < chosenCards.size(); i++) {
-            assertTrue(chosenCardsExpected.contains(chosenCards.get(i).getCardName()));
-            chosenCardsExpected.remove(chosenCards.get(i).getCardName());
+        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+            chosenCardsExpected.remove(godCard.getValue().getCardName());
         }
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionSameCardTwice() {
+        Deck deck = new Deck();
+        deck.chooseCards("apollo", "artemis", "apollo");
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
+        ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
+        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+            chosenCardsExpected.remove(godCard.getValue().getCardName());
+        }
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void pickUpCardTestException() {
+        Deck deck = new Deck();
+        deck.chooseCards("apollo", "artemis", "athena");
+        GodsCard godsCard = deck.pickUpCard("atlas");
+        GodsCard godsCardExpected = new GodsCard("atlas");
 
+        assertEquals(godsCardExpected.getCardName(), godsCard.getCardName());
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.util.HashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -14,7 +15,7 @@ import org.w3c.dom.Element;
 public class Deck {
 
     private ArrayList<GodsCard> cardList = new ArrayList<>();
-    private ArrayList<GodsCard> chosenCards = new ArrayList<>();
+    private HashMap<String, GodsCard> chosenCards = new HashMap<>();
 
     public Deck() {
         buildDeck();
@@ -60,10 +61,10 @@ public class Deck {
             if (godsCardName.length < 2 || godsCardName.length > 3)
                 throw new IllegalArgumentException();
 
-            for(String cardName : godsCardName)
+            for (String cardName : godsCardName)
                 addCardToChosen(cardName);
 
-        } catch (IllegalArgumentException ex){ //TODO: Check
+        } catch (IllegalArgumentException ex) { //TODO: Check
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -75,12 +76,15 @@ public class Deck {
         try {
             if (cardList.size() != 0) {
                 if (cardList.stream().anyMatch(x -> x.getCardName().equals(godCardName))) {
-                    chosenCards.add(cardList.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null));
+                    if (chosenCards.containsKey(godCardName))
+                        throw new IllegalArgumentException();
+
+                    chosenCards.put(godCardName, cardList.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null));
                 } else {
                     throw new IllegalArgumentException();
                 }
             }
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -90,16 +94,17 @@ public class Deck {
     public GodsCard pickUpCard(String godCardName) throws IllegalArgumentException {
         try {
             if (chosenCards.size() != 0) {
-                if (chosenCards.stream().anyMatch(x -> x.getCardName().equals(godCardName))) {
-                    GodsCard detectedCard = chosenCards.stream().filter(x -> x.getCardName().equals(godCardName)).findFirst().orElse(null);
-                    chosenCards.remove(detectedCard);
+                if (chosenCards.containsKey(godCardName)) {
+                    GodsCard detectedCard = chosenCards.get(godCardName);
+                    chosenCards.remove(godCardName);
                     return detectedCard;
-                } else {
-                    throw new IllegalAccessException();
+                }
+                else {
+                    throw new IllegalArgumentException();
                 }
             }
             return null;
-        } catch (IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -111,7 +116,7 @@ public class Deck {
         return cardList;
     }
 
-    public ArrayList<GodsCard> getChosenCards() {
+    public HashMap<String, GodsCard> getChosenCards() {
         return chosenCards;
     }
 }
