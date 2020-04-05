@@ -71,7 +71,6 @@ public class Deck {
         }
     }
 
-    //TODO: Gestire passaggio della stessa carta due volte
     private void addCardToChosen(String godCardName) throws IllegalArgumentException {
         try {
             if (cardList.size() != 0) {
