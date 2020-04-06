@@ -53,7 +53,11 @@ public class Building {
         this.level = level;
     }
 
-    public int getLevel() {
+    public BuildingLevel getLevel(){
+        return level;
+    }
+
+    public int getLevelAsInt() {
         return level.levelValue;
     }
 }

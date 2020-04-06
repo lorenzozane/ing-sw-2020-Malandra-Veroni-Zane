@@ -16,7 +16,7 @@ public class Slot {
 
     public void setBuilding(Building building) {
         try {
-            int level = building.getLevel();
+            int level = building.getLevelAsInt();
             buildingsStatus[level] = building;
         } catch (Exception ex) {
             System.out.println(ex);
