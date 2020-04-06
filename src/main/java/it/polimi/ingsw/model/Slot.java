@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 public class Slot {
 
     private Building[] buildingsStatus = new Building[4];
-    private Player playerInSlot;
+    private Worker workerInSlot;
     private Position slotPosition;
 
     public Position getSlotPosition() {

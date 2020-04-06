@@ -16,4 +16,10 @@ public class BuildingTest {
         assertTrue(!newBuilding.getLevel().hasProperty(Building.BuildingProperty.CAN_BUILD_ON_IT));
         assertTrue(!newBuilding.getLevel().hasProperty(Building.BuildingProperty.IS_SCALABLE));
     }
+
+    @Test
+    public void getLevelAsIntTest() {
+        Building newBuilding = new Building(Building.BuildingLevel.LEVEL1);
+        assertEquals(newBuilding.getLevelAsInt(), 1);
+    }
 }

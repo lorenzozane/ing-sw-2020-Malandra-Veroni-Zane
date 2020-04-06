@@ -30,3 +30,37 @@ SCELTA CARTE GODS/POSIZIONE INIZIALE WORKER:
 - Rimane 1 sola carta che viene automaticamente assegnata al giocatore Player1 dal Controller
 
 GIOCO PARTE (dal giocatore più giovane)
+
+
+
+
+ESEMPIO FLUSSO DI ESECUZIONE TURNO
+
+Possibili valori delle mosse:
+MOVE, MOVE_NOT_UP, MOVE_OPPONENT_SLOT
+BUILD, BUILD_NOT_SAME_PLACE, BUILD_DOME_ANY_LEVEL
+
+Arraylist<Classe tipo Enum>moveSequence = new ArrayList<>();
+
+Per popolare moveSequence, quando il controller "finisce il turno" e chiama turn.updateTurn(), il model legge il file xml
+Una volta popolata moveSequence, il model notifica view e controller passando la sequenza di mosse
+-> La view inizia a chiedere al giocatore la mossa da fare
+
+Esempi:
+moveSequence: MOVE, BUILD                                       (<- Sequenza mosse standard)
+moveSequence: MOVE, BUILD oppure BUILD, MOVE_NOT_UP, BUILD      (<- Esempio avendo Prometheus)
+
+View: "Scrivi le coordinate della tua mossa: "
+-> Verifica le coordinate (e le verifica anche il controller) -> Esegue la mossa
+-> Si passa a BUILD (passano a build sia la view che il controller? O solo il controller che poi notifica la view?)
+View: "Scrivi dove vuoi costruire: "
+-> Verifica la costruzione (lo fa anche il controller) -> Esegue la mossa
+-> Se il giocatore può eseguire altre mosse "precaricate" in moveSequence: la view fa richiesta delle nuove coordinate.
+
+
+move worker1 3,3        (<- NO (non ci serve chiedere))
+worker1 3,3
+
+"Se vuoi costruire, inserisci le coordinate: " -> Se il giocatore scrive "none" -> La mossa viene considerata rifiutata
+
+
