@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import java.awt.*;
-import java.util.Random;
 
 public class Worker {
 
@@ -35,11 +34,23 @@ public class Worker {
     }
 
 
+    /**
+     * Set new Worker's position
+     *
+     * @param moveHere New position
+     */
     public void move(Slot moveHere){
         setWorkerPosition(moveHere.getSlotPosition());
         //notify alla view
     }
 
+
+    /**
+     * Creation of a new building
+     *
+     * @param buildHere New construction position
+     * @param level New construction level
+     */
     public void buildConstruction(Slot buildHere, BuildingLevel level){
         Building newBuilding = new Building(level);
         buildHere.setBuilding(newBuilding);
