@@ -11,7 +11,6 @@ public class Worker {
 
     public Worker(String idWorkerPlayer){
         this.idWorker = idWorkerPlayer;
-        this.workerSlot = null;
     }
 
     public String getIdWorker() {

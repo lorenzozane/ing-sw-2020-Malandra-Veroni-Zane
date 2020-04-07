@@ -34,4 +34,8 @@ public class Slot {
             System.out.println(ex);
         }
     }
+
+    public Building[] getBuildingStatus(){
+        return buildingsStatus;
+    }
 }
