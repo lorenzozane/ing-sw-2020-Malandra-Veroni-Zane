@@ -6,6 +6,18 @@ public class Slot {
     private Worker workerInSlot;
     private Position slotPosition;
 
+    public Slot(Position slotPosition){
+        this.slotPosition = slotPosition;
+    }
+
+    public Worker getWorkerInSlot(){
+        return this.workerInSlot;
+    }
+
+    public void setWorkerInSlot(Worker workerInSlot) {
+        this.workerInSlot = workerInSlot;
+    }
+
     public Position getSlotPosition() {
         return slotPosition;
     }
@@ -21,5 +33,9 @@ public class Slot {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+    }
+
+    public Building[] getBuildingStatus(){
+        return buildingsStatus;
     }
 }

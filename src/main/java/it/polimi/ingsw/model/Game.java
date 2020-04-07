@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
-import javax.swing.DefaultListSelectionModel;
 
 public class Game {
 
