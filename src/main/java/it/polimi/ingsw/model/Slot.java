@@ -6,6 +6,10 @@ public class Slot {
     private Worker workerInSlot;
     private Position slotPosition;
 
+    public Slot(Position slotPosition){
+        this.slotPosition = slotPosition;
+    }
+
     public Worker getWorkerInSlot(){
         return this.workerInSlot;
     }

@@ -7,10 +7,11 @@ public class Worker {
 
     private final String idWorker;
     private Color color;
-    private Slot workerSlot;
+    private Slot workerSlot;      //ridondanza con slot su chi c'è dentro
 
     public Worker(String idWorkerPlayer){
         this.idWorker = idWorkerPlayer;
+        this.workerSlot = null;
     }
 
     public String getIdWorker() {
@@ -30,9 +31,11 @@ public class Worker {
     }
 
     public void setWorkerSlot(Slot workerSlot) {
-        this.workerSlot.setWorkerInSlot(null);
+        if (this.workerSlot != null)
+            this.workerSlot.setWorkerInSlot(null);
         this.workerSlot = workerSlot;
         this.workerSlot.setWorkerInSlot(this);
+
     }
 
 
