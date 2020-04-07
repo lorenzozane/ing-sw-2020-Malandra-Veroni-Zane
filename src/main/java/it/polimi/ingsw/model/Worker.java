@@ -7,7 +7,7 @@ public class Worker {
 
     private final String idWorker;
     private Color color;
-    private Position workerPosition;
+    private Slot workerSlot;
 
     public Worker(String idWorkerPlayer){
         this.idWorker = idWorkerPlayer;
@@ -21,16 +21,18 @@ public class Worker {
         return color;
     }
 
-    public Position getWorkerPosition() {
-        return workerPosition;
+    public Slot getWorkerSlot() {
+        return workerSlot;
     }
 
     public void setColor(Color color) {
         this.color = color;
     }
 
-    public void setWorkerPosition(Position workerPosition) {
-        this.workerPosition = workerPosition;
+    public void setWorkerSlot(Slot workerSlot) {
+        this.workerSlot.setWorkerInSlot(null);
+        this.workerSlot = workerSlot;
+        this.workerSlot.setWorkerInSlot(this);
     }
 
 
@@ -40,7 +42,7 @@ public class Worker {
      * @param moveHere New position
      */
     public void move(Slot moveHere){
-        setWorkerPosition(moveHere.getSlotPosition());
+        setWorkerSlot(moveHere);
         //notify alla view
     }
 
