@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -111,11 +112,20 @@ public class Deck {
         }
     }
 
-    public ArrayList<GodsCard> getCardList() {
+    //TODO: Test
+    public ArrayList<GodsCard> getCardListCopy() {
+        ArrayList<GodsCard> clonedCardList = new ArrayList<>(cardList.size());
+        for (GodsCard card : cardList)
+            clonedCardList.add(card.clone());
+
         return cardList;
     }
 
-    public HashMap<String, GodsCard> getChosenCards() {
+    public HashMap<String, GodsCard> getChosenCardsCopy() {
+        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
+        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
+            clonedChosenCards.put(card.getKey(), card.getValue().clone());
+
         return chosenCards;
     }
 }

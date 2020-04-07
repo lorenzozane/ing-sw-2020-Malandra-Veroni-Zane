@@ -11,7 +11,7 @@ public class DeckTest {
     @Test
     public void buildDeckTest() {
         Deck deck = new Deck();
-        ArrayList<GodsCard> cardList = deck.getCardList();
+        ArrayList<GodsCard> cardList = deck.getCardListCopy();
         ArrayList<String> godsName = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena", "atlas", "demeter", "hephaestus", "minotaur", "pan", "prometheus"));
 
         assertEquals(cardList.size(), godsName.size());
@@ -26,7 +26,7 @@ public class DeckTest {
     public void chooseCardsTest() {
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "athena");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
         for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
@@ -49,7 +49,7 @@ public class DeckTest {
     public void chooseCardsTestExceptionArgumentNumber() {
         Deck deck = new Deck();
         deck.chooseCards("apollo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
         for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
@@ -62,7 +62,7 @@ public class DeckTest {
     public void chooseCardsTestExceptionWrongCard() {
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "foo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
         for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
@@ -75,7 +75,7 @@ public class DeckTest {
     public void chooseCardsTestExceptionSameCardTwice() {
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "apollo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCards();
+        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
         for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {

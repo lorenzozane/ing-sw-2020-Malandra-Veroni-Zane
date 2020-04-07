@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public class GodsCard {
+public class GodsCard implements Cloneable {
 
     private final String cardName;
     private String cardDescription;
@@ -19,5 +19,13 @@ public class GodsCard {
 
     public void setCardDescription(String cardDescription) {
         this.cardDescription = cardDescription;
+    }
+
+    @Override
+    protected final GodsCard clone(){
+        GodsCard clonedCard = new GodsCard(this.cardName);
+        clonedCard.setCardDescription(this.cardDescription);
+
+        return clonedCard;
     }
 }
