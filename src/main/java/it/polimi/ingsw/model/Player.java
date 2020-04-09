@@ -10,6 +10,7 @@ public class Player {
     private Date birthday;
     private Color playerColor;
     private ArrayList<Worker> workers;
+    private ArrayList<TurnEvents> moveSequence;
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;

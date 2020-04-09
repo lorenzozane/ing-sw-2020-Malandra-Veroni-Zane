@@ -4,18 +4,30 @@ import java.util.ArrayList;
 
 public class Game {
 
+    private static Game instance;   //Singleton pattern
     private ArrayList playerList;
-    private static int playerNumber;
+    private int playerNumber;
     private Board board;
     private Deck godsDeck;
     private Player firstPlayer;
 
-    public static int getPlayerNumber() {
+    private Game(){
+
+    }
+
+    public static Game getInstance(){
+        if (instance == null)
+            instance = new Game();
+
+        return instance;
+    }
+
+    public int getPlayerNumber() {
         return playerNumber;
     }
 
     public void setPlayerNumber(int playerNumber) {
-        if (playerNumber == 0) //se il valore è diverso da zero, vuol dire che è già stato settato
+        if (this.playerNumber == 0) //se il valore è diverso da zero, vuol dire che è già stato settato
             this.playerNumber = playerNumber;
     }
 

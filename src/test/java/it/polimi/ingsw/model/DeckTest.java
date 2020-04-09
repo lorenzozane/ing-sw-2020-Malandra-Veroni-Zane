@@ -24,6 +24,8 @@ public class DeckTest {
 
     @Test
     public void chooseCardsTest() {
+        Game getInstance = Game.getInstance();
+        getInstance.setPlayerNumber(3);
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "athena");
         HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();

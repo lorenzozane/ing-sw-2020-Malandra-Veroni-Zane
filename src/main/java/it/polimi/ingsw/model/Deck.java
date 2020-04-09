@@ -1,11 +1,21 @@
 package it.polimi.ingsw.model;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -58,13 +68,14 @@ public class Deck {
 
     public void chooseCards(String... godsCardName) throws IllegalArgumentException {
         try {
-            //Se il numero di parametri passati alla funzione non è 2 o 3, viene lanciata un'eccezione IllegalArgumentException
-            if (godsCardName.length < 2 || godsCardName.length > 3)
+            //Se il numero di parametri passati è diverso dal numero di giocatori, viene lanciata un'IllegalArgumentException
+            if (godsCardName.length != Game.getInstance().getPlayerNumber())
                 throw new IllegalArgumentException();
 
             for (String cardName : godsCardName)
                 addCardToChosen(cardName);
 
+            createChosenCardXML();
         } catch (IllegalArgumentException ex) { //TODO: Check
             throw ex;
         } catch (Exception ex) {
@@ -109,6 +120,45 @@ public class Deck {
         } catch (Exception ex) {
             System.out.println(ex);
             return null;
+        }
+    }
+
+    private void createChosenCardXML(){
+        try {
+            //Apertura file xml GodsParameters.xml, ed inizializzazione documento
+            File xmlGodsDescription = new File("src/GodsParameters.xml");
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document sourceDocument = documentBuilder.parse(xmlGodsDescription);
+            sourceDocument.normalizeDocument();
+
+            Path path = Paths.get("src/ChosenCards.xml");
+            Files.deleteIfExists(path);
+
+            Document destinationDocument = documentBuilder.newDocument();
+
+            Element rootElementNewFile = destinationDocument.createElement("santorini");
+            destinationDocument.appendChild(rootElementNewFile);
+
+            for (Map.Entry<String, GodsCard> choseCard : chosenCards.entrySet()) {
+                NodeList list = sourceDocument.getElementsByTagName(choseCard.getValue().getCardName());
+                Element elementCopied = (Element)list.item(0);
+
+                Node nodeCopied = destinationDocument.importNode(elementCopied, true);
+                destinationDocument.getDocumentElement().appendChild(nodeCopied);
+            }
+
+            destinationDocument.normalizeDocument();
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            Source source = new DOMSource(destinationDocument);
+            Result result = new StreamResult(new File("src/ChosenCards.xml"));
+            transformer.transform(source, result);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
