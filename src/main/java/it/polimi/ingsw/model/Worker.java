@@ -37,7 +37,6 @@ public class Worker {
 
     }
 
-
     /**
      * Set new Worker's position
      *
@@ -47,7 +46,6 @@ public class Worker {
         setWorkerSlot(moveHere);
         //notify alla view
     }
-
 
     /**
      * Creation of a new building
@@ -60,11 +58,6 @@ public class Worker {
         buildHere.setBuilding(newBuilding);
         //notify alla view
     }
-
-
-
-
-
 
 
 }

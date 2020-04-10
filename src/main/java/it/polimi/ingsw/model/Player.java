@@ -56,7 +56,7 @@ public class Player {
         this.playerColor = playerColor;
     }
 
-    public void setWorker(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
+    public void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
         if(workers.contains(worker))
             worker.setWorkerSlot(slot);
     }

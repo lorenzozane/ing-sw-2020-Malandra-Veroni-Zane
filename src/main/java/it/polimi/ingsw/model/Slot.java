@@ -38,4 +38,5 @@ public class Slot {
     public Building[] getBuildingStatus(){
         return buildingsStatus;
     }
+
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -15,8 +16,7 @@ public class Turn {
             if (players.length != Game.getInstance().getPlayerNumber())
                 throw new IllegalArgumentException();
 
-            for (Player player : players)
-                playerOrder.add(player);
+            playerOrder.addAll(Arrays.asList(players));
 
             playerOrder.sort(Comparator.comparing(Player::getBirthday));
         }
