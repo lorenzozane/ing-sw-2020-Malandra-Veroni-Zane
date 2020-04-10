@@ -15,12 +15,29 @@ public class Player {
     private GodsCard playerCard;
     private boolean isPlaying;
 
-    public Player(String nickname){
+    public Player(String nickname) {
         this.nickname = nickname;
+        this.isPlaying = true;
     }
 
     public String getNickname() {
         return nickname;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
+    public void setIsFirstPlayer(){
+        this.isFirstPlayer = true;
+    }
+
+    public boolean getIsFirstPlayer(){
+        return isFirstPlayer;
     }
 
     public Date getBirthday() {
@@ -39,9 +56,10 @@ public class Player {
         this.playerColor = playerColor;
     }
 
-    public void setWorkers(){}
-
-
+    public void setWorker(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
+        if(workers.contains(worker))
+            worker.setWorkerSlot(slot);
+    }
 
     public GodsCard getPlayerCard() {
         return playerCard;
