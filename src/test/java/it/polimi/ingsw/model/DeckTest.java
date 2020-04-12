@@ -39,6 +39,8 @@ public class DeckTest {
 
     @Test
     public void pickUpCardTest() {
+        Game getInstance = Game.getInstance();
+        getInstance.setPlayerNumber(3);
         Deck deck = new Deck();
         deck.chooseCards("apollo", "artemis", "athena");
         GodsCard godsCard = deck.pickUpCard("apollo");

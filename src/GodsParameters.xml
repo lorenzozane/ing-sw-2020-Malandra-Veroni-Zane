@@ -1,263 +1,101 @@
 <santorini>
-	<!--SampleGod XML
-	<sampleGod>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
+    <!--SampleGod XML
+    <sampleGod>
+        <movement>
+            <standardMove active="true" priority="2">MOVE</standardMove>
+            <additionalMoveNotInitialPosition active="false" priority="">MOVE</additionalMoveNotInitialPosition>
+            <opponentSpaceMoveFlipPosition active="false" priority="">MOVE_OPPONENT_SLOT_FLIP</opponentSpaceMoveFlipPosition>
+            <opponentSpaceMoveBackwards active="false" priority="">MOVE_OPPONENT_SLOT_PUSH</opponentSpaceMoveBackwards>
+            <disableOpponentMoveUp active="false" priority=""></disableOpponentMoveUp>
+            <modifiableParameter>
+                <canMoveUp>true</canMoveUp>
+            </modifiableParameter>
+        </movement>
 
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
+        <contruction>
+            <standardBuild active="true" priority="">BUILD</standardBuild>
+            <additionalBuildNotSamePlace active="false" priority="">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
+            <additionalBuildSamePlaceNotDome active="false" priority="">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
+            <buildDomeAnyLevel active="false" priority="">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
+            <buildBeforeMove active="false" priority="">BUILD</buildBeforeMove>
+        </contruction>
 
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</sampleGod>
-	-->
+        <winCondition>
+            <standardWin>true</standardWin>
+            <moveDownWin>False</moveDownWin>
+        </winCondition>
+    </sampleGod>
+    -->
 
-	<apollo>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>True</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
+    <apollo>
+        <moveSequence>
+            <opponentSpaceMoveFlipPosition priority="1">MOVE_OPPONENT_SLOT_FLIP</opponentSpaceMoveFlipPosition>
+            <standardBuild priority="2">BUILD</standardBuild>
+        </moveSequence>
+    </apollo>
 
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
+    <artemis>
+        <moveSequence>
+            <standardMove priority="1">MOVE</standardMove>
+            <additionalMoveNotInitialPosition priority="2">MOVE_NOT_INITIAL_POSITION</additionalMoveNotInitialPosition>
+            <standardBuild priority="3">BUILD</standardBuild>
+        </moveSequence>
+    </artemis>
 
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</apollo>
+    <athena>
+        <moveSequence>
+            <disableOpponentMoveUpMove priority="1">MOVE_DISABLE_OPPONENT_UP</disableOpponentMoveUpMove>
+            <standardBuild priority="2">BUILD</standardBuild>
+        </moveSequence>
+    </athena>
 
-	<artemis>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>True</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
+    <atlas>
+        <moveSequence>
+            <standardMove priority="1">MOVE</standardMove>
+            <standardBuild priority="2">BUILD</standardBuild>
+            <buildDomeAnyLevel priority="3">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
+        </moveSequence>
+    </atlas>
 
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
+    <demeter>
+        <moveSequence>
+            <standardMove priority="1">MOVE</standardMove>
+            <standardBuild priority="2">BUILD</standardBuild>
+            <additionalBuildNotSamePlace priority="3">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
+        </moveSequence>
+    </demeter>
 
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</artemis>
+    <hephaestus>
+        <moveSequence>
+            <standardMove priority="1">MOVE</standardMove>
+            <standardBuild priority="2">BUILD</standardBuild>
+            <additionalBuildSamePlaceNotDome priority="3">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
+        </moveSequence>
+    </hephaestus>
 
-	<athena>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>True</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
+    <minotaur>
+        <moveSequence>
+            <opponentSpaceMoveBackwards priority="1">MOVE_OPPONENT_SLOT_PUSH</opponentSpaceMoveBackwards>
+            <standardBuild priority="2">BUILD</standardBuild>
+        </moveSequence>
+    </minotaur>
 
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
+    <pan>
+        <moveSequence>
+            <standardMove priority="1">MOVE</standardMove>
+            <standardBuild priority="2">BUILD</standardBuild>
+        </moveSequence>
 
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</athena>
+        <winCondition>
+            <moveDownWin>true</moveDownWin>
+        </winCondition>
+    </pan>
 
-	<atlas>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>True</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</atlas>
-
-	<demeter>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>True</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</demeter>
-
-	<hephaestus>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>True</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</hephaestus>
-
-	<minotaur>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>True</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</minotaur>
-
-	<pan>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>False</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>True</moveDownWin>
-		</winCondition>
-	</pan>
-
-	<prometheus>
-		<movement>
-			<standardMove>True</standardMove>
-			<additionalTimeMove>False</additionalTimeMove>
-			<opponentSpaceMoveFlipPosition>False</opponentSpaceMoveFlipPosition>
-			<opponentSpaceMoveBackwards>False</opponentSpaceMoveBackwards>
-			<disableOpponentMoveUp>False</disableOpponentMoveUp>
-			<modifiableParameter>
-				<canMoveUp>True</canMoveUp>
-			</modifiableParameter>
-		</movement>
-
-		<contruction>
-			<standardBuild>True</standardBuild>
-			<additionalBuildNotSamePlace>False</additionalBuildNotSamePlace>
-			<additionalBuildSamePlaceNotDome>False</additionalBuildSamePlaceNotDome>
-			<buildDomeAnyLevel>False</buildDomeAnyLevel>
-			<buildBeforeMove>True</buildBeforeMove>
-		</contruction>
-
-		<winCondition>
-			<standardWin>True</standardWin>
-			<moveDownWin>False</moveDownWin>
-		</winCondition>
-	</prometheus>
+    <prometheus>
+        <moveSequence>
+            <buildBeforeMove priority="1">BUILD</buildBeforeMove>
+            <standardMove priority="2">MOVE</standardMove>
+            <standardBuild priority="3">BUILD</standardBuild>
+        </moveSequence>
+    </prometheus>
 </santorini>

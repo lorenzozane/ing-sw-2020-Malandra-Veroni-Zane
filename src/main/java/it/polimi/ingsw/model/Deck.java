@@ -10,10 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -25,13 +22,16 @@ import org.w3c.dom.Element;
 
 public class Deck {
 
-    private ArrayList<GodsCard> cardList = new ArrayList<>();
-    private HashMap<String, GodsCard> chosenCards = new HashMap<>();
+    private final ArrayList<GodsCard> cardList = new ArrayList<>();
+    private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
 
     public Deck() {
         buildDeck();
     }
 
+    /**
+     * Instantiate the game deck reading the XML file containing the description of the implemented gods.
+     */
     private void buildDeck() {
         try {
             //Apertura file xml GodsDescription.xml, ed inizializzazione documento
@@ -62,10 +62,16 @@ public class Deck {
                 }
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
+    /**
+     * Select and save the cards chosen by the challenger
+     *
+     * @param godsCardName Names of the gods cards chosen by the challenger
+     * @throws IllegalArgumentException Is thrown if the number of cards chosen does not match the number of players in game
+     */
     public void chooseCards(String... godsCardName) throws IllegalArgumentException {
         try {
             //Se il numero di parametri passati è diverso dal numero di giocatori, viene lanciata un'IllegalArgumentException
@@ -75,14 +81,20 @@ public class Deck {
             for (String cardName : godsCardName)
                 addCardToChosen(cardName);
 
-            createChosenCardXML();
-        } catch (IllegalArgumentException ex) { //TODO: Check
+//            createChosenCardXML();
+        } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
+    /**
+     * Adds a single card to the ArrayList of chosen cards
+     *
+     * @param godCardName Name of the god card to add to the ArrayList of chosen cards
+     * @throws IllegalArgumentException Is thrown if the card to be added has already been added or if it does not exist
+     */
     private void addCardToChosen(String godCardName) throws IllegalArgumentException {
         try {
             if (cardList.size() != 0) {
@@ -98,10 +110,17 @@ public class Deck {
         } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
+    /**
+     * Select a card from the chosen cards ArrayList
+     *
+     * @param godCardName Name of the god card to be selected
+     * @return Return the requested card if it exists
+     * @throws IllegalArgumentException Is thrown if the required card is not present in the chosen cards ArrayList
+     */
     public GodsCard pickUpCard(String godCardName) throws IllegalArgumentException {
         try {
             if (chosenCards.size() != 0) {
@@ -118,64 +137,79 @@ public class Deck {
         } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return null;
         }
     }
 
-    private void createChosenCardXML(){
-        try {
-            //Apertura file xml GodsParameters.xml, ed inizializzazione documento
-            File xmlGodsDescription = new File("src/GodsParameters.xml");
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilderFactory.setIgnoringElementContentWhitespace(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document sourceDocument = documentBuilder.parse(xmlGodsDescription);
-            sourceDocument.normalizeDocument();
+//    /**
+//     * Create a copy of the XML file GodsParameters, containing only the copy of the parameters
+//     * of the chosen god cards
+//     */
+//    private void createChosenCardXML(){
+//        try {
+//            //Apertura file xml GodsParameters.xml, ed inizializzazione documento
+//            File xmlGodsDescription = new File("src/GodsParameters.xml");
+//            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//            documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+//            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//            Document sourceDocument = documentBuilder.parse(xmlGodsDescription);
+//            sourceDocument.normalizeDocument();
+//
+//            Path path = Paths.get("src/ChosenCards.xml");
+//            Files.deleteIfExists(path);
+//
+//            Document destinationDocument = documentBuilder.newDocument();
+//
+//            Element rootElementNewFile = destinationDocument.createElement("santorini");
+//            destinationDocument.appendChild(rootElementNewFile);
+//
+//            for (Map.Entry<String, GodsCard> choseCard : chosenCards.entrySet()) {
+//                NodeList list = sourceDocument.getElementsByTagName(choseCard.getValue().getCardName());
+//                Element elementCopied = (Element)list.item(0);
+//
+//                Node nodeCopied = destinationDocument.importNode(elementCopied, true);
+//                destinationDocument.getDocumentElement().appendChild(nodeCopied);
+//            }
+//
+//            destinationDocument.normalizeDocument();
+//
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = transformerFactory.newTransformer();
+////            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//            Source source = new DOMSource(destinationDocument);
+//            Result result = new StreamResult(new File("src/ChosenCards.xml"));
+//            transformer.transform(source, result);
+//
+//        } catch (Exception ex) {
+//            System.out.println(ex);
+//        }
+//    }
 
-            Path path = Paths.get("src/ChosenCards.xml");
-            Files.deleteIfExists(path);
-
-            Document destinationDocument = documentBuilder.newDocument();
-
-            Element rootElementNewFile = destinationDocument.createElement("santorini");
-            destinationDocument.appendChild(rootElementNewFile);
-
-            for (Map.Entry<String, GodsCard> choseCard : chosenCards.entrySet()) {
-                NodeList list = sourceDocument.getElementsByTagName(choseCard.getValue().getCardName());
-                Element elementCopied = (Element)list.item(0);
-
-                Node nodeCopied = destinationDocument.importNode(elementCopied, true);
-                destinationDocument.getDocumentElement().appendChild(nodeCopied);
-            }
-
-            destinationDocument.normalizeDocument();
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            Source source = new DOMSource(destinationDocument);
-            Result result = new StreamResult(new File("src/ChosenCards.xml"));
-            transformer.transform(source, result);
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
+    /**
+     * Return a copy of the ArrayList containing the game card list
+     *
+     * @return ArrayList containing the game card list
+     */
     //TODO: Test
     public ArrayList<GodsCard> getCardListCopy() {
         ArrayList<GodsCard> clonedCardList = new ArrayList<>(cardList.size());
         for (GodsCard card : cardList)
             clonedCardList.add(card.clone());
 
-        return cardList;
+        return clonedCardList;
     }
 
+    /**
+     * Return a copy of the HashMap containing the chosen cards
+     *
+     * @return HashMap containing the chosen cards
+     */
     public HashMap<String, GodsCard> getChosenCardsCopy() {
         HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
         for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
             clonedChosenCards.put(card.getKey(), card.getValue().clone());
 
-        return chosenCards;
+        return clonedChosenCards;
     }
 }
