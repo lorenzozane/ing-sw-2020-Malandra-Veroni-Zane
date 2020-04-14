@@ -12,13 +12,21 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
 
-
+/**
+ * Structure useful to contain the elements necessary to describe the course of the game turns
+ */
 public class Turn {
 
     protected static Player currentPlayer = null;
     protected static ArrayList<Player> playerOrder = new ArrayList<>();
     private static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
 
+    /**
+     * Defines the player order based on age to create the ArrayList playerOrder
+     *
+     * @param players List of players
+     * @throws IllegalArgumentException Is thrown if the number of players to compare does not match the numbers of players in game
+     */
     public void setPlayerOrder(Player... players) throws IllegalArgumentException {
         if (playerOrder.isEmpty()) {
             if (players.length != Game.getInstance().getPlayerNumber())
@@ -30,6 +38,9 @@ public class Turn {
         }
     }
 
+    /**
+     * Update the currentPlayer to move to the next player's turn
+     */
     public void updateTurn() {
         if (currentPlayer == null)
             currentPlayer = playerOrder.get(0);
@@ -38,12 +49,22 @@ public class Turn {
     }
 
     //TODO: Test
+
+    /**
+     * Returns the next player by cycling on the list of players sorted by age
+     *
+     * @return Return the next player to play
+     */
     protected Player getNextPlayer() {
         int index = playerOrder.indexOf(currentPlayer);
 
         return playerOrder.get((index + 1) % playerOrder.size());
     }
 
+    /**
+     * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
+     * and read the win conditions
+     */
     public void setUpTurnSequence() {
         try {
             File xmlChosenCards = new File("src/GodsParameters.xml");
@@ -65,7 +86,14 @@ public class Turn {
         }
     }
 
-    private ArrayList<Actions> loadMoveSequence(Player player, Document document){
+    /**
+     * Builds up the standard sequence of moves for each player
+     *
+     * @param player Player to create the move sequence for
+     * @param document Document to read to extract all the player's turn parameters
+     * @return Return the ArrayList of player's move sequence
+     */
+    private ArrayList<Actions> loadMoveSequence(Player player, Document document) {
         try {
             NodeList list = document.getElementsByTagName(player.getPlayerCard().getCardName());
             Element godElement = (Element) list.item(0);
@@ -91,11 +119,18 @@ public class Turn {
             return new ArrayList<>(moveSequence.keySet());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            return  null;
+            return null;
         }
     }
 
-    private ArrayList<WinConditions> loadWinCondition(Player player, Document document){
+    /**
+     * Load the win condition for each player
+     *
+     * @param player Player to read the win conditions for
+     * @param document Document to read to extract all the player's win conditions
+     * @return Return the ArrayList of player's win conditions
+     */
+    private ArrayList<WinConditions> loadWinCondition(Player player, Document document) {
         try {
             NodeList list = document.getElementsByTagName(player.getPlayerCard().getCardName());
             Element godElement = (Element) list.item(0);
@@ -125,6 +160,5 @@ public class Turn {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 }

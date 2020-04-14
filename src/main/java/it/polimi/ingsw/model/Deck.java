@@ -1,36 +1,34 @@
 package it.polimi.ingsw.model;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-
+/**
+ * Game Deck. Contains all the God Cards of the game. Contains also the cards chosen by the challenger
+ */
 public class Deck {
 
     private final ArrayList<GodsCard> cardList = new ArrayList<>();
     private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
 
+    /**
+     * Constructor of the game deck
+     */
     public Deck() {
         buildDeck();
     }
 
     /**
-     * Instantiate the game deck reading the XML file containing the description of the implemented gods.
+     * Constructs the game deck by reading the XML file containing the description of the implemented gods
      */
     private void buildDeck() {
         try {
