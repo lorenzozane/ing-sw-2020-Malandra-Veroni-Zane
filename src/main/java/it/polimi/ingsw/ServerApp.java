@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-/* import java.io.IOException;
+import it.polimi.ingsw.server.Server;
+
+import java.io.IOException;
 
 public class ServerApp
 {
@@ -15,4 +17,3 @@ public class ServerApp
     }
   }
 }
-*/
