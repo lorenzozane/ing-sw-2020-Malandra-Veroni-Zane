@@ -12,18 +12,18 @@
             </modifiableParameter>
         </movement>
 
-        <contruction>
+        <construction>
             <standardBuild active="true" priority="">BUILD</standardBuild>
             <additionalBuildNotSamePlace active="false" priority="">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
             <additionalBuildSamePlaceNotDome active="false" priority="">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
             <buildDomeAnyLevel active="false" priority="">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
             <buildBeforeMove active="false" priority="">BUILD</buildBeforeMove>
-        </contruction>
+        </construction>
 
-        <winCondition>
+        <winConditions>
             <standardWin>true</standardWin>
             <moveDownWin>False</moveDownWin>
-        </winCondition>
+        </winConditions>
     </sampleGod>
     -->
 
@@ -32,6 +32,10 @@
             <opponentSpaceMoveFlipPosition priority="1">MOVE_OPPONENT_SLOT_FLIP</opponentSpaceMoveFlipPosition>
             <standardBuild priority="2">BUILD</standardBuild>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </apollo>
 
     <artemis>
@@ -40,6 +44,10 @@
             <additionalMoveNotInitialPosition priority="2">MOVE_NOT_INITIAL_POSITION</additionalMoveNotInitialPosition>
             <standardBuild priority="3">BUILD</standardBuild>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </artemis>
 
     <athena>
@@ -47,6 +55,10 @@
             <disableOpponentMoveUpMove priority="1">MOVE_DISABLE_OPPONENT_UP</disableOpponentMoveUpMove>
             <standardBuild priority="2">BUILD</standardBuild>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </athena>
 
     <atlas>
@@ -55,6 +67,10 @@
             <standardBuild priority="2">BUILD</standardBuild>
             <buildDomeAnyLevel priority="3">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </atlas>
 
     <demeter>
@@ -63,6 +79,10 @@
             <standardBuild priority="2">BUILD</standardBuild>
             <additionalBuildNotSamePlace priority="3">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </demeter>
 
     <hephaestus>
@@ -71,6 +91,10 @@
             <standardBuild priority="2">BUILD</standardBuild>
             <additionalBuildSamePlaceNotDome priority="3">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </hephaestus>
 
     <minotaur>
@@ -78,6 +102,10 @@
             <opponentSpaceMoveBackwards priority="1">MOVE_OPPONENT_SLOT_PUSH</opponentSpaceMoveBackwards>
             <standardBuild priority="2">BUILD</standardBuild>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </minotaur>
 
     <pan>
@@ -86,9 +114,10 @@
             <standardBuild priority="2">BUILD</standardBuild>
         </moveSequence>
 
-        <winCondition>
-            <moveDownWin>true</moveDownWin>
-        </winCondition>
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+            <moveDownWin>WIN_DOUBLE_MOVE_DOWN</moveDownWin>
+        </winConditions>
     </pan>
 
     <prometheus>
@@ -97,5 +126,9 @@
             <standardMove priority="2">MOVE</standardMove>
             <standardBuild priority="3">BUILD</standardBuild>
         </moveSequence>
+
+        <winConditions>
+            <standardWin>WIN_STANDARD</standardWin>
+        </winConditions>
     </prometheus>
 </santorini>
