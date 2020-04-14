@@ -12,23 +12,17 @@ public class Game {
     private Player firstPlayer;
 
     private Game(){
-
+        ;
     }
 
     public static Game getInstance(){
         if (instance == null)
             instance = new Game();
-
         return instance;
     }
 
     public int getPlayerNumber() {
         return playerNumber;
-    }
-
-    public void setPlayerNumber(int playerNumber) {
-        if (this.playerNumber == 0) //se il valore è diverso da zero, vuol dire che è già stato settato
-            this.playerNumber = playerNumber;
     }
 
     public boolean addPlayer(Player newPlayer) {
