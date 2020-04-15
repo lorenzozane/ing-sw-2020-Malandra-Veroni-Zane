@@ -29,7 +29,7 @@ public class Slot {
     public void setBuilding(Building building) {
         try {
             int level = building.getLevelAsInt();
-            buildingsStatus[level] = building;
+            buildingsStatus[level-1] = building;
         } catch (Exception ex) {
             System.out.println(ex);
         }

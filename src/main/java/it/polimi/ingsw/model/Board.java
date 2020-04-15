@@ -1,14 +1,8 @@
 package it.polimi.ingsw.model;
 
+import java.util.Arrays;
+
 public class Board {
-    private final int BOARD_DIMENSION=5;
-
-    private Slot[][] table;
-
-
-    public Board(){
-        table= new Slot[BOARD_DIMENSION][BOARD_DIMENSION];
-    }
 
     private String[][] gameBoard = {{"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
             {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
@@ -48,16 +42,44 @@ public class Board {
             {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
             {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "}};
 
-    private String[][] cube = {{"                    "},
-            {"                    "},
-            {"                    "},
-            {"                    "},
-            {"                    "}};
 
 
-    public void fillCube(String[][] cube){
+
+
+    public void updateBuildingOnBoard(Slot slotBuilding){
+        int[] value= new int[4];
+        String[][] cube = {{"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "}};
+        for(int i=0; i<4; i++){
+            if (slotBuilding.getBuildingStatus()[i]==null){
+                value[i]=0;
+            }
+            else
+                value[i]=slotBuilding.getBuildingStatus()[i].getLevelAsInt();
+        }
+
+        switch (Arrays.toString(value)){
+            case "[1, 0, 0, 0]":
+                cube[4][0]="AAAAAAAAAAAAAAAAAAAA";
+                break;
+        }
+
+        int[] position = new int[2];
+        position[0]=slotBuilding.getSlotPosition().getCoordinateX();
+        position[1]=slotBuilding.getSlotPosition().getCoordinateY();
+        switch (Arrays.toString(position)){
+            case "[0, 0]":
+                for(int i=0; i<5; i++){
+                    gameBoard[i][0]=cube[i][0];
+                }
+            break;
+        }
 
     }
+
 
 
 
@@ -69,7 +91,10 @@ public class Board {
                 System.out.print(this.gameBoard[i][j]);
             }
             System.out.println();
+
         }
+        System.out.println();
+        System.out.println();
     }
 
 
