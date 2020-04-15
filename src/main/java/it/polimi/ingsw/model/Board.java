@@ -63,8 +63,29 @@ public class Board {
 
         switch (Arrays.toString(value)){
             case "[1, 0, 0, 0]":
-                cube[4][0]="AAAAAAAAAAAAAAAAAAAA";
+                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
                 break;
+
+            case "[1, 2, 0, 0]":
+                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                break;
+
+            case "[1, 2, 3, 0]":
+                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[2][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                break;
+
+            case "[1, 2, 3, 4]":
+                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[2][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                cube[1][0]=Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
+                cube[0][0]=Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
+                break;
+
+
         }
 
         int[] position = new int[2];
@@ -93,8 +114,7 @@ public class Board {
             System.out.println();
 
         }
-        System.out.println();
-        System.out.println();
+
     }
 
 
