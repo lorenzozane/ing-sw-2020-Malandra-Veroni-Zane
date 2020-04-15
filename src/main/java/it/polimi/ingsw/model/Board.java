@@ -4,43 +4,48 @@ import java.util.Arrays;
 
 public class Board {
 
-    private String[][] gameBoard = {{"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
+    private String[][] gameBoard = {{"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
 
-            {"--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------"},
+            {Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET},
 
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
 
-            {"--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------"},
+            {Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET},
 
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
 
-            {"--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------"},
+            {Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET},
 
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
 
-            {"--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------", "+", "--------------------"},
+            {Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET, Color.ANSI_GREEN+ "+" + Color.RESET, Color.ANSI_GREEN+ "--------------------" + Color.RESET},
 
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "},
-            {"                    ", "|", "                    ", "|", "                    ", "|", "                    ", "|", "                    "}};
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},
+            {"                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    ", Color.ANSI_GREEN+ "|" + Color.RESET, "                    "},};
 
 
 
@@ -49,6 +54,7 @@ public class Board {
     public void updateBuildingOnBoard(Slot slotBuilding){
         int[] value= new int[4];
         String[][] cube = {{"                    "},
+                {"                    "},
                 {"                    "},
                 {"                    "},
                 {"                    "},
@@ -63,26 +69,26 @@ public class Board {
 
         switch (Arrays.toString(value)){
             case "[1, 0, 0, 0]":
-                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[5][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
                 break;
 
             case "[1, 2, 0, 0]":
-                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
-                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[5][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
                 break;
 
             case "[1, 2, 3, 0]":
-                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
-                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
-                cube[2][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                cube[5][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[3][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
                 break;
 
             case "[1, 2, 3, 4]":
-                cube[4][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
-                cube[3][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
-                cube[2][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
-                cube[1][0]=Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
-                cube[0][0]=Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
+                cube[5][0]="∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0]="  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[3][0]="    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                cube[2][0]=Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
+                cube[1][0]=Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
 
