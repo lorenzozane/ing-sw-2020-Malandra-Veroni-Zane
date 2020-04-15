@@ -59,6 +59,7 @@ public class Board {
                 {"                    "},
                 {"                    "},
                 {"                    "}};
+
         for(int i=0; i<4; i++){
             if (slotBuilding.getBuildingStatus()[i]==null){
                 value[i]=0;
@@ -99,7 +100,7 @@ public class Board {
         position[1]=slotBuilding.getSlotPosition().getCoordinateY();
         switch (Arrays.toString(position)){
             case "[0, 0]":
-                for(int i=0; i<5; i++){
+                for(int i=0; i<6; i++){
                     gameBoard[i][0]=cube[i][0];
                 }
             break;
