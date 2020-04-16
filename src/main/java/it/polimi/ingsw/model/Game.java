@@ -12,7 +12,7 @@ public class Game {
     private Player firstPlayer;
 
     private Game(){
-        ;
+
     }
 
     public static Game getInstance(){
@@ -24,6 +24,8 @@ public class Game {
     public int getPlayerNumber() {
         return playerNumber;
     }
+
+    public void setPlayerNumber(int playerNumber){this.playerNumber=playerNumber;}
 
     public boolean addPlayer(Player newPlayer) {
         if (checkPlayer(newPlayer)) {
