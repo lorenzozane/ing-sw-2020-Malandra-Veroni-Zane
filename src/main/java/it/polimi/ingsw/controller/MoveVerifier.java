@@ -20,7 +20,7 @@ public final class MoveVerifier {
             return false;
         if (Slot.calculateDistance(startingSlot, targetSlot) != 1)
             return false;
-        if (targetSlot.getBuildingStatus().contains("DOME"))
+        if (targetSlot.getBuildingsStatus().contains("DOME"))
             return false;
         if (Slot.calculateHeightDifference(startingSlot, targetSlot) > 1)
             return false;
@@ -31,6 +31,7 @@ public final class MoveVerifier {
                 return false; //TODO: Verificare se slot destinazione è quello di partenza
         }
 
+        //TODO: Aggiungere controllo canMoveUp
         return true;
     }
 

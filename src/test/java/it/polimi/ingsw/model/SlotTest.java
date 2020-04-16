@@ -2,9 +2,7 @@ package it.polimi.ingsw.model;
 
 import org.junit.Test;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class SlotTest {
 
@@ -14,7 +12,7 @@ public class SlotTest {
         Slot slot = new Slot(new Position(0, 0));
         slot.setBuilding(newBuilding);
 
-        List<String> buildingsStatus = slot.getBuildingStatus();
+        ArrayList<Building.BuildingLevel> buildingsStatus = slot.getBuildingsStatus();
     }
 
 }

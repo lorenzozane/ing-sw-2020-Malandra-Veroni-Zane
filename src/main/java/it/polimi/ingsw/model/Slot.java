@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
 import static it.polimi.ingsw.model.Building.BuildingProperty.*;
 
@@ -38,7 +37,7 @@ public class Slot {
 
     public void setBuilding(Building building) {
         try {
-            if (buildingsStatus[constructionHeight - 1].getLevel().hasProperty(CAN_BUILD_ON_IT)) {
+            if (constructionHeight == 0 || buildingsStatus[constructionHeight - 1].getLevel().hasProperty(CAN_BUILD_ON_IT)) {
                 int level = building.getLevelAsInt();
                 buildingsStatus[level - 1] = building;
                 if (level > constructionHeight)
@@ -49,12 +48,12 @@ public class Slot {
         }
     }
 
-    public List<String> getBuildingStatus() {   //Crea una copia del buildings status sotto forma di array di stringhe
-        String[] buildingsStatusCopy = new String[4];
-        for (int i = 0; i < buildingsStatusCopy.length; i++)
-            buildingsStatusCopy[i] = buildingsStatus[i] != null ? buildingsStatus[i].getLevel().toString() : "NULL";
+    public ArrayList<Building.BuildingLevel> getBuildingsStatus() {   //Crea una copia del buildings status sotto forma di array di stringhe
+        ArrayList<Building.BuildingLevel> buildingLevelsCopy = new ArrayList<>(buildingsStatus.length);
+        for (int i = 0; i < buildingsStatus.length; i++)
+            buildingLevelsCopy.add(buildingsStatus[i] != null ? buildingsStatus[i].getLevel() : null);
 
-        return Arrays.asList(buildingsStatusCopy);
+        return buildingLevelsCopy;
     }
 
     /**

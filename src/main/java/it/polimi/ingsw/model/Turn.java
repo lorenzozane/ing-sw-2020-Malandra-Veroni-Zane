@@ -34,7 +34,7 @@ public class Turn {
 
             playerOrder.addAll(Arrays.asList(players));
 
-            playerOrder.sort(Comparator.comparing(Player::getBirthday));
+            playerOrder.sort(Comparator.comparing(Player::getBirthday).reversed());
         }
     }
 
