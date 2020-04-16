@@ -1,21 +1,23 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Game {
 
     private static Game instance;   //Singleton pattern
-    private ArrayList<Player> playerList;
+    private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber;
     private Board board;
     private Deck godsDeck;
     private Player firstPlayer;
 
-    private Game(){
+    private Game() {
 
     }
 
-    public static Game getInstance(){
+    public static Game getInstance() {
         if (instance == null)
             instance = new Game();
         return instance;
@@ -25,22 +27,21 @@ public class Game {
         return playerNumber;
     }
 
-    public void setPlayerNumber(int playerNumber){this.playerNumber=playerNumber;}
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
 
-    public boolean addPlayer(Player newPlayer) {
+    public void addPlayer(Player newPlayer) {
         if (checkPlayer(newPlayer)) {
             playerList.add(newPlayer);
-            return true;
-        } else {
-            return false;
+            playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
         }
     }
 
     private boolean checkPlayer(Player newPlayer) {
-        for (int counter = 0; counter < playerList.size(); counter++) {
+        if (!playerList.isEmpty())
             if (playerList.contains(newPlayer))
                 return false;
-        }
         return true;
     }
 
@@ -49,11 +50,17 @@ public class Game {
         throw new IllegalArgumentException(); //TODO: Check: ??
     }
 
-    public Player getChallengerPlayer() {
-        return this.firstPlayer;
+    public ArrayList<Player> getPlayerList() {
+        return this.playerList;
     }
 
-    public void challenge() {}
+    public Player getChallengerPlayer() {
+        return playerList.get(0);
+
+    }
+
+    public void challenge() {
+    }
 
 
 }

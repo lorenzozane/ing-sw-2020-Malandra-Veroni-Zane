@@ -38,9 +38,9 @@ public class Server {
             Connection c1 = waitingConnection.get(keys.get(0));
             c1.asyncSend(Message.chooseNoPlayer);
 
-            int number = ;
+            //int number = ;
             Game game = Game.getInstance();
-            Game.getInstance().setPlayerNumber(number);
+            //Game.getInstance().setPlayerNumber(number);
 
 
         }

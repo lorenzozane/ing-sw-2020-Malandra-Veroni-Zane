@@ -60,13 +60,15 @@ public class Board {
                 {"                    "},
                 {"                    "}};
 
-        for(int i=0; i<4; i++){
+        /*for(int i=0; i<4; i++){
             if (slotBuilding.getBuildingStatus()[i]==null){
                 value[i]=0;
             }
             else
                 value[i]=slotBuilding.getBuildingStatus()[i].getLevelAsInt();
         }
+
+         */
 
         switch (Arrays.toString(value)){
             case "[1, 0, 0, 0]":
