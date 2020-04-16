@@ -2,19 +2,19 @@ package it.polimi.ingsw.model;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class TurnTest {
 
     @Test
-    public void setUpMoveSequenceTest(){
+    public void setUpMoveSequenceTest() throws ParseException {
         Turn turn = new Turn();
-        Game game = Game.getInstance();
-        game.setPlayerNumber(1);
         Player player1 = new Player("pippo");
-        Date date = new Date("1/1/2011");
+        DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = dateFormat.parse("23/5/1998");
         player1.setBirthday(date);
         Deck deck = new Deck();
         deck.chooseCards("apollo");
@@ -23,7 +23,7 @@ public class TurnTest {
 
         turn.setPlayerOrder(player1);
 
-        turn.setUpMoveSequence();
+        turn.setUpTurnSequence();
 
     }
 

@@ -10,7 +10,7 @@ public class Player {
     private Date birthday;
     private Color playerColor;
     private ArrayList<Worker> workers;
-    private ArrayList<TurnEvents> moveSequence;
+//    private ArrayList<TurnEvents> moveSequence;
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -18,6 +18,8 @@ public class Player {
     public Player(String nickname) {
         this.nickname = nickname;
         this.isPlaying = true;
+        Game game = Game.getInstance();
+        game.setPlayerNumber(game.getPlayerNumber() + 1);
     }
 
     public String getNickname() {
