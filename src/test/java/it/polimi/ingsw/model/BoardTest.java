@@ -9,7 +9,7 @@ public class BoardTest {
     @Test
     public void printGameBoard() {
         Board board = new Board();
-        Position posizione = new Position(0,3);
+        Position posizione = new Position(4,3);
         Slot slot1 = new Slot(posizione);
         Building b1 = new Building(Building.BuildingLevel.LEVEL1);
         Building b2= new Building(Building.BuildingLevel.LEVEL2);
