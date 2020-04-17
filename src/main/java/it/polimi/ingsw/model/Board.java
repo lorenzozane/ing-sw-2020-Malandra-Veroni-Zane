@@ -85,20 +85,20 @@ public class Board {
                 cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
                 cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
                 cube[3][0] = "    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
-                cube[2][0] = Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
+                cube[2][0] = Color.ANSI_BRIGHT_BLUE + "    /__________\\    " + Color.RESET;
                 cube[1][0] = Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
             case "[1, 2, 0, 4]":
                 cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
                 cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
-                cube[3][0] = Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
+                cube[3][0] = Color.ANSI_BRIGHT_BLUE + "    /__________\\    " + Color.RESET;
                 cube[2][0] = Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
             case "[1, 0, 0, 4]":
                 cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
-                cube[4][0] = Color.ANSI_BRIGHT_BLUE + "    ⎧__________⎫    " + Color.RESET;
+                cube[4][0] = Color.ANSI_BRIGHT_BLUE + "    /__________\\    " + Color.RESET;
                 cube[3][0] = Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
