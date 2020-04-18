@@ -8,7 +8,7 @@ public class Player {
     private final String nickname;
     private Date birthday;
     private Color playerColor;
-    private ArrayList<Worker> workers;
+    private ArrayList<Worker> workers = new ArrayList<>();
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -16,11 +16,9 @@ public class Player {
     public Player(String nickname) {
         this.nickname = nickname;
         this.isPlaying = true;
-        Game game = Game.getInstance();
-        game.setPlayerNumber(game.getPlayerNumber() + 1);
 
         for (int i = 0; i < 2; i++) {
-            workers.add(new Worker(nickname + "_" + i));
+            workers.add(new Worker(nickname + "_" + i+1));
         }
     }
 

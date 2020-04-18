@@ -5,6 +5,7 @@ import it.polimi.ingsw.observer.Observable;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.ParseException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -84,7 +85,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException e) {
+        } catch (IOException | NoSuchElementException | ParseException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             close();
