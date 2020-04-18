@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +9,6 @@ public class Player {
     private Date birthday;
     private Color playerColor;
     private ArrayList<Worker> workers;
-//    private ArrayList<TurnEvents> moveSequence;
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -20,6 +18,10 @@ public class Player {
         this.isPlaying = true;
         Game game = Game.getInstance();
         game.setPlayerNumber(game.getPlayerNumber() + 1);
+
+        for (int i = 0; i < 2; i++) {
+            workers.add(new Worker(nickname + "_" + i));
+        }
     }
 
     public String getNickname() {
@@ -56,6 +58,9 @@ public class Player {
 
     public void setPlayerColor(Color playerColor) {
         this.playerColor = playerColor;
+
+        for (Worker worker : workers)
+            worker.setColor(this.playerColor);
     }
 
     public void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi

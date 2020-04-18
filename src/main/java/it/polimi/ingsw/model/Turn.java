@@ -19,7 +19,16 @@ public class Turn {
 
     protected static Player currentPlayer = null;
     protected static ArrayList<Player> playerOrder = new ArrayList<>();
-    private static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
+    protected static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
+    //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
+
+    public Turn(){
+
+    }
+
+    public boolean isPlayerTurn(Player player){
+        return player.equals(currentPlayer);
+    }
 
     /**
      * Defines the player order based on age to create the ArrayList playerOrder
@@ -33,7 +42,6 @@ public class Turn {
                 throw new IllegalArgumentException();
 
             playerOrder.addAll(Arrays.asList(players));
-
             playerOrder.sort(Comparator.comparing(Player::getBirthday).reversed());
         }
     }
@@ -46,6 +54,24 @@ public class Turn {
             currentPlayer = playerOrder.get(0);
         else
             currentPlayer = getNextPlayer();
+
+        //movesPerformed.clear();
+    }
+
+    //TODO: Implementazione movesPerformed
+    private void addLastMovePerformed(TurnEvents.Actions movePerformed, Slot startingSlot, Slot targetSlot){
+
+    }
+
+    private void restoreToLastMovePerformed(){
+
+    }
+
+    public LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> getMovesPerformed(){
+
+
+
+        return null;
     }
 
     //TODO: Test
@@ -61,6 +87,19 @@ public class Turn {
         return playerOrder.get((index + 1) % playerOrder.size());
     }
 
+    public static boolean canCurrentPlayerMoveUp(){
+        return turnSequenceMap.get(currentPlayer).isCanMoveUp();
+    }
+
+//    protected void updateTurnSequence() {
+//        try {
+//
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//    }
+
+    //TODO: Cambiare un parametro di Prometheus. Necessario affinchè non salga se costruisce prima di muovere
     /**
      * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
      * and read the win conditions
@@ -151,14 +190,6 @@ public class Turn {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
-        }
-    }
-
-    protected void updateTurnSequence() {
-        try {
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
         }
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Slot;
+import it.polimi.ingsw.model.Turn;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
@@ -24,6 +25,8 @@ public final class MoveVerifier {
             return false;
         if (Slot.calculateHeightDifference(startingSlot, targetSlot) > 1)
             return false;
+        if (!Turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(startingSlot, targetSlot) > 0)
+            return false;
         if (targetSlot.getWorkerInSlot() != null) {
             return move == Actions.MOVE_OPPONENT_SLOT_FLIP || move == Actions.MOVE_OPPONENT_SLOT_PUSH;
         } else {
@@ -31,7 +34,7 @@ public final class MoveVerifier {
                 return false; //TODO: Verificare se slot destinazione è quello di partenza
         }
 
-        //TODO: Aggiungere controllo canMoveUp
+        //TODO: Implementare controllo canMoveUpPrometheus
         return true;
     }
 

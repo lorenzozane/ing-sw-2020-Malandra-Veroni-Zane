@@ -9,7 +9,7 @@ public class TurnSequence {
     private final Player playerOwner;
     private final ArrayList<Actions> moveSequence;
     private final ArrayList<WinConditions> winConditions;
-    private boolean canMoveUp;
+    private boolean canMoveUp = true;
 
     /**
      * Constructor of the Turn Sequence

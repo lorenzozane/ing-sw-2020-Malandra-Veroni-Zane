@@ -2,8 +2,8 @@
     <!--SampleGod XML
     <sampleGod>
         <movement>
-            <standardMove active="true" priority="2">MOVE</standardMove>
-            <additionalMoveNotInitialPosition active="false" priority="">MOVE</additionalMoveNotInitialPosition>
+            <standardMove active="true" priority="2">MOVE_STANDARD</standardMove>
+            <additionalMoveNotInitialPosition active="false" priority="">MOVE_STANDARD</additionalMoveNotInitialPosition>
             <opponentSpaceMoveFlipPosition active="false" priority="">MOVE_OPPONENT_SLOT_FLIP</opponentSpaceMoveFlipPosition>
             <opponentSpaceMoveBackwards active="false" priority="">MOVE_OPPONENT_SLOT_PUSH</opponentSpaceMoveBackwards>
             <disableOpponentMoveUp active="false" priority=""></disableOpponentMoveUp>
@@ -13,11 +13,11 @@
         </movement>
 
         <construction>
-            <standardBuild active="true" priority="">BUILD</standardBuild>
+            <standardBuild active="true" priority="">BUILD_STANDARD</standardBuild>
             <additionalBuildNotSamePlace active="false" priority="">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
             <additionalBuildSamePlaceNotDome active="false" priority="">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
             <buildDomeAnyLevel active="false" priority="">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
-            <buildBeforeMove active="false" priority="">BUILD</buildBeforeMove>
+            <buildBeforeMove active="false" priority="">BUILD_STANDARD</buildBeforeMove>
         </construction>
 
         <winConditions>
@@ -30,7 +30,7 @@
     <apollo>
         <moveSequence>
             <opponentSpaceMoveFlipPosition priority="1">MOVE_OPPONENT_SLOT_FLIP</opponentSpaceMoveFlipPosition>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
@@ -40,9 +40,9 @@
 
     <artemis>
         <moveSequence>
-            <standardMove priority="1">MOVE</standardMove>
+            <standardMove priority="1">MOVE_STANDARD</standardMove>
             <additionalMoveNotInitialPosition priority="2">MOVE_NOT_INITIAL_POSITION</additionalMoveNotInitialPosition>
-            <standardBuild priority="3">BUILD</standardBuild>
+            <standardBuild priority="3">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
@@ -53,7 +53,7 @@
     <athena>
         <moveSequence>
             <disableOpponentMoveUpMove priority="1">MOVE_DISABLE_OPPONENT_UP</disableOpponentMoveUpMove>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
@@ -63,8 +63,8 @@
 
     <atlas>
         <moveSequence>
-            <standardMove priority="1">MOVE</standardMove>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardMove priority="1">MOVE_STANDARD</standardMove>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
             <buildDomeAnyLevel priority="3">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
         </moveSequence>
 
@@ -75,8 +75,8 @@
 
     <demeter>
         <moveSequence>
-            <standardMove priority="1">MOVE</standardMove>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardMove priority="1">MOVE_STANDARD</standardMove>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
             <additionalBuildNotSamePlace priority="3">BUILD_NOT_SAME_PLACE</additionalBuildNotSamePlace>
         </moveSequence>
 
@@ -87,8 +87,8 @@
 
     <hephaestus>
         <moveSequence>
-            <standardMove priority="1">MOVE</standardMove>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardMove priority="1">MOVE_STANDARD</standardMove>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
             <additionalBuildSamePlaceNotDome priority="3">BUILD_SAME_PLACE_NOT_DOME</additionalBuildSamePlaceNotDome>
         </moveSequence>
 
@@ -100,7 +100,7 @@
     <minotaur>
         <moveSequence>
             <opponentSpaceMoveBackwards priority="1">MOVE_OPPONENT_SLOT_PUSH</opponentSpaceMoveBackwards>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
@@ -110,8 +110,8 @@
 
     <pan>
         <moveSequence>
-            <standardMove priority="1">MOVE</standardMove>
-            <standardBuild priority="2">BUILD</standardBuild>
+            <standardMove priority="1">MOVE_STANDARD</standardMove>
+            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
@@ -122,9 +122,9 @@
 
     <prometheus>
         <moveSequence>
-            <buildBeforeMove priority="1">BUILD</buildBeforeMove>
-            <standardMove priority="2">MOVE</standardMove>
-            <standardBuild priority="3">BUILD</standardBuild>
+            <buildBeforeMove priority="1">BUILD_BEFORE</buildBeforeMove>
+            <standardMove priority="2">MOVE_STANDARD</standardMove>
+            <standardBuild priority="3">BUILD_STANDARD</standardBuild>
         </moveSequence>
 
         <winConditions>
