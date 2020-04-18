@@ -8,7 +8,7 @@ public class Player {
     private final String nickname;
     private Date birthday;
     private Color playerColor;
-    private ArrayList<Worker> workers = new ArrayList<>();
+    private final ArrayList<Worker> workers = new ArrayList<>(2);
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -30,11 +30,11 @@ public class Player {
         return isPlaying;
     }
 
-    public void setPlaying(boolean playing) {
+    protected void setPlaying(boolean playing) {
         isPlaying = playing;
     }
 
-    public void setIsFirstPlayer(){
+    protected void setIsFirstPlayer(){
         this.isFirstPlayer = true;
     }
 
@@ -46,7 +46,7 @@ public class Player {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    protected void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -54,23 +54,27 @@ public class Player {
         return playerColor;
     }
 
-    public void setPlayerColor(Color playerColor) {
+    protected void setPlayerColor(Color playerColor) {
         this.playerColor = playerColor;
 
         for (Worker worker : workers)
             worker.setColor(this.playerColor);
     }
 
-    public void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
+    protected void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
         if(workers.contains(worker))
             worker.setWorkerSlot(slot);
+    }
+
+    protected ArrayList<Worker> getWorkers(){
+        return workers;
     }
 
     public GodsCard getPlayerCard() {
         return playerCard;
     }
 
-    public void setPlayerCard(GodsCard playerCard) {
+    protected void setPlayerCard(GodsCard playerCard) {
         this.playerCard = playerCard;
     }
 

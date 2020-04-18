@@ -9,20 +9,24 @@ import java.util.Scanner;
 public class Game {
 
     private static Game instance;   //Singleton pattern
-    private final Turn turn;
+    private final Turn turn = new Turn();
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber;
-    private Board board;
+    private Board board = new Board();
     private Deck godsDeck;
     private Player firstPlayer;
     private Player challengerPlayer;
 
     private Game() {
-        this.turn = new Turn();
+
     }
 
     public Turn getTurn(){
         return turn;
+    }
+
+    public Board getBoard(){
+        return board.clone();
     }
 
     public static Game getInstance() {
@@ -73,6 +77,7 @@ public class Game {
         challengerPlayer = getChallengerPlayer();
         godsDeck.printAllDeck();
 
+        //TODO: Check: ??
         System.out.println("Choose gods");
         //Scanner in = new Scanner(System.in);
         String godsChooses = "apollo, pan";
