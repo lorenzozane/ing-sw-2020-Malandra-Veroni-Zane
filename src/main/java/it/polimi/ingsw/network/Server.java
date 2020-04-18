@@ -30,17 +30,18 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby(Connection c, String name){
+    public synchronized void lobby(Connection c, String name) throws IOException {
         waitingConnection.put(name, c);
         if(waitingConnection.size()==1){
             //devo far scegliere il numero dei giocatori della partita
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             Connection c1 = waitingConnection.get(keys.get(0));
             c1.asyncSend(Message.chooseNoPlayer);
-
-            //int number = ;
+            Scanner in = new Scanner(c1.getSocket().getInputStream());
+            String read = in.nextLine();
+            int numberP = Integer.parseInt(read);
             Game game = Game.getInstance();
-            //Game.getInstance().setPlayerNumber(number);
+            Game.getInstance().setPlayerNumber(numberP);
 
 
         }

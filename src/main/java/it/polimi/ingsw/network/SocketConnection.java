@@ -95,4 +95,9 @@ public class SocketConnection extends Observable<String> implements Connection, 
         return !server.getWaitingConnection().containsValue(nickname);
     }
 
+    @Override
+    public Socket getSocket(){
+        return this.socket;
+    }
+
 }

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class Game {
 
@@ -13,6 +15,7 @@ public class Game {
     private Board board;
     private Deck godsDeck;
     private Player firstPlayer;
+    private Player challengerPlayer;
 
     private Game() {
         this.turn = new Turn();
@@ -40,6 +43,7 @@ public class Game {
         if (checkPlayer(newPlayer)) {
             playerList.add(newPlayer);
             playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
+            challengerPlayer = playerList.get(0);
         }
     }
 
@@ -61,12 +65,24 @@ public class Game {
 
     public Player getChallengerPlayer() {
         return playerList.get(0);
-
     }
 
-    public void challenge() {
+    public void challenge() throws IOException {
+        //mostrare alla view del challenger tutti gli dei
+        godsDeck = new Deck();
+        challengerPlayer = getChallengerPlayer();
+        godsDeck.printAllDeck();
+
+        System.out.println("Choose gods");
+        //Scanner in = new Scanner(System.in);
+        String godsChooses = "apollo, pan";
+        String[] split = godsChooses.split("\\s*,\\s*");
+        godsDeck.chooseCards(split[0], split[1]);
+
+
     }
 
 
 }
+
 
