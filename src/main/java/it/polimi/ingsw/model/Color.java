@@ -17,11 +17,22 @@ public enum Color {
     {
         this.escape = escape;
     }
-    public String getEscape()
-    {
-        return escape;
 
+    public String getEscape() {
+        return escape;
     }
+
+    public String getColorAsString(Color color){
+        if(color.getEscape().equals(ANSI_PURPLE.getEscape()))
+            return "purple";
+        else if (color.getEscape().equals(ANSI_BRIGHT_CYAN.getEscape()))
+            return "cyan";
+        else if(color.getEscape().equals(ANSI_BLUE.getEscape()))
+            return "blue";
+        else
+            throw new IllegalArgumentException();
+    }
+
     @Override
     public String toString()
     {

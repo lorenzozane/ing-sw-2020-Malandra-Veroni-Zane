@@ -16,6 +16,7 @@ public class Game {
     private Deck godsDeck;
     private Player firstPlayer;
     private Player challengerPlayer;
+    private ArrayList<Color> colorList = new ArrayList<Color>(){{ add(Color.ANSI_BRIGHT_CYAN); add(Color.ANSI_PURPLE); add(Color.ANSI_BLUE);}};
 
     private Game() {
         this.turn = new Turn();
@@ -38,6 +39,19 @@ public class Game {
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
     }
+
+    public String getAvailableColor(){
+        StringBuilder temp = new StringBuilder();
+        for(Color color : colorList){
+            temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET);
+        }
+        return String.valueOf(temp);
+    }
+
+    public void removeColor(Color delete){
+        colorList.remove(delete);
+    }
+
 
     public void addPlayer(Player newPlayer) {
         if (checkPlayer(newPlayer)) {

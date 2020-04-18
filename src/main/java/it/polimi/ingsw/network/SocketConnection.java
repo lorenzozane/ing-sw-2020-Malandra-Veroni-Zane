@@ -72,11 +72,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");
+            send(Message.chooseNickname);
             String read = in.nextLine();
             nickname = read;
             while(!nicknameChecker(nickname)){
-                send("Nickname already chosen, try again\n");
+                send(Message.chooseNicknameAgain);
                 read = in.nextLine();
                 nickname = read;
                 }
