@@ -56,6 +56,8 @@ public class Server {
             Date dateB = dateFormat.parse(read);
             Game.getInstance().getPlayerList().get(0).setBirthday(dateB);
 
+            c1.asyncSend(Message.birthday);
+
 
 
 
