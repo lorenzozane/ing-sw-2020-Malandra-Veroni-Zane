@@ -30,6 +30,8 @@ public class BoardTest {
         slot2.setBuilding(bb1);
 
         Worker worker=new Worker("abc");
+        Color color=Color.ANSI_BRIGHT_CYAN;
+        worker.setColor(color);
         worker.setWorkerSlot(slot2);
 
         board.updateBuildingOnBoard(slot1);

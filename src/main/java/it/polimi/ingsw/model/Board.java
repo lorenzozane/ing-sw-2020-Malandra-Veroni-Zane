@@ -286,16 +286,16 @@ public class Board {
 
         switch (Arrays.toString(value)) {
             case "[0, 0, 0, 0]":
-                cube[5][0] = "        / \\         ";
-                cube[4][0] = "        /|\\         ";
-                cube[3][0] = "         o          ";
+                cube[5][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[4][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
+                cube[3][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
 
             case "[1, 0, 0, 0]":
                 cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
-                cube[4][0] = "        / \\         ";
-                cube[3][0] = "        /|\\         ";
-                cube[2][0] = "         o          ";
+                cube[4][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[3][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
+                cube[2][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
 
             case "[1, 2, 0, 0]":
