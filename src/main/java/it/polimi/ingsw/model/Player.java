@@ -12,6 +12,7 @@ public class Player {
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
+    private boolean gui = false;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -54,8 +55,15 @@ public class Player {
         return playerColor;
     }
 
-    protected void setPlayerColor(Color playerColor) {
-        this.playerColor = playerColor;
+    public void setPlayerColor(String playerColor) {
+        if(playerColor.equals("purple"))
+            this.playerColor = Color.ANSI_PURPLE;
+        else if (playerColor.equals("cyan"))
+            this.playerColor = Color.ANSI_BRIGHT_CYAN;
+        else if(playerColor.equals("blue"))
+            this.playerColor = Color.ANSI_BLUE;
+        else
+            throw new IllegalArgumentException();
 
         for (Worker worker : workers)
             worker.setColor(this.playerColor);
@@ -78,10 +86,11 @@ public class Player {
         this.playerCard = playerCard;
     }
 
-//    public void setupGame(){
-//        if (isFirstPlayer == true){
-//            Deck deck = new Deck();
-//        }
-//        return;
-//    }
+    public void setGui(String s){
+        if(s.equals("GUI")){
+            this.gui = true;
+        }
+    }
+
+
 }

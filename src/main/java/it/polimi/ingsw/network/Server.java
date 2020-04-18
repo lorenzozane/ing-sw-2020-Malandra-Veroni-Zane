@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -11,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,29 +39,27 @@ public class Server {
     public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException {
         waitingConnection.put(nickname, c);
         if (waitingConnection.size() == 1) {
-            //devo far scegliere il numero dei giocatori della partita
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             Connection c1 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(Message.chooseNoPlayer);
             Scanner in = new Scanner(c1.getSocket().getInputStream());
-            String read = in.nextLine();
-
-            int numberP = Integer.parseInt(read);
             Game game = Game.getInstance();
-            Game.getInstance().setPlayerNumber(numberP);
+
             Player p1 = new Player(nickname);
             Game.getInstance().addPlayer(p1);
 
+            c1.asyncSend(Message.chooseCLIorGUI);
+            String read = in.nextLine();
+            Game.getInstance().getPlayerList().get(0).setGui(read);
+
+            c1.asyncSend(Message.chooseNoPlayer);
+            Game.getInstance().setPlayerNumber(Integer.parseInt(in.nextLine()));
+
+            c1.asyncSend(Message.chooseColor + Game.getInstance().getAvailableColor());
+            Game.getInstance().getPlayerList().get(0).setPlayerColor(in.nextLine());
+
             c1.asyncSend(Message.birthday);
-            read = in.nextLine();
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date dateB = dateFormat.parse(read);
-            Game.getInstance().getPlayerList().get(0).setBirthday(dateB);
-
-            c1.asyncSend(Message.birthday);
-
-
-
+            Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
 
         }
 
