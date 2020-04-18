@@ -21,19 +21,21 @@ public class BoardTest {
         slot1.setBuilding(b3);
         slot1.setBuilding(b4);
 
-        Position posizione2 = new Position(0,1);
+        Position posizione2 = new Position(0,0);
         Slot slot2 = new Slot(posizione2);
         Building bb1 = new Building(Building.BuildingLevel.LEVEL1);
         Building bb2= new Building(Building.BuildingLevel.LEVEL2);
         Building bb4= new Building(Building.BuildingLevel.DOME);
 
         slot2.setBuilding(bb1);
-        slot2.setBuilding(bb2);
-        slot2.setBuilding(bb4);
 
-        board.printGameBoard();
+        Worker worker=new Worker("abc");
+        worker.setWorkerSlot(slot2);
+
         board.updateBuildingOnBoard(slot1);
         board.updateBuildingOnBoard(slot2);
+        board.putWorkerOnBoard(worker.getWorkerSlot());
+
         System.out.println();
         System.out.println();
         System.out.println();

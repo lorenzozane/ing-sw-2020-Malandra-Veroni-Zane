@@ -261,6 +261,67 @@ public class Board {
         }
     }
 
+
+    public void removeWorkerOnBoard(Slot slotBeforeMove){
+
+    }
+
+    public void putWorkerOnBoard(Slot slotMove){
+        int[] value = new int[slotMove.getBuildingsStatus().size()];
+        String[][] cube = {{"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "}};
+
+        for (int i = 0; i < slotMove.getBuildingsStatus().size(); i++) {
+            if (slotMove.getBuildingsStatus().get(i) == null) {
+                value[i] = 0;
+            } else
+                value[i] = slotMove.getBuildingsStatus().get(i).getLevelValue();
+        }
+
+
+
+        switch (Arrays.toString(value)) {
+            case "[0, 0, 0, 0]":
+                cube[5][0] = "        / \\         ";
+                cube[4][0] = "        /|\\         ";
+                cube[3][0] = "         o          ";
+                break;
+
+            case "[1, 0, 0, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0] = "        / \\         ";
+                cube[3][0] = "        /|\\         ";
+                cube[2][0] = "         o          ";
+                break;
+
+            case "[1, 2, 0, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[3][0] = "        / \\         ";
+                cube[2][0] = "        /|\\         ";
+                cube[1][0] = "         o          ";
+                break;
+        }
+
+
+        int[] position = new int[2];
+        position[0] = slotMove.getSlotPosition().getCoordinateX();
+        position[1] = slotMove.getSlotPosition().getCoordinateY();
+        switch (Arrays.toString(position)) {
+            case "[0, 0]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+1][1] = cube[i][0];
+                }
+                break;
+
+        }
+
+    }
+
     public void printGameBoard() {
         for (int i = 0; i < this.gameBoard.length; i++) {
             for (int j = 0; j < this.gameBoard[i].length; j++) {
