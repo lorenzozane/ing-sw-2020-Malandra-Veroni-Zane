@@ -318,6 +318,151 @@ public class Board {
                 }
                 break;
 
+            case "[0, 1]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+1][3] = cube[i][0];
+                }
+                break;
+
+            case "[0, 2]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+1][5] = cube[i][0];
+                }
+                break;
+
+            case "[0, 3]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+1][7] = cube[i][0];
+                }
+                break;
+
+            case "[0, 4]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+1][9] = cube[i][0];
+                }
+                break;
+
+            case "[1, 0]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+8][1] = cube[i][0];
+                }
+                break;
+
+            case "[1, 1]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+8][3] = cube[i][0];
+                }
+                break;
+
+            case "[1, 2]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+8][5] = cube[i][0];
+                }
+                break;
+
+            case "[1, 3]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+8][7] = cube[i][0];
+                }
+                break;
+
+            case "[1, 4]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+8][9] = cube[i][0];
+                }
+                break;
+
+            case "[2, 0]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+15][1] = cube[i][0];
+                }
+                break;
+
+            case "[2, 1]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+15][3] = cube[i][0];
+                }
+                break;
+
+            case "[2, 2]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+15][5] = cube[i][0];
+                }
+                break;
+
+            case "[2, 3]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+15][7] = cube[i][0];
+                }
+                break;
+
+            case "[2, 4]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+15][9] = cube[i][0];
+                }
+                break;
+
+            case "[3, 0]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+22][1] = cube[i][0];
+                }
+                break;
+
+            case "[3, 1]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+22][3] = cube[i][0];
+                }
+                break;
+
+            case "[3, 2]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+22][5] = cube[i][0];
+                }
+                break;
+
+            case "[3, 3]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+22][7] = cube[i][0];
+                }
+                break;
+
+            case "[3, 4]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+22][9] = cube[i][0];
+                }
+                break;
+
+            case "[4, 0]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+29][1] = cube[i][0];
+                }
+                break;
+
+            case "[4, 1]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+29][3] = cube[i][0];
+                }
+                break;
+
+            case "[4, 2]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+29][5] = cube[i][0];
+                }
+                break;
+
+            case "[4, 3]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+29][7] = cube[i][0];
+                }
+                break;
+
+            case "[4, 4]":
+                for (int i = 0; i < 6; i++) {
+                    gameBoard[i+29][9] = cube[i][0];
+                }
+                break;
+
+
         }
 
     }
