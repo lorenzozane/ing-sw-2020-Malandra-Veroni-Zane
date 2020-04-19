@@ -140,6 +140,8 @@ public class Board implements Cloneable {
                 cube[3][0] = Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
+            default:
+                throw new IllegalArgumentException();
 
         }
 
@@ -187,6 +189,9 @@ public class Board implements Cloneable {
                 cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
                 cube[3][0] = "    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
                 break;
+
+            default:
+                throw new IllegalArgumentException();
         }
 
 
@@ -249,6 +254,9 @@ public class Board implements Cloneable {
                 cube[1][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
                 cube[0][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
+
+            default:
+                throw new IllegalArgumentException();
         }
 
 

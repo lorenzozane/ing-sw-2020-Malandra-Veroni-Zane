@@ -59,7 +59,7 @@ public class Server {
 
             c1.asyncSend(Message.birthday);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
+            //Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
 
         }
 
