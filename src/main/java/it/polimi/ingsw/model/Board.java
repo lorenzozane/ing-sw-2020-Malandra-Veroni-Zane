@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Board implements Cloneable {
 
@@ -100,7 +99,7 @@ public class Board implements Cloneable {
             if (slotBuilding.getBuildingsStatus().get(i) == null) {
                 value[i] = 0;
             } else
-                value[i] = slotBuilding.getBuildingsStatus().get(i).getLevelValue();
+                value[i] = slotBuilding.getBuildingsStatus().get(i).getLevelAsInt();
         }
 
         switch (Arrays.toString(value)) {
@@ -170,7 +169,7 @@ public class Board implements Cloneable {
             if (slotBeforeMove.getBuildingsStatus().get(i) == null) {
                 value[i] = 0;
             } else
-                value[i] = slotBeforeMove.getBuildingsStatus().get(i).getLevelValue();
+                value[i] = slotBeforeMove.getBuildingsStatus().get(i).getLevelAsInt();
         }
 
 
@@ -219,7 +218,7 @@ public class Board implements Cloneable {
             if (slotMove.getBuildingsStatus().get(i) == null) {
                 value[i] = 0;
             } else
-                value[i] = slotMove.getBuildingsStatus().get(i).getLevelValue();
+                value[i] = slotMove.getBuildingsStatus().get(i).getLevelAsInt();
         }
 
 

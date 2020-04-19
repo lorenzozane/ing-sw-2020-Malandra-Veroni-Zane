@@ -24,7 +24,7 @@ public class Turn {
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
-    public Turn(){
+    protected Turn(){
 
     }
 
@@ -34,6 +34,10 @@ public class Turn {
 
     public ArrayList<Worker> getCurrentPlayerWorkers(){
         return currentPlayer.getWorkers();
+    }
+
+    public TurnSequence getCurrentPlayerTurnSequence(){
+        return turnSequenceMap.get(currentPlayer);
     }
 
     /**

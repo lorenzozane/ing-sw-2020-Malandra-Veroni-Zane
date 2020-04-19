@@ -9,7 +9,8 @@ public class WorkerTest {
 
   @Test
   public void setWorkerSlot() {
-    Worker worker = new Worker("test");
+    Player player = new Player("test");
+    Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
     Position positionAfter = new Position(1,1);
     Slot slotBefore = new Slot(positionBefore);
@@ -26,7 +27,8 @@ public class WorkerTest {
 
   @Test
   public void move() {
-    Worker worker = new Worker("test");
+    Player player = new Player("test");
+    Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
     Position positionAfter = new Position(1,1);
     Slot slotBefore = new Slot(positionBefore);
@@ -43,12 +45,13 @@ public class WorkerTest {
 
   @Test
   public void buildConstruction() {
-    Worker worker = new Worker("test");
+    Player player = new Player("test");
+    Worker worker = new Worker(player, 1);
     Position buildPosition = new Position(0,0);
     Slot buildingInSlot = new Slot(buildPosition);
     Building buildingNew = new Building(BuildingLevel.LEVEL1);
 
-    worker.buildConstruction(buildingInSlot, BuildingLevel.LEVEL1);
+    worker.build(buildingInSlot);
 
     //assertEquals(buildingNew.getLevel(), buildingInSlot.getBuildingStatus()[1].getLevel());
 

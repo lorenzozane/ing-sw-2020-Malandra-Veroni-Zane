@@ -1,19 +1,21 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.TurnEvents.Actions.*;
+import it.polimi.ingsw.model.TurnEvents.*;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameManager implements Observer<PlayerMove> {
 
     private final Game game;
-    private Turn turn;
+    private final Turn turn;
+//    private final MoveVerifier moveVerifier = new MoveVerifier();
 
     public GameManager() {
         this.game = Game.getInstance();
-        turn = this.game.getTurn();
+        this.turn = this.game.getTurn();
     }
 
     protected synchronized void HandleMove(PlayerMove move) {
@@ -21,27 +23,38 @@ public class GameManager implements Observer<PlayerMove> {
             //WrongTurnMessage
             return;
         }
+        if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+            if (MoveVerifier.moveValidator(move))
+                performMove(move);
+            else
+                return; //MoveNotAllowedException
+        } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING)
+            if (MoveVerifier.buildValidator(move))
+                performBuilding(move);
+            else
+                return; //MoveNotAllowedException
 
         //TODO: Logica gestione mosse
     }
 
-    protected void initialCheck() {
+    protected ArrayList<Worker> initialCheckMovableWorker() {
+        ArrayList<Worker> movableWorkers = new ArrayList<>(2);
         for (Worker worker : turn.getCurrentPlayerWorkers()) {
-            Slot workerSlot = worker.getWorkerSlot();
-            ArrayList<Slot> slotsToVerify = game.getBoard().getAdjacentSlots(workerSlot);
+            boolean canMove = MoveVerifier.checkIfStuck(worker);
 
-            for (Slot slot : slotsToVerify){
-                //TODO: Logica check se può muoversi
-            }
+            if (canMove)
+                movableWorkers.add(worker);
         }
+
+        return movableWorkers;
     }
 
-    protected void performMove() {
-
+    protected void performMove(PlayerMove move) {
+        move.getMovedWorker().move(move.getTargetSlot());
     }
 
-    protected void performBuilding() {
-
+    protected void performBuilding(PlayerMove move) {
+        move.getMovedWorker().build(move.getTargetSlot());
     }
 
     protected void checkWinConditions() {

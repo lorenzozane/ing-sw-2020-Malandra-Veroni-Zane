@@ -5,12 +5,18 @@ import java.awt.*;
 
 public class Worker {
 
+    private final Player playerOwner;
     private final String idWorker;
     private Color color;
     private Slot workerSlot;      //ridondanza con slot su chi c'è dentro
 
-    public Worker(String idWorkerPlayer){
-        this.idWorker = idWorkerPlayer;
+    public Worker(Player playerOwner, int idWorkerInt){
+        this.playerOwner = playerOwner;
+        this.idWorker = playerOwner.getNickname() + "_" + idWorkerInt;
+    }
+
+    public Player getPlayerOwner(){
+        return playerOwner;
     }
 
     public String getIdWorker() {
@@ -42,19 +48,20 @@ public class Worker {
      *
      * @param moveHere New position
      */
-    protected void move(Slot moveHere){
+    public void move(Slot moveHere){
         setWorkerSlot(moveHere);
         //notify alla view
     }
 
+    //TODO: Test
     /**
      * Creation of a new building
      *
      * @param buildHere New construction position
-     * @param level New construction level
      */
-    protected void buildConstruction(Slot buildHere, BuildingLevel level){
-        Building newBuilding = new Building(level);
+    public void build(Slot buildHere){
+        BuildingLevel slotTopBuilding = buildHere.getConstructionTopLevel();
+        Building newBuilding = new Building(slotTopBuilding.getNextLevel());
         buildHere.setBuilding(newBuilding);
         //notify alla view
     }

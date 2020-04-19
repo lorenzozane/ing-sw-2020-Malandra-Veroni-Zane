@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.model.Building.*;
 import static it.polimi.ingsw.model.Building.BuildingProperty.*;
 
 public class Slot {
@@ -21,6 +22,16 @@ public class Slot {
 
     public int getConstructionHeight() {
         return constructionHeight;
+    }
+
+    public BuildingLevel getConstructionTopLevel() {
+        BuildingLevel topLevel = null;
+        for (Building building : buildingsStatus)
+            if (building != null)
+                topLevel = building.getLevel();
+
+        return topLevel;
+
     }
 
     public void setWorkerInSlot(Worker workerInSlot) {
@@ -48,8 +59,8 @@ public class Slot {
         }
     }
 
-    public ArrayList<Building.BuildingLevel> getBuildingsStatus() {   //Crea una copia del buildings status sotto forma di array di stringhe
-        ArrayList<Building.BuildingLevel> buildingLevelsCopy = new ArrayList<>(buildingsStatus.length);
+    public ArrayList<BuildingLevel> getBuildingsStatus() {   //Crea una copia del buildings status sotto forma di array di stringhe
+        ArrayList<BuildingLevel> buildingLevelsCopy = new ArrayList<>(buildingsStatus.length);
         for (int i = 0; i < buildingsStatus.length; i++)
             buildingLevelsCopy.add(buildingsStatus[i] != null ? buildingsStatus[i].getLevel() : null);
 

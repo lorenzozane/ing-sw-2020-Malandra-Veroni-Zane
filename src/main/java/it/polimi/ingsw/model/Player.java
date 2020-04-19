@@ -19,7 +19,7 @@ public class Player {
         this.isPlaying = true;
 
         for (int i = 0; i < 2; i++) {
-            workers.add(new Worker(nickname + "_" + (i + 1)));
+            workers.add(new Worker(this, (i + 1)));
         }
     }
 

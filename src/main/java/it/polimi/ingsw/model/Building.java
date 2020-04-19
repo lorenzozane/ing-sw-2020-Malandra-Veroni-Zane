@@ -17,8 +17,9 @@ public class Building {
         LEVEL3(3, BuildingProperty.CAN_BUILD_ON_IT, BuildingProperty.IS_SCALABLE),
         DOME(4);
 
-        private int levelValue;
+        private final int levelValue;
         private final EnumSet<BuildingProperty> buildingsProperties;
+        private static BuildingLevel[] buildingLevelValues = values();
 
         /**
          * Constructor of the enum BuildingsLevel
@@ -26,7 +27,7 @@ public class Building {
          * @param levelValue Height level related to the building
          * @param buildingsProperties Properties assignable to buildings
          */
-        private BuildingLevel(int levelValue, BuildingProperty... buildingsProperties){
+        BuildingLevel(int levelValue, BuildingProperty... buildingsProperties){
             this.levelValue = levelValue;
             this.buildingsProperties = buildingsProperties.length == 0 ? EnumSet.noneOf(BuildingProperty.class) : EnumSet.copyOf(Arrays.asList(buildingsProperties));
         }
@@ -41,12 +42,17 @@ public class Building {
             return buildingsProperties.contains(property);
         }
 
-        public int getLevelValue(){
+        public int getLevelAsInt(){
             return levelValue;
+        }
+
+        //TODO: Test
+        public BuildingLevel getNextLevel(){
+            return this.ordinal() < buildingLevelValues.length ? buildingLevelValues[(this.ordinal() + 1)] : null;
         }
     }
 
-    private BuildingLevel level;
+    private final BuildingLevel level;
 
     /**
      * Creates a new Building with the related height level
