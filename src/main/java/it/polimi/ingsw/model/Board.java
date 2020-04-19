@@ -140,6 +140,8 @@ public class Board implements Cloneable {
                 cube[3][0] = Color.ANSI_BRIGHT_BLUE + "     __________     " + Color.RESET;
                 break;
 
+            default:
+                throw new IllegalArgumentException();
 
         }
 
@@ -156,9 +158,55 @@ public class Board implements Cloneable {
 
     public void removeWorkerOnBoard(Slot slotBeforeMove){
 
+        int[] value = new int[slotBeforeMove.getBuildingsStatus().size()];
+        String[][] cube = {{"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "},
+                {"                    "}};
+
+        for (int i = 0; i < slotBeforeMove.getBuildingsStatus().size(); i++) {
+            if (slotBeforeMove.getBuildingsStatus().get(i) == null) {
+                value[i] = 0;
+            } else
+                value[i] = slotBeforeMove.getBuildingsStatus().get(i).getLevelValue();
+        }
+
+
+        switch (Arrays.toString(value)) {
+            case "[1, 0, 0, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                break;
+
+            case "[1, 2, 0, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                break;
+
+            case "[1, 2, 3, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[3][0] = "    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                break;
+
+            default:
+                throw new IllegalArgumentException();
+        }
+
+
+        int[] position = new int[2];
+        position[0] = slotBeforeMove.getSlotPosition().getCoordinateX();
+        position[1] = slotBeforeMove.getSlotPosition().getCoordinateY();
+
+        for (int i=0; i<6; i++){
+            gameBoard[i+(position[0]*7)+1][(position[1]*2)+1]=cube[i][0];
+        }
+
     }
 
     public void putWorkerOnBoard(Slot slotMove){
+
         int[] value = new int[slotMove.getBuildingsStatus().size()];
         String[][] cube = {{"                    "},
                 {"                    "},
@@ -193,10 +241,22 @@ public class Board implements Cloneable {
             case "[1, 2, 0, 0]":
                 cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
                 cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
-                cube[3][0] = "        / \\         ";
-                cube[2][0] = "        /|\\         ";
-                cube[1][0] = "         o          ";
+                cube[3][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[2][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
+                cube[1][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
+
+            case "[1, 2, 3, 0]":
+                cube[5][0] = "∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏";
+                cube[4][0] = "  ∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏∏  ";
+                cube[3][0] = "    ∏∏∏∏∏∏∏∏∏∏∏∏    ";
+                cube[2][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[1][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
+                cube[0][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
+                break;
+
+            default:
+                throw new IllegalArgumentException();
         }
 
 

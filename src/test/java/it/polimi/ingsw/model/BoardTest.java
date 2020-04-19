@@ -28,15 +28,32 @@ public class BoardTest {
         Building bb4= new Building(Building.BuildingLevel.DOME);
 
         slot2.setBuilding(bb1);
-
-        Worker worker=new Worker("abc");
-        Color color=Color.ANSI_BRIGHT_CYAN;
-        worker.setColor(color);
-        worker.setWorkerSlot(slot2);
+        slot2.setBuilding(bb2);
 
         board.updateBuildingOnBoard(slot1);
         board.updateBuildingOnBoard(slot2);
-        board.putWorkerOnBoard(worker.getWorkerSlot());
+
+        board.printGameBoard();
+
+        Worker worker1=new Worker("abc");
+        Color color=Color.ANSI_YELLOW;
+        worker1.setColor(color);
+        worker1.setWorkerSlot(slot2);
+
+
+        board.putWorkerOnBoard(worker1.getWorkerSlot());
+
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        board.printGameBoard();
+
+        board.removeWorkerOnBoard(worker1.getWorkerSlot());
 
         System.out.println();
         System.out.println();
