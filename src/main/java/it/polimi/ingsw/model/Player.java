@@ -47,7 +47,7 @@ public class Player {
         return birthday;
     }
 
-    protected void setBirthday(Date birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -88,5 +88,7 @@ public class Player {
         }
     }
 
-
+    public ArrayList<Worker> getWorkers() {
+        return workers;
+    }
 }
