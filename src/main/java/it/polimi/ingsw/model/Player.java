@@ -8,19 +8,18 @@ public class Player {
     private final String nickname;
     private Date birthday;
     private Color playerColor;
-    private ArrayList<Worker> workers;
+    private final ArrayList<Worker> workers = new ArrayList<>(2);
     private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
+    private boolean gui = false;
 
     public Player(String nickname) {
         this.nickname = nickname;
         this.isPlaying = true;
-        Game game = Game.getInstance();
-        game.setPlayerNumber(game.getPlayerNumber() + 1);
 
         for (int i = 0; i < 2; i++) {
-            workers.add(new Worker(nickname + "_" + i));
+            workers.add(new Worker(nickname + "_" + (i+1)));
         }
     }
 
@@ -32,11 +31,11 @@ public class Player {
         return isPlaying;
     }
 
-    public void setPlaying(boolean playing) {
+    protected void setPlaying(boolean playing) {
         isPlaying = playing;
     }
 
-    public void setIsFirstPlayer(){
+    protected void setIsFirstPlayer(){
         this.isFirstPlayer = true;
     }
 
@@ -48,7 +47,7 @@ public class Player {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    protected void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -56,30 +55,42 @@ public class Player {
         return playerColor;
     }
 
-    public void setPlayerColor(Color playerColor) {
-        this.playerColor = playerColor;
+    public void setPlayerColor(String playerColor) {
+        if(playerColor.equals("purple"))
+            this.playerColor = Color.ANSI_PURPLE;
+        else if (playerColor.equals("cyan"))
+            this.playerColor = Color.ANSI_BRIGHT_CYAN;
+        else if(playerColor.equals("blue"))
+            this.playerColor = Color.ANSI_BLUE;
+        else
+            throw new IllegalArgumentException();
 
         for (Worker worker : workers)
             worker.setColor(this.playerColor);
     }
 
-    public void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
+    protected void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
         if(workers.contains(worker))
             worker.setWorkerSlot(slot);
+    }
+
+    protected ArrayList<Worker> getWorkers(){
+        return workers;
     }
 
     public GodsCard getPlayerCard() {
         return playerCard;
     }
 
-    public void setPlayerCard(GodsCard playerCard) {
+    protected void setPlayerCard(GodsCard playerCard) {
         this.playerCard = playerCard;
     }
 
-//    public void setupGame(){
-//        if (isFirstPlayer == true){
-//            Deck deck = new Deck();
-//        }
-//        return;
-//    }
+    public void setGui(String s){
+        if(s.equals("GUI")){
+            this.gui = true;
+        }
+    }
+
+
 }

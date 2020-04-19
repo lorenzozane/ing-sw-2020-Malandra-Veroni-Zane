@@ -28,4 +28,11 @@ public class GodsCard implements Cloneable {
 
         return clonedCard;
     }
+
+    @Override
+    public String toString() {
+        return "God [name=" + cardName + ", description=" + cardDescription + "]";
+    }
+
+
 }

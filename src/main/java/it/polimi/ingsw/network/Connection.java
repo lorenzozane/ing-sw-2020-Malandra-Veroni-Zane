@@ -3,6 +3,8 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 
+import java.net.Socket;
+
 public interface Connection {
 
     void closeConnection();
@@ -11,5 +13,6 @@ public interface Connection {
 
     void asyncSend(Object message);
 
+    Socket getSocket();
 
 }

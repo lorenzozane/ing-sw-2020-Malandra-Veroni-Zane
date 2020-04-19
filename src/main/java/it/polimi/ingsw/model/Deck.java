@@ -210,4 +210,10 @@ public class Deck {
 
         return clonedChosenCards;
     }
+
+    public void printAllDeck(){
+        for (GodsCard godsCard : cardList) {
+            System.out.println(godsCard.toString());
+        }
+    }
 }

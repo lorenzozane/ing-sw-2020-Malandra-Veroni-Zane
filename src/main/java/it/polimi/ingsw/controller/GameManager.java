@@ -1,11 +1,10 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerMove;
-import it.polimi.ingsw.model.Turn;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.Actions.*;
 import it.polimi.ingsw.observer.Observer;
+
+import java.util.ArrayList;
 
 public class GameManager implements Observer<PlayerMove> {
 
@@ -27,7 +26,14 @@ public class GameManager implements Observer<PlayerMove> {
     }
 
     protected void initialCheck() {
+        for (Worker worker : turn.getCurrentPlayerWorkers()) {
+            Slot workerSlot = worker.getWorkerSlot();
+            ArrayList<Slot> slotsToVerify = game.getBoard().getAdjacentSlots(workerSlot);
 
+            for (Slot slot : slotsToVerify){
+                //TODO: Logica check se può muoversi
+            }
+        }
     }
 
     protected void performMove() {

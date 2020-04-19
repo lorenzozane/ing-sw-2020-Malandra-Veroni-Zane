@@ -1,12 +1,18 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,7 +27,7 @@ public class Server {
     //Deregister connection
     public synchronized void deregisterConnection(Connection c) {
         Connection opponent = playingConnection.get(c);
-        if(opponent != null) {
+        if (opponent != null) {
             opponent.closeConnection();
         }
         playingConnection.remove(c);
@@ -30,18 +36,30 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby(Connection c, String name){
-        waitingConnection.put(name, c);
-        if(waitingConnection.size()==1){
-            //devo far scegliere il numero dei giocatori della partita
+    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException {
+        waitingConnection.put(nickname, c);
+        if (waitingConnection.size() == 1) {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             Connection c1 = waitingConnection.get(keys.get(0));
-            c1.asyncSend(Message.chooseNoPlayer);
-
-            //int number = ;
+            Scanner in = new Scanner(c1.getSocket().getInputStream());
             Game game = Game.getInstance();
-            //Game.getInstance().setPlayerNumber(number);
 
+            Player p1 = new Player(nickname);
+            Game.getInstance().addPlayer(p1);
+
+            c1.asyncSend(Message.chooseCLIorGUI);
+            String read = in.nextLine();
+            Game.getInstance().getPlayerList().get(0).setGui(read);
+
+            c1.asyncSend(Message.chooseNoPlayer);
+            Game.getInstance().setPlayerNumber(Integer.parseInt(in.nextLine()));
+
+            c1.asyncSend(Message.chooseColor + Game.getInstance().getAvailableColor());
+            Game.getInstance().getPlayerList().get(0).setPlayerColor(in.nextLine());
+
+            c1.asyncSend(Message.birthday);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
 
         }
 
@@ -51,8 +69,8 @@ public class Server {
         this.serverSocket = new ServerSocket(PORT);
     }
 
-    public void run(){
-        while(true){
+    public void run() {
+        while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
                 SocketConnection socketConnection = new SocketConnection(newSocket, this);

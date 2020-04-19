@@ -5,6 +5,7 @@ import it.polimi.ingsw.observer.Observable;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.ParseException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -71,11 +72,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");
+            send(Message.chooseNickname);
             String read = in.nextLine();
             nickname = read;
             while(!nicknameChecker(nickname)){
-                send("Nickname already chosen, try again\n");
+                send(Message.chooseNicknameAgain);
                 read = in.nextLine();
                 nickname = read;
                 }
@@ -84,7 +85,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException e) {
+        } catch (IOException | NoSuchElementException | ParseException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             close();
@@ -93,6 +94,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
     private boolean nicknameChecker(String nickname){
         return !server.getWaitingConnection().containsValue(nickname);
+    }
+
+    @Override
+    public Socket getSocket(){
+        return this.socket;
     }
 
 }

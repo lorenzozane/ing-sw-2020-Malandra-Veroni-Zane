@@ -1,8 +1,46 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Board {
+public class Board implements Cloneable {
+
+    private static final int BOARD_DIMENSION = 5;
+
+    private Slot[][] gameBoardSlots = new Slot[BOARD_DIMENSION][BOARD_DIMENSION];
+
+    public Board(){
+        initializeBoard();
+    }
+
+    private void initializeBoard(){
+        for (int i = 0; i < BOARD_DIMENSION; i++)
+            for (int j = 0; j < BOARD_DIMENSION; j++)
+                gameBoardSlots[i][j] = new Slot(new Position(i, j));
+    }
+
+    public ArrayList<Slot> getAdjacentSlots(Slot centerSlot){
+        ArrayList<Slot> adjacentSlots = new ArrayList<>(8);
+        int centerSlotX = centerSlot.getSlotPosition().getCoordinateX();
+        int centerSlotY = centerSlot.getSlotPosition().getCoordinateY();
+
+        for (int x = (centerSlotX > 0 ? -1 : 0); x <= (centerSlotX < BOARD_DIMENSION ? 1 : 0); x++)
+            for (int y = (centerSlotY > 0 ? -1 : 0); y <= (centerSlotY < BOARD_DIMENSION ? 1 : 0); y++)
+                if (x != 0 || y != 0)
+                    adjacentSlots.add(gameBoardSlots[centerSlotX + x][centerSlotY + y]);
+
+        return adjacentSlots;
+    }
+
+    @Override
+    protected final Board clone() {
+        final Board result = new Board();
+        for (int i = 0; i < BOARD_DIMENSION; i++)
+            result.gameBoardSlots[i] = gameBoardSlots[i].clone();   //TODO: Check
+
+        return result;
+    }
 
     private String[][] gameBoard = {{" " , Color.ANSI_BRIGHT_BLUE + "         1          " + Color.RESET , " ", Color.ANSI_BRIGHT_BLUE + "          2         " + Color.RESET , " " , Color.ANSI_BRIGHT_BLUE + "         3          " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "          4         " + Color.RESET , " " , Color.ANSI_BRIGHT_BLUE + "          5         " + Color.RESET},
             {" " ,"                    ", Color.ANSI_GREEN + "|" + Color.RESET, "                    ", Color.ANSI_GREEN + "|" + Color.RESET, "                    ", Color.ANSI_GREEN + "|" + Color.RESET, "                    ", Color.ANSI_GREEN + "|" + Color.RESET, "                    "},

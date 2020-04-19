@@ -1,25 +1,33 @@
 package it.polimi.ingsw.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class Game {
 
     private static Game instance;   //Singleton pattern
-    private final Turn turn;
+    private final Turn turn = new Turn();
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber;
-    private Board board;
+    private Board board = new Board();
     private Deck godsDeck;
     private Player firstPlayer;
+    private Player challengerPlayer;
+    private ArrayList<Color> colorList = new ArrayList<Color>(){{ add(Color.ANSI_BRIGHT_CYAN); add(Color.ANSI_PURPLE); add(Color.ANSI_BLUE);}};
 
     private Game() {
-        this.turn = new Turn();
+
     }
 
     public Turn getTurn(){
         return turn;
+    }
+
+    public Board getBoard(){
+        return board.clone();
     }
 
     public static Game getInstance() {
@@ -36,10 +44,24 @@ public class Game {
         this.playerNumber = playerNumber;
     }
 
+    public String getAvailableColor(){
+        StringBuilder temp = new StringBuilder();
+        for(Color color : colorList){
+            temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET);
+        }
+        return String.valueOf(temp);
+    }
+
+    public void removeColor(Color delete){
+        colorList.remove(delete);
+    }
+
+
     public void addPlayer(Player newPlayer) {
         if (checkPlayer(newPlayer)) {
             playerList.add(newPlayer);
             playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
+            challengerPlayer = playerList.get(0);
         }
     }
 
@@ -61,12 +83,25 @@ public class Game {
 
     public Player getChallengerPlayer() {
         return playerList.get(0);
-
     }
 
-    public void challenge() {
+    public void challenge() throws IOException {
+        //mostrare alla view del challenger tutti gli dei
+        godsDeck = new Deck();
+        challengerPlayer = getChallengerPlayer();
+        godsDeck.printAllDeck();
+
+        //TODO: Check: ??
+        System.out.println("Choose gods");
+        //Scanner in = new Scanner(System.in);
+        String godsChooses = "apollo, pan";
+        String[] split = godsChooses.split("\\s*,\\s*");
+        godsDeck.chooseCards(split[0], split[1]);
+
+
     }
 
 
 }
+
 
