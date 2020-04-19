@@ -33,7 +33,6 @@ public class BoardTest {
         board.updateBuildingOnBoard(slot1);
         board.updateBuildingOnBoard(slot2);
 
-        board.printGameBoard();
 
         Worker worker1=new Worker("abc");
         Color color=Color.ANSI_YELLOW;
