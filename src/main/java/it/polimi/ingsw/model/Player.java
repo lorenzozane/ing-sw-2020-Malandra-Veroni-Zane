@@ -19,7 +19,7 @@ public class Player {
         this.isPlaying = true;
 
         for (int i = 0; i < 2; i++) {
-            workers.add(new Worker(nickname + "_" + (i + 1)));
+            workers.add(new Worker(nickname + "_" + (i+1)));
         }
     }
 
@@ -31,15 +31,15 @@ public class Player {
         return isPlaying;
     }
 
-    public void setPlaying(boolean playing) {
+    protected void setPlaying(boolean playing) {
         isPlaying = playing;
     }
 
-    public void setIsFirstPlayer() {
+    protected void setIsFirstPlayer(){
         this.isFirstPlayer = true;
     }
 
-    public boolean getIsFirstPlayer() {
+    public boolean getIsFirstPlayer(){
         return isFirstPlayer;
     }
 
@@ -47,7 +47,7 @@ public class Player {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    protected void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -56,29 +56,21 @@ public class Player {
     }
 
     public void setPlayerColor(String playerColor) {
-        switch (playerColor) {
-            case "purple":
-                this.playerColor = Color.ANSI_PURPLE;
-                Game.getInstance().removeColor(Color.ANSI_PURPLE);
-                break;
-            case "cyan":
-                this.playerColor = Color.ANSI_BRIGHT_CYAN;
-                Game.getInstance().removeColor(Color.ANSI_BRIGHT_CYAN);
-                break;
-            case "blue":
-                this.playerColor = Color.ANSI_BLUE;
-                Game.getInstance().removeColor(Color.ANSI_BLUE);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+        if(playerColor.equals("purple"))
+            this.playerColor = Color.ANSI_PURPLE;
+        else if (playerColor.equals("cyan"))
+            this.playerColor = Color.ANSI_BRIGHT_CYAN;
+        else if(playerColor.equals("blue"))
+            this.playerColor = Color.ANSI_BLUE;
+        else
+            throw new IllegalArgumentException();
 
         for (Worker worker : workers)
             worker.setColor(this.playerColor);
     }
 
-    public void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError {     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
-        if (workers.contains(worker))
+    protected void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError{     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
+        if(workers.contains(worker))
             worker.setWorkerSlot(slot);
     }
 
@@ -90,8 +82,8 @@ public class Player {
         this.playerCard = playerCard;
     }
 
-    public void setGui(String s) {
-        if (s.equals("GUI")) {
+    public void setGui(String s){
+        if(s.equals("GUI")){
             this.gui = true;
         }
     }

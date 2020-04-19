@@ -22,12 +22,18 @@ public class Turn {
     protected static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
     //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
 
+    //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
+
     public Turn(){
 
     }
 
     public boolean isPlayerTurn(Player player){
         return player.equals(currentPlayer);
+    }
+
+    public ArrayList<Worker> getCurrentPlayerWorkers(){
+        return currentPlayer.getWorkers();
     }
 
     /**

@@ -25,11 +25,11 @@ public class Worker {
         return workerSlot;
     }
 
-    public void setColor(Color color) {
+    protected void setColor(Color color) {
         this.color = color;
     }
 
-    public void setWorkerSlot(Slot workerSlot) {
+    protected void setWorkerSlot(Slot workerSlot) {
         if (this.workerSlot != null)
             this.workerSlot.setWorkerInSlot(null);
         this.workerSlot = workerSlot;
@@ -42,7 +42,7 @@ public class Worker {
      *
      * @param moveHere New position
      */
-    public void move(Slot moveHere){
+    protected void move(Slot moveHere){
         setWorkerSlot(moveHere);
         //notify alla view
     }
@@ -53,7 +53,7 @@ public class Worker {
      * @param buildHere New construction position
      * @param level New construction level
      */
-    public void buildConstruction(Slot buildHere, BuildingLevel level){
+    protected void buildConstruction(Slot buildHere, BuildingLevel level){
         Building newBuilding = new Building(level);
         buildHere.setBuilding(newBuilding);
         //notify alla view
