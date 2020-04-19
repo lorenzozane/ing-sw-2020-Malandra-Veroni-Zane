@@ -24,11 +24,11 @@ public enum Color {
 
     public String getColorAsString(Color color){
         if(color.getEscape().equals(ANSI_PURPLE.getEscape()))
-            return "purple";
+            return "PURPLE";
         else if (color.getEscape().equals(ANSI_BRIGHT_CYAN.getEscape()))
-            return "cyan";
+            return "CYAN";
         else if(color.getEscape().equals(ANSI_BLUE.getEscape()))
-            return "blue";
+            return "BLUE";
         else
             throw new IllegalArgumentException();
     }

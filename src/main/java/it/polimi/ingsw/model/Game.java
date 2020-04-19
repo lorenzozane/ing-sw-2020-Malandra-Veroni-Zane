@@ -43,8 +43,9 @@ public class Game {
     public String getAvailableColor(){
         StringBuilder temp = new StringBuilder();
         for(Color color : colorList){
-            temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET);
+            temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET).append(" or");
         }
+        temp.replace(temp.length()-2, temp.length(), "");
         return String.valueOf(temp);
     }
 
@@ -52,20 +53,21 @@ public class Game {
         colorList.remove(delete);
     }
 
-
     public void addPlayer(Player newPlayer) {
         if (checkPlayer(newPlayer)) {
             playerList.add(newPlayer);
-            playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
-            challengerPlayer = playerList.get(0);
         }
     }
 
     private boolean checkPlayer(Player newPlayer) {
         if (!playerList.isEmpty())
-            if (playerList.contains(newPlayer))
-                return false;
+            return !playerList.contains(newPlayer);
         return true;
+    }
+
+    public void setYoungestPlayer(){
+        this.playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
+        this.challengerPlayer = playerList.get(0);
     }
 
     public void removePlayer(final Player playerToDelete) {
@@ -83,6 +85,7 @@ public class Game {
 
     public void challenge() throws IOException {
         //mostrare alla view del challenger tutti gli dei
+        setYoungestPlayer();
         godsDeck = new Deck();
         challengerPlayer = getChallengerPlayer();
         godsDeck.printAllDeck();

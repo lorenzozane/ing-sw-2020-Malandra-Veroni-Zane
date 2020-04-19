@@ -7,5 +7,7 @@ public class Message {
     public static String birthday = "When is your birthday (dd/MM/yyyy)";
     public static String chooseCLIorGUI = "Choose CLI or GUI interface";
     public  static String chooseColor = "Choose a color for your worker";
+    public static String wait = "Waiting for the other players";
+    public static String gameLoading = "All players are ready, the game will start soon...";
 
 }
