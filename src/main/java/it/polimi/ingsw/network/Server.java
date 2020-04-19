@@ -60,7 +60,7 @@ public class Server {
 
             c1.asyncSend(Message.birthday);
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            //Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
+            Game.getInstance().getPlayerList().get(0).setBirthday(dateFormat.parse(in.nextLine()));
 
             c1.asyncSend(Message.wait);
         }
@@ -96,9 +96,49 @@ public class Server {
                 //waitingConnection.clear();
 
             }
-
+            else
+                c2.asyncSend(Message.wait);
 
         }
+        else if (waitingConnection.size() == 3){
+            Connection c3 = waitingConnection.get(nickname);
+            Scanner in = new Scanner(c3.getSocket().getInputStream());
+
+            Player p3 = new Player(nickname);
+            Game.getInstance().addPlayer(p3);
+
+            //TODO: controlli sull'input
+
+            c3.asyncSend(Message.chooseCLIorGUI);
+            String read = in.nextLine();
+            Game.getInstance().getPlayerList().get(2).setGui(read);
+
+            c3.asyncSend(Message.chooseColor + Game.getInstance().getAvailableColor());
+            Game.getInstance().getPlayerList().get(2).setPlayerColor(in.nextLine());
+
+            c3.asyncSend(Message.birthday);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Game.getInstance().getPlayerList().get(2).setBirthday(dateFormat.parse(in.nextLine()));
+
+            if(Game.getInstance().getPlayerNumber() == 2){
+                Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
+                Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
+                c1.asyncSend(Message.gameLoading);
+                c2.asyncSend(Message.gameLoading);
+                c3.asyncSend(Message.gameLoading);
+
+                //TODO: fare challenge e far partire il gioco
+                //Game.getInstance().challenge();
+                //playingConnection.put(c1, c2);
+                //playingConnection.put(c2, c1);
+                //waitingConnection.clear();
+
+            }
+            else
+                throw new IllegalArgumentException();
+        }
+        else
+            throw new IllegalArgumentException();
 
     }
 
