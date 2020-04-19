@@ -54,7 +54,8 @@ public class Game {
     }
 
     public void removeColor(Color delete){
-        colorList.remove(delete);
+        if(!colorList.isEmpty())
+            colorList.remove(delete);
     }
 
     public void addPlayer(Player newPlayer) {

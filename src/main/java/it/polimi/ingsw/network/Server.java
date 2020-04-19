@@ -37,7 +37,6 @@ public class Server {
     //Wait for another player
     public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException {
         waitingConnection.put(nickname, c);
-        nicknameDatabase.add(nickname);
         if (waitingConnection.size() == 1) {
             Connection c1 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c1.getSocket().getInputStream());
@@ -120,7 +119,7 @@ public class Server {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Game.getInstance().getPlayerList().get(2).setBirthday(dateFormat.parse(in.nextLine()));
 
-            if(Game.getInstance().getPlayerNumber() == 2){
+            if(Game.getInstance().getPlayerNumber() == 3){
                 Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
                 Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
                 c1.asyncSend(Message.gameLoading);
@@ -158,7 +157,11 @@ public class Server {
         }
     }
 
-    public Map<String, Connection> getWaitingConnection() {
-        return waitingConnection;
+    public ArrayList<String> getNicknameDatabase() {
+        return nicknameDatabase;
+    }
+
+    public void addNickname(String nickname){
+        this.nicknameDatabase.add(nickname);
     }
 }

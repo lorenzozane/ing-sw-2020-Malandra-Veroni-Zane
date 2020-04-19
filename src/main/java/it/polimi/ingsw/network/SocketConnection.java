@@ -80,6 +80,8 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 nickname = read;
                 }
+            server.addNickname(nickname);
+            this.asyncSend(Message.lobby);
             server.lobby(this, nickname);
             while(isActive()){
                 read = in.nextLine();
@@ -93,7 +95,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
     }
 
     private boolean nicknameChecker(String nickname){
-        return !server.getWaitingConnection().containsValue(nickname);
+        return !server.getNicknameDatabase().contains(nickname);
     }
 
     @Override
