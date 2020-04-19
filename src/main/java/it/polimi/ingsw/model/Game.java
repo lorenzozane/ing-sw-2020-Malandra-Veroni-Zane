@@ -53,6 +53,10 @@ public class Game {
         return String.valueOf(temp);
     }
 
+    public ArrayList<Color> getColorList(){
+        return colorList;
+    }
+
     public void removeColor(Color delete){
         if(!colorList.isEmpty())
             colorList.remove(delete);

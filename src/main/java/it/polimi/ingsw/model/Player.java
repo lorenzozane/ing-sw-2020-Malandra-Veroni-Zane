@@ -91,7 +91,7 @@ public class Player {
     }
 
     public void setGui(String s) {
-        if (s.equals("GUI")) {
+        if (s.equals("gui")) {
             this.gui = true;
         }
     }
