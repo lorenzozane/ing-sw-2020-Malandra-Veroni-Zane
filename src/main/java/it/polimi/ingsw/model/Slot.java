@@ -7,7 +7,7 @@ import static it.polimi.ingsw.model.Building.BuildingProperty.*;
 
 public class Slot {
 
-    private Building[] buildingsStatus = new Building[4];
+    private final Building[] buildingsStatus = new Building[4];
     private Worker workerInSlot;
     private Position slotPosition;
     private int constructionHeight = 0;

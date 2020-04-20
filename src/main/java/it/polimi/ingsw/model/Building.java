@@ -19,7 +19,7 @@ public class Building {
 
         private final int levelValue;
         private final EnumSet<BuildingProperty> buildingsProperties;
-        private static BuildingLevel[] buildingLevelValues = values();
+        private static final BuildingLevel[] buildingLevelValues = values();
 
         /**
          * Constructor of the enum BuildingsLevel
@@ -50,7 +50,7 @@ public class Building {
         public static BuildingLevel getNextLevel(BuildingLevel buildingLevel){
             if (buildingLevel == null)
                 return BuildingLevel.LEVEL1;
-            return buildingLevel.ordinal() < buildingLevelValues.length ? buildingLevelValues[(buildingLevel.ordinal() + 1)] : null;
+            return buildingLevel.ordinal() < buildingLevelValues.length - 1 ? buildingLevelValues[(buildingLevel.ordinal() + 1)] : null;
         }
     }
 
