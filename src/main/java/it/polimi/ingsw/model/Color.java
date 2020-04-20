@@ -25,12 +25,12 @@ public enum Color {
     }
 
     public String getColorAsString(Color color){
-        if(color.getEscape().equals(ANSI_PURPLE.getEscape()))
-            return "PURPLE";
+        if(color.getEscape().equals(ANSI_RED.getEscape()))
+            return "RED";
         else if (color.getEscape().equals(ANSI_BRIGHT_CYAN.getEscape()))
             return "CYAN";
-        else if(color.getEscape().equals(ANSI_BLUE.getEscape()))
-            return "BLUE";
+        else if(color.getEscape().equals(ANSI_YELLOW.getEscape()))
+            return "YELLOW";
         else
             throw new IllegalArgumentException();
     }

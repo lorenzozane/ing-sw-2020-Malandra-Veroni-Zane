@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class GameTest {
 
     @Test
-    public void addPlayer() throws ParseException {
+    public void addPlayer() throws ParseException, IllegalAccessException {
         Game game = Game.getInstance();
         Player p1 = new Player("test1");
         Player p2 = new Player("test2");
@@ -33,7 +33,7 @@ public class GameTest {
 
 
     @Test
-    public void challenge() throws ParseException, IOException {
+    public void challenge() throws ParseException, IOException, IllegalAccessException {
         Game game = Game.getInstance();
         Player p1 = new Player("test1");
         Player p2 = new Player("test2");

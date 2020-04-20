@@ -57,17 +57,17 @@ public class Player {
 
     public void setPlayerColor(String playerColor) {
         switch (playerColor) {
-            case "purple":
-                this.playerColor = Color.ANSI_PURPLE;
-                Game.getInstance().removeColor(Color.ANSI_PURPLE);
+            case "red":
+                this.playerColor = Color.ANSI_RED;
+                Game.getInstance().removeColor(Color.ANSI_RED);
                 break;
             case "cyan":
                 this.playerColor = Color.ANSI_BRIGHT_CYAN;
                 Game.getInstance().removeColor(Color.ANSI_BRIGHT_CYAN);
                 break;
-            case "blue":
-                this.playerColor = Color.ANSI_BLUE;
-                Game.getInstance().removeColor(Color.ANSI_BLUE);
+            case "yellow":
+                this.playerColor = Color.ANSI_YELLOW;
+                Game.getInstance().removeColor(Color.ANSI_YELLOW);
                 break;
             default:
                 throw new IllegalArgumentException();

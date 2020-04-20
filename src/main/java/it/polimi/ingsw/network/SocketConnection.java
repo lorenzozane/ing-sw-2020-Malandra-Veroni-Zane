@@ -87,7 +87,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException | ParseException e) {
+        } catch (IOException | NoSuchElementException | ParseException | IllegalAccessException | InterruptedException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             close();

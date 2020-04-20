@@ -3,7 +3,8 @@ package it.polimi.ingsw.network;
 public class Message {
     public static String chooseNickname = "Welcome to Santorini!\nWhat is your nickname?";
     public static String chooseNicknameAgain = "Nickname already chosen, try again";
-    public static String lobby = "Adding to lobby... it may take few seconds";
+    public static String lobby = "Adding to lobby... it may take few seconds\n";
+    public static String lobbyFull = "Sorry, the lobby is full... Try again later\n";
     public static String chooseNoPlayer = "Choose number of player, 2 or 3:";
     public static String chooseNoPlayerAgain = "Number of player could be only 2 or 3, choose again";
     public static String birthday = "When is your birthday (dd/MM/yyyy)";

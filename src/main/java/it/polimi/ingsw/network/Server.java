@@ -36,7 +36,7 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException {
+    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException, InterruptedException {
         waitingConnection.put(nickname, c);
         if (waitingConnection.size() == 1) {
             Connection c1 = waitingConnection.get(nickname);
@@ -140,7 +140,14 @@ public class Server {
             Scanner in = new Scanner(c3.getSocket().getInputStream());
 
             Player p3 = new Player(nickname);
-            Game.getInstance().addPlayer(p3);
+            try{
+                Game.getInstance().addPlayer(p3);
+            }
+            catch (IllegalAccessException e){
+                c3.asyncSend(Message.lobbyFull);
+                c3.wait(500);
+                c3.closeConnection();
+            }
 
 
             c3.asyncSend(Message.chooseCLIorGUI);
@@ -186,8 +193,12 @@ public class Server {
 
             } else
                 throw new IllegalArgumentException();
-        } else
+
+
+        } else if(waitingConnection.size() > Game.getInstance().getPlayerNumber()) {
+            c.asyncSend(Message.lobbyFull);
             throw new IllegalArgumentException();
+        }
 
     }
 
@@ -231,7 +242,7 @@ public class Server {
         return false;
     }
 
-    public boolean dateChecker(String s) throws ParseException {
+    public boolean dateChecker(String s){
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = dateFormat.parse(s);

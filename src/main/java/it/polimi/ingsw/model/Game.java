@@ -11,12 +11,12 @@ public class Game {
     private static Game instance;   //Singleton pattern
     private final Turn turn = new Turn();
     private ArrayList<Player> playerList = new ArrayList<>();
-    private int playerNumber;
+    private int playerNumber = 1;
     private Board board = new Board();
     private Deck godsDeck;
     private Player firstPlayer;
     private Player challengerPlayer;
-    private ArrayList<Color> colorList = new ArrayList<Color>(){{ add(Color.ANSI_BRIGHT_CYAN); add(Color.ANSI_PURPLE); add(Color.ANSI_BLUE);}};
+    private ArrayList<Color> colorList = new ArrayList<Color>(){{ add(Color.ANSI_BRIGHT_CYAN); add(Color.ANSI_RED); add(Color.ANSI_YELLOW);}};
 
     private Game() {
 
@@ -62,10 +62,12 @@ public class Game {
             colorList.remove(delete);
     }
 
-    public void addPlayer(Player newPlayer) {
-        if (checkPlayer(newPlayer)) {
+    public void addPlayer(Player newPlayer) throws IllegalAccessException {
+        if (checkPlayer(newPlayer) && playerList.size()<playerNumber) {
             playerList.add(newPlayer);
         }
+        else
+            throw new IllegalAccessException();
     }
 
     private boolean checkPlayer(Player newPlayer) {

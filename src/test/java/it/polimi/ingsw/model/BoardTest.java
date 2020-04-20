@@ -43,8 +43,8 @@ public class BoardTest {
         board.updateBuildingOnBoard(slot1);
         board.updateBuildingOnBoard(slot2);
 
-
-        Worker worker1=new Worker("abc");
+        Player p1 = new Player("nickname1");
+        Worker worker1=new Worker(p1, 0);
         Color color=Color.ANSI_YELLOW;
         worker1.setColor(color);
         worker1.setWorkerSlot(slot2);
