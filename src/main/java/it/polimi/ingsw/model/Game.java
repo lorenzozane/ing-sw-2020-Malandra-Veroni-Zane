@@ -74,9 +74,7 @@ public class Game {
     }
 
     private boolean checkPlayer(Player newPlayer) {
-        if (!playerList.isEmpty())
-            return !playerList.contains(newPlayer);
-        return true;
+        return !playerList.contains(newPlayer);
     }
 
     //TODO: Sfruttare il metodo in turn
