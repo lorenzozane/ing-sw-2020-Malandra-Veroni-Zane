@@ -234,14 +234,14 @@ public class Board implements Cloneable {
 
         switch (Arrays.toString(value)) {
             case "[0, 0, 0, 0]":
-                cube[5][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[5][0] = slotMove.getWorkerInSlot().getColor() + "        /¯\\         " + Color.RESET;
                 cube[4][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
                 cube[3][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
 
             case "[1, 0, 0, 0]":
                 cube[5][0] = "████████████████████";
-                cube[4][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[4][0] = slotMove.getWorkerInSlot().getColor() + "        /¯\\         " + Color.RESET;
                 cube[3][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
                 cube[2][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
@@ -249,7 +249,7 @@ public class Board implements Cloneable {
             case "[1, 2, 0, 0]":
                 cube[5][0] = "████████████████████";
                 cube[4][0] = "  ████████████████  ";
-                cube[3][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[3][0] = slotMove.getWorkerInSlot().getColor() + "        /¯\\         " + Color.RESET;
                 cube[2][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
                 cube[1][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
@@ -258,7 +258,7 @@ public class Board implements Cloneable {
                 cube[5][0] = "████████████████████";
                 cube[4][0] = "  ████████████████  ";
                 cube[3][0] = "    ████████████    ";
-                cube[2][0] = slotMove.getWorkerInSlot().getColor() + "        / \\         " + Color.RESET;
+                cube[2][0] = slotMove.getWorkerInSlot().getColor() + "        /¯\\         " + Color.RESET;
                 cube[1][0] = slotMove.getWorkerInSlot().getColor() + "        /|\\         " + Color.RESET;
                 cube[0][0] = slotMove.getWorkerInSlot().getColor() + "         o          " + Color.RESET;
                 break;
