@@ -15,6 +15,7 @@ public class Worker {
         this.idWorker = playerOwner.getNickname() + "_" + idWorkerInt;
     }
 
+
     public Player getPlayerOwner(){
         return playerOwner;
     }
