@@ -30,7 +30,7 @@ public class Deck {
     /**
      * Constructs the game deck by reading the XML file containing the description of the implemented gods
      */
-    private void buildDeck() {
+    protected void buildDeck() {
         try {
             //Apertura file xml GodsDescription.xml, ed inizializzazione documento
             File xmlGodsDescription = new File("src/GodsDescription.xml");
@@ -211,6 +211,7 @@ public class Deck {
         return clonedChosenCards;
     }
 
+    //TODO: View
     public void printAllDeck(){
         for (GodsCard godsCard : cardList) {
             System.out.println(godsCard.toString());

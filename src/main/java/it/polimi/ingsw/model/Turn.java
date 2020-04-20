@@ -18,25 +18,36 @@ import java.util.*;
 public class Turn {
 
     protected static Player currentPlayer = null;
+    protected static Worker currentWorker = null;
     protected static ArrayList<Player> playerOrder = new ArrayList<>();
     protected static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
     //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
-    protected Turn(){
+    protected Turn() {
 
     }
 
-    public boolean isPlayerTurn(Player player){
+    public boolean isPlayerTurn(Player player) {
         return player.equals(currentPlayer);
     }
 
-    public ArrayList<Worker> getCurrentPlayerWorkers(){
+    public ArrayList<Worker> getCurrentPlayerWorkers() {
         return currentPlayer.getWorkers();
     }
 
-    public TurnSequence getCurrentPlayerTurnSequence(){
+    public void setCurrentWorker(Worker worker) {
+        currentWorker = worker;
+    }
+
+    public Worker getCurrentWorker() {
+        if (currentWorker != null)
+            return currentWorker;
+        return null;
+    }
+
+    public TurnSequence getCurrentPlayerTurnSequence() {
         return turnSequenceMap.get(currentPlayer);
     }
 
@@ -46,7 +57,7 @@ public class Turn {
      * @param players List of players
      * @throws IllegalArgumentException Is thrown if the number of players to compare does not match the numbers of players in game
      */
-    public void setPlayerOrder(Player... players) throws IllegalArgumentException {
+    protected static void setPlayerOrder(Player... players) throws IllegalArgumentException {
         if (playerOrder.isEmpty()) {
             if (players.length != Game.getInstance().getPlayerNumber())
                 throw new IllegalArgumentException();
@@ -59,7 +70,7 @@ public class Turn {
     /**
      * Update the currentPlayer to move to the next player's turn
      */
-    public void updateTurn() {
+    protected void updateTurn() {
         if (currentPlayer == null)
             currentPlayer = playerOrder.get(0);
         else
@@ -69,16 +80,15 @@ public class Turn {
     }
 
     //TODO: Implementazione movesPerformed
-    private void addLastMovePerformed(TurnEvents.Actions movePerformed, Slot startingSlot, Slot targetSlot){
+    private void addLastMovePerformed(TurnEvents.Actions movePerformed, Slot startingSlot, Slot targetSlot) {
 
     }
 
-    private void restoreToLastMovePerformed(){
+    private void restoreToLastMovePerformed() {
 
     }
 
-    public LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> getMovesPerformed(){
-
+    protected LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> getMovesPerformed() {
 
 
         return null;
@@ -97,7 +107,7 @@ public class Turn {
         return playerOrder.get((index + 1) % playerOrder.size());
     }
 
-    public static boolean canCurrentPlayerMoveUp(){
+    public static boolean canCurrentPlayerMoveUp() {
         return turnSequenceMap.get(currentPlayer).isCanMoveUp();
     }
 
@@ -110,11 +120,12 @@ public class Turn {
 //    }
 
     //TODO: Cambiare un parametro di Prometheus. Necessario affinchè non salga se costruisce prima di muovere
+
     /**
      * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
      * and read the win conditions
      */
-    public void setUpTurnSequence() {
+    protected void setUpTurnSequence() {
         try {
             File xmlChosenCards = new File("src/GodsParameters.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -138,7 +149,7 @@ public class Turn {
     /**
      * Builds up the standard sequence of moves for each player
      *
-     * @param player Player to create the move sequence for
+     * @param player   Player to create the move sequence for
      * @param document Document to read to extract all the player's turn parameters
      * @return Return the ArrayList of player's move sequence
      */
@@ -175,7 +186,7 @@ public class Turn {
     /**
      * Load the win condition for each player
      *
-     * @param player Player to read the win conditions for
+     * @param player   Player to read the win conditions for
      * @param document Document to read to extract all the player's win conditions
      * @return Return the ArrayList of player's win conditions
      */

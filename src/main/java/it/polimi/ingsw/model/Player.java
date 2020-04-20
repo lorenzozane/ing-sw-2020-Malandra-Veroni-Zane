@@ -9,7 +9,6 @@ public class Player {
     private Date birthday;
     private Color playerColor;
     private ArrayList<Worker> workers = new ArrayList<>();
-    private boolean isFirstPlayer;
     private GodsCard playerCard;
     private boolean isPlaying;
     private boolean gui = false;
@@ -33,14 +32,6 @@ public class Player {
 
     protected void setPlaying(boolean playing) {
         isPlaying = playing;
-    }
-
-    protected void setIsFirstPlayer() {
-        this.isFirstPlayer = true;
-    }
-
-    public boolean getIsFirstPlayer() {
-        return isFirstPlayer;
     }
 
     public Date getBirthday() {

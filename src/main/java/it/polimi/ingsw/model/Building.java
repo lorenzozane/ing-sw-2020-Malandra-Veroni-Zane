@@ -47,8 +47,10 @@ public class Building {
         }
 
         //TODO: Test
-        public BuildingLevel getNextLevel(){
-            return this.ordinal() < buildingLevelValues.length ? buildingLevelValues[(this.ordinal() + 1)] : null;
+        public static BuildingLevel getNextLevel(BuildingLevel buildingLevel){
+            if (buildingLevel == null)
+                return BuildingLevel.LEVEL1;
+            return buildingLevel.ordinal() < buildingLevelValues.length ? buildingLevelValues[(buildingLevel.ordinal() + 1)] : null;
         }
     }
 

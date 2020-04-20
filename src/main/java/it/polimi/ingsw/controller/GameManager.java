@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.TurnEvents.*;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameManager implements Observer<PlayerMove> {
 
@@ -18,7 +17,7 @@ public class GameManager implements Observer<PlayerMove> {
         this.turn = this.game.getTurn();
     }
 
-    protected synchronized void HandleMove(PlayerMove move) {
+    protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayer())) {
             //WrongTurnMessage
             return;
@@ -67,6 +66,6 @@ public class GameManager implements Observer<PlayerMove> {
 
     @Override
     public void update(PlayerMove message) {
-        HandleMove(message);
+        handleMove(message);
     }
 }

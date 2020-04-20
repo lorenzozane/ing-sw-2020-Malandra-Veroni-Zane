@@ -62,10 +62,16 @@ public class Worker {
      */
     public void build(Slot buildHere){
         BuildingLevel slotTopBuilding = buildHere.getConstructionTopLevel();
-        Building newBuilding = new Building(slotTopBuilding.getNextLevel());
+        Building newBuilding = new Building(BuildingLevel.getNextLevel(slotTopBuilding));
         buildHere.setBuilding(newBuilding);
         //notify alla view
     }
 
-
+    public void forcedDomeBuild(Slot buildHere, boolean buildDome){
+        if (buildDome){
+            Building newBuilding = new Building(BuildingLevel.DOME);
+            buildHere.setBuilding(newBuilding);
+        } else
+            build(buildHere);
+    }
 }

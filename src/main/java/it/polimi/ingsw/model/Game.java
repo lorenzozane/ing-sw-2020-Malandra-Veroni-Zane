@@ -14,19 +14,22 @@ public class Game {
     private int playerNumber = 1;
     private Board board = new Board();
     private Deck godsDeck;
-    private Player firstPlayer;
     private Player challengerPlayer;
-    private ArrayList<Color> colorList = new ArrayList<Color>(){{ add(Color.ANSI_BRIGHT_CYAN); add(Color.ANSI_RED); add(Color.ANSI_YELLOW);}};
+    private ArrayList<Color> colorList = new ArrayList<Color>() {{
+        add(Color.ANSI_BRIGHT_CYAN);
+        add(Color.ANSI_RED);
+        add(Color.ANSI_YELLOW);
+    }};
 
     private Game() {
 
     }
 
-    public Turn getTurn(){
+    public Turn getTurn() {
         return turn;
     }
 
-    public Board getBoard(){
+    public Board getBoard() {
         return board.clone();
     }
 
@@ -44,29 +47,29 @@ public class Game {
         this.playerNumber = playerNumber;
     }
 
-    public String getAvailableColor(){
+    public String getAvailableColor() {
         StringBuilder temp = new StringBuilder();
-        for(Color color : colorList){
+        for (Color color : colorList) {
+            //TODO: Sarà da spostare nella view
             temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET).append(" or");
         }
-        temp.replace(temp.length()-2, temp.length(), "");
+        temp.replace(temp.length() - 2, temp.length(), "");
         return String.valueOf(temp);
     }
 
-    public ArrayList<Color> getColorList(){
+    public ArrayList<Color> getColorList() {
         return colorList;
     }
 
-    public void removeColor(Color delete){
-        if(!colorList.isEmpty())
+    public void removeColor(Color delete) {
+        if (!colorList.isEmpty())
             colorList.remove(delete);
     }
 
     public void addPlayer(Player newPlayer) throws IllegalAccessException {
-        if (checkPlayer(newPlayer) && playerList.size()<playerNumber) {
+        if (checkPlayer(newPlayer) && playerList.size() < playerNumber) {
             playerList.add(newPlayer);
-        }
-        else
+        } else
             throw new IllegalAccessException();
     }
 
@@ -76,12 +79,13 @@ public class Game {
         return true;
     }
 
-    public void setYoungestPlayer(){
+    //TODO: Sfruttare il metodo in turn
+    private void setYoungestPlayer() {
         this.playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
         this.challengerPlayer = playerList.get(0);
     }
 
-    public void removePlayer(final Player playerToDelete) {
+    protected void removePlayer(final Player playerToDelete) {
         playerList.remove(playerToDelete);
         throw new IllegalArgumentException(); //TODO: Check: ??
     }
@@ -90,28 +94,13 @@ public class Game {
         return this.playerList;
     }
 
-    public Player getChallengerPlayer() {
-        return playerList.get(0);
-    }
-
     public void challenge() throws IOException {
         //mostrare alla view del challenger tutti gli dei
         setYoungestPlayer();
         godsDeck = new Deck();
-        challengerPlayer = getChallengerPlayer();
+        challengerPlayer = playerList.get(0);
         godsDeck.printAllDeck();
-
-        //TODO: Check: ??
-        System.out.println("Choose gods");
-        //Scanner in = new Scanner(System.in);
-        String godsChooses = "apollo, pan";
-        String[] split = godsChooses.split("\\s*,\\s*");
-        godsDeck.chooseCards(split[0], split[1]);
-
-
     }
-
-
 }
 
 
