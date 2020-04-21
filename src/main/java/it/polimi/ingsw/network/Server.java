@@ -39,10 +39,9 @@ public class Server {
     public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException, InterruptedException {
         Game game = Game.getInstance();
         waitingConnection.put(nickname, c);
-        if (waitingConnection.size() == 1) {
+        if (waitingConnection.size() == 1 && playingConnection.isEmpty()) {
             Connection c1 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c1.getSocket().getInputStream());
-            Game.getInstance();
 
 
             Player p1 = new Player(nickname);
@@ -87,94 +86,68 @@ public class Server {
 
             c1.asyncSend(Message.wait);
 
-        } else if (waitingConnection.size() <= game.getPlayerNumber()) {
-            Connection ct = waitingConnection.get(nickname);
-            Scanner in = new Scanner(ct.getSocket().getInputStream());
+
+        } else if (waitingConnection.size() == 2 && playingConnection.isEmpty()) {
+            Connection c2 = waitingConnection.get(nickname);
+            Scanner in = new Scanner(c2.getSocket().getInputStream());
 
             Player p2 = new Player(nickname);
             game.addPlayer(p2);
 
 
-            ct.asyncSend(Message.chooseCLIorGUI);
+            c2.asyncSend(Message.chooseCLIorGUI);
             String read = in.nextLine();
             while (!cliOrGuiChecker(read.toLowerCase())) {
-                ct.asyncSend(Message.chooseCLIorGUIAgain);
+                c2.asyncSend(Message.chooseCLIorGUIAgain);
                 read = in.nextLine();
             }
             game.getPlayerList().get(1).setGui(read.toLowerCase());
 
 
-            ct.asyncSend(Message.chooseColor + game.getAvailableColor());
+            c2.asyncSend(Message.chooseColor + game.getAvailableColor());
             read = in.nextLine();
             while (!colorChecker(read.toLowerCase())) {
-                ct.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
+                c2.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
                 read = in.nextLine();
             }
             game.getPlayerList().get(1).setPlayerColor(read.toLowerCase());
 
 
-            ct.asyncSend(Message.birthday);
+            c2.asyncSend(Message.birthday);
             read = in.nextLine();
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             while (!dateChecker(read)) {
-                ct.asyncSend(Message.birthdayAgain);
+                c2.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
             game.getPlayerList().get(1).setBirthday(dateFormat.parse(read));
 
 
+            if (game.getPlayerNumber() == 2) {
+                Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
+                c1.asyncSend(Message.gameLoading);
+                c2.asyncSend(Message.gameLoading);
 
+                playingConnection.put(c1, c2);
+                playingConnection.put(c2, c1);
+                waitingConnection.clear();
 
-
-            if (waitingConnection.size() == game.getPlayerNumber()) {
-                for(int i=0; i<waitingConnection.size(); i++){
-                    Connection temp = waitingConnection.get(nicknameDatabase.get(i));
-                    temp.asyncSend(Message.gameLoading);
+                game.challenge();
                 }
 
-                if(game.getPlayerNumber() == 2){
-                    Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
-                    Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
-
-                    playingConnection.put(c1, c2);
-                    playingConnection.put(c2, c1);
-                    waitingConnection.clear();
-
-                    game.challenge();
-
-                }
-                else{
-                    Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
-                    Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
-                    Connection c3 = waitingConnection.get(nicknameDatabase.get(2));
-
-
-                    //da capire se per noi va bene così
-                    playingConnection.put(c1, c2);
-                    playingConnection.put(c1, c3);
-                    playingConnection.put(c2, c1);
-                    playingConnection.put(c2, c3);
-                    playingConnection.put(c3, c1);
-                    playingConnection.put(c3, c2);
-                    waitingConnection.clear();
-
-                    game.challenge();
-
-                }
-
-            } else
-                ct.asyncSend(Message.wait);
+            else
+                c2.asyncSend(Message.wait);
 
         }
-        /*else if (waitingConnection.size() == 3) {
+
+        else if (waitingConnection.size() == 3 && playingConnection.isEmpty()) {
             Connection c3 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c3.getSocket().getInputStream());
 
             Player p3 = new Player(nickname);
-            try{
-                Game.getInstance().addPlayer(p3);
-            }
-            catch (IllegalAccessException e){
+            try {
+                game.addPlayer(p3);
+            } catch (IllegalAccessException e) {
                 c3.asyncSend(Message.lobbyFull);
                 c3.wait(500);
                 c3.closeConnection();
@@ -187,16 +160,16 @@ public class Server {
                 c3.asyncSend(Message.chooseCLIorGUIAgain);
                 read = in.nextLine();
             }
-            Game.getInstance().getPlayerList().get(2).setGui(read.toLowerCase());
+            game.getPlayerList().get(2).setGui(read.toLowerCase());
 
 
-            c3.asyncSend(Message.chooseColor + Game.getInstance().getAvailableColor());
+            c3.asyncSend(Message.chooseColor + game.getAvailableColor());
             read = in.nextLine();
             while (!colorChecker(read.toLowerCase())) {
-                c3.asyncSend(Message.chooseColorAgain + Game.getInstance().getAvailableColor());
+                c3.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
                 read = in.nextLine();
             }
-            Game.getInstance().getPlayerList().get(2).setPlayerColor(read.toLowerCase());
+            game.getPlayerList().get(2).setPlayerColor(read.toLowerCase());
 
 
             c3.asyncSend(Message.birthday);
@@ -206,7 +179,7 @@ public class Server {
                 c3.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
-            Game.getInstance().getPlayerList().get(2).setBirthday(dateFormat.parse(read));
+            game.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
 
 
             if (Game.getInstance().getPlayerNumber() == 3) {
@@ -216,19 +189,22 @@ public class Server {
                 c2.asyncSend(Message.gameLoading);
                 c3.asyncSend(Message.gameLoading);
 
-                //TODO: fare challenge e far partire il gioco
-                //Game.getInstance().challenge();
-                //playingConnection.put(c1, c2);
-                //playingConnection.put(c2, c1);
-                //waitingConnection.clear();
+                //da capire se per noi va bene così
+                playingConnection.put(c1, c2);
+                playingConnection.put(c1, c3);
+                playingConnection.put(c2, c1);
+                playingConnection.put(c2, c3);
+                playingConnection.put(c3, c1);
+                playingConnection.put(c3, c2);
+                waitingConnection.clear();
+
+                game.challenge();
 
             } else
                 throw new IllegalArgumentException();
-
-        */
+        }
         else {
             c.asyncSend(Message.lobbyFull);
-            c.wait(500);
             c.closeConnection();
             throw new IllegalArgumentException();
         }
