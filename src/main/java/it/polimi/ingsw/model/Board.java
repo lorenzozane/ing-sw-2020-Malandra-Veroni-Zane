@@ -32,6 +32,10 @@ public class Board implements Cloneable {
         return adjacentSlots;
     }
 
+    public Slot getSlot(Position position) {
+        return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];
+    }
+
     @Override
     protected final Board clone() {
         final Board result = new Board();

@@ -31,7 +31,6 @@ public class Slot {
                 topLevel = building.getLevel();
 
         return topLevel;
-
     }
 
     public void setWorkerInSlot(Worker workerInSlot) {
