@@ -11,18 +11,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
     private static final int PORT = 12345;
-    private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, Connection> waitingConnection = new HashMap<>();
-    private Map<Connection, Connection> playingConnection = new HashMap<>();
-    private ArrayList<String> nicknameDatabase = new ArrayList<>();
-    private ArrayList<String> nicknameReady = new ArrayList<>();
+    private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final Map<String, Connection> waitingConnection = new HashMap<>();
+    private final Map<Connection, Connection> playingConnection = new HashMap<>();
+    private final ArrayList<String> nicknameDatabase = new ArrayList<>();
+    private final ArrayList<String> usersReady = new ArrayList<>();
 
 
     //Deregister connection
@@ -30,7 +29,7 @@ public class Server {
         nicknameDatabase.remove(nick);
         if(playingConnection.isEmpty()) {
             waitingConnection.remove(nick, c);
-            nicknameReady.remove(nick);
+            usersReady.remove(nick);
         }
         else {
             //verificare se la partita puo andare avanti
@@ -87,7 +86,7 @@ public class Server {
             }
             game.getPlayerList().get(0).setBirthday(dateFormat.parse(read));
 
-            nicknameReady.add(nickname);
+            usersReady.add(nickname);
             c1.asyncSend(Message.wait);
 
 
@@ -126,11 +125,11 @@ public class Server {
             }
             game.getPlayerList().get(1).setBirthday(dateFormat.parse(read));
 
-            nicknameReady.add(nickname);
+            usersReady.add(nickname);
 
 
-            if (game.getPlayerNumber() == 2) {
-                Connection c1 = waitingConnection.get(nicknameReady.get(0));
+            if (game.getPlayerNumber() == 2 && usersReady.size() == 2) {
+                Connection c1 = waitingConnection.get(usersReady.get(0));
                 c1.asyncSend(Message.gameLoading);
                 c2.asyncSend(Message.gameLoading);
 
@@ -181,12 +180,12 @@ public class Server {
             }
             game.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
 
-            nicknameReady.add(nickname);
+            usersReady.add(nickname);
 
 
-            if (game.getPlayerNumber() == 3) {
-                Connection c1 = waitingConnection.get(nicknameReady.get(0));
-                Connection c2 = waitingConnection.get(nicknameReady.get(1));
+            if (game.getPlayerNumber() == 3 && usersReady.size()==3) {
+                Connection c1 = waitingConnection.get(usersReady.get(0));
+                Connection c2 = waitingConnection.get(usersReady.get(1));
                 c1.asyncSend(Message.gameLoading);
                 c2.asyncSend(Message.gameLoading);
                 c3.asyncSend(Message.gameLoading);
@@ -203,7 +202,7 @@ public class Server {
                 game.challenge();
 
             } else
-                throw new IllegalArgumentException();
+                c3.asyncSend(Message.wait);
         }
         else {
             c.asyncSend(Message.lobbyFull);
