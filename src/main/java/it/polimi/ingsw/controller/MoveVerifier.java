@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Building.BuildingLevel;
+import it.polimi.ingsw.model.Building.BuildingProperty;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public final class MoveVerifier {
         while (!canMove && i < slotsToVerify.size()) {
             Slot slotToVerify = slotsToVerify.get(i);
             if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
-                if (!slotToVerify.getBuildingsStatus().contains(Building.BuildingLevel.DOME))
+                if (!slotToVerify.getBuildingsStatus().contains(BuildingLevel.DOME))
                     if (slotToVerify.getWorkerInSlot() == null ||
                             turn.getCurrentPlayerTurnSequence().getMoveSequence().containsAll(Arrays.asList(Actions.MOVE_OPPONENT_SLOT_FLIP, Actions.MOVE_OPPONENT_SLOT_PUSH)))
                         canMove = true;
@@ -45,10 +47,11 @@ public final class MoveVerifier {
             return false;
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
             return false;
-        if (move.getTargetSlot().getBuildingsStatus().contains(Building.BuildingLevel.DOME))
+        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
             return false;
         if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1)
-            return false;
+            if (!move.getForcedMove())
+                return false;
         if (!Turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
             return false;
         if (move.getTargetSlot().getWorkerInSlot() != null) {
@@ -62,13 +65,42 @@ public final class MoveVerifier {
         return true;
     }
 
-    public static boolean checkIfCanBuild() {
+    public static boolean checkIfCanBuild(Worker worker) {
         boolean canBuild = false;
+        Slot workerSlot = worker.getWorkerSlot();
+        ArrayList<Slot> slotsToVerify = game.getBoard().getAdjacentSlots(workerSlot);
+
+        int i = 0;
+        while (!canBuild && i < slotsToVerify.size()) {
+            Slot slotToVerify = slotsToVerify.get(i);
+            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
+                if (slotToVerify.getWorkerInSlot() == null)
+                    if (slotToVerify.getConstructionTopLevel().hasProperty(BuildingProperty.CAN_BUILD_ON_IT))
+                        canBuild = true;
+
+            i++;
+        }
 
         return canBuild;
     }
 
     public static boolean buildValidator(PlayerMove move) {
+        if (move.getMove().getActionType() != ActionType.BUILDING)
+            return false;
+        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
+            return false;
+        if (move.getTargetSlot().getWorkerInSlot() != null)
+            return false;
+        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
+            return false;
+        if (move.getMove() == Actions.BUILD_NOT_SAME_PLACE)
+            return false; //TODO: Verificare se slot destinazione è quello in cui ha già costruito
+        if (move.getMove() == Actions.BUILD_SAME_PLACE_NOT_DOME) {
+            if (true) //TODO: Verificare che lo slot destinazione sia lo stesso in cui ha già costruito
+                return false;
+            if (move.getTargetSlot().getConstructionTopLevel() == BuildingLevel.LEVEL3)
+                return false;
+        }
 
         return true;
     }

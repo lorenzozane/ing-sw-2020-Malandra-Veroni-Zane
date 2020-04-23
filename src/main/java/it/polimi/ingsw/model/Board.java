@@ -19,21 +19,31 @@ public class Board implements Cloneable {
                 gameBoardSlots[i][j] = new Slot(new Position(i, j));
     }
 
+    public Slot getSlot(Position position) {
+        return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];
+    }
+
     public ArrayList<Slot> getAdjacentSlots(Slot centerSlot){
         ArrayList<Slot> adjacentSlots = new ArrayList<>(8);
         int centerSlotX = centerSlot.getSlotPosition().getCoordinateX();
         int centerSlotY = centerSlot.getSlotPosition().getCoordinateY();
 
-        for (int x = (centerSlotX > 0 ? -1 : 0); x <= (centerSlotX < BOARD_DIMENSION ? 1 : 0); x++)
-            for (int y = (centerSlotY > 0 ? -1 : 0); y <= (centerSlotY < BOARD_DIMENSION ? 1 : 0); y++)
+        for (int x = (centerSlotX > 0 ? -1 : 0); x <= (centerSlotX < BOARD_DIMENSION - 1 ? 1 : 0); x++)
+            for (int y = (centerSlotY > 0 ? -1 : 0); y <= (centerSlotY < BOARD_DIMENSION - 1 ? 1 : 0); y++)
                 if (x != 0 || y != 0)
                     adjacentSlots.add(gameBoardSlots[centerSlotX + x][centerSlotY + y]);
 
         return adjacentSlots;
     }
 
-    public Slot getSlot(Position position) {
-        return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];
+    public Slot getBackwardsSlot(Slot startingSlot, Slot targetSlot) {
+        int nextSlotX = targetSlot.getSlotPosition().getCoordinateX() + (targetSlot.getSlotPosition().getCoordinateX() - startingSlot.getSlotPosition().getCoordinateX());
+        int nextSlotY = targetSlot.getSlotPosition().getCoordinateY() + (targetSlot.getSlotPosition().getCoordinateY() - startingSlot.getSlotPosition().getCoordinateY());
+
+        if (nextSlotX < 0 || nextSlotX > BOARD_DIMENSION - 1 || nextSlotY < 0 || nextSlotY > BOARD_DIMENSION - 1)
+            return null;
+
+        return gameBoardSlots[nextSlotX][nextSlotY];
     }
 
     @Override
