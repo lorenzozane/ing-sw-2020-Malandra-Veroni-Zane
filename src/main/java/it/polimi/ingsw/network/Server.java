@@ -22,6 +22,7 @@ public class Server {
     private Map<String, Connection> waitingConnection = new HashMap<>();
     private Map<Connection, Connection> playingConnection = new HashMap<>();
     private ArrayList<String> nicknameDatabase = new ArrayList<>();
+    private ArrayList<String> nicknameReady = new ArrayList<>();
 
 
     //Deregister connection
@@ -29,6 +30,7 @@ public class Server {
         nicknameDatabase.remove(nick);
         if(playingConnection.isEmpty()) {
             waitingConnection.remove(nick, c);
+            nicknameReady.remove(nick);
         }
         else {
             //verificare se la partita puo andare avanti
@@ -85,6 +87,7 @@ public class Server {
             }
             game.getPlayerList().get(0).setBirthday(dateFormat.parse(read));
 
+            nicknameReady.add(nickname);
             c1.asyncSend(Message.wait);
 
 
@@ -123,9 +126,11 @@ public class Server {
             }
             game.getPlayerList().get(1).setBirthday(dateFormat.parse(read));
 
+            nicknameReady.add(nickname);
+
 
             if (game.getPlayerNumber() == 2) {
-                Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
+                Connection c1 = waitingConnection.get(nicknameReady.get(0));
                 c1.asyncSend(Message.gameLoading);
                 c2.asyncSend(Message.gameLoading);
 
@@ -176,10 +181,12 @@ public class Server {
             }
             game.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
 
+            nicknameReady.add(nickname);
+
 
             if (game.getPlayerNumber() == 3) {
-                Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
-                Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
+                Connection c1 = waitingConnection.get(nicknameReady.get(0));
+                Connection c2 = waitingConnection.get(nicknameReady.get(1));
                 c1.asyncSend(Message.gameLoading);
                 c2.asyncSend(Message.gameLoading);
                 c3.asyncSend(Message.gameLoading);
