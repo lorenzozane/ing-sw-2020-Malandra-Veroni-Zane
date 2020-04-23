@@ -61,6 +61,10 @@ public class Game {
         return colorList;
     }
 
+    private void reAddColor(Color color){
+        colorList.add(color);
+    }
+
     public void removeColor(Color delete) {
         if (!colorList.isEmpty())
             colorList.remove(delete);
@@ -83,9 +87,20 @@ public class Game {
         this.challengerPlayer = playerList.get(0);
     }
 
-    protected void removePlayer(final Player playerToDelete) {
+    protected void removePlayer(Player playerToDelete) {
         playerList.remove(playerToDelete);
-        throw new IllegalArgumentException(); //TODO: Check: ??
+        //TODO: Check: ??
+    }
+
+    public void removePlayerByName(String nickname){   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
+        for(Player p : playerList){
+            if(p.getNickname().equals(nickname)){
+                if(p.getPlayerColor() != null)
+                    reAddColor(p.getPlayerColor());
+                removePlayer(p);
+
+            }
+        }
     }
 
     public ArrayList<Player> getPlayerList() {

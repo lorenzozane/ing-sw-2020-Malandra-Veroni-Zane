@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
@@ -48,10 +49,10 @@ public class SocketConnection extends Observable<String> implements Connection, 
         active = false;
     }
 
-    private void close() {
+    private void close(String nickname) {
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+        server.deregisterConnection(nickname, this);
         System.out.println("Done!");
     }
 
@@ -68,10 +69,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
     @Override
     public void run() {
         Scanner in;
-        String nickname;
+        String nickname = "";
         try{
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            send(Message.santorini);
             send(Message.chooseNickname);
             String read = in.nextLine();
             nickname = read;
@@ -90,7 +92,9 @@ public class SocketConnection extends Observable<String> implements Connection, 
         } catch (IOException | NoSuchElementException | ParseException | IllegalAccessException | InterruptedException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
-            close();
+            server.deregisterConnection(nickname, this);
+            Game.getInstance().removePlayerByName(nickname);
+            close(nickname);
         }
     }
 

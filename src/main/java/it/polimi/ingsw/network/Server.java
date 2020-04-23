@@ -25,14 +25,15 @@ public class Server {
 
 
     //Deregister connection
-    public synchronized void deregisterConnection(Connection c) {
-        Connection opponent = playingConnection.get(c);
-        if (opponent != null) {
-            opponent.closeConnection();
+    public synchronized void deregisterConnection(String nick, Connection c) {
+        nicknameDatabase.remove(nick);
+        if(playingConnection.isEmpty()) {
+            waitingConnection.remove(nick, c);
         }
-        playingConnection.remove(c);
-        playingConnection.remove(opponent);
-        waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
+        else {
+            //verificare se la partita puo andare avanti
+            playingConnection.remove(c);
+        }
     }
 
     //Wait for another player
@@ -77,7 +78,7 @@ public class Server {
 
             c1.asyncSend(Message.birthday);
             read = in.nextLine();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             while (!dateChecker(read)) {
                 c1.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
@@ -115,7 +116,7 @@ public class Server {
 
             c2.asyncSend(Message.birthday);
             read = in.nextLine();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             while (!dateChecker(read)) {
                 c2.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
@@ -145,13 +146,7 @@ public class Server {
             Scanner in = new Scanner(c3.getSocket().getInputStream());
 
             Player p3 = new Player(nickname);
-            try {
-                game.addPlayer(p3);
-            } catch (IllegalAccessException e) {
-                c3.asyncSend(Message.lobbyFull);
-                c3.wait(500);
-                c3.closeConnection();
-            }
+            game.addPlayer(p3);
 
 
             c3.asyncSend(Message.chooseCLIorGUI);
@@ -174,7 +169,7 @@ public class Server {
 
             c3.asyncSend(Message.birthday);
             read = in.nextLine();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             while (!dateChecker(read)) {
                 c3.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
@@ -182,7 +177,7 @@ public class Server {
             game.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
 
 
-            if (Game.getInstance().getPlayerNumber() == 3) {
+            if (game.getPlayerNumber() == 3) {
                 Connection c1 = waitingConnection.get(nicknameDatabase.get(0));
                 Connection c2 = waitingConnection.get(nicknameDatabase.get(1));
                 c1.asyncSend(Message.gameLoading);
@@ -205,8 +200,7 @@ public class Server {
         }
         else {
             c.asyncSend(Message.lobbyFull);
-            c.closeConnection();
-            throw new IllegalArgumentException();
+            deregisterConnection(nickname, c);
         }
 
     }
@@ -253,7 +247,7 @@ public class Server {
 
     public boolean dateChecker(String s){
         try {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             Date date = dateFormat.parse(s);
             return s.equals(dateFormat.format(date));
         }
