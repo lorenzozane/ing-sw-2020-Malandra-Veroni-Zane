@@ -23,9 +23,24 @@ public class GameManager implements Observer<PlayerMove> {
             return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
-            if (MoveVerifier.moveValidator(move))
+            if (MoveVerifier.moveValidator(move)) {
+                //Move in opponent slot handling
+                if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                    PlayerMove opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                            Actions.MOVE_STANDARD,
+                            game.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
+                    opponentMove.setForcedMove(move.getPlayer());
+
+                    if (MoveVerifier.moveValidator(opponentMove))
+                        performMove(opponentMove);
+                    else
+                        return; //MoveNotAllowedException
+                }
+
+
                 performMove(move);
-            else
+                checkWinConditions(move);
+            } else
                 return; //MoveNotAllowedException
         } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING)
             if (MoveVerifier.buildValidator(move))
@@ -56,8 +71,15 @@ public class GameManager implements Observer<PlayerMove> {
         move.getMovedWorker().build(move.getTargetSlot());
     }
 
-    protected void checkWinConditions() {
+    protected void checkWinConditions(PlayerMove move) {
+        boolean winner = false;
 
+        if (move.getTargetSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL3 &&
+                move.getStartingSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL2)
+            winner = true;
+
+        if (winner)
+            return; //TODO: Notifica vittoria
     }
 
     protected void checkTurnIsOver() {

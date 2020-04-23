@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 public class Building {
 
-    protected enum BuildingProperty {
+    public enum BuildingProperty {
         CAN_BUILD_ON_IT,
         IS_SCALABLE;
     }

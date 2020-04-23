@@ -64,8 +64,7 @@
     <atlas>
         <moveSequence>
             <standardMove priority="1">MOVE_STANDARD</standardMove>
-            <standardBuild priority="2">BUILD_STANDARD</standardBuild>
-            <buildDomeAnyLevel priority="3">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
+            <buildDomeAnyLevel priority="2">BUILD_DOME_ANY_LEVEL</buildDomeAnyLevel>
         </moveSequence>
 
         <winConditions>
