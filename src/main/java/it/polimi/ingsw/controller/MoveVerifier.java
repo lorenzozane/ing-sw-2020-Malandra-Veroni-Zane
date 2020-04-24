@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.TurnEvents.Actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
 
@@ -69,8 +72,12 @@ public final class MoveVerifier {
         if (move.getTargetSlot().getWorkerInSlot() != null) {
             return move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH;
         } else {
-            if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-                return false; //TODO: Verificare se slot destinazione è quello di partenza
+            if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION) { //TODO: Test
+                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
+                        .getActionType() == ActionType.MOVEMENT).reduce((first, second) -> second).orElse(null);
+                if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot())
+                    return false;
+            }
         }
 
         //TODO: Implementare controllo canMoveUpPrometheus
@@ -117,10 +124,15 @@ public final class MoveVerifier {
             return false;
         if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
             return false;
-        if (move.getMove() == Actions.BUILD_NOT_SAME_PLACE)
-            return false; //TODO: Verificare se slot destinazione è quello in cui ha già costruito
-        if (move.getMove() == Actions.BUILD_SAME_PLACE_NOT_DOME) {
-            if (true) //TODO: Verificare che lo slot destinazione sia lo stesso in cui ha già costruito
+        if (move.getMove() == Actions.BUILD_NOT_SAME_PLACE) {
+            PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
+                    .getActionType() == ActionType.BUILDING).reduce((first, second) -> second).orElse(null);
+            if (initialMove == null || move.getTargetSlot() == initialMove.getTargetSlot())
+                return false;
+        } else if (move.getMove() == Actions.BUILD_SAME_PLACE_NOT_DOME) {
+            PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
+                    .getActionType() == ActionType.BUILDING).reduce((first, second) -> second).orElse(null);
+            if (initialMove == null || move.getTargetSlot() != initialMove.getTargetSlot())
                 return false;
             if (move.getTargetSlot().getConstructionTopLevel() == BuildingLevel.LEVEL3)
                 return false;
