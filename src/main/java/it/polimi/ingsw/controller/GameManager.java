@@ -17,6 +17,11 @@ public class GameManager implements Observer<PlayerMove> {
         this.turn = this.game.getTurn();
     }
 
+    /**
+     * Logic of game moves
+     *
+     * @param move The player move containing the information about the worker and the target slot of the move
+     */
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayer())) {
             //WrongTurnMessage
@@ -53,6 +58,11 @@ public class GameManager implements Observer<PlayerMove> {
         //TODO: Logica gestione mosse
     }
 
+    /**
+     * Check if, at the beginning of a turn, the player's workers have a slot adjacent them available to move on
+     *
+     * @return Returns an ArrayList of worker who can move in an adjacent slot
+     */
     protected ArrayList<Worker> initialCheckMovableWorker() {
         ArrayList<Worker> movableWorkers = new ArrayList<>(2);
         for (Worker worker : turn.getCurrentPlayerWorkers()) {
@@ -65,16 +75,31 @@ public class GameManager implements Observer<PlayerMove> {
         return movableWorkers;
     }
 
+    /**
+     * Makes the worker perform a move
+     *
+     * @param move The player move containing the information about the worker and the target slot of the move
+     */
     protected void performMove(PlayerMove move) {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
     }
 
+    /**
+     * Makes the worker perform a build
+     *
+     * @param move The player move containing the information about the worker and the target slot of the move
+     */
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
     }
 
+    /**
+     * Check if the current player has made a move that leads to victory
+     *
+     * @param move The player move containing the information about the worker and the target slot of the move
+     */
     protected void checkWinConditions(PlayerMove move) {
         boolean winner = false;
 

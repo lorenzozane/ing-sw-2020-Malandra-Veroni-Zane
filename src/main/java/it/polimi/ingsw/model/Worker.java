@@ -36,6 +36,11 @@ public class Worker {
         this.color = color;
     }
 
+    /**
+     * Set the worker in the slot specified
+     *
+     * @param workerSlot The slot target of the movement
+     */
     protected void setWorkerSlot(Slot workerSlot) {
         if (this.workerSlot != null)
             this.workerSlot.setWorkerInSlot(null);
@@ -67,6 +72,12 @@ public class Worker {
         //notify alla view
     }
 
+    /**
+     * Creation of a new building, forcibly a dome
+     *
+     * @param buildHere New construction position
+     * @param buildDome Boolean describing the choice to build forcibly a dome
+     */
     public void forcedDomeBuild(Slot buildHere, boolean buildDome){
         if (buildDome){
             Building newBuilding = new Building(BuildingLevel.DOME);

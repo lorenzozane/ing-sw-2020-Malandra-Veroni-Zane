@@ -23,6 +23,12 @@ public final class MoveVerifier {
     private MoveVerifier() {
     }
 
+    /**
+     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to move on
+     *
+     * @param worker The worker whose ability to move is to be checked
+     * @return Returns a boolean who approves or refuses the possibility to move of the worker
+     */
     public static boolean checkIfStuck(Worker worker) {
         boolean canMove = false;
         Slot workerSlot = worker.getWorkerSlot();
@@ -42,6 +48,12 @@ public final class MoveVerifier {
         return canMove;
     }
 
+    /**
+     * Valid the request to move a worker in a specific slot
+     *
+     * @param move The move that contains all the information related to the movement and the target slot
+     * @return Returns a boolean who approves or refuses the movement request
+     */
     public static boolean moveValidator(PlayerMove move) {
         if (move.getMove().getActionType() != ActionType.MOVEMENT)
             return false;
@@ -65,6 +77,12 @@ public final class MoveVerifier {
         return true;
     }
 
+    /**
+     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to build
+     *
+     * @param worker The worker whose ability to build is to be checked
+     * @return Returns a boolean who approves or refuses the possibility to build of the worker
+     */
     public static boolean checkIfCanBuild(Worker worker) {
         boolean canBuild = false;
         Slot workerSlot = worker.getWorkerSlot();
@@ -84,6 +102,12 @@ public final class MoveVerifier {
         return canBuild;
     }
 
+    /**
+     * Valid the request to build a new element in a specific slot
+     *
+     * @param move The move that contains all the information related to the new construction and the target slot
+     * @return Returns a boolean who approves or refuses the new construction request
+     */
     public static boolean buildValidator(PlayerMove move) {
         if (move.getMove().getActionType() != ActionType.BUILDING)
             return false;

@@ -46,7 +46,12 @@ public class Building {
             return levelValue;
         }
 
-        //TODO: Test
+        /**
+         * Gets the next building level of the building level passed to the function
+         *
+         * @param buildingLevel Building level of which you want to know the next
+         * @return The next building level in order of height
+         */
         public static BuildingLevel getNextLevel(BuildingLevel buildingLevel){
             if (buildingLevel == null)
                 return BuildingLevel.LEVEL1;

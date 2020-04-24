@@ -74,7 +74,7 @@ public class Turn {
     }
 
     /**
-     * Update the currentPlayer to move to the next player's turn
+     * Update the turn to the next move to be performed, or to the next player
      */
     protected void updateTurn() {
         TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
@@ -87,6 +87,9 @@ public class Turn {
 
     }
 
+    /**
+     * Update the currentPlayer to move to the next player's turn
+     */
     protected void updateToNextPlayerTurn() {
         if (currentPlayer == null)
             currentPlayer = playerOrder.get(0);
@@ -97,11 +100,19 @@ public class Turn {
         movesPerformed.clear();
     }
 
-    //TODO: Implementazione movesPerformed
+    /**
+     * Add to the movesPerformed list (necessary for the management of the UNDO function and
+     * some game logic check) the move just performed
+     *
+     * @param lastMove Last move performed
+     */
     public void addLastMovePerformed(PlayerMove lastMove) {
         movesPerformed.add(lastMove);
     }
 
+    /**
+     * Returns the game back to the state before the last move performed
+     */
     public void restoreToLastMovePerformed() {
         if (!movesPerformed.isEmpty()) {
             PlayerMove moveToRestore = movesPerformed.getLast();
@@ -116,13 +127,14 @@ public class Turn {
             return; //TODO: Gestire
     }
 
-    protected LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> getMovesPerformed() {
-
-
-        return null;
+    /**
+     * Returns the list of moves performed so far during the turn
+     *
+     * @return Returns a LinkedList of PlayerMove containing the moves performed by the user so far in this turn
+     */
+    public LinkedList<PlayerMove> getMovesPerformed() {
+        return movesPerformed;
     }
-
-    //TODO: Test
 
     /**
      * Returns the next player by cycling on the list of players sorted by age
@@ -135,19 +147,14 @@ public class Turn {
         return playerOrder.get((index + 1) % playerOrder.size());
     }
 
+    /**
+     * Returns the boolean that describes whether the player can move up during this turn or not
+     *
+     * @return A boolean describing the possibility of move up or not during this turn for the player
+     */
     public static boolean canCurrentPlayerMoveUp() {
         return turnSequenceMap.get(currentPlayer).isCanMoveUp();
     }
-
-//    protected void updateTurnSequence() {
-//        try {
-//
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//    }
-
-    //TODO: Cambiare un parametro di Prometheus. Necessario affinchè non salga se costruisce prima di muovere
 
     /**
      * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
