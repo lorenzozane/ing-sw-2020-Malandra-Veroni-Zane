@@ -7,9 +7,6 @@ import it.polimi.ingsw.model.TurnEvents.Actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
 
@@ -77,10 +74,15 @@ public final class MoveVerifier {
                         .getActionType() == ActionType.MOVEMENT).reduce((first, second) -> second).orElse(null);
                 if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot())
                     return false;
+            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
+                    move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
+                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
+                        .reduce((first, second) -> second).orElse(null);
+                if (initialMove != null)
+                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+                        return false;
             }
         }
-
-        //TODO: Implementare controllo canMoveUpPrometheus
         return true;
     }
 

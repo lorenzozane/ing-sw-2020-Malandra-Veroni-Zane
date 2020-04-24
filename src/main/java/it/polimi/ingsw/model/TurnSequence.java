@@ -22,7 +22,7 @@ public class TurnSequence {
         this.playerOwner = playerOwner;
         this.moveSequence = moveSequence;
         this.winConditions = winConditions;
-        setCanMoveUp();
+        setCanMoveUp(true);
     }
 
     public Player getPlayerOwner() {
@@ -38,17 +38,10 @@ public class TurnSequence {
     }
 
     /**
-     * Disables the ability to move up to the player during his turn
+     * Enables or Disables the ability to move up to the player during his turn
      */
-    public void setCanNotMoveUp() {
-        canMoveUp = false;
-    }
-
-    /**
-     * Enables the ability to move up to the player during his turn
-     */
-    public void setCanMoveUp() {
-        canMoveUp = true;
+    public void setCanMoveUp(Boolean canMoveUpValue) {
+        canMoveUp = canMoveUpValue;
     }
 
     public boolean isCanMoveUp() {

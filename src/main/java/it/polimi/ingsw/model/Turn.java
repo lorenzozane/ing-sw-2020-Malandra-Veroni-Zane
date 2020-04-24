@@ -73,6 +73,12 @@ public class Turn {
         }
     }
 
+    public void setOtherPlayerCanMoveUpTo(Boolean canMoveUpValue) {
+        for (Player player : turnSequenceMap.keySet())
+            if (player != currentPlayer)
+                turnSequenceMap.get(player).setCanMoveUp(canMoveUpValue);
+    }
+
     /**
      * Update the turn to the next move to be performed, or to the next player
      */

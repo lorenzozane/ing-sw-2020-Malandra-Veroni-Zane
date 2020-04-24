@@ -41,18 +41,26 @@ public class GameManager implements Observer<PlayerMove> {
                     else
                         return; //MoveNotAllowedException
                 } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
-
+                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+                        turn.setOtherPlayerCanMoveUpTo(false);
+                    else
+                        turn.setOtherPlayerCanMoveUpTo(true);
                 }
 
 
                 performMove(move);
-                checkWinConditions(move);
             } else
                 return; //MoveNotAllowedException
         } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING)
-            if (MoveVerifier.buildValidator(move))
+            if (MoveVerifier.buildValidator(move)) {
+                if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {
+                    performBuildingDome(move);
+                    return;
+                }
+
+
                 performBuilding(move);
-            else
+            } else
                 return; //MoveNotAllowedException
 
         //TODO: Logica gestione mosse
@@ -83,6 +91,8 @@ public class GameManager implements Observer<PlayerMove> {
     protected void performMove(PlayerMove move) {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
+        if (!move.getForcedMove())
+            checkWinConditions(move);
     }
 
     /**
@@ -92,6 +102,16 @@ public class GameManager implements Observer<PlayerMove> {
      */
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
+        turn.addLastMovePerformed(move);
+    }
+
+    /**
+     * Makes the worker perform a build forcing it to be a dome
+     *
+     * @param move The player move containing the information about the worker and the target slot of the move
+     */
+    protected void performBuildingDome(PlayerMove move) {
+        move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
         turn.addLastMovePerformed(move);
     }
 
