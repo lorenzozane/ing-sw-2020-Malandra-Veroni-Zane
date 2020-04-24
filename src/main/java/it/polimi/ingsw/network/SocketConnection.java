@@ -36,7 +36,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
      * Send an object by socket
      *
      * @param message The message we want to send out
-     * @throws IOException Is thrown if an I/O error occurs when try to send something with socket
      */
     private synchronized void send(Object message) {
         try {
@@ -53,7 +52,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
     /**
      * Close the socketConnection
      *
-     * @throws IOException Is thrown if an I/O error occurs when closing this socket
      */
     @Override
     public synchronized void closeConnection() {
@@ -71,7 +69,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
      * Close the nickname's socketConnection
      *
      * @param nickname The client unique name
-     * @throws IOException Is thrown if an I/O error occurs when closing this socket
      */
     private void close(String nickname){
         closeConnection();

@@ -13,25 +13,40 @@ public class Client {
     private String ip;
     private int port;
 
+    /**
+     * Constructor of Client
+     *
+     */
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
 
+
     private boolean active = true;
+
 
     public synchronized boolean isActive(){
         return active;
     }
 
+
     public synchronized void setActive(boolean active){
         this.active = active;
     }
 
+
+    /**
+     * Creation of thread that handle the read from socket
+     *
+     * @param socketIn Client socket where the client receives information
+     * @return The that thread
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
+                    //TODO: da cambiare appena sappiamo cosa inviamo esattamente
                     Object inputObject = socketIn.readObject();
                     if(inputObject instanceof String){
                         System.out.println((String)inputObject);
@@ -49,6 +64,14 @@ public class Client {
         return t;
     }
 
+
+    /**
+     * Creation of thread that handle the write to socket
+     *
+     * @param socketOut Client socket where the client send information
+     * @param stdin Scanner for read the input of client
+     * @return The that thread
+     */
     public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t = new Thread(() -> {
             try {
@@ -65,6 +88,12 @@ public class Client {
         return t;
     }
 
+
+    /**
+     * Connection to the server and creation of threads to handle input/output
+     *
+     * @throws IOException Is thrown if an I/O error occurs while reading stream header
+     */
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established");
