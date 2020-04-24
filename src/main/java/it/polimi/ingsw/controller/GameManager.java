@@ -35,6 +35,8 @@ public class GameManager implements Observer<PlayerMove> {
                         performMove(opponentMove);
                     else
                         return; //MoveNotAllowedException
+                } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
+
                 }
 
 
@@ -65,10 +67,12 @@ public class GameManager implements Observer<PlayerMove> {
 
     protected void performMove(PlayerMove move) {
         move.getMovedWorker().move(move.getTargetSlot());
+        turn.addLastMovePerformed(move);
     }
 
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
+        turn.addLastMovePerformed(move);
     }
 
     protected void checkWinConditions(PlayerMove move) {

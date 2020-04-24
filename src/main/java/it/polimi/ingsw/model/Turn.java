@@ -21,6 +21,8 @@ public class Turn {
     protected static Worker currentWorker = null;
     protected static ArrayList<Player> playerOrder = new ArrayList<>();
     protected static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
+    protected static LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
+    protected static int currentMoveIndex = 0;
     //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
@@ -47,6 +49,10 @@ public class Turn {
         return null;
     }
 
+    public void resetCurrentWorker() {
+        currentWorker = null;
+    }
+
     public TurnSequence getCurrentPlayerTurnSequence() {
         return turnSequenceMap.get(currentPlayer);
     }
@@ -71,21 +77,43 @@ public class Turn {
      * Update the currentPlayer to move to the next player's turn
      */
     protected void updateTurn() {
+        TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
+        if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
+            currentTurnSequence.getMoveSequence().get(currentMoveIndex);
+            currentMoveIndex++;
+            //TODO: Notificare la nuova mossa alla view
+        } else
+            updateToNextPlayerTurn();
+
+    }
+
+    protected void updateToNextPlayerTurn() {
         if (currentPlayer == null)
             currentPlayer = playerOrder.get(0);
         else
             currentPlayer = getNextPlayer();
 
-        //movesPerformed.clear();
+        currentMoveIndex = 0;
+        movesPerformed.clear();
     }
 
     //TODO: Implementazione movesPerformed
-    private void addLastMovePerformed(TurnEvents.Actions movePerformed, Slot startingSlot, Slot targetSlot) {
-
+    public void addLastMovePerformed(PlayerMove lastMove) {
+        movesPerformed.add(lastMove);
     }
 
-    private void restoreToLastMovePerformed() {
-
+    public void restoreToLastMovePerformed() {
+        if (!movesPerformed.isEmpty()) {
+            PlayerMove moveToRestore = movesPerformed.getLast();
+            if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+                //Invert the sequence of starting and target slot to make the reverse move
+                Slot targetSlot = moveToRestore.getStartingSlot();
+                moveToRestore.getMovedWorker().move(targetSlot);
+            } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
+                moveToRestore.getTargetSlot().destroyTopBuilding();
+            }
+        } else
+            return; //TODO: Gestire
     }
 
     protected LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> getMovesPerformed() {

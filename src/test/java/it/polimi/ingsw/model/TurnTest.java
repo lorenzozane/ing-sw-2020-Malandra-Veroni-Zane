@@ -12,7 +12,7 @@ import java.util.Date;
 public class TurnTest {
 
     @Test //completed
-    public void updateTurnTest() throws ParseException {
+    public void updateToNextPlayerTurnTest() throws ParseException {
         Game game = Game.getInstance();
         Turn turn = game.getTurn();
         Player player1 = new Player("lorenzo");

@@ -58,6 +58,11 @@ public class Slot {
         }
     }
 
+    public void destroyTopBuilding() {
+        int index = this.getConstructionTopLevel().getLevelAsInt() - 1;
+        buildingsStatus[index] = null;
+    }
+
     public ArrayList<BuildingLevel> getBuildingsStatus() {   //Crea una copia del buildings status sotto forma di array di stringhe
         ArrayList<BuildingLevel> buildingLevelsCopy = new ArrayList<>(buildingsStatus.length);
         for (int i = 0; i < buildingsStatus.length; i++)
