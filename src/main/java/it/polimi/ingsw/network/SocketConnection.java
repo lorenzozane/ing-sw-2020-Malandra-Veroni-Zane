@@ -15,9 +15,13 @@ public class SocketConnection extends Observable<String> implements Connection, 
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
-
     private boolean active = true;
 
+
+    /**
+     * Constructor of SocketConnection
+     *
+     */
     public SocketConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -27,6 +31,13 @@ public class SocketConnection extends Observable<String> implements Connection, 
         return active;
     }
 
+
+    /**
+     * Send an object by socket
+     *
+     * @param message The message we want to send out
+     * @throws IOException Is thrown if an I/O error occurs when try to send something with socket
+     */
     private synchronized void send(Object message) {
         try {
             out.reset();
@@ -38,6 +49,12 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
     }
 
+
+    /**
+     * Close the socketConnection
+     *
+     * @throws IOException Is thrown if an I/O error occurs when closing this socket
+     */
     @Override
     public synchronized void closeConnection() {
         send("Connection closed!");
@@ -49,23 +66,35 @@ public class SocketConnection extends Observable<String> implements Connection, 
         active = false;
     }
 
-    private void close(String nickname) {
+
+    /**
+     * Close the nickname's socketConnection
+     *
+     * @param nickname The client unique name
+     * @throws IOException Is thrown if an I/O error occurs when closing this socket
+     */
+    private void close(String nickname){
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
         System.out.println("Done!");
     }
 
+
+    /**
+     * Send an object by socket with thread
+     *
+     */
     @Override
     public void asyncSend(final Object message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+        new Thread(() -> send(message)).start();
     }
 
+
+    /**
+     * It set the unique name for the client and keeps alive the socket
+     *
+     */
     @Override
     public void run() {
         Scanner in;
@@ -89,7 +118,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException | ParseException | IllegalAccessException | InterruptedException e) {
+        } catch (IOException | NoSuchElementException | ParseException | IllegalAccessException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             server.deregisterConnection(nickname, this);
@@ -98,6 +127,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
         }
     }
 
+    /**
+     * Check if the name chosen by client has not already been taken
+     *
+     * @return true if it is legal otherwise false
+     */
     private boolean nicknameChecker(String nickname){
         return !server.getNicknameDatabase().contains(nickname);
     }
