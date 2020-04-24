@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Scanner;
 
 public class Game {
 
@@ -107,12 +104,11 @@ public class Game {
         return this.playerList;
     }
 
-    public void challenge() throws IOException {
+    public void challenge(){
         //mostrare alla view del challenger tutti gli dei
         setYoungestPlayer();
         godsDeck = new Deck();
         challengerPlayer = playerList.get(0);
-        godsDeck.printAllDeck();
     }
 }
 

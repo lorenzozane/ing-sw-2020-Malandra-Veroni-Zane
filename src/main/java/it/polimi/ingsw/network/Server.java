@@ -24,7 +24,12 @@ public class Server {
     private final ArrayList<String> usersReady = new ArrayList<>();
 
 
-    //Deregister connection
+    /**
+     * Deregister a client when is no longer reachable
+     *
+     * @param nick Client unique name
+     * @param c Client socket connection
+     */
     public synchronized void deregisterConnection(String nick, Connection c) {
         nicknameDatabase.remove(nick);
         if(playingConnection.isEmpty()) {
@@ -37,8 +42,17 @@ public class Server {
         }
     }
 
-    //Wait for another player
-    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException, InterruptedException {
+
+    /**
+     * Create a lobby room where is possible set up the game
+     *
+     * @param nickname Client unique name
+     * @param c Client socket connection
+     * @throws IOException Is thrown if input scanner has network problem
+     * @throws ParseException Is thrown if the user input not does not match the standard format
+     * @throws IllegalArgumentException Is thrown if adding a new player is not successful
+     */
+    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException {
         Game game = Game.getInstance();
         waitingConnection.put(nickname, c);
         if (waitingConnection.size() == 1 && playingConnection.isEmpty()) {
@@ -136,6 +150,7 @@ public class Server {
                 playingConnection.put(c1, c2);
                 playingConnection.put(c2, c1);
                 waitingConnection.clear();
+                usersReady.clear();
 
                 game.challenge();
                 }
@@ -198,6 +213,7 @@ public class Server {
                 playingConnection.put(c3, c1);
                 playingConnection.put(c3, c2);
                 waitingConnection.clear();
+                usersReady.clear();
 
                 game.challenge();
 
@@ -211,10 +227,21 @@ public class Server {
 
     }
 
+
+    /**
+     * Constructor of Server
+     *
+     * @throws IOException Is thrown if an I/O error occurs when opening the socket
+     */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
 
+
+    /**
+     * It keeps the server listening on PORT and it accepts new client
+     *
+     */
     public void run() {
         while (true) {
             try {
@@ -227,22 +254,45 @@ public class Server {
         }
     }
 
+
     public ArrayList<String> getNicknameDatabase() {
         return nicknameDatabase;
     }
+
 
     public void addNickname(String nickname) {
         this.nicknameDatabase.add(nickname);
     }
 
+
+    /**
+     * Check if the input string about the cli/gui choice is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if it is equals to "cli" or "gui" otherwise false
+     */
     public boolean cliOrGuiChecker(String s) {
         return s.equals("cli") || s.equals("gui");
     }
 
+
+    /**
+     * Check if the input string about number of player is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if it is 2 or 3 otherwise false
+     */
     public boolean noPlayerChecker(String s) {
         return s.equals("2") || s.equals("3");
     }
 
+
+    /**
+     * Check if the input string about the color choice is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if the color is available in the game otherwise false
+     */
     public boolean colorChecker(String s) {
         for (Color color : Game.getInstance().getColorList()) {
             if (s.equals(color.getColorAsString(color).toLowerCase()))
@@ -251,6 +301,13 @@ public class Server {
         return false;
     }
 
+
+    /**
+     * Check if the input string about the birthday date is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if the string is correctly formatted otherwise false
+     */
     public boolean dateChecker(String s){
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
