@@ -110,12 +110,12 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 }
             server.addNickname(nickname);
             this.asyncSend(Message.lobby);
-            server.lobby(this, nickname);
+            server.lobby(nickname, this);
             while(isActive()){
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException | ParseException | IllegalAccessException e) {
+        } catch (IOException | NoSuchElementException | InterruptedException | IllegalAccessException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             server.deregisterConnection(nickname, this);

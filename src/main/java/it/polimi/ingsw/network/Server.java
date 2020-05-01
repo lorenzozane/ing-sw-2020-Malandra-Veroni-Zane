@@ -52,7 +52,7 @@ public class Server {
      * @throws ParseException Is thrown if the user input not does not match the standard format
      * @throws IllegalArgumentException Is thrown if adding a new player is not successful
      */
-    public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException {
+    public synchronized void lobby1(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException {
         Game game = Game.getInstance();
         waitingConnection.put(nickname, c);
         if (waitingConnection.size() == 1 && playingConnection.isEmpty()) {
@@ -318,6 +318,64 @@ public class Server {
             return false;
         }
 
+    }
+
+
+    public void lobby(String nickname, Connection c) throws IOException, InterruptedException, IllegalAccessException {
+        waitingConnection.put(nickname, c);
+        if(waitingConnection.size() == 1){
+            usersReady.add(nickname);
+            Connection c1 = waitingConnection.get(nickname);
+            Scanner in = new Scanner(c1.getSocket().getInputStream());
+
+            c1.asyncSend(Message.chooseNoPlayer);
+            String read = in.nextLine();
+            while (!noPlayerChecker(read)) {
+                c1.asyncSend(Message.chooseNoPlayerAgain);
+                read = in.nextLine();
+            }
+            Game.getInstance().setPlayerNumber(Integer.parseInt(read));
+
+            c1.asyncSend(Message.wait);
+
+            if(Game.getInstance().getPlayerNumber() == usersReady.size())
+                gameLobby();
+
+        }
+        else{
+            usersReady.add(nickname);
+            c.asyncSend(Message.wait);
+            if(Game.getInstance().getPlayerNumber() == usersReady.size())
+                gameLobby();
+        }
+
+
+
+    }
+
+    //PROBLEMA se facciamo partite multiple: quando tiro via le connsioni di chi è entrato in partita quello che
+    //era in 2a/3a posizione va nella 0 quindi dovrebbe decidere da quanti è la partita però non puo
+    // perchè già entrato in lobby :/
+
+
+    public synchronized void gameLobby() throws IllegalAccessException {
+        for(int i=0; i<Game.getInstance().getPlayerNumber(); i++){
+            Player p = new Player(usersReady.get(i));
+            Game.getInstance().addPlayer(p);
+        }
+
+        /*
+        Game.getInstance().setup();
+
+        for(int i=0; i<Game.getInstance().getPlayerNumber(); i++){
+            waitingConnection.remove(usersReady.get(i));
+        }
+
+        if (Game.getInstance().getPlayerNumber() > 0) {
+            usersReady.subList(0, Game.getInstance().getPlayerNumber()).clear();
+        }
+
+         */
     }
 
 }
