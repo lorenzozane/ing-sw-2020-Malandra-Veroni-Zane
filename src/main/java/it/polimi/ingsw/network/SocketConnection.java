@@ -117,7 +117,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException | InterruptedException | IllegalAccessException e) {
+        } catch (IOException | NoSuchElementException | IllegalAccessException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             server.deregisterConnection(nickname, this);

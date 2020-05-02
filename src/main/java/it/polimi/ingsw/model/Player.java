@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.network.Connection;
+import it.polimi.ingsw.network.SocketConnection;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Player {
 
@@ -14,7 +18,7 @@ public class Player {
     private ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
     private boolean isPlaying;
-    private boolean gui = false;
+    private Connection connection;
 
     public Player(Game gameInstance, String nickname) {
         this.gameInstance = gameInstance;
@@ -28,6 +32,14 @@ public class Player {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     public boolean isPlaying() {
@@ -85,11 +97,6 @@ public class Player {
         this.playerCard = playerCard;
     }
 
-    public void setGui(String s) {
-        if (s.equals("gui")) {
-            this.gui = true;
-        }
-    }
 
     public ArrayList<Worker> getWorkers() {
         return workers;

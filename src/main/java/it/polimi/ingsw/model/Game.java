@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.network.Message;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -110,6 +112,23 @@ public class Game {
         godsDeck = new Deck(this);
         challengerPlayer = playerList.get(0);
     }
+
+    public void setup(){
+        sendToAll(Message.birthday);
+
+
+    }
+
+
+
+
+
+    public void sendToAll(String msg){
+        for(Player p : playerList){
+            p.getConnection().asyncSend(msg);
+        }
+    }
+
 }
 
 
