@@ -5,6 +5,9 @@ import java.util.Date;
 
 public class Player {
 
+    //TODO: Non mi fa impazzire che Player abbia bisogno di un'istanza di game. Si può gestire il colore in modo che non serva?
+
+    private final Game gameInstance;
     private final String nickname;
     private Date birthday;
     private Color playerColor;
@@ -13,7 +16,8 @@ public class Player {
     private boolean isPlaying;
     private boolean gui = false;
 
-    public Player(String nickname) {
+    public Player(Game gameInstance, String nickname) {
+        this.gameInstance = gameInstance;
         this.nickname = nickname;
         this.isPlaying = true;
 
@@ -50,15 +54,15 @@ public class Player {
         switch (playerColor) {
             case "red":
                 this.playerColor = Color.ANSI_RED;
-                Game.getInstance().removeColor(Color.ANSI_RED);
+                gameInstance.removeColor(Color.ANSI_RED);
                 break;
             case "cyan":
                 this.playerColor = Color.ANSI_BRIGHT_CYAN;
-                Game.getInstance().removeColor(Color.ANSI_BRIGHT_CYAN);
+                gameInstance.removeColor(Color.ANSI_BRIGHT_CYAN);
                 break;
             case "yellow":
                 this.playerColor = Color.ANSI_YELLOW;
-                Game.getInstance().removeColor(Color.ANSI_YELLOW);
+                gameInstance.removeColor(Color.ANSI_YELLOW);
                 break;
             default:
                 throw new IllegalArgumentException();

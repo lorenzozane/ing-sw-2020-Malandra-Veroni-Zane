@@ -9,7 +9,8 @@ public class WorkerTest {
 
   @Test
   public void setWorkerSlot() {
-    Player player = new Player("test");
+    Game gameInstance = new Game();
+    Player player = new Player(gameInstance, "test");
     Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
     Position positionAfter = new Position(1,1);
@@ -27,7 +28,8 @@ public class WorkerTest {
 
   @Test
   public void move() {
-    Player player = new Player("test");
+    Game gameInstance = new Game();
+    Player player = new Player(gameInstance, "test");
     Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
     Position positionAfter = new Position(1,1);
@@ -45,7 +47,8 @@ public class WorkerTest {
 
   @Test
   public void buildConstruction() {
-    Player player = new Player("test");
+    Game gameInstance = new Game();
+    Player player = new Player(gameInstance, "test");
     Worker worker = new Worker(player, 1);
     Position buildPosition = new Position(0,0);
     Slot buildingInSlot = new Slot(buildPosition);

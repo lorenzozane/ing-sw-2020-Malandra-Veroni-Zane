@@ -5,8 +5,8 @@ import java.util.Comparator;
 
 public class Game {
 
-    private static Game instance;   //Singleton pattern
-    private final Turn turn = new Turn();
+//    private static Game instance;   //Singleton pattern
+    private final Turn turn = new Turn(this);
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber = 1;
     private Board board = new Board();
@@ -18,7 +18,7 @@ public class Game {
         add(Color.ANSI_YELLOW);
     }};
 
-    private Game() {
+    public Game() {
 
     }
 
@@ -30,11 +30,11 @@ public class Game {
         return board.clone();
     }
 
-    public static Game getInstance() {
-        if (instance == null)
-            instance = new Game();
-        return instance;
-    }
+//    public static Game getInstance() {
+//        if (instance == null)
+//            instance = new Game();
+//        return instance;
+//    }
 
     public int getPlayerNumber() {
         return playerNumber;
@@ -107,7 +107,7 @@ public class Game {
     public void challenge(){
         //mostrare alla view del challenger tutti gli dei
         setYoungestPlayer();
-        godsDeck = new Deck();
+        godsDeck = new Deck(this);
         challengerPlayer = playerList.get(0);
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 public class PlayerMove {
 
+    private final Turn turn;
     private final Player player;
     private final Worker movedWorker;
     private final TurnEvents.Actions move;
@@ -9,7 +10,8 @@ public class PlayerMove {
     private final Slot targetSlot;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, TurnEvents.Actions move, Slot targetSlot) {
+    public PlayerMove(Turn turn, Worker worker, TurnEvents.Actions move, Slot targetSlot) {
+        this.turn = turn;
         this.movedWorker = worker;
         this.player = worker.getPlayerOwner();
         this.move = move;
@@ -39,7 +41,7 @@ public class PlayerMove {
 
     //TODO: Check se deve essere necessariamente public
     public void setForcedMove(Player player) {
-        if (player == Game.getInstance().getTurn().getCurrentWorker().getPlayerOwner())
+        if (player == turn.getCurrentWorker().getPlayerOwner())
             forcedMove = true;
     }
 

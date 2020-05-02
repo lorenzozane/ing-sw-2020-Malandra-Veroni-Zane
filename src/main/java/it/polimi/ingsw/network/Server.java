@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    private Game gameInstance;
     private static final int PORT = 12345;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
@@ -53,15 +54,15 @@ public class Server {
      * @throws IllegalArgumentException Is thrown if adding a new player is not successful
      */
     public synchronized void lobby(Connection c, String nickname) throws IOException, ParseException, IllegalAccessException {
-        Game game = Game.getInstance();
+        gameInstance = new Game();
         waitingConnection.put(nickname, c);
         if (waitingConnection.size() == 1 && playingConnection.isEmpty()) {
             Connection c1 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c1.getSocket().getInputStream());
 
 
-            Player p1 = new Player(nickname);
-            game.addPlayer(p1);
+            Player p1 = new Player(gameInstance, nickname);
+            gameInstance.addPlayer(p1);
 
 
             c1.asyncSend(Message.chooseCLIorGUI);
@@ -70,7 +71,7 @@ public class Server {
                 c1.asyncSend(Message.chooseCLIorGUIAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(0).setGui(read.toLowerCase());
+            gameInstance.getPlayerList().get(0).setGui(read.toLowerCase());
 
 
             c1.asyncSend(Message.chooseNoPlayer);
@@ -79,16 +80,16 @@ public class Server {
                 c1.asyncSend(Message.chooseNoPlayerAgain);
                 read = in.nextLine();
             }
-            game.setPlayerNumber(Integer.parseInt(read));
+            gameInstance.setPlayerNumber(Integer.parseInt(read));
 
 
-            c1.asyncSend(Message.chooseColor + game.getAvailableColor());
+            c1.asyncSend(Message.chooseColor + gameInstance.getAvailableColor());
             read = in.nextLine();
             while (!colorChecker(read.toLowerCase())) {
-                c1.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
+                c1.asyncSend(Message.chooseColorAgain + gameInstance.getAvailableColor());
                 read = in.nextLine();
             }
-            game.getPlayerList().get(0).setPlayerColor(read.toLowerCase());
+            gameInstance.getPlayerList().get(0).setPlayerColor(read.toLowerCase());
 
 
             c1.asyncSend(Message.birthday);
@@ -98,7 +99,7 @@ public class Server {
                 c1.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(0).setBirthday(dateFormat.parse(read));
+            gameInstance.getPlayerList().get(0).setBirthday(dateFormat.parse(read));
 
             usersReady.add(nickname);
             c1.asyncSend(Message.wait);
@@ -108,8 +109,8 @@ public class Server {
             Connection c2 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c2.getSocket().getInputStream());
 
-            Player p2 = new Player(nickname);
-            game.addPlayer(p2);
+            Player p2 = new Player(gameInstance, nickname);
+            gameInstance.addPlayer(p2);
 
 
             c2.asyncSend(Message.chooseCLIorGUI);
@@ -118,16 +119,16 @@ public class Server {
                 c2.asyncSend(Message.chooseCLIorGUIAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(1).setGui(read.toLowerCase());
+            gameInstance.getPlayerList().get(1).setGui(read.toLowerCase());
 
 
-            c2.asyncSend(Message.chooseColor + game.getAvailableColor());
+            c2.asyncSend(Message.chooseColor + gameInstance.getAvailableColor());
             read = in.nextLine();
             while (!colorChecker(read.toLowerCase())) {
-                c2.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
+                c2.asyncSend(Message.chooseColorAgain + gameInstance.getAvailableColor());
                 read = in.nextLine();
             }
-            game.getPlayerList().get(1).setPlayerColor(read.toLowerCase());
+            gameInstance.getPlayerList().get(1).setPlayerColor(read.toLowerCase());
 
 
             c2.asyncSend(Message.birthday);
@@ -137,12 +138,12 @@ public class Server {
                 c2.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(1).setBirthday(dateFormat.parse(read));
+            gameInstance.getPlayerList().get(1).setBirthday(dateFormat.parse(read));
 
             usersReady.add(nickname);
 
 
-            if (game.getPlayerNumber() == 2 && usersReady.size() == 2) {
+            if (gameInstance.getPlayerNumber() == 2 && usersReady.size() == 2) {
                 Connection c1 = waitingConnection.get(usersReady.get(0));
                 c1.asyncSend(Message.gameLoading);
                 c2.asyncSend(Message.gameLoading);
@@ -152,7 +153,7 @@ public class Server {
                 waitingConnection.clear();
                 usersReady.clear();
 
-                game.challenge();
+                gameInstance.challenge();
                 }
 
             else
@@ -164,8 +165,8 @@ public class Server {
             Connection c3 = waitingConnection.get(nickname);
             Scanner in = new Scanner(c3.getSocket().getInputStream());
 
-            Player p3 = new Player(nickname);
-            game.addPlayer(p3);
+            Player p3 = new Player(gameInstance, nickname);
+            gameInstance.addPlayer(p3);
 
 
             c3.asyncSend(Message.chooseCLIorGUI);
@@ -174,16 +175,16 @@ public class Server {
                 c3.asyncSend(Message.chooseCLIorGUIAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(2).setGui(read.toLowerCase());
+            gameInstance.getPlayerList().get(2).setGui(read.toLowerCase());
 
 
-            c3.asyncSend(Message.chooseColor + game.getAvailableColor());
+            c3.asyncSend(Message.chooseColor + gameInstance.getAvailableColor());
             read = in.nextLine();
             while (!colorChecker(read.toLowerCase())) {
-                c3.asyncSend(Message.chooseColorAgain + game.getAvailableColor());
+                c3.asyncSend(Message.chooseColorAgain + gameInstance.getAvailableColor());
                 read = in.nextLine();
             }
-            game.getPlayerList().get(2).setPlayerColor(read.toLowerCase());
+            gameInstance.getPlayerList().get(2).setPlayerColor(read.toLowerCase());
 
 
             c3.asyncSend(Message.birthday);
@@ -193,12 +194,12 @@ public class Server {
                 c3.asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
-            game.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
+            gameInstance.getPlayerList().get(2).setBirthday(dateFormat.parse(read));
 
             usersReady.add(nickname);
 
 
-            if (game.getPlayerNumber() == 3 && usersReady.size()==3) {
+            if (gameInstance.getPlayerNumber() == 3 && usersReady.size()==3) {
                 Connection c1 = waitingConnection.get(usersReady.get(0));
                 Connection c2 = waitingConnection.get(usersReady.get(1));
                 c1.asyncSend(Message.gameLoading);
@@ -215,7 +216,7 @@ public class Server {
                 waitingConnection.clear();
                 usersReady.clear();
 
-                game.challenge();
+                gameInstance.challenge();
 
             } else
                 c3.asyncSend(Message.wait);
@@ -246,7 +247,7 @@ public class Server {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
-                SocketConnection socketConnection = new SocketConnection(newSocket, this);
+                SocketConnection socketConnection = new SocketConnection(newSocket, this, gameInstance);
                 executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");
@@ -294,7 +295,7 @@ public class Server {
      * @return true if the color is available in the game otherwise false
      */
     public boolean colorChecker(String s) {
-        for (Color color : Game.getInstance().getColorList()) {
+        for (Color color : gameInstance.getColorList()) {
             if (s.equals(color.getColorAsString(color).toLowerCase()))
                 return true;
         }
