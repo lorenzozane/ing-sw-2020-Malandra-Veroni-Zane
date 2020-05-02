@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 public class GameManager implements Observer<PlayerMove> {
 
-    private final Game game;
+    private final Game gameInstance;
     private final Turn turn;
-//    private final MoveVerifier moveVerifier = new MoveVerifier();
+    private final MoveVerifier moveVerifier;
 
-    public GameManager() {
-        this.game = Game.getInstance();
-        this.turn = this.game.getTurn();
+    public GameManager(Game gameInstance) {
+        this.gameInstance = gameInstance;
+        this.turn = this.gameInstance.getTurn();
+        this.moveVerifier = new MoveVerifier(this.gameInstance);
     }
 
     /**
@@ -28,15 +29,15 @@ public class GameManager implements Observer<PlayerMove> {
             return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
-            if (MoveVerifier.moveValidator(move)) {
+            if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                    PlayerMove opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                    PlayerMove opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
                             Actions.MOVE_STANDARD,
-                            game.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
+                            gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
                     opponentMove.setForcedMove(move.getPlayer());
 
-                    if (MoveVerifier.moveValidator(opponentMove))
+                    if (moveVerifier.moveValidator(opponentMove))
                         performMove(opponentMove);
                     else
                         return; //MoveNotAllowedException
@@ -52,7 +53,7 @@ public class GameManager implements Observer<PlayerMove> {
             } else
                 return; //MoveNotAllowedException
         } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING)
-            if (MoveVerifier.buildValidator(move)) {
+            if (moveVerifier.buildValidator(move)) {
                 if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {
                     performBuildingDome(move);
                     return;
@@ -74,7 +75,7 @@ public class GameManager implements Observer<PlayerMove> {
     protected ArrayList<Worker> initialCheckMovableWorker() {
         ArrayList<Worker> movableWorkers = new ArrayList<>(2);
         for (Worker worker : turn.getCurrentPlayerWorkers()) {
-            boolean canMove = MoveVerifier.checkIfStuck(worker);
+            boolean canMove = moveVerifier.checkIfStuck(worker);
 
             if (canMove)
                 movableWorkers.add(worker);

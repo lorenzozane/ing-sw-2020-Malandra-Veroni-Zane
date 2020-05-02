@@ -17,18 +17,20 @@ import java.util.*;
  */
 public class Turn {
 
-    protected static Player currentPlayer = null;
-    protected static Worker currentWorker = null;
-    protected static ArrayList<Player> playerOrder = new ArrayList<>();
-    protected static HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
-    protected static LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
-    protected static int currentMoveIndex = 0;
+    protected Game gameInstance;
+    protected Player currentPlayer = null;
+    protected Worker currentWorker = null;
+    protected ArrayList<Player> playerOrder = new ArrayList<>();
+    protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
+    protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
+    protected int currentMoveIndex = 0;
     //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
 
+    //TODO: IMPORTANTE! Popolare turnSequenceMap!
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
-    protected Turn() {
-
+    protected Turn(Game gameInstance) {
+        this.gameInstance = gameInstance;
     }
 
     public boolean isPlayerTurn(Player player) {
@@ -63,9 +65,9 @@ public class Turn {
      * @param players List of players
      * @throws IllegalArgumentException Is thrown if the number of players to compare does not match the numbers of players in game
      */
-    protected static void setPlayerOrder(Player... players) throws IllegalArgumentException {
+    protected void setPlayerOrder(Player... players) throws IllegalArgumentException {
         if (playerOrder.isEmpty()) {
-            if (players.length != Game.getInstance().getPlayerNumber())
+            if (players.length != gameInstance.getPlayerNumber())
                 throw new IllegalArgumentException();
 
             playerOrder.addAll(Arrays.asList(players));
@@ -83,6 +85,8 @@ public class Turn {
      * Update the turn to the next move to be performed, or to the next player
      */
     protected void updateTurn() {
+        if (currentPlayer == null)
+            updateToNextPlayerTurn();
         TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
         if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
             currentTurnSequence.getMoveSequence().get(currentMoveIndex);
@@ -158,7 +162,7 @@ public class Turn {
      *
      * @return A boolean describing the possibility of move up or not during this turn for the player
      */
-    public static boolean canCurrentPlayerMoveUp() {
+    public boolean canCurrentPlayerMoveUp() {
         return turnSequenceMap.get(currentPlayer).isCanMoveUp();
     }
 

@@ -17,13 +17,15 @@ import org.w3c.dom.Element;
  */
 public class Deck {
 
+    Game gameInstance;
     private final ArrayList<GodsCard> cardList = new ArrayList<>();
     private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
 
     /**
      * Constructor of the game deck
      */
-    public Deck() {
+    public Deck(Game gameInstance) {
+        this.gameInstance = gameInstance;
         buildDeck();
     }
 
@@ -73,7 +75,7 @@ public class Deck {
     public void chooseCards(String... godsCardName) throws IllegalArgumentException {
         try {
             //Se il numero di parametri passati è diverso dal numero di giocatori, viene lanciata un'IllegalArgumentException
-            if (godsCardName.length != Game.getInstance().getPlayerNumber())
+            if (godsCardName.length != gameInstance.getPlayerNumber())
                 throw new IllegalArgumentException();
 
             for (String cardName : godsCardName)

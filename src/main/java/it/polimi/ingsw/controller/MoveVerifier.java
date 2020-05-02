@@ -12,16 +12,16 @@ import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
 
 public final class MoveVerifier {
 
-    private static final Game game;
-    private static final Turn turn;
+    private final Game gameInstance;
+    private final Turn turn;
 
-    static {
-        game = Game.getInstance();
-        turn = game.getTurn();
+    protected MoveVerifier(Game gameInstance) {
+        this.gameInstance = gameInstance;
+        this.turn = gameInstance.getTurn();
     }
 
-    private MoveVerifier() {
-    }
+    //If we wanted to write all methods as static, we would also have to pass al the game and turn
+    //instance directly to the methods (and not having game and turn instances belonging to the class)
 
     /**
      * Check if, at the beginning of a turn, the worker has a slot adjacent him available to move on
@@ -29,10 +29,10 @@ public final class MoveVerifier {
      * @param worker The worker whose ability to move is to be checked
      * @return Returns a boolean who approves or refuses the possibility to move of the worker
      */
-    public static boolean checkIfStuck(Worker worker) {
+    public boolean checkIfStuck(Worker worker) {
         boolean canMove = false;
         Slot workerSlot = worker.getWorkerSlot();
-        ArrayList<Slot> slotsToVerify = game.getBoard().getAdjacentSlots(workerSlot);
+        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
 
         int i = 0;
         while (!canMove && i < slotsToVerify.size()) {
@@ -54,7 +54,7 @@ public final class MoveVerifier {
      * @param move The move that contains all the information related to the movement and the target slot
      * @return Returns a boolean who approves or refuses the movement request
      */
-    public static boolean moveValidator(PlayerMove move) {
+    public boolean moveValidator(PlayerMove move) {
         if (move.getMove().getActionType() != ActionType.MOVEMENT)
             return false;
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
@@ -64,7 +64,7 @@ public final class MoveVerifier {
         if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1)
             if (!move.getForcedMove())
                 return false;
-        if (!Turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+        if (!turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
             return false;
         if (move.getTargetSlot().getWorkerInSlot() != null) {
             return move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH;
@@ -92,10 +92,10 @@ public final class MoveVerifier {
      * @param worker The worker whose ability to build is to be checked
      * @return Returns a boolean who approves or refuses the possibility to build of the worker
      */
-    public static boolean checkIfCanBuild(Worker worker) {
+    public boolean checkIfCanBuild(Worker worker) {
         boolean canBuild = false;
         Slot workerSlot = worker.getWorkerSlot();
-        ArrayList<Slot> slotsToVerify = game.getBoard().getAdjacentSlots(workerSlot);
+        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
 
         int i = 0;
         while (!canBuild && i < slotsToVerify.size()) {
@@ -117,7 +117,7 @@ public final class MoveVerifier {
      * @param move The move that contains all the information related to the new construction and the target slot
      * @return Returns a boolean who approves or refuses the new construction request
      */
-    public static boolean buildValidator(PlayerMove move) {
+    public boolean buildValidator(PlayerMove move) {
         if (move.getMove().getActionType() != ActionType.BUILDING)
             return false;
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
