@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private Game getInstance = new Game();
+    private Game getInstance;
     private static final int PORT = 12345;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
@@ -23,6 +23,7 @@ public class Server {
     private final Map<Connection, Connection> playingConnection = new HashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private final ArrayList<String> usersReady = new ArrayList<>();
+    private boolean isSomeoneCreatingAGame = false;
 
 
     /**
@@ -318,6 +319,7 @@ public class Server {
 
     public void lobby(String nickname, Connection c) throws IOException, IllegalAccessException {
         waitingConnection.put(nickname, c);
+        //if (isSomeoneCreatingAGame..)
         if(waitingConnection.size() == 1){
             usersReady.add(nickname);
             Connection c1 = waitingConnection.get(nickname);
@@ -333,14 +335,14 @@ public class Server {
 
             c1.asyncSend(Message.wait);
 
-            if(getInstance.getPlayerNumber() == usersReady.size())
+            if(getInstance.getPlayerNumber() <= usersReady.size())
                 gameLobby();
 
         }
         else{
             usersReady.add(nickname);
             c.asyncSend(Message.wait);
-            if(getInstance.getPlayerNumber() == usersReady.size())
+            if(getInstance.getPlayerNumber() <= usersReady.size())
                 gameLobby();
         }
 
@@ -348,7 +350,7 @@ public class Server {
 
     }
 
-    //PROBLEMA se facciamo partite multiple: quando tiro via le connsioni di chi è entrato in partita quello che
+    //TODO: PROBLEMA se facciamo partite multiple: quando tiro via le connsioni di chi è entrato in partita quello che
     //era in 2a/3a posizione va nella 0 quindi dovrebbe decidere da quanti è la partita però non puo
     // perchè già entrato in lobby :/
 

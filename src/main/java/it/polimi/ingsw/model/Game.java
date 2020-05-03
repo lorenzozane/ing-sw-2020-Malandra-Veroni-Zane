@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 public class Game {
 
-//    private static Game instance;   //Singleton pattern
     private final Turn turn = new Turn(this);
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber = 1;
@@ -31,12 +30,6 @@ public class Game {
     public Board getBoard() {
         return board.clone();
     }
-
-//    public static Game getInstance() {
-//        if (instance == null)
-//            instance = new Game();
-//        return instance;
-//    }
 
     public int getPlayerNumber() {
         return playerNumber;
