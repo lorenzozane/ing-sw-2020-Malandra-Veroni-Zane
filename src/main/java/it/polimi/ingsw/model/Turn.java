@@ -24,10 +24,13 @@ public class Turn {
     protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
-    //protected static LinkedHashMap<TurnEvents.Actions, LinkedList<Slot>> movesPerformed = new LinkedHashMap<>();
 
     //TODO: IMPORTANTE! Popolare turnSequenceMap!
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
     protected Turn(Game gameInstance) {
         this.gameInstance = gameInstance;

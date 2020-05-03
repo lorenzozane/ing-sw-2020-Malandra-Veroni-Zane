@@ -11,7 +11,7 @@ public class Game {
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber = 1;
     private Board board = new Board();
-    private Deck godsDeck;
+    private Deck deck = new Deck(this);
     private Player challengerPlayer;
     private ArrayList<Color> colorList = new ArrayList<Color>() {{
         add(Color.ANSI_BRIGHT_CYAN);
@@ -29,6 +29,10 @@ public class Game {
 
     public Board getBoard() {
         return board.clone();
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 
     public int getPlayerNumber() {
@@ -102,7 +106,6 @@ public class Game {
     public void challenge(){
         //mostrare alla view del challenger tutti gli dei
         setYoungestPlayer();
-        godsDeck = new Deck(this);
         challengerPlayer = playerList.get(0);
     }
 

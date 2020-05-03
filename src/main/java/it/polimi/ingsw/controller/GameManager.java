@@ -31,6 +31,7 @@ public class GameManager implements Observer<PlayerMove> {
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
+                //TODO: Check (creare mossa diversamente se flip) & (verificare se c'è dentro qualcuno)
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                     PlayerMove opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
                             Actions.MOVE_STANDARD,

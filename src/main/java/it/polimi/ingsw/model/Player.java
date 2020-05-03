@@ -62,23 +62,8 @@ public class Player {
         return playerColor;
     }
 
-    public void setPlayerColor(String playerColor) {
-        switch (playerColor) {
-            case "red":
-                this.playerColor = Color.ANSI_RED;
-                gameInstance.removeColor(Color.ANSI_RED);
-                break;
-            case "cyan":
-                this.playerColor = Color.ANSI_BRIGHT_CYAN;
-                gameInstance.removeColor(Color.ANSI_BRIGHT_CYAN);
-                break;
-            case "yellow":
-                this.playerColor = Color.ANSI_YELLOW;
-                gameInstance.removeColor(Color.ANSI_YELLOW);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+    public void setPlayerColor(Color playerColor) {
+        this.playerColor = playerColor;
 
         for (Worker worker : workers)
             worker.setColor(this.playerColor);

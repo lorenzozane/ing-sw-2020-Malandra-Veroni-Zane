@@ -74,14 +74,13 @@ public class Deck {
      */
     public void chooseCards(String... godsCardName) throws IllegalArgumentException {
         try {
-            //Se il numero di parametri passati è diverso dal numero di giocatori, viene lanciata un'IllegalArgumentException
+            //If the parameters number is different from the number of players, an IllegalArgumentException is thrown
             if (godsCardName.length != gameInstance.getPlayerNumber())
                 throw new IllegalArgumentException();
 
             for (String cardName : godsCardName)
                 addCardToChosen(cardName);
 
-//            createChosenCardXML();
         } catch (IllegalArgumentException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -98,7 +97,7 @@ public class Deck {
     private void addCardToChosen(String godCardName) throws IllegalArgumentException {
         try {
             if (cardList.size() != 0) {
-                if (cardList.stream().anyMatch(x -> x.getCardName().equals(godCardName))) {
+                if (isAGodName(godCardName)) {
                     if (chosenCards.containsKey(godCardName))
                         throw new IllegalArgumentException();
 
@@ -140,6 +139,10 @@ public class Deck {
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+
+    public boolean isAGodName(String godCardName) {
+        return cardList.stream().anyMatch(x -> x.getCardName().equals(godCardName));
     }
 
 //    /**
