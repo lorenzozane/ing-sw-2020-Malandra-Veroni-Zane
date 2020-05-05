@@ -15,12 +15,17 @@ public final class MoveVerifier {
     private final Game gameInstance;
     private final Turn turn;
 
+    /**
+     * Constructor of the MoveVerifier which assists the GameManager in the management of the game logic (movement and construction)
+     *
+     * @param gameInstance Is the current game instance
+     */
     protected MoveVerifier(Game gameInstance) {
         this.gameInstance = gameInstance;
         this.turn = gameInstance.getTurn();
     }
 
-    //If we wanted to write all methods as static, we would also have to pass al the game and turn
+    //If we wanted to write all methods as static, we should also pass all the game and turn
     //instance directly to the methods (and not having game and turn instances belonging to the class)
 
     /**
@@ -55,17 +60,18 @@ public final class MoveVerifier {
      * @return Returns a boolean who approves or refuses the movement request
      */
     public boolean moveValidator(PlayerMove move) {
-        if (move.getMove().getActionType() != ActionType.MOVEMENT)
+        if (move == null || move.getMove().getActionType() != ActionType.MOVEMENT)
             return false;
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
             return false;
         if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
             return false;
-        if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1)
-            if (!move.getForcedMove())
+        if (!move.getForcedMove()) {
+            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1)
                 return false;
-        if (!turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
-            return false;
+            if (!turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+                return false;
+        }
         if (move.getTargetSlot().getWorkerInSlot() != null) {
             return move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH;
         } else {
@@ -74,6 +80,7 @@ public final class MoveVerifier {
                         .getActionType() == ActionType.MOVEMENT).reduce((first, second) -> second).orElse(null);
                 if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot())
                     return false;
+            //} else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) && ...) {
             } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
                     move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
@@ -102,7 +109,8 @@ public final class MoveVerifier {
             Slot slotToVerify = slotsToVerify.get(i);
             if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
                 if (slotToVerify.getWorkerInSlot() == null)
-                    if (slotToVerify.getConstructionTopLevel().hasProperty(BuildingProperty.CAN_BUILD_ON_IT))
+                    if (slotToVerify.getConstructionTopLevel().hasProperty(BuildingProperty.CAN_BUILD_ON_IT) ||
+                            slotToVerify.getConstructionTopLevel() == null)
                         canBuild = true;
 
             i++;
@@ -118,7 +126,7 @@ public final class MoveVerifier {
      * @return Returns a boolean who approves or refuses the new construction request
      */
     public boolean buildValidator(PlayerMove move) {
-        if (move.getMove().getActionType() != ActionType.BUILDING)
+        if (move == null || move.getMove().getActionType() != ActionType.BUILDING)
             return false;
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
             return false;

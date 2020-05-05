@@ -13,6 +13,9 @@ public class Board implements Cloneable {
         initializeBoard();
     }
 
+    /**
+     * Initialize the game board instantiating all the slots
+     */
     private void initializeBoard(){
         for (int i = 0; i < BOARD_DIMENSION; i++)
             for (int j = 0; j < BOARD_DIMENSION; j++)
@@ -23,6 +26,12 @@ public class Board implements Cloneable {
         return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];
     }
 
+    /**
+     * Allows to obtain all the slots adjacent to the central one
+     *
+     * @param centerSlot The central slot
+     * @return An ArrayList of Slot containing all the adjacent slots
+     */
     public ArrayList<Slot> getAdjacentSlots(Slot centerSlot){
         ArrayList<Slot> adjacentSlots = new ArrayList<>(8);
         int centerSlotX = centerSlot.getSlotPosition().getCoordinateX();
@@ -36,12 +45,19 @@ public class Board implements Cloneable {
         return adjacentSlots;
     }
 
+    /**
+     * Allows to obtain the next slot along the movement direction
+     *
+     * @param startingSlot The starting slot of the movement
+     * @param targetSlot The target slot of the movement
+     * @return The next slot along the movement direction
+     */
     public Slot getBackwardsSlot(Slot startingSlot, Slot targetSlot) {
         int nextSlotX = targetSlot.getSlotPosition().getCoordinateX() + (targetSlot.getSlotPosition().getCoordinateX() - startingSlot.getSlotPosition().getCoordinateX());
         int nextSlotY = targetSlot.getSlotPosition().getCoordinateY() + (targetSlot.getSlotPosition().getCoordinateY() - startingSlot.getSlotPosition().getCoordinateY());
 
         if (nextSlotX < 0 || nextSlotX > BOARD_DIMENSION - 1 || nextSlotY < 0 || nextSlotY > BOARD_DIMENSION - 1)
-            return null;
+            return null; //Throw exception (?)
 
         return gameBoardSlots[nextSlotX][nextSlotY];
     }

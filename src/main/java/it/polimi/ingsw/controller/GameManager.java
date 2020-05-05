@@ -12,6 +12,11 @@ public class GameManager implements Observer<PlayerMove> {
     private final Turn turn;
     private final MoveVerifier moveVerifier;
 
+    /**
+     * Constructor of the GameManager that deals with managing the game logic (movement and construction)
+     *
+     * @param gameInstance Is the current game instance
+     */
     public GameManager(Game gameInstance) {
         this.gameInstance = gameInstance;
         this.turn = this.gameInstance.getTurn();
@@ -31,24 +36,31 @@ public class GameManager implements Observer<PlayerMove> {
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
-                //TODO: Check (creare mossa diversamente se flip) & (verificare se c'è dentro qualcuno)
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                    PlayerMove opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
-                            Actions.MOVE_STANDARD,
-                            gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
-                    opponentMove.setForcedMove(move.getPlayer());
+                    PlayerMove opponentMove = null;
+                    if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
+                        opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
+                                Actions.MOVE_STANDARD,
+                                move.getStartingSlot());
+                        opponentMove.setForcedMove(move.getPlayer());
+                    } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                        opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
+                                Actions.MOVE_STANDARD,
+                                gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
+                        opponentMove.setForcedMove(move.getPlayer());
+                    }
 
                     if (moveVerifier.moveValidator(opponentMove))
                         performMove(opponentMove);
                     else
                         return; //MoveNotAllowedException
+                //Move disabling opponent can move up handling
                 } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
                     if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
                         turn.setOtherPlayerCanMoveUpTo(false);
                     else
                         turn.setOtherPlayerCanMoveUpTo(true);
                 }
-
 
                 performMove(move);
             } else
@@ -60,12 +72,9 @@ public class GameManager implements Observer<PlayerMove> {
                     return;
                 }
 
-
                 performBuilding(move);
             } else
                 return; //MoveNotAllowedException
-
-        //TODO: Logica gestione mosse
     }
 
     /**
