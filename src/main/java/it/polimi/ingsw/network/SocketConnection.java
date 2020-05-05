@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class SocketConnection extends Observable<String> implements Connection, Runnable {
 
-    private final Game gameInstance;
+    //private final Game gameInstance;
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
@@ -23,8 +23,8 @@ public class SocketConnection extends Observable<String> implements Connection, 
      * Constructor of SocketConnection
      *
      */
-    public SocketConnection(Socket socket, Server server, Game gameInstance) {
-        this.gameInstance = gameInstance;
+    public SocketConnection(Socket socket, Server server/*, Game gameInstance*/) {
+        //this.gameInstance = gameInstance;
         this.socket = socket;
         this.server = server;
     }
@@ -121,7 +121,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
             System.err.println("Error!" + e.getMessage());
         }finally{
             server.deregisterConnection(nickname, this);
-            gameInstance.removePlayerByName(nickname);
             close(nickname);
         }
     }

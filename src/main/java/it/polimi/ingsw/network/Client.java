@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class Client {
     private String ip;
     private int port;
+    private boolean active = true;
 
     /**
      * Constructor of Client
@@ -21,9 +22,6 @@ public class Client {
         this.ip = ip;
         this.port = port;
     }
-
-
-    private boolean active = true;
 
 
     public synchronized boolean isActive(){

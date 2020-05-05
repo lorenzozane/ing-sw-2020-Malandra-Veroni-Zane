@@ -15,15 +15,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private Game getInstance;
     private static final int PORT = 12345;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
-    private final Map<String, Connection> waitingConnection = new HashMap<>();
+    private final Map<String, Connection> waitingConnection = new LinkedHashMap<>();
     private final Map<Connection, Connection> playingConnection = new HashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private final ArrayList<String> usersReady = new ArrayList<>();
     private boolean isSomeoneCreatingAGame = false;
+    private int nPlayer = 100;
+    private final Object lock = new Object();
 
 
     /**
@@ -242,7 +243,7 @@ public class Server {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
-                SocketConnection socketConnection = new SocketConnection(newSocket, this, getInstance);
+                SocketConnection socketConnection = new SocketConnection(newSocket, this/*, this, getInstance*/);
                 executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");
@@ -262,42 +263,33 @@ public class Server {
 
 
     /**
-     * Check if the input string about the cli/gui choice is legal
-     *
-     * @param s String from user input that must be checked
-     * @return true if it is equals to "cli" or "gui" otherwise false
-     */
-    public boolean cliOrGuiChecker(String s) {
-        return s.equals("cli") || s.equals("gui");
-    }
-
-
-    /**
      * Check if the input string about number of player is legal
      *
      * @param s String from user input that must be checked
      * @return true if it is 2 or 3 otherwise false
      */
-    public boolean noPlayerChecker(String s) {
-        return s.equals("2") || s.equals("3");
+    public boolean noPlayerChecker(int s) {
+        return s == 2 || s == 3;
     }
 
-
+    //da mettere nel controller
     /**
      * Check if the input string about the color choice is legal
      *
      * @param s String from user input that must be checked
      * @return true if the color is available in the game otherwise false
      */
-    public boolean colorChecker(String s) {
+    /*public boolean colorChecker(String s) {
         for (Color color : getInstance.getColorList()) {
             if (s.equals(color.getColorAsString(color).toLowerCase()))
                 return true;
         }
         return false;
     }
+     */
 
 
+    //da mettere nel controller o addirittura lato client
     /**
      * Check if the input string about the birthday date is legal
      *
@@ -319,63 +311,72 @@ public class Server {
 
     public void lobby(String nickname, Connection c) throws IOException, IllegalAccessException {
         waitingConnection.put(nickname, c);
-        //if (isSomeoneCreatingAGame..)
-        if(waitingConnection.size() == 1){
+        if (!isSomeoneCreatingAGame){
+            isSomeoneCreatingAGame = true;
             usersReady.add(nickname);
-            Connection c1 = waitingConnection.get(nickname);
-            Scanner in = new Scanner(c1.getSocket().getInputStream());
 
-            c1.asyncSend(Message.chooseNoPlayer);
-            String read = in.nextLine();
-            while (!noPlayerChecker(read)) {
-                c1.asyncSend(Message.chooseNoPlayerAgain);
-                read = in.nextLine();
-            }
-            getInstance.setPlayerNumber(Integer.parseInt(read));
-
-            c1.asyncSend(Message.wait);
-
-            if(getInstance.getPlayerNumber() <= usersReady.size())
-                gameLobby();
-
+            creatorSetup(c);
         }
         else{
             usersReady.add(nickname);
-            c.asyncSend(Message.wait);
-            if(getInstance.getPlayerNumber() <= usersReady.size())
+
+            if(nPlayer <= waitingConnection.size())
                 gameLobby();
+
         }
-
-
-
     }
 
-    //TODO: PROBLEMA se facciamo partite multiple: quando tiro via le connsioni di chi è entrato in partita quello che
-    //era in 2a/3a posizione va nella 0 quindi dovrebbe decidere da quanti è la partita però non puo
-    // perchè già entrato in lobby :/
 
 
-    public synchronized void gameLobby() throws IllegalAccessException {
-        for(int i=0; i<getInstance.getPlayerNumber(); i++){
-            Player p = new Player(getInstance, usersReady.get(i));
+    public synchronized void gameLobby() throws IllegalAccessException, IOException {
+        Game game = new Game();
+        game.setPlayerNumber(nPlayer);
+        for(int i=0; i<nPlayer; i++){
+            Player p = new Player(game, usersReady.get(i));
             p.setConnection(waitingConnection.get(usersReady.get(i)));
-            getInstance.addPlayer(p);
-
+            game.addPlayer(p);
         }
 
+        game.setup();
 
-
-        getInstance.setup();
-        /*
-        for(int i=0; i<getInstance.getPlayerNumber(); i++){
+        for(int i=0; i<nPlayer; i++){
             waitingConnection.remove(usersReady.get(i));
         }
 
-        if (getInstance.getPlayerNumber() > 0) {
-            usersReady.subList(0, getInstance.getPlayerNumber()).clear();
+        usersReady.subList(0, nPlayer).clear();
+
+        checkNewCreator();
+    }
+
+
+    private synchronized void checkNewCreator() throws IOException, IllegalAccessException {
+        if(waitingConnection.isEmpty()){
+            isSomeoneCreatingAGame = false;
+            nPlayer = 100;
+        }
+        else{
+            creatorSetup(waitingConnection.get(usersReady.get(0)));
+
+        }
+    }
+
+    private synchronized void creatorSetup(Connection c) throws IOException, IllegalAccessException {
+        Scanner in = new Scanner(c.getSocket().getInputStream());
+        c.asyncSend(Message.chooseNoPlayer);
+
+        int read = in.nextInt();
+        while (!noPlayerChecker(read)) {
+            c.asyncSend(Message.chooseNoPlayerAgain);
+            read = in.nextInt();
         }
 
-         */
+        synchronized (lock) {
+            nPlayer = read;
+        }
+
+        if (nPlayer <= waitingConnection.size())
+            gameLobby();
+
     }
 
 }
