@@ -12,7 +12,7 @@ public class DeckTest {
 
     @Test
     public void buildDeckTest() {
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         ArrayList<GodsCard> cardList = deck.getCardListCopy();
         ArrayList<String> godsName = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena", "atlas", "demeter", "hephaestus", "minotaur", "pan", "prometheus"));
 
@@ -27,7 +27,7 @@ public class DeckTest {
     @Test
     public void chooseCardsTest() {
         gameInstance.setPlayerNumber(3);
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "athena");
         HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
@@ -41,7 +41,7 @@ public class DeckTest {
     @Test
     public void pickUpCardTest() {
         gameInstance.setPlayerNumber(3);
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "athena");
         GodsCard godsCard = deck.pickUpCard("apollo");
         GodsCard godsCardExpected = new GodsCard("apollo");
@@ -51,7 +51,7 @@ public class DeckTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionArgumentNumber() {
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         gameInstance.setPlayerNumber(3);
         deck.chooseCards("apollo");
         HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
@@ -65,7 +65,7 @@ public class DeckTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionWrongCard() {
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "foo");
         HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
@@ -78,7 +78,7 @@ public class DeckTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionSameCardTwice() {
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "apollo");
         HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
@@ -91,7 +91,7 @@ public class DeckTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void pickUpCardTestException() {
-        Deck deck = new Deck(gameInstance);
+        Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "athena");
         GodsCard godsCard = deck.pickUpCard("atlas");
         GodsCard godsCardExpected = new GodsCard("atlas");

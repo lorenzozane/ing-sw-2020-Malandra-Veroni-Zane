@@ -75,7 +75,7 @@ public class BoardTest {
         board.updateBuildingOnBoard(slot1);
         board.updateBuildingOnBoard(slot2);
 
-        Player p1 = new Player(gameInstance, "nickname1");
+        Player p1 = new Player("nickname1");
         Worker worker1=new Worker(p1, 0);
         Color color=Color.ANSI_YELLOW;
         worker1.setColor(color);

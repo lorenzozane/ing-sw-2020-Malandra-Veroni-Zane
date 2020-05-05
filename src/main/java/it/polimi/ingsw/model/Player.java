@@ -1,17 +1,14 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.network.Connection;
-import it.polimi.ingsw.network.SocketConnection;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Player {
 
     //TODO: Non mi fa impazzire che Player abbia bisogno di un'istanza di game. Si può gestire il colore in modo che non serva?
 
-    private final Game gameInstance;
     private final String nickname;
     private Date birthday;
     private Color playerColor;
@@ -20,8 +17,7 @@ public class Player {
     private boolean isPlaying;
     private Connection connection;
 
-    public Player(Game gameInstance, String nickname) {
-        this.gameInstance = gameInstance;
+    public Player(String nickname) {
         this.nickname = nickname;
         this.isPlaying = true;
 
@@ -81,7 +77,6 @@ public class Player {
     public void setPlayerCard(GodsCard playerCard) {
         this.playerCard = playerCard;
     }
-
 
     public ArrayList<Worker> getWorkers() {
         return workers;

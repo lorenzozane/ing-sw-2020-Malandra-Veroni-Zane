@@ -23,8 +23,8 @@ public class GameTest {
     @Test
     public void addPlayer() throws ParseException, IllegalAccessException {
         Game gameInstance = new Game();
-        Player p1 = new Player(gameInstance, "test1");
-        Player p2 = new Player(gameInstance, "test2");
+        Player p1 = new Player("test1");
+        Player p2 = new Player("test2");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = dateFormat.parse("23/5/1998");
         p1.setBirthday(date);
@@ -39,8 +39,8 @@ public class GameTest {
     @Test
     public void challenge() throws ParseException, IOException, IllegalAccessException {
         Game gameInstance = new Game();
-        Player p1 = new Player(gameInstance, "test1");
-        Player p2 = new Player(gameInstance, "test2");
+        Player p1 = new Player("test1");
+        Player p2 = new Player("test2");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = dateFormat.parse("23/5/1998");
         p1.setBirthday(date);

@@ -25,7 +25,6 @@ public class Turn {
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
 
-    //TODO: IMPORTANTE! Popolare turnSequenceMap!
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
     public Player getCurrentPlayer() {
@@ -78,6 +77,11 @@ public class Turn {
         }
     }
 
+    /**
+     * Update the canMoveUp property of the other player
+     *
+     * @param canMoveUpValue New boolean value of the canMoveUp property
+     */
     public void setOtherPlayerCanMoveUpTo(Boolean canMoveUpValue) {
         for (Player player : turnSequenceMap.keySet())
             if (player != currentPlayer)

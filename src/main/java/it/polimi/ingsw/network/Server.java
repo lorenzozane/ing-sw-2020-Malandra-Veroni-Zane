@@ -332,7 +332,7 @@ public class Server {
         Game game = new Game();
         game.setPlayerNumber(nPlayer);
         for(int i=0; i<nPlayer; i++){
-            Player p = new Player(game, usersReady.get(i));
+            Player p = new Player(usersReady.get(i));
             p.setConnection(waitingConnection.get(usersReady.get(i)));
             game.addPlayer(p);
         }
