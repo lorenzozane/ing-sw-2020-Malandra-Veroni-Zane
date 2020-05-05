@@ -1,4 +1,4 @@
 package it.polimi.ingsw.view;
 
-public class RemoteView {
+public class RemoteView implements View {
 }
