@@ -363,7 +363,6 @@ public class Server {
     private synchronized void creatorSetup(Connection c) throws IOException, IllegalAccessException {
         Scanner in = new Scanner(c.getSocket().getInputStream());
         c.asyncSend(Message.chooseNoPlayer);
-
         int read = in.nextInt();
         while (!noPlayerChecker(read)) {
             c.asyncSend(Message.chooseNoPlayerAgain);
