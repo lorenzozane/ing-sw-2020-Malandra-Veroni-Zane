@@ -3,7 +3,12 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observer;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 public class GameInitializationManager implements Observer<Map<Object, String>> {
@@ -50,6 +55,41 @@ public class GameInitializationManager implements Observer<Map<Object, String>> 
                 throw new IllegalArgumentException();
         }
     }
+
+
+    //TODO: vedi tu se poi ti vanno bene qui questi metodi (prima erano nel server il che non aveva molto senso)
+    /**
+     * Check if the input string about the color choice is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if the color is available in the game otherwise false
+     */
+    public boolean colorChecker(String s) {
+        for (Color color : gameInstance.getColorList()) {
+            if (s.equals(color.getColorAsString(color).toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+    /**
+     * Check if the input string about the birthday date is legal
+     *
+     * @param s String from user input that must be checked
+     * @return true if the string is correctly formatted otherwise false
+     */
+    public boolean dateChecker(String s){
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            Date date = dateFormat.parse(s);
+            return s.equals(dateFormat.format(date));
+        }
+        catch (ParseException e){
+            return false;
+        }
+
+    }
+
+
 
     @Override
     public void update(Map<Object, String> message) {

@@ -117,8 +117,6 @@ public class Game {
 
 
 
-
-
     public void sendToAll(String msg){
         for(Player p : playerList){
             p.getConnection().asyncSend(msg);

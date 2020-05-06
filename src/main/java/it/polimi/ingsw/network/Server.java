@@ -1,15 +1,11 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,12 +15,12 @@ public class Server {
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
     private final Map<String, Connection> waitingConnection = new LinkedHashMap<>();
-    private final Map<Connection, Connection> playingConnection = new HashMap<>();
+    // ci serve? private final Map<Connection, Connection> playingConnection = new HashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private String currentCreator = "";
     private final ArrayList<String> usersReady = new ArrayList<>();
     private boolean isSomeoneCreatingAGame = false;
-    private int nPlayer = 100;
+    private int nPlayer = 0;
     private final Object lock = new Object();
 
 
@@ -91,42 +87,6 @@ public class Server {
         return s == 2 || s == 3;
     }
 
-    //da mettere nel controller
-    /**
-     * Check if the input string about the color choice is legal
-     *
-     * @param s String from user input that must be checked
-     * @return true if the color is available in the game otherwise false
-     */
-    /*public boolean colorChecker(String s) {
-        for (Color color : getInstance.getColorList()) {
-            if (s.equals(color.getColorAsString(color).toLowerCase()))
-                return true;
-        }
-        return false;
-    }
-     */
-
-
-    //da mettere nel controller o addirittura lato client
-    /**
-     * Check if the input string about the birthday date is legal
-     *
-     * @param s String from user input that must be checked
-     * @return true if the string is correctly formatted otherwise false
-     */
-    public boolean dateChecker(String s){
-        try {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-            Date date = dateFormat.parse(s);
-            return s.equals(dateFormat.format(date));
-        }
-        catch (ParseException e){
-            return false;
-        }
-
-    }
-
 
     public void lobby(String nickname, Connection c) throws IOException, IllegalAccessException {
         waitingConnection.put(nickname, c);
@@ -140,7 +100,7 @@ public class Server {
         else{
             usersReady.add(nickname);
 
-            if(nPlayer <= waitingConnection.size())
+            if(nPlayer <= waitingConnection.size() && nPlayer > 0)
                 gameLobby();
 
         }
@@ -173,7 +133,7 @@ public class Server {
     private synchronized void checkNewCreator() throws IOException, IllegalAccessException {
         if(waitingConnection.isEmpty()){
             isSomeoneCreatingAGame = false;
-            nPlayer = 100;
+            nPlayer = 0;
             currentCreator="";
         }
         else{
@@ -201,7 +161,7 @@ public class Server {
             nPlayer = read;
         }
 
-        if (nPlayer <= waitingConnection.size())
+        if (nPlayer <= waitingConnection.size() && nPlayer > 0)
             gameLobby();
 
     }
