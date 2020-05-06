@@ -72,7 +72,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
      *
      * @param nickname The client unique name
      */
-    private void close(String nickname){
+    private void close(String nickname) throws IOException, IllegalAccessException {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
@@ -120,8 +120,12 @@ public class SocketConnection extends Observable<String> implements Connection, 
         } catch (IOException | NoSuchElementException | IllegalAccessException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
-            server.deregisterConnection(nickname, this);
-            close(nickname);
+            try {
+                server.deregisterConnection(nickname, this);
+                close(nickname);
+            } catch (IOException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
