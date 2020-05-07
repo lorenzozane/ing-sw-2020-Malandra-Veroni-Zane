@@ -119,6 +119,11 @@ public class Server {
 
         game.setup();
 
+        //Si chiede la data di nascita
+        //Si notifica string + tipo (data)
+        //Si chiede il colore
+        //Si notifica string + color
+
         for(int i=0; i<nPlayer; i++){
             waitingConnection.remove(usersReady.get(i));
         }

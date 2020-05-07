@@ -6,14 +6,11 @@ import it.polimi.ingsw.observer.Observer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-public class GameInitializationManager implements Observer<Map<Object, String>> {
 
-    //TODO: Medoti sul controllo dei colori (si può rimuovere controllo dei colori in player)
+//TODO: Modificare gestione tipo osservato (Tupla o Enum)
+public class GameInitializationManager implements Observer<AbstractMap.SimpleEntry> {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -56,8 +53,6 @@ public class GameInitializationManager implements Observer<Map<Object, String>> 
         }
     }
 
-
-    //TODO: vedi tu se poi ti vanno bene qui questi metodi (prima erano nel server il che non aveva molto senso)
     /**
      * Check if the input string about the color choice is legal
      *
@@ -89,10 +84,8 @@ public class GameInitializationManager implements Observer<Map<Object, String>> 
 
     }
 
-
-
     @Override
-    public void update(Map<Object, String> message) {
+    public void update(AbstractMap.SimpleEntry message) {
 
     }
 }

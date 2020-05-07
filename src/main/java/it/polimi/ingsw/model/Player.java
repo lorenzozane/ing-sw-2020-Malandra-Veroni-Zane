@@ -15,7 +15,7 @@ public class Player {
     private ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
     private boolean isPlaying;
-    private Connection connection;
+    private Connection connection; //TODO: Capire se si può togliere (?)
 
     public Player(String nickname) {
         this.nickname = nickname;

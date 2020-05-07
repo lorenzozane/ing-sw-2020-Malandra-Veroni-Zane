@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.Building.BuildingProperty;
 import it.polimi.ingsw.model.TurnEvents.Actions;
+import it.polimi.ingsw.network.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,15 +15,17 @@ public final class MoveVerifier {
 
     private final Game gameInstance;
     private final Turn turn;
+    private final GameManager gameManager;
 
     /**
      * Constructor of the MoveVerifier which assists the GameManager in the management of the game logic (movement and construction)
      *
      * @param gameInstance Is the current game instance
      */
-    protected MoveVerifier(Game gameInstance) {
+    protected MoveVerifier(Game gameInstance, GameManager gameManager) {
         this.gameInstance = gameInstance;
         this.turn = gameInstance.getTurn();
+        this.gameManager = gameManager;
     }
 
     //If we wanted to write all methods as static, we should also pass all the game and turn
@@ -60,36 +63,54 @@ public final class MoveVerifier {
      * @return Returns a boolean who approves or refuses the movement request
      */
     public boolean moveValidator(PlayerMove move) {
-        if (move == null || move.getMove().getActionType() != ActionType.MOVEMENT)
+        if (move == null || move.getMove().getActionType() != ActionType.MOVEMENT) {
+            gameManager.setErrorMessage(Message.moveNotAllowed);
             return false;
-        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
+        }
+        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1) {
+            gameManager.setErrorMessage(Message.moveNotAllowed);
             return false;
-        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
+        }
+        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME)) {
+            gameManager.setErrorMessage(Message.domeOccupiedCellMessage);
             return false;
+        }
         if (!move.getForcedMove()) {
-            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1)
+            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 1) {
+                gameManager.setErrorMessage(Message.tooHighMoveMessage);
                 return false;
-            if (!turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+            }
+            if (!turn.canCurrentPlayerMoveUp() && Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0) {
+                gameManager.setErrorMessage(Message.tooHighMoveMessage);
                 return false;
+            }
         }
         if (move.getTargetSlot().getWorkerInSlot() != null) {
-            return move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH;
+            if (move.getMove() != Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() != Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                gameManager.setErrorMessage(Message.occupiedCellMessage);
+                return false;
+            }
         } else {
             if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION) { //TODO: Test
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
                         .getActionType() == ActionType.MOVEMENT).reduce((first, second) -> second).orElse(null);
-                if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot())
+                if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot()) {
+                    gameManager.setErrorMessage(Message.notInitialPositionMessage);
                     return false;
-            //} else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) && ...) {
+                }
+                //} else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) && ...) {
             } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
                     move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
                         .reduce((first, second) -> second).orElse(null);
                 if (initialMove != null)
-                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
+                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0) {
+                        gameManager.setErrorMessage(Message.tooHighMoveMessage);
                         return false;
+                    }
             }
         }
+
         return true;
     }
 
@@ -126,26 +147,40 @@ public final class MoveVerifier {
      * @return Returns a boolean who approves or refuses the new construction request
      */
     public boolean buildValidator(PlayerMove move) {
-        if (move == null || move.getMove().getActionType() != ActionType.BUILDING)
+        if (move == null || move.getMove().getActionType() != ActionType.BUILDING) {
+            gameManager.setErrorMessage(Message.moveNotAllowed);
             return false;
-        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1)
+        }
+        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1) {
+            gameManager.setErrorMessage(Message.tooHighBuildMessage);
             return false;
-        if (move.getTargetSlot().getWorkerInSlot() != null)
+        }
+        if (move.getTargetSlot().getWorkerInSlot() != null) {
+            gameManager.setErrorMessage(Message.occupiedCellMessage);
             return false;
-        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME))
+        }
+        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME)) {
+            gameManager.setErrorMessage(Message.domeOccupiedCellMessage);
             return false;
+        }
         if (move.getMove() == Actions.BUILD_NOT_SAME_PLACE) {
             PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
                     .getActionType() == ActionType.BUILDING).reduce((first, second) -> second).orElse(null);
-            if (initialMove == null || move.getTargetSlot() == initialMove.getTargetSlot())
+            if (initialMove == null || move.getTargetSlot() == initialMove.getTargetSlot()) {
+                gameManager.setErrorMessage(Message.buildNotSamePlaceMessage);
                 return false;
+            }
         } else if (move.getMove() == Actions.BUILD_SAME_PLACE_NOT_DOME) {
             PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
                     .getActionType() == ActionType.BUILDING).reduce((first, second) -> second).orElse(null);
-            if (initialMove == null || move.getTargetSlot() != initialMove.getTargetSlot())
+            if (initialMove == null || move.getTargetSlot() != initialMove.getTargetSlot()) {
+                gameManager.setErrorMessage(Message.mustBuildSamePlaceMessage);
                 return false;
-            if (move.getTargetSlot().getConstructionTopLevel() == BuildingLevel.LEVEL3)
+            }
+            if (move.getTargetSlot().getConstructionTopLevel() == BuildingLevel.LEVEL3) {
+                gameManager.setErrorMessage(Message.cantBuildADomeMessage);
                 return false;
+            }
         }
 
         return true;

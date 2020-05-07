@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.*;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class GameManager implements Observer<PlayerMove> {
     private final Game gameInstance;
     private final Turn turn;
     private final MoveVerifier moveVerifier;
+    private String errorMessage = "";
 
     /**
      * Constructor of the GameManager that deals with managing the game logic (movement and construction)
@@ -20,7 +22,11 @@ public class GameManager implements Observer<PlayerMove> {
     public GameManager(Game gameInstance) {
         this.gameInstance = gameInstance;
         this.turn = this.gameInstance.getTurn();
-        this.moveVerifier = new MoveVerifier(this.gameInstance);
+        this.moveVerifier = new MoveVerifier(this.gameInstance, this);
+    }
+
+    protected void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     /**
@@ -30,7 +36,7 @@ public class GameManager implements Observer<PlayerMove> {
      */
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayer())) {
-            //WrongTurnMessage
+            move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
@@ -39,22 +45,26 @@ public class GameManager implements Observer<PlayerMove> {
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                     PlayerMove opponentMove = null;
                     if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                        opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
+                        opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                 Actions.MOVE_STANDARD,
-                                move.getStartingSlot());
-                        opponentMove.setForcedMove(move.getPlayer());
+                                move.getStartingSlot(),
+                                turn, move.getRemoteView());
                     } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                        opponentMove = new PlayerMove(turn, move.getTargetSlot().getWorkerInSlot(),
+                        opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                 Actions.MOVE_STANDARD,
-                                gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()));
-                        opponentMove.setForcedMove(move.getPlayer());
+                                gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),
+                                turn, move.getRemoteView());
                     }
 
+                    assert opponentMove != null;
+                    opponentMove.setForcedMove(move.getPlayer());
                     if (moveVerifier.moveValidator(opponentMove))
                         performMove(opponentMove);
-                    else
-                        return; //MoveNotAllowedException
-                //Move disabling opponent can move up handling
+                    else {
+                        move.getRemoteView().errorMessage(errorMessage);
+                        return;
+                    }
+                    //Move disabling opponent can move up handling
                 } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
                     if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0)
                         turn.setOtherPlayerCanMoveUpTo(false);
@@ -63,9 +73,11 @@ public class GameManager implements Observer<PlayerMove> {
                 }
 
                 performMove(move);
-            } else
-                return; //MoveNotAllowedException
-        } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING)
+            } else {
+                move.getRemoteView().errorMessage(errorMessage);
+                return;
+            }
+        } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING) {
             if (moveVerifier.buildValidator(move)) {
                 if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {
                     performBuildingDome(move);
@@ -73,8 +85,11 @@ public class GameManager implements Observer<PlayerMove> {
                 }
 
                 performBuilding(move);
-            } else
-                return; //MoveNotAllowedException
+            } else {
+                move.getRemoteView().errorMessage(errorMessage);
+                return;
+            }
+        }
     }
 
     /**
@@ -148,6 +163,7 @@ public class GameManager implements Observer<PlayerMove> {
 
     @Override
     public void update(PlayerMove message) {
+        errorMessage = "";
         handleMove(message);
     }
 }

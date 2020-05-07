@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network;
 
-public class Message {
+public final class Message {
     public static String santorini =
             "                                                \n" +
             "                    WELCOME TO                  \n" +
@@ -23,5 +23,19 @@ public class Message {
     public static String chooseColorAgain = "Color not available, choose another one between";
     public static String wait = "Waiting for the other players";
     public static String gameLoading = "\nAll players are ready, the game will start soon...";
+    //Message about not allowed movement
+    public static String wrongTurnMessage = "It's not your turn. Wait your turn to make a move!";
+    public static String moveNotAllowed = "This move is not allowed!";
+    public static String occupiedCellMessage = "The chosen cell is occupied by another player!";
+    public static String domeOccupiedCellMessage = "The chosen cell is occupied by a dome!";
+    public static String tooHighMoveMessage = "You cannot go that high! Lay low.";
+    public static String tooHighBuildMessage = "You cannot build that high!";
+    public static String notInitialPositionMessage = "You cannot go back to your starting slot!";
+    public static String buildNotSamePlaceMessage = "You cannot build again in the same slot!";
+    public static String mustBuildSamePlaceMessage = "If you want to build again, you must build in the same slot!";
+    public static String cantBuildADomeMessage = "You cannot build a dome as second build!";
+    public static String buildMoveError = "You cannot build in this cell!";
+    public static String outOfBoardBorderMessage = "Your opponent's worker cannot be pushed off the board!";
+
 
 }
