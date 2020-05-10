@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.model.Color.PlayerColor;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,13 +10,13 @@ public class Game {
     private final Turn turn = new Turn(this);
     private ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber = 1;
-    private Board board = new Board();
-    private Deck deck = new Deck(this);
+    private final Board board = new Board();
+    private final Deck deck = new Deck(this);
     private Player challengerPlayer;
-    private ArrayList<Color> colorList = new ArrayList<Color>() {{
-        add(Color.ANSI_BRIGHT_CYAN);
-        add(Color.ANSI_RED);
-        add(Color.ANSI_YELLOW);
+    private ArrayList<PlayerColor> colorList = new ArrayList<PlayerColor>() {{
+        add(PlayerColor.CYAN);
+        add(PlayerColor.RED);
+        add(PlayerColor.YELLOW);
     }};
 
     public Game() {
@@ -45,7 +45,7 @@ public class Game {
 
     public String getAvailableColor() {
         StringBuilder temp = new StringBuilder();
-        for (Color color : colorList) {
+        for (PlayerColor color : colorList) {
             //TODO: Sarà da spostare nella view
             temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET).append(" or");
         }
@@ -53,15 +53,15 @@ public class Game {
         return String.valueOf(temp);
     }
 
-    public ArrayList<Color> getColorList() {
+    public ArrayList<PlayerColor> getColorList() {
         return colorList;
     }
 
-    private void reAddColor(Color color){
+    private void reAddColor(PlayerColor color){
         colorList.add(color);
     }
 
-    public void removeColor(Color delete) {
+    public void removeColor(PlayerColor delete) {
         if (!colorList.isEmpty())
             colorList.remove(delete);
     }

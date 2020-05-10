@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Color.PlayerColor;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class BoardTest {
 
         Player p1 = new Player("nickname1");
         Worker worker1=new Worker(p1, 0);
-        Color color=Color.ANSI_YELLOW;
+        PlayerColor color = PlayerColor.YELLOW;
         worker1.setColor(color);
         worker1.setWorkerSlot(slot2);
 

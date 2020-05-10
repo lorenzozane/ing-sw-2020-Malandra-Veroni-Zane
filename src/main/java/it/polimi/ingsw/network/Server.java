@@ -24,7 +24,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     // ci serve? private final Map<Connection, Connection> playingConnection = new HashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private String currentCreator = "";
-    private final ArrayList<String> usersReady = new ArrayList<>();
+    private final ArrayList<Player> usersReady = new ArrayList<>();
     private boolean isSomeoneCreatingAGame = false;
     private int nPlayer = 0;
     private final Object lock = new Object();
@@ -38,7 +38,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
      */
     public synchronized void deregisterConnection(String nick, Connection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.remove(nick);
-        usersReady.remove(nick);
+        usersReady.removeIf(x -> x.getNickname().equals(nick));
         nicknameDatabase.remove(nick);
         c.closeConnection();
         if(nick.equals(currentCreator)){
@@ -94,21 +94,22 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     }
 
 
-    public void lobby(String nickname, Connection c) throws IOException, IllegalAccessException, ParseException {
+    public void lobby(String nickname, Date playerBirthday, Connection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.put(nickname, c);
+
+        Player p = new Player(nickname);
+        p.setBirthday(playerBirthday);
+        usersReady.add(p);
+
         if (!isSomeoneCreatingAGame){
             isSomeoneCreatingAGame = true;
-            usersReady.add(nickname);
             currentCreator = nickname;
 
             creatorSetup(c);
         }
         else{
-            usersReady.add(nickname);
-
             if(nPlayer <= waitingConnection.size() && nPlayer > 0)
                 gameLobby();
-
         }
     }
 
@@ -120,25 +121,11 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
         game.setPlayerNumber(nPlayer);
 
         for(int i=0; i<nPlayer; i++){
-            Connection c = waitingConnection.get(usersReady.get(i));
+
+            Connection c = waitingConnection.get(usersReady.get(i).getNickname());
             Scanner in = new Scanner(c.getSocket().getInputStream());
-            Player p = new Player(usersReady.get(i));
-            game.addPlayer(p);
 
-            String read = in.nextLine();
-            DateFormat dateFormat = new SimpleDateFormat();
-            while (!dateChecker(read)) {
-                c.asyncSend(Message.birthdayAgain);
-                read = in.nextLine();
-            }
-            //notify() ??
-
-            read = in.nextLine();
-            while (!colorChecker(read, game)) {
-                c.asyncSend(Message.chooseColorAgain);
-                read = in.nextLine();
-            }
-            //notify(); ??
+            game.addPlayer(usersReady.get(i));
 
 
             //settare view (?)
@@ -146,13 +133,8 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
         game.setup();
 
-        //Si chiede la data di nascita
-        //Si notifica string + tipo (data)
-        //Si chiede il colore
-        //Si notifica string + color
-
         for(int i=0; i<nPlayer; i++){
-            waitingConnection.remove(usersReady.get(i));
+            waitingConnection.remove(usersReady.get(i).getNickname());
         }
 
         usersReady.subList(0, nPlayer).clear();
@@ -168,7 +150,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
             currentCreator="";
         }
         else{
-            currentCreator = usersReady.get(0);
+            currentCreator = usersReady.get(0).getNickname();
             creatorSetup(waitingConnection.get(currentCreator));
 
         }
@@ -207,7 +189,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
      * @param s String from user input that must be checked
      * @return true if the string is correctly formatted otherwise false
      */
-    public boolean dateChecker(String s){
+    public static boolean dateChecker(String s){
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             Date date = dateFormat.parse(s);
@@ -225,12 +207,9 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
      * @param s String from user input that must be checked
      * @return true if the color is available in the game otherwise false
      */
-    public boolean colorChecker(String s, Game game) {
-        for (Color color : game.getColorList()) {
-            if (s.equalsIgnoreCase(color.getColorAsString(color)))
-                return true;
-        }
-        return false;
+    public static boolean colorChecker(String s) {
+        //TODO: Check del toString()
+        return Arrays.toString(Color.PlayerColor.values()).contains(s);
     }
 
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.Color.PlayerColor;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +12,7 @@ public class Player {
 
     private final String nickname;
     private Date birthday;
-    private Color playerColor;
+    private PlayerColor playerColor;
     private final ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
     private boolean isPlaying;
@@ -44,11 +46,11 @@ public class Player {
         this.birthday = birthday;
     }
 
-    public Color getPlayerColor() {
+    public PlayerColor getPlayerColor() {
         return playerColor;
     }
 
-    public void setPlayerColor(Color playerColor) {
+    public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
 
         for (Worker worker : workers)

@@ -50,6 +50,11 @@ public class GameManager implements Observer<PlayerMove> {
                                 move.getStartingSlot(),
                                 turn, move.getRemoteView());
                     } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                        Slot backwardsSlot = gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot());
+                        if (backwardsSlot == null) {
+                            move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
+                            return;
+                        }
                         opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                 Actions.MOVE_STANDARD,
                                 gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),

@@ -5,7 +5,10 @@ import it.polimi.ingsw.observer.Observable;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -101,17 +104,40 @@ public class SocketConnection extends Observable<String> implements Connection, 
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send(Message.santorini);
+
             send(Message.chooseNickname);
             String read = in.nextLine();
-            nickname = read;
-            while(!nicknameChecker(nickname)){
+//            nickname = read;
+            while(!nicknameChecker(read)){
                 send(Message.chooseNicknameAgain);
                 read = in.nextLine();
-                nickname = read;
+//                nickname = read;
                 }
+            nickname = read;
             server.addNickname(nickname);
+
+            asyncSend(Message.birthday);
+            read = in.nextLine();
+            DateFormat dateFormat = new SimpleDateFormat();
+            while (!Server.dateChecker(read)) {
+                asyncSend(Message.birthdayAgain);
+                read = in.nextLine();
+            }
+            Date playerBirthday = dateFormat.parse(read);
+
             this.asyncSend(Message.lobby);
-            server.lobby(nickname, this);
+            server.lobby(nickname, playerBirthday, this);
+
+
+            read = in.nextLine();
+            while (!Server.colorChecker(read)) {
+                asyncSend(Message.chooseColorAgain);
+                read = in.nextLine();
+                //notifica al controller
+            }
+
+
+
             while(isActive()){
                 read = in.nextLine();
                 notifyAll(read);

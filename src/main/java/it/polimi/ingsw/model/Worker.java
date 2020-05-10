@@ -1,13 +1,15 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Building.BuildingLevel;
+import it.polimi.ingsw.model.Color.PlayerColor;
+
 import java.awt.*;
 
 public class Worker {
 
     private final Player playerOwner;
     private final String idWorker;
-    private Color color;
+    private PlayerColor color;
     private Slot workerSlot;      //ridondanza con slot su chi c'è dentro
 
     public Worker(Player playerOwner, int idWorkerInt){
@@ -24,7 +26,7 @@ public class Worker {
         return idWorker;
     }
 
-    public Color getColor() {
+    public PlayerColor getColor() {
         return color;
     }
 
@@ -32,7 +34,7 @@ public class Worker {
         return workerSlot;
     }
 
-    protected void setColor(Color color) {
+    protected void setColor(PlayerColor color) {
         this.color = color;
     }
 

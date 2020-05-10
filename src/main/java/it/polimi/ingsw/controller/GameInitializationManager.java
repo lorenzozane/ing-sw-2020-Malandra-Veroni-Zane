@@ -1,16 +1,17 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.observer.Observer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
 
 
-//TODO: Modificare gestione tipo osservato (Tupla o Enum)
-public class GameInitializationManager implements Observer<AbstractMap.SimpleEntry> {
+public class GameInitializationManager implements Observer<SimpleEntry<Class<?>, String>> {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -37,16 +38,16 @@ public class GameInitializationManager implements Observer<AbstractMap.SimpleEnt
     public void setPlayerColor(String playerColor) {
         switch (playerColor) {
             case "red":
-                turn.getCurrentPlayer().setPlayerColor(Color.ANSI_RED);
-                gameInstance.removeColor(Color.ANSI_RED);
+                turn.getCurrentPlayer().setPlayerColor(PlayerColor.RED);
+                gameInstance.removeColor(PlayerColor.RED);
                 break;
             case "cyan":
-                turn.getCurrentPlayer().setPlayerColor(Color.ANSI_BRIGHT_CYAN);
-                gameInstance.removeColor(Color.ANSI_BRIGHT_CYAN);
+                turn.getCurrentPlayer().setPlayerColor(PlayerColor.CYAN);
+                gameInstance.removeColor(PlayerColor.CYAN);
                 break;
             case "yellow":
-                turn.getCurrentPlayer().setPlayerColor(Color.ANSI_YELLOW);
-                gameInstance.removeColor(Color.ANSI_YELLOW);
+                turn.getCurrentPlayer().setPlayerColor(PlayerColor.YELLOW);
+                gameInstance.removeColor(PlayerColor.YELLOW);
                 break;
             default:
                 throw new IllegalArgumentException();
@@ -60,7 +61,13 @@ public class GameInitializationManager implements Observer<AbstractMap.SimpleEnt
 
 
     @Override
-    public void update(AbstractMap.SimpleEntry message) {
+    public void update(SimpleEntry<Class<?>, String> message) {
+        if (message.getKey() == Date.class) {
 
+        } else if (message.getKey() == Color.class) {
+
+        } else if (message.getKey() == Gods.class) {
+
+        }
     }
 }

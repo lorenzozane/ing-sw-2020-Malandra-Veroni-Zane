@@ -57,7 +57,7 @@ public class Board implements Cloneable {
         int nextSlotY = targetSlot.getSlotPosition().getCoordinateY() + (targetSlot.getSlotPosition().getCoordinateY() - startingSlot.getSlotPosition().getCoordinateY());
 
         if (nextSlotX < 0 || nextSlotX > BOARD_DIMENSION - 1 || nextSlotY < 0 || nextSlotY > BOARD_DIMENSION - 1)
-            return null; //Throw exception (?)
+            return null;
 
         return gameBoardSlots[nextSlotX][nextSlotY];
     }

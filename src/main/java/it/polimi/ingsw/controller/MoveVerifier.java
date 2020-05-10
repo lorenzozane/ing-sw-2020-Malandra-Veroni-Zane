@@ -152,7 +152,7 @@ public final class MoveVerifier {
             return false;
         }
         if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1) {
-            gameManager.setErrorMessage(Message.tooHighBuildMessage);
+            gameManager.setErrorMessage(Message.buildMoveError);
             return false;
         }
         if (move.getTargetSlot().getWorkerInSlot() != null) {
