@@ -16,20 +16,19 @@ public class Client {
 
     /**
      * Constructor of Client
-     *
      */
-    public Client(String ip, int port){
+    public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
 
 
-    public synchronized boolean isActive(){
+    public synchronized boolean isActive() {
         return active;
     }
 
 
-    public synchronized void setActive(boolean active){
+    public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
@@ -40,21 +39,21 @@ public class Client {
      * @param socketIn Client socket where the client receives information
      * @return The that thread
      */
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+    public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
                     //TODO: da cambiare appena sappiamo cosa inviamo esattamente
                     Object inputObject = socketIn.readObject();
-                    if(inputObject instanceof String){
-                        System.out.println((String)inputObject);
-                    } else if (inputObject instanceof Board){
-                        ((Board)inputObject).printGameBoard();
+                    if (inputObject instanceof String) {
+                        System.out.println((String) inputObject);
+                    } else if (inputObject instanceof Board) {
+                        ((Board) inputObject).printGameBoard();
                     } else {
                         throw new IllegalArgumentException();
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 setActive(false);
             }
         });
@@ -67,10 +66,10 @@ public class Client {
      * Creation of thread that handle the write to socket
      *
      * @param socketOut Client socket where the client send information
-     * @param stdin Scanner for read the input of client
+     * @param stdin     Scanner for read the input of client
      * @return The that thread
      */
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
+    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut) {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
@@ -78,7 +77,7 @@ public class Client {
                     socketOut.println(inputLine);
                     socketOut.flush();
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 setActive(false);
             }
         });
@@ -98,12 +97,12 @@ public class Client {
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
-        try{
+        try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             t0.join();
             t1.join();
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
         } finally {
             stdin.close();

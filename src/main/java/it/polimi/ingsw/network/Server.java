@@ -34,14 +34,14 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
      * Deregister a client when is no longer reachable
      *
      * @param nick Client unique name
-     * @param c Client socket connection
+     * @param c    Client socket connection
      */
     public synchronized void deregisterConnection(String nick, Connection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
         nicknameDatabase.remove(nick);
         c.closeConnection();
-        if(nick.equals(currentCreator)){
+        if (nick.equals(currentCreator)) {
             checkNewCreator();
         }
     }
@@ -58,7 +58,6 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
     /**
      * It keeps the server listening on PORT and it accepts new client
-     *
      */
     public void run() {
         while (true) {
@@ -101,14 +100,13 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
         p.setBirthday(playerBirthday);
         usersReady.add(p);
 
-        if (!isSomeoneCreatingAGame){
+        if (!isSomeoneCreatingAGame) {
             isSomeoneCreatingAGame = true;
             currentCreator = nickname;
 
             creatorSetup(c);
-        }
-        else{
-            if(nPlayer <= waitingConnection.size() && nPlayer > 0)
+        } else {
+            if (nPlayer <= waitingConnection.size() && nPlayer > 0)
                 gameLobby();
         }
     }
@@ -120,7 +118,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
         game.setPlayerNumber(nPlayer);
 
-        for(int i=0; i<nPlayer; i++){
+        for (int i = 0; i < nPlayer; i++) {
 
             Connection c = waitingConnection.get(usersReady.get(i).getNickname());
             Scanner in = new Scanner(c.getSocket().getInputStream());
@@ -133,7 +131,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
         game.setup();
 
-        for(int i=0; i<nPlayer; i++){
+        for (int i = 0; i < nPlayer; i++) {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
 
@@ -144,12 +142,11 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
 
     private synchronized void checkNewCreator() throws IOException, IllegalAccessException, ParseException {
-        if(waitingConnection.isEmpty()){
+        if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
             nPlayer = 0;
-            currentCreator="";
-        }
-        else{
+            currentCreator = "";
+        } else {
             currentCreator = usersReady.get(0).getNickname();
             creatorSetup(waitingConnection.get(currentCreator));
 
@@ -179,7 +176,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     }
 
 
-    private void ping(){
+    private void ping() {
 
     }
 
@@ -189,13 +186,12 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
      * @param s String from user input that must be checked
      * @return true if the string is correctly formatted otherwise false
      */
-    public static boolean dateChecker(String s){
+    public static boolean dateChecker(String s) {
         try {
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             Date date = dateFormat.parse(s);
             return s.equals(dateFormat.format(date));
-        }
-        catch (ParseException e){
+        } catch (ParseException e) {
             return false;
         }
 

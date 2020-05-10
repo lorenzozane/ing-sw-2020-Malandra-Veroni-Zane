@@ -23,7 +23,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
     /**
      * Constructor of SocketConnection
-     *
      */
     public SocketConnection(Socket socket, Server server/*, Game gameInstance*/) {
         //this.gameInstance = gameInstance;
@@ -31,7 +30,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
         this.server = server;
     }
 
-    private synchronized boolean isActive(){
+    private synchronized boolean isActive() {
         return active;
     }
 
@@ -46,7 +45,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
             out.reset();
             out.writeObject(message);
             out.flush();
-        } catch(IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
 
@@ -55,7 +54,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
     /**
      * Close the socketConnection
-     *
      */
     @Override
     public synchronized void closeConnection() {
@@ -84,23 +82,21 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
     /**
      * Send an object by socket with thread
-     *
      */
     @Override
-    public void asyncSend(final Object message){
+    public void asyncSend(final Object message) {
         new Thread(() -> send(message)).start();
     }
 
 
     /**
      * It set the unique name for the client and keeps alive the socket
-     *
      */
     @Override
     public void run() {
         Scanner in;
         String nickname = "";
-        try{
+        try {
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send(Message.santorini);
@@ -108,11 +104,11 @@ public class SocketConnection extends Observable<String> implements Connection, 
             send(Message.chooseNickname);
             String read = in.nextLine();
 //            nickname = read;
-            while(!nicknameChecker(read)){
+            while (!nicknameChecker(read)) {
                 send(Message.chooseNicknameAgain);
                 read = in.nextLine();
 //                nickname = read;
-                }
+            }
             nickname = read;
             server.addNickname(nickname);
 
@@ -137,14 +133,13 @@ public class SocketConnection extends Observable<String> implements Connection, 
             }
 
 
-
-            while(isActive()){
+            while (isActive()) {
                 read = in.nextLine();
                 notifyAll(read);
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException e) {
             System.err.println("Error!" + e.getMessage());
-        }finally{
+        } finally {
             try {
                 server.deregisterConnection(nickname, this);
                 close(nickname);
@@ -159,12 +154,12 @@ public class SocketConnection extends Observable<String> implements Connection, 
      *
      * @return true if it is legal otherwise false
      */
-    private boolean nicknameChecker(String nickname){
+    private boolean nicknameChecker(String nickname) {
         return !server.getNicknameDatabase().contains(nickname);
     }
 
     @Override
-    public Socket getSocket(){
+    public Socket getSocket() {
         return this.socket;
     }
 
