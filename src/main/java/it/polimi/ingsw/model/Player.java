@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.network.Connection;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,10 +11,9 @@ public class Player {
     private final String nickname;
     private Date birthday;
     private Color playerColor;
-    private ArrayList<Worker> workers = new ArrayList<>();
+    private final ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
     private boolean isPlaying;
-    private Connection connection; //TODO: Capire se si può togliere (?)
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -28,14 +26,6 @@ public class Player {
 
     public String getNickname() {
         return nickname;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
     }
 
     public boolean isPlaying() {

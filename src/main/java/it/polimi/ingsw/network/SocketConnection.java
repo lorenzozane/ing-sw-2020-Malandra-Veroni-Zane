@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
@@ -72,7 +71,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
      *
      * @param nickname The client unique name
      */
-    private void close(String nickname) throws IOException, IllegalAccessException {
+    private void close(String nickname) throws IOException, IllegalAccessException, ParseException {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
@@ -117,13 +116,13 @@ public class SocketConnection extends Observable<String> implements Connection, 
                 read = in.nextLine();
                 notifyAll(read);
             }
-        } catch (IOException | NoSuchElementException | IllegalAccessException e) {
+        } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException e) {
             System.err.println("Error!" + e.getMessage());
         }finally{
             try {
                 server.deregisterConnection(nickname, this);
                 close(nickname);
-            } catch (IOException | IllegalAccessException e) {
+            } catch (IOException | IllegalAccessException | ParseException e) {
                 e.printStackTrace();
             }
         }

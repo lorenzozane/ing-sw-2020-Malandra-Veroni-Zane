@@ -105,22 +105,13 @@ public class Game {
 
     public void challenge(){
         //mostrare alla view del challenger tutti gli dei
-        setYoungestPlayer();
-        challengerPlayer = playerList.get(0);
+
     }
 
     public void setup(){
-        sendToAll(Message.birthday);
-
-
-    }
 
 
 
-    public void sendToAll(String msg){
-        for(Player p : playerList){
-            p.getConnection().asyncSend(msg);
-        }
     }
 
 }
