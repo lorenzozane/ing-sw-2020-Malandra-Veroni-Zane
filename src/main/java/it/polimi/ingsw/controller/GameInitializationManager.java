@@ -32,7 +32,7 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
             chosenCardList.add(godCardName);
 
         if (chosenCardList.size() == gameInstance.getPlayerNumber())
-            deck.chooseCards(chosenCardList.toArray(new String[0])); //TODO: Check
+            deck.chooseCards(chosenCardList.toArray(new String[0]));
     }
 
     public void setPlayerColor(String playerColor) {
@@ -72,7 +72,7 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
             setBirthday(message.getValue());
         } else if (message.getKey() == Color.class) {
             setPlayerColor(message.getValue());
-        } else if (message.getKey() == Gods.class) {
+        } else if (deck.isAGodName(message.getValue())) {
             buildChosenCard(message.getValue());
         }
     }

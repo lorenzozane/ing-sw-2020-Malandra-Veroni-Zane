@@ -43,31 +43,36 @@ public class GameManager implements Observer<PlayerMove> {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                    PlayerMove opponentMove = null;
-                    if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                        opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
-                                Actions.MOVE_STANDARD,
-                                move.getStartingSlot(),
-                                turn, move.getRemoteView());
-                    } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                        Slot backwardsSlot = gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot());
-                        if (backwardsSlot == null) {
-                            move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
+                    if (move.getTargetSlot().getWorkerInSlot() != null) {
+                        PlayerMove opponentMove = null;
+                        //TODO: Serve spostare temporaneamente il worker1 in uno slot "temporaneo"
+                        if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
+                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                                    Actions.MOVE_STANDARD,
+                                    move.getStartingSlot(),
+                                    turn, move.getRemoteView());
+                        } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                            Slot backwardsSlot = gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot());
+                            if (backwardsSlot == null) {
+                                move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
+                                return;
+                            }
+                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                                    Actions.MOVE_STANDARD,
+                                    gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),
+                                    turn, move.getRemoteView());
+                        }
+
+                        assert opponentMove != null;
+                        opponentMove.setForcedMove(move.getPlayer());
+                        if (moveVerifier.moveValidator(opponentMove)) {
+                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
+                                move.getMovedWorker().move(new Slot(new Position(-1, -1)));
+                            performMove(opponentMove);
+                        } else {
+                            move.getRemoteView().errorMessage(errorMessage);
                             return;
                         }
-                        opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
-                                Actions.MOVE_STANDARD,
-                                gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),
-                                turn, move.getRemoteView());
-                    }
-
-                    assert opponentMove != null;
-                    opponentMove.setForcedMove(move.getPlayer());
-                    if (moveVerifier.moveValidator(opponentMove))
-                        performMove(opponentMove);
-                    else {
-                        move.getRemoteView().errorMessage(errorMessage);
-                        return;
                     }
                     //Move disabling opponent can move up handling
                 } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {

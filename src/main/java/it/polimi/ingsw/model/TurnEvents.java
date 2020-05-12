@@ -5,6 +5,12 @@ package it.polimi.ingsw.model;
  */
 public class TurnEvents {
 
+    public enum SetUpActions {
+        COLOR_REQUEST,
+        CHOOSE_CARD_REQUEST,
+        PICK_UP_CARD_REQUEST;
+    }
+
     /**
      * Set of possible actions that the player can perform (depending on which God owns)
      */

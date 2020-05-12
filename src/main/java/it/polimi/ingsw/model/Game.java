@@ -79,7 +79,7 @@ public class Game {
         return !playerList.contains(newPlayer);
     }
 
-    //TODO: Sfruttare il metodo in turn
+    //TODO: Sfruttare il metodo in turn / Probabilmente si può togliere
     private void setYoungestPlayer() {
         this.playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
         this.challengerPlayer = playerList.get(0);
