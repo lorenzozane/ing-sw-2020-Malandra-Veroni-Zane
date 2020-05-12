@@ -54,20 +54,26 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
         }
     }
 
-    public void setBirthday(String date) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat();
-        turn.getCurrentPlayer().setBirthday(dateFormat.parse(date));
+    //TODO: Togliere (?) non serve più, chiediamo la data di nascita prima dell'inizio della partita
+    public void setBirthday(String date) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat();
+            turn.getCurrentPlayer().setBirthday(dateFormat.parse(date));
+        } catch (ParseException ex) {
+            System.err.println("ParseException already handled, something went wrong in the client side date control.");
+            turn.getCurrentPlayer().setBirthday(new Date("1/1/2020"));
+        }
     }
 
 
     @Override
     public void update(SimpleEntry<Class<?>, String> message) {
         if (message.getKey() == Date.class) {
-
+            setBirthday(message.getValue());
         } else if (message.getKey() == Color.class) {
-
+            setPlayerColor(message.getValue());
         } else if (message.getKey() == Gods.class) {
-
+            buildChosenCard(message.getValue());
         }
     }
 }

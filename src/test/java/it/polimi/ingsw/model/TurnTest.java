@@ -31,9 +31,8 @@ public class TurnTest {
         player1.setPlayerCard(deck.pickUpCard("apollo"));
         player2.setPlayerCard(deck.pickUpCard("artemis"));
 
-        turn.setUpTurnSequence();
+        turn.setUpTurn();
 
-        turn.updateTurn();
         assertEquals(turn.getCurrentPlayerWorkers(), player2.getWorkers());
 
         turn.updateToNextPlayerTurn();
@@ -60,9 +59,8 @@ public class TurnTest {
         player1.setPlayerCard(deck.pickUpCard("apollo"));
         player2.setPlayerCard(deck.pickUpCard("artemis"));
 
-        turn.setUpTurnSequence();
+        turn.setUpTurn();
 
-        turn.updateTurn();
         assertEquals(turn.getNextPlayer(), player1);
 
         turn.updateToNextPlayerTurn();

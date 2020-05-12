@@ -69,6 +69,8 @@ public class Game {
     public void addPlayer(Player newPlayer) throws IllegalAccessException {
         if (checkPlayer(newPlayer) && playerList.size() < playerNumber) {
             playerList.add(newPlayer);
+            if (playerList.size() == playerNumber)
+                turn.setPlayerOrder(playerList.toArray(new Player[0])); //TODO: Check
         } else
             throw new IllegalAccessException();
     }
@@ -88,6 +90,7 @@ public class Game {
         //TODO: Check: ??
     }
 
+    //TODO: Buggato. Throws concurrentmodificationexception (usare iterator)
     public void removePlayerByName(String nickname){   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
         for(Player p : playerList){
             if(p.getNickname().equals(nickname)){

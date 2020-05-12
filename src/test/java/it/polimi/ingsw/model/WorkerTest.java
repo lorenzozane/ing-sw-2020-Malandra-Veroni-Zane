@@ -7,9 +7,10 @@ import org.junit.Test;
 
 public class WorkerTest {
 
+  Game gameInstance = new Game();
+
   @Test
   public void setWorkerSlot() {
-    Game gameInstance = new Game();
     Player player = new Player("test");
     Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
@@ -28,14 +29,13 @@ public class WorkerTest {
 
   @Test
   public void move() {
-    Game gameInstance = new Game();
     Player player = new Player("test");
-    Worker worker = new Worker(player, 1);
     Position positionBefore = new Position(0,0);
     Position positionAfter = new Position(1,1);
     Slot slotBefore = new Slot(positionBefore);
     Slot slotAfter = new Slot(positionAfter);
 
+    Worker worker = player.getWorkers().get(0);
     worker.move(slotBefore);
     worker.move(slotAfter);
 
@@ -47,16 +47,15 @@ public class WorkerTest {
 
   @Test
   public void buildConstruction() {
-    Game gameInstance = new Game();
     Player player = new Player("test");
-    Worker worker = new Worker(player, 1);
+    Worker worker = player.getWorkers().get(0);
     Position buildPosition = new Position(0,0);
     Slot buildingInSlot = new Slot(buildPosition);
     Building buildingNew = new Building(BuildingLevel.LEVEL1);
 
     worker.build(buildingInSlot);
 
-    //assertEquals(buildingNew.getLevel(), buildingInSlot.getBuildingStatus()[1].getLevel());
+    assertEquals(buildingNew.getLevel(), buildingInSlot.getConstructionTopLevel());
 
   }
 

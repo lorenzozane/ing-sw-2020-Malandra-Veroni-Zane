@@ -24,6 +24,7 @@ public class Turn {
     protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
+    protected boolean setupPhase = true;
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
@@ -51,6 +52,14 @@ public class Turn {
         if (currentWorker != null)
             return currentWorker;
         return null;
+    }
+
+    public void setUpTurn() {
+        if (setupPhase) {
+            setUpTurnSequence();
+            updateTurn();
+            setupPhase = false;
+        }
     }
 
     public void resetCurrentWorker() {
@@ -101,7 +110,6 @@ public class Turn {
             //TODO: Notificare la nuova mossa alla view
         } else
             updateToNextPlayerTurn();
-
     }
 
     /**
