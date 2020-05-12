@@ -8,12 +8,13 @@ import java.util.Comparator;
 public class Game {
 
     private final Turn turn = new Turn(this);
-    private ArrayList<Player> playerList = new ArrayList<>();
+    private int phase = 0;
+    private final ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber = 1;
     private final Board board = new Board();
     private final Deck deck = new Deck(this);
     private Player challengerPlayer;
-    private ArrayList<PlayerColor> colorList = new ArrayList<PlayerColor>() {{
+    private final ArrayList<PlayerColor> colorList = new ArrayList<PlayerColor>() {{
         add(PlayerColor.CYAN);
         add(PlayerColor.RED);
         add(PlayerColor.YELLOW);
@@ -41,6 +42,14 @@ public class Game {
 
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
+    }
+
+    public int getPhase() {
+        return phase;
+    }
+
+    public void setPhase(int nPhase){
+        this.phase = nPhase;
     }
 
     public String getAvailableColor() {
@@ -85,36 +94,36 @@ public class Game {
         this.challengerPlayer = playerList.get(0);
     }
 
-    protected void removePlayer(Player playerToDelete) {
-        playerList.remove(playerToDelete);
-        //TODO: Check: ??
-    }
 
-    //TODO: Buggato. Throws concurrentmodificationexception (usare iterator)
-    public void removePlayerByName(String nickname){   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
-        for(Player p : playerList){
-            if(p.getNickname().equals(nickname)){
-                if(p.getPlayerColor() != null)
-                    reAddColor(p.getPlayerColor());
-                removePlayer(p);
 
-            }
-        }
+    public void removePlayerByName(String nickname) throws IllegalAccessException {   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
+        playerList.removeIf(p -> p.getNickname().equals(nickname));
+        stopGame();
     }
 
     public ArrayList<Player> getPlayerList() {
         return this.playerList;
     }
 
-    public void challenge(){
+    public void challenge() {
         //mostrare alla view del challenger tutti gli dei
 
     }
 
-    public void setup(){
-
-
-
+    private void stopGame() throws IllegalAccessException { //quando si disconnette un player la partita finisce
+        if(playerNumber == 2){
+            System.out.println("ramo di stopGame Hai vinto");// al playerList.get(0) (l'unico rimasto)  notificare che ha vinto
+        }
+        else if(playerNumber == 3){
+            for (Player p : playerList) {
+                //notificare ai due player rimasti che la partita è finita in pareggio
+            }
+        }
+        else {
+            throw new IllegalAccessException();
+        }
+        
+        
     }
 
 }

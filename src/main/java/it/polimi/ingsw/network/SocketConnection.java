@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -72,7 +73,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
      *
      * @param nickname The client unique name
      */
-    private void close(String nickname) throws IOException, IllegalAccessException, ParseException {
+    private void closeSocket(String nickname) throws IOException, IllegalAccessException, ParseException {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
@@ -99,38 +100,36 @@ public class SocketConnection extends Observable<String> implements Connection, 
         try {
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send(Message.santorini);
+            asyncSend(Message.santorini);
 
-            send(Message.chooseNickname);
+            asyncSend(Message.chooseNickname);
             String read = in.nextLine();
-//            nickname = read;
             while (!nicknameChecker(read)) {
                 send(Message.chooseNicknameAgain);
                 read = in.nextLine();
-//                nickname = read;
             }
             nickname = read;
             server.addNickname(nickname);
 
             asyncSend(Message.birthday);
             read = in.nextLine();
-            DateFormat dateFormat = new SimpleDateFormat();
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             while (!Server.dateChecker(read)) {
                 asyncSend(Message.birthdayAgain);
                 read = in.nextLine();
             }
             Date playerBirthday = dateFormat.parse(read);
 
-            this.asyncSend(Message.lobby);
+            asyncSend(Message.lobby);
             server.lobby(nickname, playerBirthday, this);
 
-
+            /*      da spostare
             read = in.nextLine();
             while (!Server.colorChecker(read)) {
                 asyncSend(Message.chooseColorAgain);
                 read = in.nextLine();
-                //notifica al controller
             }
+             */
 
 
             while (isActive()) {
@@ -142,7 +141,6 @@ public class SocketConnection extends Observable<String> implements Connection, 
         } finally {
             try {
                 server.deregisterConnection(nickname, this);
-                close(nickname);
             } catch (IOException | IllegalAccessException | ParseException e) {
                 e.printStackTrace();
             }

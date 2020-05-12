@@ -28,6 +28,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     private boolean isSomeoneCreatingAGame = false;
     private int nPlayer = 0;
     private final Object lock = new Object();
+    private final ArrayList<Game> gamesStarted = new ArrayList<>();
 
 
     /**
@@ -39,6 +40,17 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     public synchronized void deregisterConnection(String nick, Connection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
+
+        for (Game game : gamesStarted){          //caso in cui il giocatore sia dentro una partita
+            for (Player p : game.getPlayerList()){
+                if(p.getNickname().equals(nick)){
+                    game.removePlayerByName(nick);
+                }
+            }
+        }
+
+        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0); //caso in cui il game ha 0 player == finito == lo elimino
+
         nicknameDatabase.remove(nick);
         c.closeConnection();
         if (nick.equals(currentCreator)) {
@@ -116,27 +128,26 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
         Game game = new Game();
         GameInitializationManager gameInitializationManager = new GameInitializationManager(game);
 
+        gamesStarted.add(game);
+
         game.setPlayerNumber(nPlayer);
 
         for (int i = 0; i < nPlayer; i++) {
-
             Connection c = waitingConnection.get(usersReady.get(i).getNickname());
-            Scanner in = new Scanner(c.getSocket().getInputStream());
+            c.asyncSend(Message.gameLoading);
 
             game.addPlayer(usersReady.get(i));
-
 
             //settare view (?)
         }
 
-        game.setup();
+        //add.observer vari e partenza gioco per salezionare il colore
 
         for (int i = 0; i < nPlayer; i++) {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
 
         usersReady.subList(0, nPlayer).clear();
-
         checkNewCreator();
     }
 
@@ -154,9 +165,9 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
     }
 
 
-    private synchronized void creatorSetup(Connection c) throws IOException, IllegalAccessException, ParseException {
+    private void creatorSetup(Connection c) throws IOException, IllegalAccessException, ParseException {
         Scanner in = new Scanner(c.getSocket().getInputStream());
-        c.asyncSend(Message.chooseNoPlayerAgain);
+        c.asyncSend(Message.chooseNoPlayer);
 
         int read = in.nextInt();
         while (!noPlayerChecker(read)) {
@@ -164,11 +175,11 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
             read = in.nextInt();
         }
 
-        c.asyncSend(Message.wait);
-
         synchronized (lock) {
             nPlayer = read;
         }
+
+        c.asyncSend(Message.wait);
 
         if (nPlayer <= waitingConnection.size() && nPlayer > 0)
             gameLobby();
