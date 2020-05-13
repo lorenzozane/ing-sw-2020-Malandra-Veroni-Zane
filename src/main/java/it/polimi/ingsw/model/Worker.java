@@ -10,7 +10,7 @@ public class Worker {
     private final Player playerOwner;
     private final String idWorker;
     private PlayerColor color;
-    private Slot workerSlot;      //ridondanza con slot su chi c'è dentro
+    private Slot workerSlot;
 
     public Worker(Player playerOwner, int idWorkerInt){
         this.playerOwner = playerOwner;
@@ -48,7 +48,6 @@ public class Worker {
             this.workerSlot.setWorkerInSlot(null);
         this.workerSlot = workerSlot;
         this.workerSlot.setWorkerInSlot(this);
-
     }
 
     /**
@@ -59,6 +58,7 @@ public class Worker {
     public void move(Slot moveHere){
         setWorkerSlot(moveHere);
         //notify alla view
+        //TODO: Update turn (?)
     }
 
     //TODO: Test
@@ -84,6 +84,7 @@ public class Worker {
         if (buildDome){
             Building newBuilding = new Building(BuildingLevel.DOME);
             buildHere.setBuilding(newBuilding);
+            //notify alla view
         } else
             build(buildHere);
     }

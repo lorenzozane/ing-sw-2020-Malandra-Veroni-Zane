@@ -32,7 +32,7 @@ public class TurnEvents {
             BUILDING;
         }
 
-        private ActionType type;
+        private final ActionType type;
 
         Actions(ActionType type) {
             this.type = type;

@@ -86,7 +86,7 @@ public final class MoveVerifier {
             }
         }
         if (move.getTargetSlot().getWorkerInSlot() != null) {
-            if (move.getMove() != Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() != Actions.MOVE_OPPONENT_SLOT_PUSH) {
+            if (move.getMove() != Actions.MOVE_OPPONENT_SLOT_FLIP && move.getMove() != Actions.MOVE_OPPONENT_SLOT_PUSH) {
                 gameManager.setErrorMessage(Message.occupiedCellMessage);
                 return false;
             }
@@ -98,9 +98,10 @@ public final class MoveVerifier {
                     gameManager.setErrorMessage(Message.notInitialPositionMessage);
                     return false;
                 }
-                //} else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) && ...) {
-            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
-                    move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
+//            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
+//                    move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
+            } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &&
+                    move.getMove() == Actions.MOVE_STANDARD) {
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
                         .reduce((first, second) -> second).orElse(null);
                 if (initialMove != null)

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.view.RemoteView;
 
 public class PlayerMove {
@@ -8,12 +9,12 @@ public class PlayerMove {
     private final RemoteView remoteView;
     private final Player player;
     private final Worker movedWorker;
-    private final TurnEvents.Actions move;
+    private final Actions move;
     private final Slot startingSlot;
     private final Slot targetSlot;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, TurnEvents.Actions move, Slot targetSlot, Turn turn, RemoteView remoteView) {
+    public PlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn, RemoteView remoteView) {
         this.turn = turn;
         this.remoteView = remoteView;
         this.movedWorker = worker;
@@ -35,7 +36,7 @@ public class PlayerMove {
         return player;
     }
 
-    public TurnEvents.Actions getMove() {
+    public Actions getMove() {
         return move;
     }
 
@@ -49,7 +50,7 @@ public class PlayerMove {
 
     //TODO: Check se deve essere necessariamente public
     public void setForcedMove(Player player) {
-        if (player == turn.getCurrentWorker().getPlayerOwner())
+        if (player == turn.getCurrentPlayer())
             forcedMove = true;
     }
 

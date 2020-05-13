@@ -77,8 +77,17 @@ public class Slot {
      * Allows to destroy the top building currently in the slot
      */
     public void destroyTopBuilding() {
-        int index = this.getConstructionTopLevel().getLevelAsInt() - 1;
-        buildingsStatus[index] = null;
+        if (this.getConstructionTopLevel() == null)
+            return;
+        else {
+            int index = this.getConstructionTopLevel().getLevelAsInt() - 1;
+            buildingsStatus[index] = null;
+        }
+
+        if (this.getConstructionTopLevel() == null)
+            constructionHeight = 0;
+        else
+            constructionHeight = this.getConstructionTopLevel().getLevelAsInt();
     }
 
     /**
@@ -98,7 +107,7 @@ public class Slot {
      * Calculate the distance (minimum number of moves required to reach the target slot) between two slots
      *
      * @param startingPosition Starting slot
-     * @param targetPosition Target slot
+     * @param targetPosition   Target slot
      * @return Return the distance between two slots (as the minimum number of moves required to reach the target slot)
      */
     public static int calculateDistance(Slot startingPosition, Slot targetPosition) {
@@ -112,7 +121,7 @@ public class Slot {
      * Calculate the height difference between two slots
      *
      * @param startingPosition Starting slot
-     * @param targetPosition Target slot
+     * @param targetPosition   Target slot
      * @return Return the height difference (not in absolute value) between tho slots
      */
     public static int calculateHeightDifference(Slot startingPosition, Slot targetPosition) {

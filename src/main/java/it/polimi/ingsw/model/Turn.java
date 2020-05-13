@@ -181,6 +181,10 @@ public class Turn {
         return turnSequenceMap.get(currentPlayer).isCanMoveUp();
     }
 
+    public boolean canPlayerMoveUp(Player player) {
+        return turnSequenceMap.get(player).isCanMoveUp();
+    }
+
     /**
      * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
      * and read the win conditions

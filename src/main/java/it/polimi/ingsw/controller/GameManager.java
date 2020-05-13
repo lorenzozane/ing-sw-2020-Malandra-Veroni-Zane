@@ -29,6 +29,10 @@ public class GameManager implements Observer<PlayerMove> {
         this.errorMessage = errorMessage;
     }
 
+    protected String getErrorMessage() {
+        return errorMessage;
+    }
+
     /**
      * Logic of game moves
      *
@@ -65,11 +69,20 @@ public class GameManager implements Observer<PlayerMove> {
 
                         assert opponentMove != null;
                         opponentMove.setForcedMove(move.getPlayer());
-                        if (moveVerifier.moveValidator(opponentMove)) {
-                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-                                move.getMovedWorker().move(new Slot(new Position(-1, -1)));
+
+                        //Temporary movement of player's worker in a "TempSlot"
+                        //TODO: Verificare che l'UNDO funzioni correttamente
+                        if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
+                            PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
+                                    Actions.MOVE_STANDARD,
+                                    new Slot(new Position(-1, -1)),
+                                    turn, move.getRemoteView());
+                            performMove(tempMove);
+                        }
+
+                        if (moveVerifier.moveValidator(opponentMove))
                             performMove(opponentMove);
-                        } else {
+                        else {
                             move.getRemoteView().errorMessage(errorMessage);
                             return;
                         }
