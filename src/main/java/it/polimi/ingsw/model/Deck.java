@@ -35,7 +35,7 @@ public class Deck {
     protected void buildDeck() {
         try {
             //Apertura file xml GodsDescription.xml, ed inizializzazione documento
-            File xmlGodsDescription = new File("src/GodsDescription.xml");
+            File xmlGodsDescription = new File("src/main/resources/GodsDescription.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

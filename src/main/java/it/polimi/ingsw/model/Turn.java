@@ -191,7 +191,7 @@ public class Turn {
      */
     protected void setUpTurnSequence() {
         try {
-            File xmlChosenCards = new File("src/GodsParameters.xml");
+            File xmlChosenCards = new File("src/main/resources/GodsParameters.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

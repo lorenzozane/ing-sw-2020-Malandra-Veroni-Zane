@@ -3,8 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.Color.PlayerColor;
 
-import java.awt.*;
-
 public class Worker {
 
     private final Player playerOwner;
