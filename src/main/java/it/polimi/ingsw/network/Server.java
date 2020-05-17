@@ -75,7 +75,7 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
-                SocketConnection socketConnection = new SocketConnection(newSocket, this/*, this, getInstance*/);
+                SocketConnection socketConnection = new SocketConnection(newSocket, this);
                 executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");
@@ -208,6 +208,9 @@ public class Server extends Observable<AbstractMap.SimpleEntry> {
 
     }
 
+
+
+    //da mettere lato client
     /**
      * Check if the input string about the color choice is legal
      *

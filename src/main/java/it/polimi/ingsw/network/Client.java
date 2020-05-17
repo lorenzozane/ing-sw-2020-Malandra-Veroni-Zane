@@ -6,13 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client {
-    private String ip;
-    private int port;
-    private boolean active = true;
+    private final String ip;
+    private final int port;
+    private volatile boolean active = true;
 
     /**
      * Constructor of Client
@@ -74,6 +73,10 @@ public class Client {
             try {
                 while (isActive()) {
                     String inputLine = stdin.nextLine();
+                    if(inputLine.equalsIgnoreCase("exit")) {
+                        System.out.println("Closing connection...");
+                        throw new Exception();
+                    }
                     socketOut.println(inputLine);
                     socketOut.flush();
                 }
@@ -93,22 +96,22 @@ public class Client {
      */
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
 
-        try {
-            Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(stdin, socketOut);
-            t0.join();
-            t1.join();
-        } catch (InterruptedException | NoSuchElementException e) {
-            System.out.println("Connection closed from the client side");
+        try (
+                socket;
+                ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+                PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+                Scanner stdin = new Scanner(System.in)) {
+
+            asyncReadFromSocket(socketIn);
+            asyncWriteToSocket(stdin, socketOut);
+
+            while (isActive()) ;
+
+        } catch (Exception e) {
+            System.out.println("Connection closed by Exception");
         } finally {
-            stdin.close();
-            socketIn.close();
-            socketOut.close();
-            socket.close();
+            System.out.println("Connection closed");
         }
     }
 }

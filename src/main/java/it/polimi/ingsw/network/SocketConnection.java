@@ -104,7 +104,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
             asyncSend(Message.chooseNickname);
             String read = in.nextLine();
-            while (!nicknameChecker(read)) {
+            while (illegalNicknameChecker(read)) {
                 send(Message.chooseNicknameAgain);
                 read = in.nextLine();
             }
@@ -148,12 +148,12 @@ public class SocketConnection extends Observable<String> implements Connection, 
     }
 
     /**
-     * Check if the name chosen by client has not already been taken
+     * Check if the nickname chosen by client has not already been taken
      *
-     * @return true if it is legal otherwise false
+     * @return true if it is not legal otherwise false
      */
-    private boolean nicknameChecker(String nickname) {
-        return !server.getNicknameDatabase().contains(nickname);
+    private boolean illegalNicknameChecker(String nickname) {
+        return server.getNicknameDatabase().contains(nickname) || nickname.equals("");
     }
 
     @Override
