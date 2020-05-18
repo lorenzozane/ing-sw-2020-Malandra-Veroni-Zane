@@ -32,7 +32,7 @@ public class Worker {
         return workerSlot;
     }
 
-    protected void setColor(PlayerColor color) {
+    public void setColor(PlayerColor color) {
         this.color = color;
     }
 
@@ -41,7 +41,7 @@ public class Worker {
      *
      * @param workerSlot The slot target of the movement
      */
-    protected void setWorkerSlot(Slot workerSlot) {
+    public void setWorkerSlot(Slot workerSlot) {
         if (this.workerSlot != null)
             this.workerSlot.setWorkerInSlot(null);
         this.workerSlot = workerSlot;
