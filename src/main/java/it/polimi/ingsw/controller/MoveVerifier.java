@@ -99,7 +99,7 @@ public final class MoveVerifier {
                     return false;
                 }
 //            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
-//                    move.getMove() == Actions.MOVE_STANDARD) { //Migliorabile(?) TODO: Test
+//                    move.getMove() == Actions.MOVE_STANDARD) { TODO: Test
             } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &&
                     move.getMove() == Actions.MOVE_STANDARD) {
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
