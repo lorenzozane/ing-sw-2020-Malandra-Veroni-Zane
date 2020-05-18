@@ -49,7 +49,6 @@ public class GameManager implements Observer<PlayerMove> {
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                     if (move.getTargetSlot().getWorkerInSlot() != null) {
                         PlayerMove opponentMove = null;
-                        //TODO: Serve spostare temporaneamente il worker1 in uno slot "temporaneo"
                         if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,

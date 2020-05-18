@@ -4,14 +4,11 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.Server;
-import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +44,7 @@ public class GameManagerTest {
         player1.setPlayerCard(deck.pickUpCard("prometheus"));
         player2.setPlayerCard(deck.pickUpCard("artemis"));
 
-        turn.setUpTurn();
+        turn.setUpGameTurn();
 
         Worker workerPlayer1 = player1.getWorkers().get(0);
         Worker workerPlayer2 = player2.getWorkers().get(0);
@@ -158,7 +155,7 @@ public class GameManagerTest {
         player1.setPlayerCard(deck.pickUpCard("apollo"));
         player2.setPlayerCard(deck.pickUpCard("artemis"));
 
-        turn.setUpTurn();
+        turn.setUpGameTurn();
 
         Worker workerPlayer1 = player1.getWorkers().get(0);
         Worker workerPlayer2 = player2.getWorkers().get(0);

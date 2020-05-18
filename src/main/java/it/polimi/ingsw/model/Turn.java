@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
 
 /**
  * Structure useful to contain the elements necessary to describe the course of the game turns
@@ -22,9 +23,10 @@ public class Turn {
     protected Worker currentWorker = null;
     protected ArrayList<Player> playerOrder = new ArrayList<>();
     protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
+    protected LinkedList<SimpleEntry<Player, SetUpActions>> startupTurnSequence = new LinkedList<>();
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
-    protected boolean setupPhase = true;
+    protected boolean startupPhase = true;
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
@@ -54,14 +56,6 @@ public class Turn {
         return null;
     }
 
-    public void setUpTurn() {
-        if (setupPhase) {
-            setUpTurnSequence();
-            updateTurn();
-            setupPhase = false;
-        }
-    }
-
     public void resetCurrentWorker() {
         currentWorker = null;
     }
@@ -83,6 +77,28 @@ public class Turn {
 
             playerOrder.addAll(Arrays.asList(players));
             playerOrder.sort(Comparator.comparing(Player::getBirthday).reversed());
+
+            startupPhaseSetUp();
+        }
+    }
+
+    protected void startupPhaseSetUp() {
+        if (startupPhase && playerOrder.size() == gameInstance.getPlayerNumber()) {
+            for (Player player : playerOrder)
+                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.CHOOSE_CARD_REQUEST));
+            for (Player player : playerOrder.subList(1, playerOrder.size()))
+                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
+        }
+    }
+
+    public void setUpGameTurn() {
+        if (startupPhase) {
+            setUpTurnSequence();
+            currentPlayer = null;
+            currentMoveIndex = 0;
+            startupPhase = false;
+            updateTurn();
         }
     }
 
@@ -97,19 +113,41 @@ public class Turn {
                 turnSequenceMap.get(player).setCanMoveUp(canMoveUpValue);
     }
 
+    protected void updateTurn() {
+        if (startupPhase)
+            updateTurnStartup();
+        else
+            updateTurnInGame();
+    }
+
+    protected void updateTurnStartup() {
+        if (startupPhase) {
+            if (currentPlayer == null)
+                updateToNextPlayerTurn();
+            if (currentMoveIndex < startupTurnSequence.size()) {
+                startupTurnSequence.get(currentMoveIndex);
+                currentMoveIndex++;
+                //TODO: Notificare la nuova mossa alla view
+            } else
+                setUpGameTurn();
+        }
+    }
+
     /**
      * Update the turn to the next move to be performed, or to the next player
      */
-    protected void updateTurn() {
-        if (currentPlayer == null)
-            updateToNextPlayerTurn();
-        TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
-        if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
-            currentTurnSequence.getMoveSequence().get(currentMoveIndex);
-            currentMoveIndex++;
-            //TODO: Notificare la nuova mossa alla view
-        } else
-            updateToNextPlayerTurn();
+    protected void updateTurnInGame() {
+        if (!startupPhase) {
+            if (currentPlayer == null)
+                updateToNextPlayerTurn();
+            TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
+            if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
+                currentTurnSequence.getMoveSequence().get(currentMoveIndex);
+                currentMoveIndex++;
+                //TODO: Notificare la nuova mossa alla view
+            } else
+                updateToNextPlayerTurn();
+        }
     }
 
     /**
