@@ -13,6 +13,10 @@ public class Board implements Cloneable, Serializable {
         initializeBoard();
     }
 
+    public int getBoardDimension() {
+        return BOARD_DIMENSION;
+    }
+
     /**
      * Initialize the game board instantiating all the slots
      */

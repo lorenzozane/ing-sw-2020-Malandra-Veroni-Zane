@@ -92,6 +92,10 @@ public class Turn {
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
             startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.PICK_LAST_CARD));
+            for (Player player : playerOrder) {
+                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PLACE_WORKER));
+            }
 
 //            for (Player player : playerOrder)
 //                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
