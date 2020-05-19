@@ -96,6 +96,8 @@ public class GameManager implements Observer<PlayerMove> {
 
                 performMove(move);
             } else {
+                //TODO: Aggiungere a tutti gli altri casi d'errore
+                move.getRemoteView().resetBoard(gameInstance.getBoard());
                 move.getRemoteView().errorMessage(errorMessage);
                 return;
             }

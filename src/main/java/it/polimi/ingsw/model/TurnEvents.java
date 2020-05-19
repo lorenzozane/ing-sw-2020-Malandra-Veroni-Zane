@@ -7,8 +7,11 @@ public class TurnEvents {
 
     public enum SetUpActions {
         COLOR_REQUEST,
+        PICK_LAST_COLOR,
         CHOOSE_CARD_REQUEST,
-        PICK_UP_CARD_REQUEST;
+        PICK_UP_CARD_REQUEST,
+        PICK_LAST_CARD;
+
     }
 
     /**

@@ -27,6 +27,7 @@ public class Turn {
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
+    protected Player lastMovePerformedBy = null;
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
@@ -78,17 +79,25 @@ public class Turn {
             playerOrder.addAll(Arrays.asList(players));
             playerOrder.sort(Comparator.comparing(Player::getBirthday).reversed());
 
-            startupPhaseSetUp();
+            setUpStartupPhase();
         }
     }
 
-    protected void startupPhaseSetUp() {
+    protected void setUpStartupPhase() {
         if (startupPhase && playerOrder.size() == gameInstance.getPlayerNumber()) {
-            for (Player player : playerOrder)
+            for (Player player : playerOrder.subList(0, playerOrder.size() - 1))
                 startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), SetUpActions.PICK_LAST_COLOR));
             startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.PICK_LAST_CARD));
+
+//            for (Player player : playerOrder)
+//                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
+//            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.CHOOSE_CARD_REQUEST));
+//            for (Player player : playerOrder.subList(1, playerOrder.size()))
+//                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
         }
     }
 
