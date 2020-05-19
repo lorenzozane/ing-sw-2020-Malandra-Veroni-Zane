@@ -15,15 +15,15 @@ public class RemoteView extends Observable<SimpleEntry<Class<?>, String>> implem
         this.clientConnection = c;
     }
 
-    private void handleString(String message) {
-
-    }
-
     protected void sendMessage(Object message) {
         clientConnection.asyncSend(message);
     }
 
     public void errorMessage(String message) {
+        sendMessage(message);
+    }
+
+    public void resetBoard(Object message) {
         sendMessage(message);
     }
 

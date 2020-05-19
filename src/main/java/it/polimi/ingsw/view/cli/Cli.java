@@ -2,10 +2,12 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Slot;
+import it.polimi.ingsw.model.UpdateTurnMessage;
+import it.polimi.ingsw.observer.Observer;
 
 import java.util.Arrays;
 
-public class Cli {
+public class Cli implements Observer<UpdateTurnMessage> {
     private String[][] gameBoard = {{" " , Color.ANSI_BRIGHT_BLUE + "         1          " + Color.RESET , " ", Color.ANSI_BRIGHT_BLUE + "          2         " + Color.RESET , " " , Color.ANSI_BRIGHT_BLUE + "         3          " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "          4         " + Color.RESET , " " , Color.ANSI_BRIGHT_BLUE + "          5         " + Color.RESET},
             {" " ,"                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    "},
             {" " ,"                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    "},
@@ -250,5 +252,10 @@ public class Cli {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public void update(UpdateTurnMessage message) {
+
     }
 }

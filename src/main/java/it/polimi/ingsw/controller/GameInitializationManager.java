@@ -4,9 +4,6 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.observer.Observer;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 
@@ -35,6 +32,11 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
             deck.chooseCards(chosenCardList.toArray(new String[0]));
     }
 
+    public void pickUpCard(String godCardName) {
+        if (deck.isAGodName(godCardName))
+            turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
+    }
+
     public void setPlayerColor(String playerColor) {
         switch (playerColor) {
             case "red":
@@ -54,23 +56,9 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
         }
     }
 
-    //TODO: Togliere (?) non serve più, chiediamo la data di nascita prima dell'inizio della partita
-    public void setBirthday(String date) {
-        try {
-            DateFormat dateFormat = new SimpleDateFormat();
-            turn.getCurrentPlayer().setBirthday(dateFormat.parse(date));
-        } catch (ParseException ex) {
-            System.err.println("ParseException already handled, something went wrong in the client side date control.");
-            turn.getCurrentPlayer().setBirthday(new Date("1/1/2020"));
-        }
-    }
-
-
     @Override
     public void update(SimpleEntry<Class<?>, String> message) {
-        if (message.getKey() == Date.class) {
-            setBirthday(message.getValue());
-        } else if (message.getKey() == Color.class) {
+        if (message.getKey() == Color.class) {
             setPlayerColor(message.getValue());
         } else if (deck.isAGodName(message.getValue())) {
             buildChosenCard(message.getValue());

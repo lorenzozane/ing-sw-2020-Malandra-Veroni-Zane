@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Board implements Cloneable {
+public class Board implements Cloneable, Serializable {
 
     private static final int BOARD_DIMENSION = 5;
 
