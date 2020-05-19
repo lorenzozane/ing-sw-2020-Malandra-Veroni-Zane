@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,7 +48,7 @@ public class Client {
                     if (inputObject instanceof String) {
                         System.out.println((String) inputObject);
                     } else if (inputObject instanceof Board) {
-                        ((Board) inputObject).printGameBoard();
+                        ((Cli) inputObject).printGameBoard();
                     } else {
                         throw new IllegalArgumentException();
                     }
