@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import com.google.gson.*;
 
 public class SocketConnection extends Observable<String> implements Connection, Runnable {
 

@@ -13,6 +13,7 @@ public class Client {
     private final String ip;
     private final int port;
     private volatile boolean active = true;
+    private boolean gui;
 
     /**
      * Constructor of Client
@@ -30,6 +31,10 @@ public class Client {
 
     public synchronized void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void setGui(boolean gui){
+        this.gui = true;
     }
 
 
