@@ -10,7 +10,7 @@ public class Game {
     private final Turn turn = new Turn(this);
     private int phase = 0;
     private final ArrayList<Player> playerList = new ArrayList<>();
-    private int playerNumber = 1;
+    private int playerNumber/* = 1*/;
     private final Board board = new Board();
     private final Deck deck = new Deck(this);
     private Player challengerPlayer;
@@ -79,7 +79,7 @@ public class Game {
         if (checkPlayer(newPlayer) && playerList.size() < playerNumber) {
             playerList.add(newPlayer);
             if (playerList.size() == playerNumber)
-                turn.setPlayerOrder(playerList.toArray(new Player[0])); //TODO: Check
+                turn.setPlayerOrder(playerList.toArray(new Player[0]));
         } else
             throw new IllegalAccessException();
     }
