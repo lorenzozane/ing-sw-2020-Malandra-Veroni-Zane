@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.ViewMessage;
 
+import java.net.SocketOption;
 import java.util.Arrays;
 
 public class Cli implements Observer<UpdateTurnMessage> {
@@ -310,8 +312,43 @@ public class Cli implements Observer<UpdateTurnMessage> {
     public void update(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == TurnEvents.SetUpActions.COLOR_REQUEST) {
-
+                System.out.println(ViewMessage.colorRequest);
+            }
+            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_COLOR){
+                System.out.println(ViewMessage.pickLastColor);
+            }
+            if (message.getNextStartupMove() == TurnEvents.SetUpActions.CHOOSE_CARD_REQUEST){
+                System.out.println(ViewMessage.chooseCardRequest);
+            }
+            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_UP_CARD_REQUEST){
+                System.out.println(ViewMessage.pickUpCardRequest);
+            }
+            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_CARD){
+                System.out.println(ViewMessage.pickLastCard);
+            }
+            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PLACE_WORKER){
+                System.out.println(ViewMessage.placeWorker);
+            }
+        }else {
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD){
+                System.out.println(ViewMessage.moveStandard);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION){
+                System.out.println(ViewMessage.moveNotInitialPosition);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP){
+                System.out.println(ViewMessage.moveOpponentSlotFlip);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH){
+                System.out.println(ViewMessage.moveOpponentSlotPush);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP){
+                System.out.println(ViewMessage.moveDisableOpponentUp);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD){
+                System.out.println(ViewMessage.buildStandard);
             }
         }
+
     }
 }
