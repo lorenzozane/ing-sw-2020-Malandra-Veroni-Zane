@@ -2,13 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
+import it.polimi.ingsw.model.TurnEvents.SetUpActions;
 import it.polimi.ingsw.observer.Observer;
 
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 
 
-public class GameInitializationManager implements Observer<SimpleEntry<Class<?>, String>> {
+public class GameInitializationManager implements Observer<PlayerMoveStartup> {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -24,7 +25,9 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
         chosenCardList = new ArrayList<>(gameInstance.getPlayerNumber());
     }
 
-    public void buildChosenCard(String godCardName) {
+    public void buildChosenCard(PlayerMoveStartup message) {
+        String godCardName = message.getChosenCard();
+
         if (deck.isAGodName(godCardName))
             chosenCardList.add(godCardName);
 
@@ -32,7 +35,9 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
             deck.chooseCards(chosenCardList.toArray(new String[0]));
     }
 
-    public void pickUpCard(String godCardName) {
+    public void pickUpCard(PlayerMoveStartup message) {
+        String godCardName = message.getChosenCard();
+
         if (deck.isAGodName(godCardName))
             turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
     }
@@ -56,12 +61,40 @@ public class GameInitializationManager implements Observer<SimpleEntry<Class<?>,
         }
     }
 
-    @Override
-    public void update(SimpleEntry<Class<?>, String> message) {
-        if (message.getKey() == Color.class) {
-            setPlayerColor(message.getValue());
-        } else if (deck.isAGodName(message.getValue())) {
-            buildChosenCard(message.getValue());
-        }
+    public void setPlayerColor(PlayerMoveStartup message) {
+        PlayerColor playerColor = message.getChosenColor();
+
+        turn.getCurrentPlayer().setPlayerColor(playerColor);
+        gameInstance.removeColor(playerColor);
     }
+
+    private void placeWorker(PlayerMoveStartup message) {
+        Position workerPosition = message.getWorkerPosition();
+
+        Board gameBoard = gameInstance.getBoard();
+
+
+    }
+
+//    @Override
+//    public void update(SimpleEntry<Class<?>, String> message) {
+//        if (message.getKey() == Color.class) {
+//            setPlayerColor(message.getValue());
+//        } else if (deck.isAGodName(message.getValue())) {
+//            buildChosenCard(message.getValue());
+//        }
+//    }
+
+    @Override
+    public void update(PlayerMoveStartup message) {
+        if (message.getAction() == SetUpActions.COLOR_REQUEST)
+            setPlayerColor(message);
+        else if (message.getAction() == SetUpActions.CHOOSE_CARD_REQUEST)
+            buildChosenCard(message);
+        else if (message.getAction() == SetUpActions.PICK_UP_CARD_REQUEST)
+            pickUpCard(message);
+        else if (message.getAction() == SetUpActions.PLACE_WORKER)
+            placeWorker(message);
+    }
+
 }

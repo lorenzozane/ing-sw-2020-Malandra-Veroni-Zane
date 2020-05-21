@@ -10,10 +10,17 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
+
+    public enum UserInterface {
+        CLI,
+        GUI;
+    }
+
     private final String ip;
     private final int port;
     private volatile boolean active = true;
-    private boolean gui;
+    private UserInterface chosenUserInterface;
+    //    private boolean gui;
 
     /**
      * Constructor of Client
@@ -33,9 +40,9 @@ public class Client {
         this.active = active;
     }
 
-    public void setGui(boolean gui){
-        this.gui = true;
-    }
+//    public void setGui(boolean gui){
+//        this.gui = true;
+//    }
 
 
     /**

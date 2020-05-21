@@ -1,13 +1,14 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.ViewMessage;
 
 import java.net.SocketOption;
 import java.util.Arrays;
 
-public class Cli implements Observer<UpdateTurnMessage> {
+public class Cli {
 
     protected Player playerOwner;
     private static final int SLOT_HEIGHT = 6;
@@ -104,56 +105,6 @@ public class Cli implements Observer<UpdateTurnMessage> {
         else if (slotStatusValue[slot.getBuildingsStatus().size() - 1] != 0)
             drawDome(refreshedSlot, workerOrDomeIndex);
 
-//        switch (Arrays.toString(slotStatusValue)) {
-//            case "[0, 0, 0, 0]":
-//                if (slot.getWorkerInSlot() != null)
-//                    drawWorker(refreshedSlot, 3, slot.getWorkerInSlot().getColor());
-//                break;
-//
-//            case "[1, 0, 0, 0]":
-//                drawLevel(refreshedSlot, 1);
-//
-//                if (slot.getWorkerInSlot() != null)
-//                    drawWorker(refreshedSlot, 2, slot.getWorkerInSlot().getColor());
-//                break;
-//
-//            case "[1, 2, 0, 0]":
-//                drawLevel(refreshedSlot, 1, 2);
-//
-//                if (slot.getWorkerInSlot() != null)
-//                    drawWorker(refreshedSlot, 1, slot.getWorkerInSlot().getColor());
-//                break;
-//
-//            case "[1, 2, 3, 0]":
-//                drawLevel(refreshedSlot, 1, 2, 3);
-//
-//                if (slot.getWorkerInSlot() != null)
-//                    drawWorker(refreshedSlot, 0, slot.getWorkerInSlot().getColor());
-//                break;
-//
-//            case "[1, 2, 3, 4]":
-//                drawDome(refreshedSlot, 0);
-//                drawLevel(refreshedSlot, 1, 2, 3);
-//                break;
-//
-//            case "[0, 0, 0, 4]":
-//                drawDome(refreshedSlot, 3);
-//                break;
-//
-//            case "[1, 0, 0, 4]":
-//                drawDome(refreshedSlot, 2);
-//                drawLevel(refreshedSlot, 1);
-//                break;
-//
-//            case "[1, 2, 0, 4]":
-//                drawDome(refreshedSlot, 1);
-//                drawLevel(refreshedSlot, 1, 2);
-//                break;
-//
-//            default:
-//                throw new IllegalArgumentException();
-//        }
-
         return refreshedSlot;
     }
 
@@ -176,104 +127,13 @@ public class Cli implements Observer<UpdateTurnMessage> {
         }
     }
 
-    private void drawWorker(String[][] refreshedSlot, int startingFrom, Color.PlayerColor playerColor) {
+    private void drawWorker(String[][] refreshedSlot, int startingFrom, PlayerColor playerColor) {
         if (startingFrom >= 0 && startingFrom <= SLOT_HEIGHT - 3) {
             refreshedSlot[startingFrom][0] = playerColor.getEscape() + "         o          " + Color.RESET;
             refreshedSlot[startingFrom + 1][0] = playerColor.getEscape() + "        /|\\         " + Color.RESET;
             refreshedSlot[startingFrom + 2][0] = playerColor.getEscape() + "        /¯\\         " + Color.RESET;
         }
     }
-
-//    public void removeWorkerOnBoard(Slot slotBeforeMove) {
-//
-//        int[] value = new int[slotBeforeMove.getBuildingsStatus().size()];
-//        String[][] cube = {{"                    "},
-//                {"                    "},
-//                {"                    "},
-//                {"                    "},
-//                {"                    "},
-//                {"                    "}};
-//
-//        for (int i = 0; i < slotBeforeMove.getBuildingsStatus().size(); i++) {
-//            if (slotBeforeMove.getBuildingsStatus().get(i) == null) {
-//                value[i] = 0;
-//            } else
-//                value[i] = slotBeforeMove.getBuildingsStatus().get(i).getLevelAsInt();
-//        }
-//
-//
-//        switch (Arrays.toString(value)) {
-//            case "[1, 0, 0, 0]":
-//                cube[5][0] = "████████████████████";
-//                break;
-//
-//            case "[1, 2, 0, 0]":
-//                cube[5][0] = "████████████████████";
-//                cube[4][0] = "  ████████████████  ";
-//                break;
-//
-//            case "[1, 2, 3, 0]":
-//                cube[5][0] = "████████████████████";
-//                cube[4][0] = "  ████████████████  ";
-//                cube[3][0] = "    ████████████    ";
-//                break;
-//
-//            default:
-//                throw new IllegalArgumentException();
-//        }
-//
-//
-//        int[] position = new int[2];
-//        position[0] = slotBeforeMove.getSlotPosition().getCoordinateX();
-//        position[1] = slotBeforeMove.getSlotPosition().getCoordinateY();
-//
-//        for (int i = 0; i < 6; i++) {
-//            emptyGameBoard[i + (position[0] * 7) + 1][(position[1] * 2) + 1] = cube[i][0];
-//        }
-//
-//    }
-
-//    public String[][] updateWorkerOnBoard(Slot slot) {
-//        String[][] refreshedSlot = emptySlot;
-//        int[] slotStatusValue = analyzeSlotStatus(slot);
-//
-//        switch (Arrays.toString(slotStatusValue)) {
-//            case "[0, 0, 0, 0]":
-//                refreshedSlot[5][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /¯\\         " + Color.RESET;
-//                refreshedSlot[4][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /|\\         " + Color.RESET;
-//                refreshedSlot[3][0] = slot.getWorkerInSlot().getColor().getEscape() + "         o          " + Color.RESET;
-//                break;
-//
-//            case "[1, 0, 0, 0]":
-//                refreshedSlot[5][0] = "████████████████████";
-//                refreshedSlot[4][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /¯\\         " + Color.RESET;
-//                refreshedSlot[3][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /|\\         " + Color.RESET;
-//                refreshedSlot[2][0] = slot.getWorkerInSlot().getColor().getEscape() + "         o          " + Color.RESET;
-//                break;
-//
-//            case "[1, 2, 0, 0]":
-//                refreshedSlot[5][0] = "████████████████████";
-//                refreshedSlot[4][0] = "  ████████████████  ";
-//                refreshedSlot[3][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /¯\\         " + Color.RESET;
-//                refreshedSlot[2][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /|\\         " + Color.RESET;
-//                refreshedSlot[1][0] = slot.getWorkerInSlot().getColor().getEscape() + "         o          " + Color.RESET;
-//                break;
-//
-//            case "[1, 2, 3, 0]":
-//                refreshedSlot[5][0] = "████████████████████";
-//                refreshedSlot[4][0] = "  ████████████████  ";
-//                refreshedSlot[3][0] = "    ████████████    ";
-//                refreshedSlot[2][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /¯\\         " + Color.RESET;
-//                refreshedSlot[1][0] = slot.getWorkerInSlot().getColor().getEscape() + "        /|\\         " + Color.RESET;
-//                refreshedSlot[0][0] = slot.getWorkerInSlot().getColor().getEscape() + "         o          " + Color.RESET;
-//                break;
-//
-//            default:
-//                throw new IllegalArgumentException();
-//        }
-//
-//        return refreshedSlot;
-//    }
 
     private static String[][] deepCopyStringArray(String[][] original) {
         if (original == null) {
@@ -308,59 +168,8 @@ public class Cli implements Observer<UpdateTurnMessage> {
         }
     }
 
-    @Override
-    public void update(UpdateTurnMessage message) {
-        if (message.isStartupPhase()) {
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.COLOR_REQUEST) {
-                System.out.println(ViewMessage.colorRequest);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_COLOR){
-                System.out.println(ViewMessage.pickLastColor);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.CHOOSE_CARD_REQUEST){
-                System.out.println(ViewMessage.chooseCardRequest);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_UP_CARD_REQUEST){
-                System.out.println(ViewMessage.pickUpCardRequest);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_CARD){
-                System.out.println(ViewMessage.pickLastCard);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PLACE_WORKER){
-                System.out.println(ViewMessage.placeWorker);
-            }
-        }else {
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD){
-                System.out.println(ViewMessage.moveStandard);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION){
-                System.out.println(ViewMessage.moveNotInitialPosition);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP){
-                System.out.println(ViewMessage.moveOpponentSlotFlip);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH){
-                System.out.println(ViewMessage.moveOpponentSlotPush);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP){
-                System.out.println(ViewMessage.moveDisableOpponentUp);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD){
-                System.out.println(ViewMessage.buildStandard);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE){
-                System.out.println(ViewMessage.buildBefore);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE){
-                System.out.println(ViewMessage.buildNotSamePlace);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME){
-                System.out.println(ViewMessage.buildSamePlaceNotDome);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL){
-                System.out.println(ViewMessage.buildDomeAnyLevel);
-            }
-        }
-
+    //TODO: printMessage
+    public void showMessage(String messageToShow) {
+        System.out.println(messageToShow);
     }
 }

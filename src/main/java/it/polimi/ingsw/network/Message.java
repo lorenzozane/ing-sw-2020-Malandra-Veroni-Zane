@@ -26,7 +26,6 @@ public final class Message {
     public static String occupiedCellMessage = "The chosen cell is occupied by another player!";
     public static String domeOccupiedCellMessage = "The chosen cell is occupied by a dome!";
     public static String tooHighMoveMessage = "You cannot go that high! Lay low.";
-    public static String tooHighBuildMessage = "You cannot build that high!";
     public static String notInitialPositionMessage = "You cannot go back to your starting slot!";
     public static String buildNotSamePlaceMessage = "You cannot build again in the same slot!";
     public static String mustBuildSamePlaceMessage = "If you want to build again, you must build in the same slot!";

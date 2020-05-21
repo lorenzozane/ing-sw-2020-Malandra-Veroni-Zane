@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 public class ViewMessage {
 
     //SetUpActions
+    //TODO: Modificare i pickLast...
     public static String colorRequest = "Choose worker's color from these colors: ";
     public static String pickLastColor = "The last color left is: ";
     public static String chooseCardRequest = "Choose cards from these cards: ";

@@ -31,7 +31,7 @@ public class GodsCard implements Cloneable {
 
     @Override
     public String toString() {
-        return "God [name=" + cardName + ", description=" + cardDescription + "]";
+        return "God " + cardName + ": " + cardDescription;
     }
 
 
