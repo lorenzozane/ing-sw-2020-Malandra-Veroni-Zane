@@ -348,6 +348,18 @@ public class Cli implements Observer<UpdateTurnMessage> {
             if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD){
                 System.out.println(ViewMessage.buildStandard);
             }
+            if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE){
+                System.out.println(ViewMessage.buildBefore);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE){
+                System.out.println(ViewMessage.buildNotSamePlace);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME){
+                System.out.println(ViewMessage.buildSamePlaceNotDome);
+            }
+            if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL){
+                System.out.println(ViewMessage.buildDomeAnyLevel);
+            }
         }
 
     }
