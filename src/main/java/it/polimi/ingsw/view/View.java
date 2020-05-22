@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.GodsCard;
 import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Client.UserInterface;
@@ -81,7 +82,26 @@ public class View implements Observer<UpdateTurnMessage> {
     }
 
     private void handleMessageForOthers(UpdateTurnMessage message) {
-
+        if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
+            showMessage(ViewMessage.moveDisableOpponentUpOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildBeforeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
     @Override
