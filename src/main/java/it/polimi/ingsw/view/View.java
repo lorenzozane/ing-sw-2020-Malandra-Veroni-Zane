@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.GodsCard;
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents;
@@ -54,54 +55,60 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.colorRequest);
             else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_COLOR)
                 showMessage(ViewMessage.pickLastColor);
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.CHOOSE_CARD_REQUEST){
-                System.out.println(ViewMessage.chooseCardRequest);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_UP_CARD_REQUEST){
-                System.out.println(ViewMessage.pickUpCardRequest);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_CARD){
-                System.out.println(ViewMessage.pickLastCard);
-            }
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.PLACE_WORKER){
-                System.out.println(ViewMessage.placeWorker);
-            }
-        }else {
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD){
-                System.out.println(ViewMessage.moveStandard);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION){
-                System.out.println(ViewMessage.moveNotInitialPosition);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP){
-                System.out.println(ViewMessage.moveOpponentSlotFlip);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH){
-                System.out.println(ViewMessage.moveOpponentSlotPush);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP){
-                System.out.println(ViewMessage.moveDisableOpponentUp);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD){
-                System.out.println(ViewMessage.buildStandard);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE){
-                System.out.println(ViewMessage.buildBefore);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE){
-                System.out.println(ViewMessage.buildNotSamePlace);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME){
-                System.out.println(ViewMessage.buildSamePlaceNotDome);
-            }
-            if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL){
-                System.out.println(ViewMessage.buildDomeAnyLevel);
-            }
+            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.CHOOSE_CARD_REQUEST)
+                showMessage(ViewMessage.chooseCardRequest);
+            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_UP_CARD_REQUEST)
+                showMessage(ViewMessage.pickUpCardRequest);
+            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_CARD)
+                showMessage(ViewMessage.pickLastCard);
+            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PLACE_WORKER)
+                showMessage(ViewMessage.placeWorker);
+        }
+        else {
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
+                showMessage(ViewMessage.moveStandard);
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
+                showMessage(ViewMessage.moveNotInitialPosition);
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
+                showMessage(ViewMessage.moveOpponentSlotFlip);
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
+                showMessage(ViewMessage.moveOpponentSlotPush);
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
+                showMessage(ViewMessage.moveDisableOpponentUp);
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
+                showMessage(ViewMessage.buildStandard);
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
+                showMessage(ViewMessage.buildBefore);
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
+                showMessage(ViewMessage.buildNotSamePlace);
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
+                showMessage(ViewMessage.buildSamePlaceNotDome);
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
+                showMessage(ViewMessage.buildDomeAnyLevel);
         }
     }
 
     private void handleMessageForOthers(UpdateTurnMessage message) {
-
+        if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
+            showMessage(ViewMessage.moveDisableOpponentUpOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildBeforeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
+            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
     @Override

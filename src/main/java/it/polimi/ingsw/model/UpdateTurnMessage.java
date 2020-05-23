@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class UpdateTurnMessage {
 
     private final Board boardCopy;
@@ -11,7 +13,8 @@ public class UpdateTurnMessage {
     private final Player currentPlayer;
     private final Worker currentWorker;
 //    private final Turn turn;
-    private Color.PlayerColor chosenColor;
+    private ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
+    private ArrayList<GodsCard> choosenGodsCard= new ArrayList<>(); //passaimo le carte fra cui scegliere
 
 
     public UpdateTurnMessage(TurnEvents.SetUpActions nextStartupMove, Player currentPlayer) {
@@ -23,6 +26,7 @@ public class UpdateTurnMessage {
         this.boardCopy = null;
         this.lastMovePerformedBy = null;
         this.nextMove = null;
+
     }
 
     public UpdateTurnMessage(Board boardCopy, Player lastMovePerformedBy, TurnEvents.Actions nextMove, Player currentPlayer, Worker currentWorker) {
