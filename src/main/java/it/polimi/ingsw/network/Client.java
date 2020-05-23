@@ -1,6 +1,11 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.PlayerMove;
+import it.polimi.ingsw.model.PlayerMoveStartup;
+import it.polimi.ingsw.model.UpdateTurnMessage;
+import it.polimi.ingsw.observer.MessageForwarder;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
@@ -9,7 +14,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+public class Client extends MessageForwarder {
 
     public enum UserInterface {
         CLI,
@@ -20,6 +25,13 @@ public class Client {
     private final int port;
     private volatile boolean active = true;
     private UserInterface chosenUserInterface;
+    private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
+    private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
+    private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
+    private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
+    private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
+    private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
+
     //    private boolean gui;
 
     /**
@@ -126,5 +138,48 @@ public class Client {
         } finally {
             System.out.println("Connection closed");
         }
+    }
+
+
+
+
+
+    @Override
+    protected void handlePlayerMove(PlayerMove message) {
+        System.out.println("Received player move");
+    }
+
+    @Override
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
+        System.out.println("Received update turn message");
+    }
+
+    @Override
+    protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
+        System.out.println("Received player move startup");
+    }
+
+    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
+        return updateTurnMessageReceiver;
+    }
+
+    public PlayerMoveReceiver getPlayerMoveReceiver() {
+        return playerMoveReceiver;
+    }
+
+    public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {
+        return playerMoveStartupReceiver;
+    }
+
+    public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
+        updateTurnMessageSender.addObserver(observer);
+    }
+
+    public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
+        playerMoveSender.addObserver(observer);
+    }
+
+    public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
+        playerMoveStartupSender.addObserver(observer);
     }
 }

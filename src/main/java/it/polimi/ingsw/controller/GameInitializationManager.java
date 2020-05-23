@@ -3,13 +3,12 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.SetUpActions;
-import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.observer.MessageForwarder;
 
 import java.util.*;
-import java.util.AbstractMap.SimpleEntry;
 
 
-public class GameInitializationManager implements Observer<PlayerMoveStartup> {
+public class GameInitializationManager extends MessageForwarder {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -17,6 +16,7 @@ public class GameInitializationManager implements Observer<PlayerMoveStartup> {
     private final Turn turn;
     private final Deck deck;
     private final ArrayList<String> chosenCardList;
+    private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
 
     public GameInitializationManager(Game gameInstance) {
         this.gameInstance = gameInstance;
@@ -76,17 +76,8 @@ public class GameInitializationManager implements Observer<PlayerMoveStartup> {
 
     }
 
-//    @Override
-//    public void update(SimpleEntry<Class<?>, String> message) {
-//        if (message.getKey() == Color.class) {
-//            setPlayerColor(message.getValue());
-//        } else if (deck.isAGodName(message.getValue())) {
-//            buildChosenCard(message.getValue());
-//        }
-//    }
-
     @Override
-    public void update(PlayerMoveStartup message) {
+    protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         if (message.getAction() == SetUpActions.COLOR_REQUEST)
             setPlayerColor(message);
         else if (message.getAction() == SetUpActions.CHOOSE_CARD_REQUEST)
@@ -97,4 +88,7 @@ public class GameInitializationManager implements Observer<PlayerMoveStartup> {
             placeWorker(message);
     }
 
+    public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {
+        return playerMoveStartupReceiver;
+    }
 }

@@ -1,18 +1,24 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.PlayerMove;
+import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Client.UserInterface;
+import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 
-public class View implements Observer<UpdateTurnMessage> {
+public class View extends MessageForwarder {
 
     private String playerOwnerNickname;
     private final UserInterface chosenUserInterface;
     private final Cli playerCli;
     private final Gui playerGui;
+    private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
+    private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
+    private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
 
     //TODO: Mich completa tu i costruttori in base a quello che ti serve
     //Ne ho fatti due in modo da averne uno in caso di creazione CLI e uno GUI (se non serve risistema tu)
@@ -99,13 +105,23 @@ public class View implements Observer<UpdateTurnMessage> {
     }
 
     @Override
-    public void update(UpdateTurnMessage message) {
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
             handleMessageForMe(message);
         else
             handleMessageForOthers(message);
+    }
 
+    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
+        return updateTurnMessageReceiver;
+    }
 
+    public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
+        playerMoveSender.addObserver(observer);
+    }
+
+    public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
+        playerMoveStartupSender.addObserver(observer);
     }
 }
 

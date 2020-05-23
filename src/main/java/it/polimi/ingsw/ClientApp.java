@@ -18,7 +18,7 @@ public class ClientApp {
         }
 
         if(input.equalsIgnoreCase("GUI")){
-            client.setGui(true);
+//            client.setGui(true);
             //Gui.main();
         }
 

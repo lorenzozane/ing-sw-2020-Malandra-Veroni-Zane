@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.TurnEvents.*;
 
+import it.polimi.ingsw.observer.MessageForwarder;
+import it.polimi.ingsw.observer.Observer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,7 +18,7 @@ import java.util.AbstractMap.SimpleEntry;
 /**
  * Structure useful to contain the elements necessary to describe the course of the game turns
  */
-public class Turn {
+public class Turn extends MessageForwarder {
 
     protected Game gameInstance;
     protected Player currentPlayer = null;
@@ -27,7 +29,14 @@ public class Turn {
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
+    //TODO: Implementare logica lastMovePerformedBy
     protected Player lastMovePerformedBy = null;
+
+    private final MessageForwarder.UpdateTurnMessageSender updateTurnMessageSender = new MessageForwarder.UpdateTurnMessageSender();
+
+    public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
+        updateTurnMessageSender.addObserver(observer);
+    }
 
     //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
 
@@ -126,7 +135,8 @@ public class Turn {
                 turnSequenceMap.get(player).setCanMoveUp(canMoveUpValue);
     }
 
-    protected void updateTurn() {
+    //TODO: Possibile rendere protected?
+    public void updateTurn() {
         if (startupPhase)
             updateTurnStartup();
         else
@@ -155,8 +165,9 @@ public class Turn {
                 updateToNextPlayerTurn();
             TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
             if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
-                currentTurnSequence.getMoveSequence().get(currentMoveIndex);
+                Actions nextAction = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
                 currentMoveIndex++;
+                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextAction, currentPlayer, currentWorker));
                 //TODO: Notificare la nuova mossa alla view
             } else
                 updateToNextPlayerTurn();

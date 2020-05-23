@@ -1,7 +1,5 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.observer.Observable;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -13,7 +11,7 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class SocketConnection extends Observable<String> implements Connection, Runnable {
+public class SocketConnection /*extends Observable<String>*/ implements Connection, Runnable {
 
     //private final Game gameInstance;
     private Socket socket;
@@ -134,7 +132,7 @@ public class SocketConnection extends Observable<String> implements Connection, 
 
             while (isActive()) {
                 read = in.nextLine();
-                notifyAll(read);
+//                notifyAll(read);
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException e) {
             System.err.println("Error!" + e.getMessage());

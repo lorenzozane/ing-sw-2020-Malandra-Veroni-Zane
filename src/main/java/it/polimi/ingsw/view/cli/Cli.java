@@ -2,10 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
-import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.ViewMessage;
 
-import java.net.SocketOption;
 import java.util.Arrays;
 
 public class Cli {

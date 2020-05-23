@@ -3,16 +3,17 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.*;
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.observer.MessageForwarder;
 
 import java.util.ArrayList;
 
-public class GameManager implements Observer<PlayerMove> {
+public class GameManager extends MessageForwarder {
 
     private final Game gameInstance;
     private final Turn turn;
     private final MoveVerifier moveVerifier;
     private String errorMessage = "";
+    private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
 
     /**
      * Constructor of the GameManager that deals with managing the game logic (movement and construction)
@@ -141,8 +142,10 @@ public class GameManager implements Observer<PlayerMove> {
     protected void performMove(PlayerMove move) {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
-        if (!move.getForcedMove())
+        if (!move.getForcedMove()) {
             checkWinConditions(move);
+            turn.updateTurn();
+        }
     }
 
     /**
@@ -153,6 +156,7 @@ public class GameManager implements Observer<PlayerMove> {
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
+        turn.updateTurn();
     }
 
     /**
@@ -186,8 +190,12 @@ public class GameManager implements Observer<PlayerMove> {
     }
 
     @Override
-    public void update(PlayerMove message) {
+    protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
         handleMove(message);
+    }
+
+    public PlayerMoveReceiver getPlayerMoveReceiver() {
+        return playerMoveReceiver;
     }
 }

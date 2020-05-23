@@ -1,11 +1,11 @@
 package it.polimi.ingsw.observer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Observable<T> {
 
-    private final List<Observer<T>> observers = new ArrayList<>();
+    private final List<Observer<T>> observers = new LinkedList<>();
 
     public void addObserver(Observer<T> observer) {
         synchronized (observers) {

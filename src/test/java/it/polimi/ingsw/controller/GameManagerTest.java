@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.TurnEvents.Actions;
+import it.polimi.ingsw.network.Connection;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
@@ -26,6 +27,7 @@ public class GameManagerTest {
     @Test
     public void handleMoveMovementTest() throws ParseException, IllegalAccessException, IOException {
         Turn turn = gameInstance.getTurn();
+
         Player player1 = new Player("player1");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = dateFormat.parse("23/5/1998");
@@ -37,7 +39,11 @@ public class GameManagerTest {
         gameInstance.addPlayer(player1);
         gameInstance.addPlayer(player2);
 
-        RemoteView remoteView = Mockito.mock(RemoteView.class);
+//        RemoteView remoteView = Mockito.mock(RemoteView.class);
+        Connection connection = Mockito.mock(Connection.class);
+        RemoteView remoteView = new RemoteView(player1, player2.getNickname(), connection);
+
+        turn.addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
 
         Deck deck = gameInstance.getDeck();
         deck.chooseCards("prometheus", "artemis");
@@ -86,6 +92,7 @@ public class GameManagerTest {
         assertEquals(opponentSlot, workerPlayer1.getWorkerSlot());
         assertEquals(startingSlot, workerPlayer2.getWorkerSlot());
 
+        //TODO: Sistemare errore turno
         //TEST MOVE_OPPONENT_SLOT_PUSH
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
