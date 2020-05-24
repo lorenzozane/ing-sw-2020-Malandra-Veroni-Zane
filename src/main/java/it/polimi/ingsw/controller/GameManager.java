@@ -13,6 +13,7 @@ public class GameManager extends MessageForwarder {
     private final Turn turn;
     private final MoveVerifier moveVerifier;
     private String errorMessage = "";
+    private boolean workerToSet = false;
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
 
     /**
@@ -42,6 +43,12 @@ public class GameManager extends MessageForwarder {
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayer())) {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
+            return;
+        }
+        if (turn.getCurrentWorker() == null)
+            workerToSet = true;
+        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
+            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
             return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
@@ -97,7 +104,7 @@ public class GameManager extends MessageForwarder {
 
                 performMove(move);
             } else {
-                //TODO: Aggiungere a tutti gli altri casi d'errore
+                //TODO: Aggiungere a tutti gli altri casi d'errore (serve?)
                 move.getRemoteView().resetBoard(gameInstance.getBoard());
                 move.getRemoteView().errorMessage(errorMessage);
                 return;
@@ -143,6 +150,8 @@ public class GameManager extends MessageForwarder {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
         if (!move.getForcedMove()) {
+            if (workerToSet)
+                setCurrentWorker(move);
             checkWinConditions(move);
             turn.updateTurn();
         }
@@ -156,6 +165,8 @@ public class GameManager extends MessageForwarder {
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
+        if (workerToSet)
+            setCurrentWorker(move);
         turn.updateTurn();
     }
 
@@ -167,6 +178,19 @@ public class GameManager extends MessageForwarder {
     protected void performBuildingDome(PlayerMove move) {
         move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
         turn.addLastMovePerformed(move);
+        if (workerToSet)
+            setCurrentWorker(move);
+        turn.updateTurn();
+    }
+
+    /**
+     * Set the current worker for the current turn
+     *
+     * @param move The player move containing the information about the worker to set as current worker
+     */
+    protected void setCurrentWorker(PlayerMove move) {
+        if (workerToSet && !move.getForcedMove() && turn.getCurrentWorker() == null)
+            turn.setCurrentWorker(move.getMovedWorker());
     }
 
     /**

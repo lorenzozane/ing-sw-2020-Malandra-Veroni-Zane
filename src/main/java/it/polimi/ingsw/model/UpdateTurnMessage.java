@@ -5,19 +5,18 @@ import java.util.ArrayList;
 public class UpdateTurnMessage {
 
     private final Board boardCopy;
-    private final Player lastMovePerformedBy;
-    private final TurnEvents.SetUpActions nextStartupMove;
+    private final String lastMovePerformedBy;
+    private final TurnEvents.StartupActions nextStartupMove;
     private final TurnEvents.Actions nextMove;
     //TODO: Mosse precedenti (?)
     private final boolean startupPhase;
     private final Player currentPlayer;
     private final Worker currentWorker;
-//    private final Turn turn;
     private ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
-    private ArrayList<GodsCard> choosenGodsCard= new ArrayList<>(); //passaimo le carte fra cui scegliere
+    private ArrayList<GodsCard> chosenGodsCard= new ArrayList<>(); //passiamo le carte fra cui scegliere
 
 
-    public UpdateTurnMessage(TurnEvents.SetUpActions nextStartupMove, Player currentPlayer) {
+    public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer) {
         this.startupPhase = true;
         this.nextStartupMove = nextStartupMove;
         this.currentPlayer = currentPlayer;
@@ -29,7 +28,7 @@ public class UpdateTurnMessage {
 
     }
 
-    public UpdateTurnMessage(Board boardCopy, Player lastMovePerformedBy, TurnEvents.Actions nextMove, Player currentPlayer, Worker currentWorker) {
+    public UpdateTurnMessage(Board boardCopy, String lastMovePerformedBy, TurnEvents.Actions nextMove, Player currentPlayer, Worker currentWorker) {
         this.startupPhase = false;
         this.nextMove = nextMove;
         this.currentPlayer = currentPlayer;
@@ -44,7 +43,7 @@ public class UpdateTurnMessage {
         return startupPhase;
     }
 
-    public TurnEvents.SetUpActions getNextStartupMove() {
+    public TurnEvents.StartupActions getNextStartupMove() {
         return nextStartupMove;
     }
 
@@ -60,7 +59,7 @@ public class UpdateTurnMessage {
         return currentWorker;
     }
 
-    public Player getLastMovePerformedBy() {
+    public String getLastMovePerformedBy() {
         return lastMovePerformedBy;
     }
 }

@@ -22,6 +22,7 @@ public final class Message {
     public static String gameLoading = "All players are ready, the game will start soon...";
     //Message about not allowed movement
     public static String wrongTurnMessage = "It's not your turn. Wait your turn to make a move!";
+    public static String wrongWorkerMessage = "You must use the same worker during the entire turn!";
     public static String moveNotAllowed = "This move is not allowed!";
     public static String occupiedCellMessage = "The chosen cell is occupied by another player!";
     public static String domeOccupiedCellMessage = "The chosen cell is occupied by a dome!";

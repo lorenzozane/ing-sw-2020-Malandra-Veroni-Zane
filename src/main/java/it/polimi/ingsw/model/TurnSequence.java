@@ -44,6 +44,11 @@ public class TurnSequence {
         canMoveUp = canMoveUpValue;
     }
 
+    /**
+     * Allows to know if a player has the permission to move up in this turn
+     *
+     * @return The boolean describing if the player has the permission to move up in this turn
+     */
     public boolean isCanMoveUp() {
         return canMoveUp;
     }

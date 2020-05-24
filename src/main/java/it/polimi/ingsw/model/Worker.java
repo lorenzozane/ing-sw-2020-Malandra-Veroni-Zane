@@ -55,8 +55,6 @@ public class Worker {
      */
     public void move(Slot moveHere){
         setWorkerSlot(moveHere);
-        //notify alla view
-        //TODO: Update turn (?)
     }
 
     //TODO: Test
@@ -69,7 +67,6 @@ public class Worker {
         BuildingLevel slotTopBuilding = buildHere.getConstructionTopLevel();
         Building newBuilding = new Building(BuildingLevel.getNextLevel(slotTopBuilding));
         buildHere.setBuilding(newBuilding);
-        //notify alla view
     }
 
     /**
@@ -82,7 +79,6 @@ public class Worker {
         if (buildDome){
             Building newBuilding = new Building(BuildingLevel.DOME);
             buildHere.setBuilding(newBuilding);
-            //notify alla view
         } else
             build(buildHere);
     }

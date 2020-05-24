@@ -5,7 +5,7 @@ package it.polimi.ingsw.model;
  */
 public class TurnEvents {
 
-    public enum SetUpActions {
+    public enum StartupActions {
         COLOR_REQUEST,
         PICK_LAST_COLOR,
         CHOOSE_CARD_REQUEST,

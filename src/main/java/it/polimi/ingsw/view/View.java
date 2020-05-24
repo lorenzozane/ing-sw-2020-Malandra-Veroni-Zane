@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.GodsCard;
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents;
@@ -48,20 +47,19 @@ public class View extends MessageForwarder {
         }
     }
 
-    //TODO: Teo, ho modificato solo i primi due, fai pure tu
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
-            if (message.getNextStartupMove() == TurnEvents.SetUpActions.COLOR_REQUEST)
+            if (message.getNextStartupMove() == TurnEvents.StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest);
-            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_COLOR)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_LAST_COLOR)
                 showMessage(ViewMessage.pickLastColor);
-            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.CHOOSE_CARD_REQUEST)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest);
-            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_UP_CARD_REQUEST)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_UP_CARD_REQUEST)
                 showMessage(ViewMessage.pickUpCardRequest);
-            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PICK_LAST_CARD)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_LAST_CARD)
                 showMessage(ViewMessage.pickLastCard);
-            else if (message.getNextStartupMove() == TurnEvents.SetUpActions.PLACE_WORKER)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
         }
         else {
@@ -88,27 +86,31 @@ public class View extends MessageForwarder {
         }
     }
 
+    //TODO: Nel caso la lastMovePerformedBy non sia stata fatta dal playerOwner della view deve anche essere refreshata la board
+    //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
+
+    //TODO: Correggere: Così stai dicendo che è stata fatta al turno prima la mossa che dev'essere eseguita in questo turno
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveStandardOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveStandardOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveNotInitialPositionOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveOpponentSlotFlipOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveOpponentSlotPushOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
             showMessage(ViewMessage.moveDisableOpponentUpOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildStandardOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildStandardOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildBeforeOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildBeforeOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildNotSamePlaceOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildSamePlaceNotDomeOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
-            showMessage(message.getLastMovePerformedBy().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
+            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
     @Override

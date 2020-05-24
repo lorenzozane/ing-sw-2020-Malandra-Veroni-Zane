@@ -25,12 +25,11 @@ public class Turn extends MessageForwarder {
     protected Worker currentWorker = null;
     protected ArrayList<Player> playerOrder = new ArrayList<>();
     protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
-    protected LinkedList<SimpleEntry<Player, SetUpActions>> startupTurnSequence = new LinkedList<>();
+    protected LinkedList<SimpleEntry<Player, StartupActions>> startupTurnSequence = new LinkedList<>();
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
-    //TODO: Implementare logica lastMovePerformedBy
-    protected Player lastMovePerformedBy = null;
+    protected String lastMovePerformedBy = null;
 
     private final MessageForwarder.UpdateTurnMessageSender updateTurnMessageSender = new MessageForwarder.UpdateTurnMessageSender();
 
@@ -66,7 +65,7 @@ public class Turn extends MessageForwarder {
         return null;
     }
 
-    public void resetCurrentWorker() {
+    protected void resetCurrentWorker() {
         currentWorker = null;
     }
 
@@ -92,28 +91,28 @@ public class Turn extends MessageForwarder {
         }
     }
 
+    /**
+     * Populate the startup turn sequence of move to be performed by the player in order to start the game
+     */
     protected void setUpStartupPhase() {
         if (startupPhase && playerOrder.size() == gameInstance.getPlayerNumber()) {
             for (Player player : playerOrder.subList(0, playerOrder.size() - 1))
-                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), SetUpActions.PICK_LAST_COLOR));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.CHOOSE_CARD_REQUEST));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.COLOR_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
-                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.PICK_LAST_CARD));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
             for (Player player : playerOrder) {
-                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PLACE_WORKER));
-                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
             }
-
-//            for (Player player : playerOrder)
-//                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.COLOR_REQUEST));
-//            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), SetUpActions.CHOOSE_CARD_REQUEST));
-//            for (Player player : playerOrder.subList(1, playerOrder.size()))
-//                startupTurnSequence.add(new SimpleEntry<>(player, SetUpActions.PICK_UP_CARD_REQUEST));
         }
     }
 
+    /**
+     * Set up the game turn after the game initialization
+     */
     public void setUpGameTurn() {
         if (startupPhase) {
             setUpTurnSequence();
@@ -136,6 +135,9 @@ public class Turn extends MessageForwarder {
     }
 
     //TODO: Possibile rendere protected?
+    /**
+     * Throughout the game allow to update the turn to the next move to be performed, or to the next player
+     */
     public void updateTurn() {
         if (startupPhase)
             updateTurnStartup();
@@ -143,14 +145,17 @@ public class Turn extends MessageForwarder {
             updateTurnInGame();
     }
 
+    //TODO: Vogliamo mettere la lastMovePerformedBy anche nella fase di starup?
+    /**
+     * Update the turn to the next move to be performed in the startup phase of the game
+     */
     protected void updateTurnStartup() {
         if (startupPhase) {
-            if (currentPlayer == null)
-                updateToNextPlayerTurn();
             if (currentMoveIndex < startupTurnSequence.size()) {
-                startupTurnSequence.get(currentMoveIndex);
+                StartupActions nextStartupMove = startupTurnSequence.get(currentMoveIndex).getValue();
+                currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
-                //TODO: Notificare la nuova mossa alla view
+                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(nextStartupMove, currentPlayer));
             } else
                 setUpGameTurn();
         }
@@ -161,16 +166,18 @@ public class Turn extends MessageForwarder {
      */
     protected void updateTurnInGame() {
         if (!startupPhase) {
-            if (currentPlayer == null)
-                updateToNextPlayerTurn();
             TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
-            if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
-                Actions nextAction = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
-                currentMoveIndex++;
-                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextAction, currentPlayer, currentWorker));
-                //TODO: Notificare la nuova mossa alla view
-            } else
+            if (currentPlayer == null || !(currentMoveIndex < currentTurnSequence.getMoveSequence().size()))
                 updateToNextPlayerTurn();
+            else
+                lastMovePerformedBy = currentPlayer.getNickname();
+
+            currentTurnSequence = turnSequenceMap.get(currentPlayer);
+            if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
+                Actions nextMove = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
+                currentMoveIndex++;
+                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker));
+            }
         }
     }
 
@@ -178,13 +185,20 @@ public class Turn extends MessageForwarder {
      * Update the currentPlayer to move to the next player's turn
      */
     protected void updateToNextPlayerTurn() {
-        if (currentPlayer == null)
-            currentPlayer = playerOrder.get(0);
-        else
-            currentPlayer = getNextPlayer();
+        if (!startupPhase) {
+            if (currentPlayer == null) {
+                lastMovePerformedBy = null;
+                currentPlayer = playerOrder.get(0);
+            }
+            else {
+                lastMovePerformedBy = currentPlayer.getNickname();
+                currentPlayer = getNextPlayer();
+            }
+        }
 
-        currentMoveIndex = 0;
+        resetCurrentWorker();
         movesPerformed.clear();
+        currentMoveIndex = 0;
     }
 
     /**
@@ -212,6 +226,15 @@ public class Turn extends MessageForwarder {
             }
         } else
             return; //TODO: Gestire
+    }
+
+    /**
+     * Allows to know if there are moves to undo or not (useful for gui purpose)
+     *
+     * @return A boolean describing if there are moves to undo or not
+     */
+    public boolean areThereMovesToUndo() {
+        return !movesPerformed.isEmpty();
     }
 
     /**
@@ -243,6 +266,12 @@ public class Turn extends MessageForwarder {
         return turnSequenceMap.get(currentPlayer).isCanMoveUp();
     }
 
+    /**
+     * Returns the boolean that describes whether the player specified can move up during this turn or not
+     *
+     * @param player The specified player we want to know if can move up
+     * @return A boolean describing the possibilità of move up or not during this turn for the player
+     */
     public boolean canPlayerMoveUp(Player player) {
         return turnSequenceMap.get(player).isCanMoveUp();
     }

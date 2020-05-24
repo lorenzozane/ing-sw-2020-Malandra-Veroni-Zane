@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
-import it.polimi.ingsw.model.TurnEvents.SetUpActions;
+import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.observer.MessageForwarder;
 
 import java.util.*;
@@ -78,13 +78,13 @@ public class GameInitializationManager extends MessageForwarder {
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        if (message.getAction() == SetUpActions.COLOR_REQUEST)
+        if (message.getAction() == StartupActions.COLOR_REQUEST)
             setPlayerColor(message);
-        else if (message.getAction() == SetUpActions.CHOOSE_CARD_REQUEST)
+        else if (message.getAction() == StartupActions.CHOOSE_CARD_REQUEST)
             buildChosenCard(message);
-        else if (message.getAction() == SetUpActions.PICK_UP_CARD_REQUEST)
+        else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST)
             pickUpCard(message);
-        else if (message.getAction() == SetUpActions.PLACE_WORKER)
+        else if (message.getAction() == StartupActions.PLACE_WORKER)
             placeWorker(message);
     }
 
