@@ -6,7 +6,7 @@ import it.polimi.ingsw.view.RemoteView;
 public class PlayerMove {
 
     private final Turn turn;
-    private final RemoteView remoteView;
+    private RemoteView remoteView;
     private final Player player;
     private final Worker movedWorker;
     private final Actions move;
@@ -14,14 +14,18 @@ public class PlayerMove {
     private final Slot targetSlot;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn, RemoteView remoteView) {
+    public PlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn) {
         this.turn = turn;
-        this.remoteView = remoteView;
         this.movedWorker = worker;
         this.player = worker.getPlayerOwner();
         this.move = move;
         this.startingSlot = worker.getWorkerSlot();
         this.targetSlot = targetSlot;
+    }
+
+    public void setRemoteView(RemoteView remoteView) {
+        if (this.remoteView == null)
+            this.remoteView = remoteView;
     }
 
     public RemoteView getRemoteView() {

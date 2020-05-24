@@ -141,22 +141,22 @@ public class Client extends MessageForwarder {
     }
 
 
-
-
-
     @Override
-    protected void handlePlayerMove(PlayerMove message) {
-        System.out.println("Received player move");
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
+        //TODO: Aggiungere chiamata e metodo deserializzante
+        updateTurnMessageSender.notifyAll(message);
     }
 
     @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
-        System.out.println("Received update turn message");
+    protected void handlePlayerMove(PlayerMove message) {
+        //TODO: Aggiungere chiamata e metodo serializzante
+        playerMoveSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        System.out.println("Received player move startup");
+        //TODO: Aggiungere chiamata e metodo serializzante
+        playerMoveStartupSender.notifyAll(message);
     }
 
     public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {

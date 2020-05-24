@@ -45,6 +45,9 @@ public class GameManager extends MessageForwarder {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
+        if (move.getMove().getActionType() == Actions.ActionType.UNDO) {
+            turn.restoreToLastMovePerformed();
+        }
         if (turn.getCurrentWorker() == null)
             workerToSet = true;
         else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
@@ -61,7 +64,7 @@ public class GameManager extends MessageForwarder {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
                                     move.getStartingSlot(),
-                                    turn, move.getRemoteView());
+                                    turn);
                         } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                             Slot backwardsSlot = gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot());
                             if (backwardsSlot == null) {
@@ -71,7 +74,7 @@ public class GameManager extends MessageForwarder {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
                                     gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),
-                                    turn, move.getRemoteView());
+                                    turn);
                         }
 
                         assert opponentMove != null;
@@ -83,7 +86,7 @@ public class GameManager extends MessageForwarder {
                             PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
                                     Actions.MOVE_STANDARD,
                                     new Slot(new Position(-1, -1)),
-                                    turn, move.getRemoteView());
+                                    turn);
                             performMove(tempMove);
                         }
 

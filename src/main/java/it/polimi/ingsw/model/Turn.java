@@ -224,6 +224,12 @@ public class Turn extends MessageForwarder {
             } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
                 moveToRestore.getTargetSlot().destroyTopBuilding();
             }
+
+            movesPerformed.removeLast();
+            if (currentMoveIndex > 0)
+                currentMoveIndex--;
+
+            updateTurn();
         } else
             return; //TODO: Gestire
     }

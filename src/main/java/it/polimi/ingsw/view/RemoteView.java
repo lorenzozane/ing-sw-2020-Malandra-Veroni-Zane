@@ -35,18 +35,20 @@ public class RemoteView extends MessageForwarder {
     }
 
     @Override
-    protected void handlePlayerMove(PlayerMove message) {
-        System.out.println("Received player move");
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
+        updateTurnMessageSender.notifyAll(message);
     }
 
     @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
-        System.out.println("Received update turn message");
+    protected void handlePlayerMove(PlayerMove message) {
+        message.setRemoteView(this);
+        playerMoveSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        System.out.println("Received player move startup");
+        message.setRemoteView(this);
+        playerMoveStartupSender.notifyAll(message);
     }
 
     public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {

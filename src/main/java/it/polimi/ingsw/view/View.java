@@ -14,6 +14,7 @@ public class View extends MessageForwarder {
 
     private String playerOwnerNickname;
     private final UserInterface chosenUserInterface;
+    private RemoteView remoteView;
     private final Cli playerCli;
     private final Gui playerGui;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
@@ -32,6 +33,11 @@ public class View extends MessageForwarder {
         this.chosenUserInterface = UserInterface.GUI;
         this.playerGui = playerGui;
         this.playerCli = null;
+    }
+
+    public void setRemoteView(RemoteView remoteView) {
+        if (this.remoteView == null)
+            this.remoteView = remoteView;
     }
 
     public void setPlayerOwnerNickname(String playerOwnerNickname) {

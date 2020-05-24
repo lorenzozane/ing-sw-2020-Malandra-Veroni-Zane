@@ -18,6 +18,8 @@ public class TurnEvents {
      * Set of possible actions that the player can perform (depending on which God owns)
      */
     public enum Actions {
+        UNDO(ActionType.UNDO),
+
         MOVE_STANDARD(ActionType.MOVEMENT),
         MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
         MOVE_OPPONENT_SLOT_FLIP(ActionType.MOVEMENT),
@@ -31,6 +33,7 @@ public class TurnEvents {
         BUILD_DOME_ANY_LEVEL(ActionType.BUILDING);
 
         public enum ActionType {
+            UNDO,
             MOVEMENT,
             BUILDING;
         }

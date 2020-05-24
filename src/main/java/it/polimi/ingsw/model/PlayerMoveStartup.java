@@ -7,18 +7,26 @@ import it.polimi.ingsw.view.RemoteView;
 public class PlayerMoveStartup {
 
     private final Turn turn;
-    private final RemoteView remoteView;
+    private RemoteView remoteView;
     private final Player playerOwner;
     private final StartupActions action;
     private PlayerColor chosenColor;
     private String chosenCard;
     private Position workerPosition;
 
-    public PlayerMoveStartup(Player playerOwner, StartupActions action, Turn turn, RemoteView remoteView) {
+    public PlayerMoveStartup(Player playerOwner, StartupActions action, Turn turn) {
         this.playerOwner = playerOwner;
         this.action = action;
         this.turn = turn;
-        this.remoteView = remoteView;
+    }
+
+    public void setRemoteView(RemoteView remoteView) {
+        if (this.remoteView == null)
+            this.remoteView = remoteView;
+    }
+
+    public RemoteView getRemoteView() {
+        return remoteView;
     }
 
     public Player getPlayerOwner() {
