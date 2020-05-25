@@ -98,25 +98,25 @@ public class View extends MessageForwarder {
     //TODO: Correggere: Così stai dicendo che è stata fatta al turno prima la mossa che dev'essere eseguita in questo turno
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveStandardOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.moveStandardOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveNotInitialPositionOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.moveNotInitialPositionOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveOpponentSlotFlipOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.moveOpponentSlotFlipOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.moveOpponentSlotPushOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.moveOpponentSlotPushOthers);
         else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
-            showMessage(ViewMessage.moveDisableOpponentUpOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.moveDisableOpponentUpOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildStandardOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.buildStandardOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildBeforeOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.buildBeforeOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildNotSamePlaceOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.buildNotSamePlaceOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildSamePlaceNotDomeOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.buildSamePlaceNotDomeOthers);
         else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
-            showMessage(message.getLastMovePerformedBy() + ViewMessage.buildDomeAnyLevelOthers);
+            showMessage(message.getCurrentPlayer() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
     @Override

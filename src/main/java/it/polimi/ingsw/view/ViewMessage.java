@@ -29,7 +29,7 @@ public class ViewMessage {
     public static String moveNotInitialPositionOthers = " made a second move, but not back to its initial space.\n";
     public static String moveOpponentSlotFlipOthers = " he swapped his worker's position with your worker's position.\n";
     public static String moveOpponentSlotPushOthers = " forced your worker to move one space straight back.\n";
-    public static String moveDisableOpponentUpOthers = "Your Workers cannot move up this turn.\n";
+    public static String moveDisableOpponentUpOthers = "'s Workers cannot move up this turn.\n";
 
     //Actions-BUILD-ForOthers
     public static String buildStandardOthers = " built a block or dome.\n";
