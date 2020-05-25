@@ -3,10 +3,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.Color.PlayerColor;
 
-public class Worker {
+import java.io.Serializable;
 
-    private final Player playerOwner;
-    private final String idWorker;
+public class Worker implements Serializable {
+
+    private Player playerOwner;
+    private String idWorker;
     private PlayerColor color;
     private Slot workerSlot;
 

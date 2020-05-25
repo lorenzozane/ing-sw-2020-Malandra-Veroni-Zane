@@ -1,16 +1,14 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.cli.Cli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -18,11 +16,13 @@ public class Client extends MessageForwarder {
 
     public enum UserInterface {
         CLI,
-        GUI;
+        GUI
     }
 
     private final String ip;
     private final int port;
+    private final Socket socket;
+    protected ObjectOutputStream out;
     private volatile boolean active = true;
     private UserInterface chosenUserInterface;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
@@ -32,14 +32,13 @@ public class Client extends MessageForwarder {
     private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
 
-    //    private boolean gui;
-
     /**
      * Constructor of Client
      */
-    public Client(String ip, int port) {
+    public Client(String ip, int port) throws IOException {
         this.ip = ip;
         this.port = port;
+        this.socket = new Socket(ip, port);
     }
 
 
@@ -52,10 +51,6 @@ public class Client extends MessageForwarder {
         this.active = active;
     }
 
-//    public void setGui(boolean gui){
-//        this.gui = true;
-//    }
-
 
     /**
      * Creation of thread that handle the read from socket
@@ -63,19 +58,23 @@ public class Client extends MessageForwarder {
      * @param socketIn Client socket where the client receives information
      * @return The that thread
      */
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
+    public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    //TODO: da cambiare appena sappiamo cosa inviamo esattamente
                     Object inputObject = socketIn.readObject();
-                    if (inputObject instanceof String) {
+
+
+                    if(inputObject instanceof String){
                         System.out.println((String) inputObject);
-                    } else if (inputObject instanceof Board) {
-                        ((Cli) inputObject).printGameBoard();
-                    } else {
-                        throw new IllegalArgumentException();
+                        //notify()
+
                     }
+                    else if(inputObject instanceof UpdateTurnMessage){
+                        handleUpdateTurn((UpdateTurnMessage) inputObject);
+                    }
+
+
                 }
             } catch (Exception e) {
                 setActive(false);
@@ -85,24 +84,17 @@ public class Client extends MessageForwarder {
         return t;
     }
 
-
-    /**
-     * Creation of thread that handle the write to socket
-     *
-     * @param socketOut Client socket where the client send information
-     * @param stdin     Scanner for read the input of client
-     * @return The that thread
-     */
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut) {
+/*
+    public Thread asyncSend(Object message) {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    String inputLine = stdin.nextLine();
-                    if(inputLine.equalsIgnoreCase("exit")) {
+                    socketOut = new ObjectOutputStream()
+                    if(((String) message).equalsIgnoreCase("quit")) { // si potrebbe spostare anche un po piu a monte
                         System.out.println("Closing connection...");
                         throw new Exception();
                     }
-                    socketOut.println(inputLine);
+                    socketOut.writeObject(message);
                     socketOut.flush();
                 }
             } catch (Exception e) {
@@ -112,32 +104,64 @@ public class Client extends MessageForwarder {
         t.start();
         return t;
     }
+    */
 
+    /**
+     * Send an object by socket with thread
+     */
+    public void asyncSend(Object message) {
+        new Thread(() -> send(message)).start();
+    }
+    /**
+     * Send an object by socket
+     *
+     * @param message The message we want to send out
+     */
+    private synchronized void send(Object message) {
+        try {
+            out.reset();
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
 
     /**
      * Connection to the server and creation of threads to handle input/output
      *
-     * @throws IOException Is thrown if an I/O error occurs while reading stream header
+     * //@throws IOException Is thrown if an I/O error occurs while reading stream header
      */
-    public void run() throws IOException {
-        Socket socket = new Socket(ip, port);
-
-        try (
-                socket;
-                ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-                PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-                Scanner stdin = new Scanner(System.in)) {
-
+    public void run() {
+        ObjectInputStream socketIn;
+        try {
+            out = new ObjectOutputStream(socket.getOutputStream());
+            socketIn = new ObjectInputStream(socket.getInputStream());
             asyncReadFromSocket(socketIn);
-            asyncWriteToSocket(stdin, socketOut);
 
-            while (isActive()) ;
+
+            while (isActive()){
+                Scanner stdin = new Scanner(System.in);
+                String inputLine = stdin.nextLine();
+                asyncSend(inputLine);
+            }
 
         } catch (Exception e) {
             System.out.println("Connection closed by Exception");
         } finally {
             System.out.println("Connection closed");
+            closeConnection();
         }
+    }
+
+    public synchronized void closeConnection() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.err.println("Error when closing socket!");
+        }
+        active = false;
     }
 
 
@@ -150,12 +174,14 @@ public class Client extends MessageForwarder {
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         //TODO: Aggiungere chiamata e metodo serializzante
+        asyncSend(message);
         playerMoveSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         //TODO: Aggiungere chiamata e metodo serializzante
+        asyncSend(message);
         playerMoveStartupSender.notifyAll(message);
     }
 

@@ -22,11 +22,7 @@ public class ClientApp {
             //Gui.main();
         }
 
-        try{
-            client.run();
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-        }
+        client.run();
     }
 
 

@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.model.Building.*;
 import static it.polimi.ingsw.model.Building.BuildingProperty.*;
 
-public class Slot {
+public class Slot implements Serializable {
 
     private final Building[] buildingsStatus = new Building[4];
     private Worker workerInSlot;

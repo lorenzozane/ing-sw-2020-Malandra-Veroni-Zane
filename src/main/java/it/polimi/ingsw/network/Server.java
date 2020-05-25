@@ -4,14 +4,12 @@ import it.polimi.ingsw.controller.GameInitializationManager;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.observer.Observable;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,7 +18,7 @@ public class Server {
     private static final int PORT = 12345;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
-    private final Map<String, Connection> waitingConnection = new LinkedHashMap<>();
+    private final Map<String, SocketConnection> waitingConnection = new LinkedHashMap<>();
     // ci serve? private final Map<Connection, Connection> playingConnection = new HashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private String currentCreator = "";
@@ -37,7 +35,7 @@ public class Server {
      * @param nick Client unique name
      * @param c    Client socket connection
      */
-    public synchronized void deregisterConnection(String nick, Connection c) throws IOException, IllegalAccessException, ParseException {
+    public synchronized void deregisterConnection(String nick, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
 
@@ -100,12 +98,12 @@ public class Server {
      * @param s String from user input that must be checked
      * @return true if it is 2 or 3 otherwise false
      */
-    public boolean noPlayerChecker(int s) {
-        return s == 2 || s == 3;
+    public boolean noPlayerChecker(String s) {
+        return s.equals("2") || s.equals("3");
     }
 
 
-    public void lobby(String nickname, Date playerBirthday, Connection c) throws IOException, IllegalAccessException, ParseException {
+    public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.put(nickname, c);
 
         Player p = new Player(nickname);
@@ -133,7 +131,7 @@ public class Server {
         game.setPlayerNumber(nPlayer);
 
         for (int i = 0; i < nPlayer; i++) {
-            Connection c = waitingConnection.get(usersReady.get(i).getNickname());
+            SocketConnection c = waitingConnection.get(usersReady.get(i).getNickname());
             c.asyncSend(Message.gameLoading);
 
             game.addPlayer(usersReady.get(i));
@@ -165,46 +163,37 @@ public class Server {
     }
 
 
-    private void creatorSetup(Connection c) throws IOException, IllegalAccessException, ParseException {
-        Scanner in = new Scanner(c.getSocket().getInputStream());
+    private void creatorSetup(SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         c.asyncSend(Message.chooseNoPlayer);
+        ObjectInputStream in = null;
 
-        int read = in.nextInt();
-        while (!noPlayerChecker(read)) {
-            c.asyncSend(Message.chooseNoPlayerAgain);
-            read = in.nextInt();
+        try {
+            in = c.getIn();
+            Object inputObject = in.readObject();
+            System.out.println("ricevuto 173 :"  + inputObject.toString());
+            while (true) {
+                if (inputObject instanceof String) {
+                    if (noPlayerChecker((String) inputObject)) {
+                        synchronized (lock) {
+                            nPlayer = Integer.parseInt((String) inputObject);
+                        }
+                        break;
+                    }
+                }
+                c.asyncSend(Message.chooseNoPlayerAgain);
+                inputObject = in.readObject();
+                System.out.println("ricevuto 185 :"  + inputObject.toString());
+                in.reset();
+            }
         }
-
-        synchronized (lock) {
-            nPlayer = read;
+        catch (ClassNotFoundException e){
+            e.printStackTrace();
         }
 
         c.asyncSend(Message.wait);
 
         if (nPlayer <= waitingConnection.size() && nPlayer > 0)
             gameLobby();
-
-    }
-
-
-    private void ping() {
-
-    }
-
-    /**
-     * Check if the input string about the birthday date is legal
-     *
-     * @param s String from user input that must be checked
-     * @return true if the string is correctly formatted otherwise false
-     */
-    public static boolean dateChecker(String s) {
-        try {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-            Date date = dateFormat.parse(s);
-            return s.equals(dateFormat.format(date));
-        } catch (ParseException e) {
-            return false;
-        }
 
     }
 

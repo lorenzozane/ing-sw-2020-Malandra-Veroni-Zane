@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.TurnEvents.*;
+import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 

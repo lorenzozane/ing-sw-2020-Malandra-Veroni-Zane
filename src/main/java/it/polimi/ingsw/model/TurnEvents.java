@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
+
 /**
  * Enums useful to describe the possible actions and win conditions available to players
  */
-public class TurnEvents {
+public class TurnEvents implements Serializable {
 
     public enum StartupActions {
         COLOR_REQUEST,

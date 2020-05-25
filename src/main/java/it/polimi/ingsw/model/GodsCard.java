@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class GodsCard implements Cloneable {
+import java.io.Serializable;
+
+public class GodsCard implements Cloneable, Serializable {
 
     private final String cardName;
     private String cardDescription;

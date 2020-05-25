@@ -41,7 +41,7 @@ public abstract class MessageForwarder {
     public class PlayerMoveReceiver implements Observer<PlayerMove> {
 
         @Override
-        public void update(PlayerMove message) {
+        public void update(PlayerMove message)  {
             handlePlayerMove(message);
         }
     }

@@ -3,14 +3,16 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Color.PlayerColor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Player {
+public class Player implements Serializable {
 
     //TODO: Non mi fa impazzire che Player abbia bisogno di un'istanza di game. Si può gestire il colore in modo che non serva?
 
-    private final String nickname;
+
+    private String nickname;
     private Date birthday;
     private PlayerColor playerColor;
     private final ArrayList<Worker> workers = new ArrayList<>();
