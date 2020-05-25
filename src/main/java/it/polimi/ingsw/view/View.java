@@ -1,8 +1,12 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents.Actions;
+import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
+import it.polimi.ingsw.model.PlayerMove;
+import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Client.UserInterface;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
@@ -51,7 +55,6 @@ public class View extends MessageForwarder {
             //TODO: Gui
         }
     }
-
     protected void createPlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn) {
         playerMoveSender.notifyAll(new PlayerMove(worker, move, targetSlot, turn));
     }
@@ -62,39 +65,39 @@ public class View extends MessageForwarder {
 
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
-            if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
+            if (message.getNextStartupMove() == TurnEvents.StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest);
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_LAST_COLOR)
                 showMessage(ViewMessage.pickLastColor);
-            else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest);
-            else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_UP_CARD_REQUEST)
                 showMessage(ViewMessage.pickUpCardRequest);
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PICK_LAST_CARD)
                 showMessage(ViewMessage.pickLastCard);
-            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
+            else if (message.getNextStartupMove() == TurnEvents.StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
         }
         else {
-            if (message.getNextMove() == Actions.MOVE_STANDARD)
+            if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
-            else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
                 showMessage(ViewMessage.moveNotInitialPosition);
-            else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
                 showMessage(ViewMessage.moveOpponentSlotFlip);
-            else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
                 showMessage(ViewMessage.moveOpponentSlotPush);
-            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
+            else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
                 showMessage(ViewMessage.moveDisableOpponentUp);
-            else if (message.getNextMove() == Actions.BUILD_STANDARD)
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
                 showMessage(ViewMessage.buildStandard);
-            else if (message.getNextMove() == Actions.BUILD_BEFORE)
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
                 showMessage(ViewMessage.buildBefore);
-            else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
                 showMessage(ViewMessage.buildNotSamePlace);
-            else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
                 showMessage(ViewMessage.buildSamePlaceNotDome);
-            else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
+            else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
                 showMessage(ViewMessage.buildDomeAnyLevel);
         }
     }
@@ -104,26 +107,26 @@ public class View extends MessageForwarder {
 
     //TODO: Correggere: Così stai dicendo che è stata fatta al turno prima la mossa che dev'essere eseguita in questo turno
     private void handleMessageForOthers(UpdateTurnMessage message) {
-        if (message.getNextMove() == Actions.MOVE_STANDARD)
-            showMessage(message.getCurrentPlayer() + ViewMessage.moveStandardOthers);
-        else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-            showMessage(message.getCurrentPlayer() + ViewMessage.moveNotInitialPositionOthers);
-        else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-            showMessage(message.getCurrentPlayer() + ViewMessage.moveOpponentSlotFlipOthers);
-        else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-            showMessage(message.getCurrentPlayer() + ViewMessage.moveOpponentSlotPushOthers);
-        else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-            showMessage(message.getCurrentPlayer() + ViewMessage.moveDisableOpponentUpOthers);
-        else if (message.getNextMove() == Actions.BUILD_STANDARD)
-            showMessage(message.getCurrentPlayer() + ViewMessage.buildStandardOthers);
-        else if (message.getNextMove() == Actions.BUILD_BEFORE)
-            showMessage(message.getCurrentPlayer() + ViewMessage.buildBeforeOthers);
-        else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-            showMessage(message.getCurrentPlayer() + ViewMessage.buildNotSamePlaceOthers);
-        else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-            showMessage(message.getCurrentPlayer() + ViewMessage.buildSamePlaceNotDomeOthers);
-        else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-            showMessage(message.getCurrentPlayer() + ViewMessage.buildDomeAnyLevelOthers);
+        if (message.getNextMove() == TurnEvents.Actions.MOVE_STANDARD)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_NOT_INITIAL_POSITION)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_FLIP)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_OPPONENT_SLOT_PUSH)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.MOVE_DISABLE_OPPONENT_UP)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_STANDARD)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_BEFORE)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_NOT_SAME_PLACE)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_SAME_PLACE_NOT_DOME)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+        else if (message.getNextMove() == TurnEvents.Actions.BUILD_DOME_ANY_LEVEL)
+            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
     @Override

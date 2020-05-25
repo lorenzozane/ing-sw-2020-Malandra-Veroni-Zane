@@ -25,16 +25,16 @@ public class ViewMessage {
     public static String buildDomeAnyLevel = "Build a dome at any level.\n" ;
 
     //Actions-MOVE-ForOthers
-    public static String moveStandardOthers = " made a single move.\n";
-    public static String moveNotInitialPositionOthers = " made a second move, but not back to its initial space.\n";
-    public static String moveOpponentSlotFlipOthers = " he swapped his worker's position with your worker's position.\n";
-    public static String moveOpponentSlotPushOthers = " forced your worker to move one space straight back.\n";
+    public static String moveStandardOthers = " is making a single move.\n";
+    public static String moveNotInitialPositionOthers = " is making a second move, but not back to its initial space.\n";
+    public static String moveOpponentSlotFlipOthers = " is exchanging his worker's position with another worker's position.\n";
+    public static String moveOpponentSlotPushOthers = " is forcing another worker to move one space straight back.\n";
     public static String moveDisableOpponentUpOthers = "'s Workers cannot move up this turn.\n";
 
     //Actions-BUILD-ForOthers
-    public static String buildStandardOthers = " built a block or dome.\n";
-    public static String buildBeforeOthers = " built a block or dome before moving.\n";
-    public static String buildNotSamePlaceOthers = " built one additional time, but not on the same space.\n";
-    public static String buildSamePlaceNotDomeOthers = " built one additional block (not dome) on top of his first block.\n" ;
-    public static String buildDomeAnyLevelOthers = " built a dome.\n" ;
+    public static String buildStandardOthers = " is building a block or dome.\n";
+    public static String buildBeforeOthers = " is building a block or dome before moving.\n";
+    public static String buildNotSamePlaceOthers = " is building one additional time, but not on the same space.\n";
+    public static String buildSamePlaceNotDomeOthers = " is building one additional block (not dome) on top of his first block.\n" ;
+    public static String buildDomeAnyLevelOthers = " is building a dome.\n" ;
 }
