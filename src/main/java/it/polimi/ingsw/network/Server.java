@@ -130,33 +130,19 @@ public class Server {
 
         gameInstance.setPlayerNumber(nPlayer);
 
+        ArrayList<Player> userReadyCopy = new ArrayList<>(usersReady);
+        Map<String, SocketConnection> waitingConnectionCopy = new LinkedHashMap<>(waitingConnection);
+
         for (int i = 0; i < nPlayer; i++) {
-            SocketConnection socketConnection = waitingConnection.get(usersReady.get(i).getNickname());
-            socketConnection.asyncSend(Message.gameLoading);
-
-            GameManager gameManager = new GameManager(gameInstance);
-            GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
-            RemoteView remoteView = new RemoteView(usersReady.get(i).getNickname(), socketConnection);
-
-            gameInstance.getTurn().addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
-            remoteView.addUpdateTurnMessageObserver(socketConnection.getUpdateTurnMessageReceiver());
-            socketConnection.addPlayerMoveObserver(remoteView.getPlayerMoveReceiver());
-            socketConnection.addPlayerMoveStartupObserver(remoteView.getPlayerMoveStartupReceiver());
-            remoteView.addPlayerMoveObserver(gameManager.getPlayerMoveReceiver());
-            remoteView.addPlayerMoveStartupObserver(gameInitializationManager.getPlayerMoveStartupReceiver());
-
-            gameInstance.addPlayer(usersReady.get(i));
-
-            //settare view (?)
+            waitingConnection.get(usersReady.get(i).getNickname()).asyncSend(Message.gameLoading);
         }
-
-        //add.observer vari e partenza gioco per salezionare il colore
-
         for (int i = 0; i < nPlayer; i++) {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
-
         usersReady.subList(0, nPlayer).clear();
+
+        gameThread(gameInstance, userReadyCopy, waitingConnectionCopy);
+
         checkNewCreator();
     }
 
@@ -176,12 +162,11 @@ public class Server {
 
     private void creatorSetup(SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         c.asyncSend(Message.chooseNoPlayer);
-        ObjectInputStream in = null;
+        ObjectInputStream in;
 
         try {
             in = c.getIn();
             Object inputObject = in.readObject();
-            System.out.println("ricevuto 173 :"  + inputObject.toString());
             while (true) {
                 if (inputObject instanceof String) {
                     if (noPlayerChecker((String) inputObject)) {
@@ -193,8 +178,6 @@ public class Server {
                 }
                 c.asyncSend(Message.chooseNoPlayerAgain);
                 inputObject = in.readObject();
-                System.out.println("ricevuto 185 :"  + inputObject.toString());
-                in.reset();
             }
         }
         catch (ClassNotFoundException e){
@@ -209,7 +192,6 @@ public class Server {
     }
 
 
-
     //da mettere lato client
     /**
      * Check if the input string about the color choice is legal
@@ -220,6 +202,38 @@ public class Server {
     public static boolean colorChecker(String s) {
         //TODO: Check del toString()
         return Arrays.toString(Color.PlayerColor.values()).contains(s);
+    }
+
+
+    public void gameThread(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
+        new Thread(() -> gameSettings(gameInstance, usersReadyCopy, waitingConnectionCopy)).start();
+    }
+
+    private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
+
+        GameManager gameManager = new GameManager(gameInstance);
+        GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
+
+        for (int i = 0; i < gameInstance.getPlayerNumber(); i++) {
+            SocketConnection socketConnection = waitingConnectionCopy.get(usersReadyCopy.get(i).getNickname());
+            RemoteView remoteView = new RemoteView(usersReadyCopy.get(i).getNickname(), socketConnection);
+
+            gameInstance.getTurn().addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
+            remoteView.addUpdateTurnMessageObserver(socketConnection.getUpdateTurnMessageReceiver());
+            socketConnection.addPlayerMoveObserver(remoteView.getPlayerMoveReceiver());
+            socketConnection.addPlayerMoveStartupObserver(remoteView.getPlayerMoveStartupReceiver());
+            remoteView.addPlayerMoveObserver(gameManager.getPlayerMoveReceiver());
+            remoteView.addPlayerMoveStartupObserver(gameInitializationManager.getPlayerMoveStartupReceiver());
+
+            try {
+                gameInstance.addPlayer(usersReadyCopy.get(i));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
     }
 
 }

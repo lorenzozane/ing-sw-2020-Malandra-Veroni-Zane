@@ -39,6 +39,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
         this.server = server;
     }
 
+
     private synchronized boolean isActive() {
         return active;
     }
@@ -101,9 +102,11 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
         new Thread(() -> send(message)).start();
     }
 
+
     public ObjectInputStream getIn() {
         return in;
     }
+
 
     /**
      * It set the unique name for the client and keeps alive the socket
@@ -196,6 +199,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
         return t;
     }
 
+
     /**
      * Check if the nickname chosen by client has not already been taken
      *
@@ -204,6 +208,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     private boolean illegalNicknameChecker(String nickname) {
         return server.getNicknameDatabase().contains(nickname) || nickname.equals("");
     }
+
 
     /**
      * Check if the input string about the birthday date is legal
@@ -222,7 +227,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
 
     }
 
-    /*@Override*/
+
     public Socket getSocket() {
         return this.socket;
     }
