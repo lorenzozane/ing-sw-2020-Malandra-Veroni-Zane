@@ -26,10 +26,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     private final Server server;
     private boolean active = true;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
-    private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
-    private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
-    private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
 
 
@@ -131,6 +128,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
                 send(Message.chooseNicknameAgain);
                 inputObject = in.readObject();
             }
+            asyncSend("Nickname: " + nickname);
             server.addNickname(nickname);
 
             asyncSend(Message.birthday);
@@ -232,47 +230,21 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
 
 
 
-
-
-
-    @Override
-    protected void handlePlayerMoveStartup(PlayerMoveStartup message) {  // arriva dal socket del client e va mandato alla remoteview
-        System.out.println("Received player move startup");
-    }
-
-    @Override
-    protected void handlePlayerMove(PlayerMove message) {  // arriva dal socket del client e va mandato alla remoteview
-        System.out.println("Received player move");
-    }
-
     @Override
     protected void handleUpdateTurn(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
-        System.out.println("Received update turn message");
+        asyncSend(message);
     }
 
+    protected void handlePlayerMove(PlayerMove message) {  // arriva dal socket del client e va mandato alla remoteview
+        playerMoveSender.notifyAll(message);
+    }
 
-
-
-
-
-
-
-
+    protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
+        playerMoveStartupSender.notifyAll(message);
+    }
 
     public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
         return updateTurnMessageReceiver;
-    }
-
-    public PlayerMoveReceiver getPlayerMoveReceiver() {
-        return playerMoveReceiver;
-    }
-
-    public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {
-        return playerMoveStartupReceiver;
-    }
-
-    public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
-        updateTurnMessageSender.addObserver(observer);
     }
 
     public void addPlayerMoveObserver(Observer<PlayerMove> observer) {

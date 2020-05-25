@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,14 +24,12 @@ public class Client extends MessageForwarder {
     private final int port;
     private final Socket socket;
     protected ObjectOutputStream out;
+    private View clientView;
     private volatile boolean active = true;
-    private UserInterface chosenUserInterface;
-    private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
+    private UserInterface chosenUserInterface = null;
     private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
-    private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
-    private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
 
     /**
      * Constructor of Client
@@ -41,16 +40,20 @@ public class Client extends MessageForwarder {
         this.socket = new Socket(ip, port);
     }
 
-
     public synchronized boolean isActive() {
         return active;
     }
-
 
     public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
+    public void setChosenUserInterface(View clientView, UserInterface chosenUserInterface) {
+        if (this.chosenUserInterface == null) {
+            this.chosenUserInterface = chosenUserInterface;
+            this.clientView = clientView;
+        }
+    }
 
     /**
      * Creation of thread that handle the read from socket
@@ -66,7 +69,10 @@ public class Client extends MessageForwarder {
 
 
                     if(inputObject instanceof String){
-                        System.out.println((String) inputObject);
+                        if (((String) inputObject).contains("Nickname: "))
+                            clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
+                        else
+                            System.out.println((String)inputObject);
                         //notify()
 
                     }
@@ -165,29 +171,23 @@ public class Client extends MessageForwarder {
     }
 
 
-    @Override
     protected void handleUpdateTurn(UpdateTurnMessage message) {
-        //TODO: Aggiungere chiamata e metodo deserializzante
         updateTurnMessageSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMove(PlayerMove message) {
-        //TODO: Aggiungere chiamata e metodo serializzante
         asyncSend(message);
-        playerMoveSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        //TODO: Aggiungere chiamata e metodo serializzante
         asyncSend(message);
-        playerMoveStartupSender.notifyAll(message);
     }
 
-    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
-        return updateTurnMessageReceiver;
-    }
+//    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
+//        return updateTurnMessageReceiver;
+//    }
 
     public PlayerMoveReceiver getPlayerMoveReceiver() {
         return playerMoveReceiver;
@@ -199,13 +199,5 @@ public class Client extends MessageForwarder {
 
     public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
         updateTurnMessageSender.addObserver(observer);
-    }
-
-    public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
-        playerMoveSender.addObserver(observer);
-    }
-
-    public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
-        playerMoveStartupSender.addObserver(observer);
     }
 }

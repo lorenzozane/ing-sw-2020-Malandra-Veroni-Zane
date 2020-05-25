@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Building.BuildingLevel;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.network.Connection;
 import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -40,8 +41,8 @@ public class GameManagerTest {
         gameInstance.addPlayer(player2);
 
 //        RemoteView remoteView = Mockito.mock(RemoteView.class);
-        Connection connection = Mockito.mock(Connection.class);
-        RemoteView remoteView = new RemoteView(player1, player2.getNickname(), connection);
+        SocketConnection socketConnection = Mockito.mock(SocketConnection.class);
+        RemoteView remoteView = new RemoteView(player1.getNickname(), socketConnection);
 
         turn.addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
 

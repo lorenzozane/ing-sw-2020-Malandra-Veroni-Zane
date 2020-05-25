@@ -1,9 +1,11 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameInitializationManager;
+import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -123,18 +125,27 @@ public class Server {
 
 
     public synchronized void gameLobby() throws IllegalAccessException, IOException, ParseException {
-        Game game = new Game();
-        GameInitializationManager gameInitializationManager = new GameInitializationManager(game);
+        Game gameInstance = new Game();
+        gamesStarted.add(gameInstance);
 
-        gamesStarted.add(game);
-
-        game.setPlayerNumber(nPlayer);
+        gameInstance.setPlayerNumber(nPlayer);
 
         for (int i = 0; i < nPlayer; i++) {
-            SocketConnection c = waitingConnection.get(usersReady.get(i).getNickname());
-            c.asyncSend(Message.gameLoading);
+            SocketConnection socketConnection = waitingConnection.get(usersReady.get(i).getNickname());
+            socketConnection.asyncSend(Message.gameLoading);
 
-            game.addPlayer(usersReady.get(i));
+            GameManager gameManager = new GameManager(gameInstance);
+            GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
+            RemoteView remoteView = new RemoteView(usersReady.get(i).getNickname(), socketConnection);
+
+            gameInstance.getTurn().addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
+            remoteView.addUpdateTurnMessageObserver(socketConnection.getUpdateTurnMessageReceiver());
+            socketConnection.addPlayerMoveObserver(remoteView.getPlayerMoveReceiver());
+            socketConnection.addPlayerMoveStartupObserver(remoteView.getPlayerMoveStartupReceiver());
+            remoteView.addPlayerMoveObserver(gameManager.getPlayerMoveReceiver());
+            remoteView.addPlayerMoveStartupObserver(gameInitializationManager.getPlayerMoveStartupReceiver());
+
+            gameInstance.addPlayer(usersReady.get(i));
 
             //settare view (?)
         }

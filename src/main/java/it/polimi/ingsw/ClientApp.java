@@ -1,6 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.Client.UserInterface;
+import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.cli.Cli;
+import it.polimi.ingsw.view.gui.Gui;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -17,8 +21,15 @@ public class ClientApp {
             input = in.nextLine();
         }
 
-        if(input.equalsIgnoreCase("GUI")){
-//            client.setGui(true);
+        if (input.equalsIgnoreCase("CLI")) {
+            View view = new View(new Cli());
+            client.setChosenUserInterface(view, UserInterface.CLI);
+            client.addUpdateTurnMessageObserver(view.getUpdateTurnMessageReceiver());
+            view.addPlayerMoveObserver(client.getPlayerMoveReceiver());
+            view.addPlayerMoveStartupObserver(client.getPlayerMoveStartupReceiver());
+        } else if (input.equalsIgnoreCase("GUI")){
+            View view = new View(new Gui());
+            client.setChosenUserInterface(view, UserInterface.GUI);
             //Gui.main();
         }
 

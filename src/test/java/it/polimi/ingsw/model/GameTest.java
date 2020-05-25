@@ -51,7 +51,7 @@ public class GameTest {
         gameInstance.addPlayer(p1);
         gameInstance.addPlayer(p2);
 
-        gameInstance.challenge();
+//        gameInstance.challenge();
         //da completare
 
     }

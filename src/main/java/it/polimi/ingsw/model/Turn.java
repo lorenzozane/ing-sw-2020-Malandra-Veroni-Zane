@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.TurnEvents.Actions;
-import it.polimi.ingsw.model.TurnEvents.WinConditions;
+import it.polimi.ingsw.model.TurnEvents.*;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import org.w3c.dom.Document;
@@ -25,7 +24,7 @@ public class Turn extends MessageForwarder {
     protected Worker currentWorker = null;
     protected ArrayList<Player> playerOrder = new ArrayList<>();
     protected HashMap<Player, TurnSequence> turnSequenceMap = new HashMap<>();
-    protected LinkedList<SimpleEntry<Player, TurnEvents.StartupActions>> startupTurnSequence = new LinkedList<>();
+    protected LinkedList<SimpleEntry<Player, StartupActions>> startupTurnSequence = new LinkedList<>();
     protected LinkedList<PlayerMove> movesPerformed = new LinkedList<>();
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
@@ -33,18 +32,16 @@ public class Turn extends MessageForwarder {
 
     private final MessageForwarder.UpdateTurnMessageSender updateTurnMessageSender = new MessageForwarder.UpdateTurnMessageSender();
 
+    protected Turn(Game gameInstance) {
+        this.gameInstance = gameInstance;
+    }
+
     public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
         updateTurnMessageSender.addObserver(observer);
     }
 
-    //TODO: Implementare currentWorker (una volta scelto il worker il player deve usare quello per tutto il turno)
-
     public Player getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    protected Turn(Game gameInstance) {
-        this.gameInstance = gameInstance;
     }
 
     public boolean isPlayerTurn(Player player) {
@@ -97,16 +94,18 @@ public class Turn extends MessageForwarder {
     protected void setUpStartupPhase() {
         if (startupPhase && playerOrder.size() == gameInstance.getPlayerNumber()) {
             for (Player player : playerOrder.subList(0, playerOrder.size() - 1))
-                startupTurnSequence.add(new SimpleEntry<>(player, TurnEvents.StartupActions.COLOR_REQUEST));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), TurnEvents.StartupActions.PICK_LAST_COLOR));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), TurnEvents.StartupActions.CHOOSE_CARD_REQUEST));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.COLOR_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
-                startupTurnSequence.add(new SimpleEntry<>(player, TurnEvents.StartupActions.PICK_UP_CARD_REQUEST));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), TurnEvents.StartupActions.PICK_LAST_CARD));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
             for (Player player : playerOrder) {
-                startupTurnSequence.add(new SimpleEntry<>(player, TurnEvents.StartupActions.PLACE_WORKER));
-                startupTurnSequence.add(new SimpleEntry<>(player, TurnEvents.StartupActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
             }
+
+            updateTurn();
         }
     }
 
@@ -152,7 +151,7 @@ public class Turn extends MessageForwarder {
     protected void updateTurnStartup() {
         if (startupPhase) {
             if (currentMoveIndex < startupTurnSequence.size()) {
-                TurnEvents.StartupActions nextStartupMove = startupTurnSequence.get(currentMoveIndex).getValue();
+                StartupActions nextStartupMove = startupTurnSequence.get(currentMoveIndex).getValue();
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
                 updateTurnMessageSender.notifyAll(new UpdateTurnMessage(nextStartupMove, currentPlayer));

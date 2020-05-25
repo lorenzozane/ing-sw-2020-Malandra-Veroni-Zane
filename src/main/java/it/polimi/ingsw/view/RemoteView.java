@@ -5,12 +5,14 @@ import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Connection;
+import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 
 public class RemoteView extends MessageForwarder {
 
-    private final Connection clientConnection;
+    private final String playerOwner;
+    private final SocketConnection clientConnection;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
@@ -18,7 +20,8 @@ public class RemoteView extends MessageForwarder {
     private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
 
-    public RemoteView(Player player, String opponent, Connection c) {
+    public RemoteView(String playerOwner, SocketConnection c) {
+        this.playerOwner = playerOwner;
         this.clientConnection = c;
     }
 
