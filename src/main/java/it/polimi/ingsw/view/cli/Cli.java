@@ -170,6 +170,7 @@ public class Cli {
         System.out.println(messageToShow);
     }
 
+
     private Slot convertStringPositionToSlot(String coordinates) {
         int x = -1, y = -1;
         for (int i = 0; i < 5; i++) {

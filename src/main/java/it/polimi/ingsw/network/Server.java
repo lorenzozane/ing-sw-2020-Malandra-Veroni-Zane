@@ -209,6 +209,7 @@ public class Server {
         new Thread(() -> gameSettings(gameInstance, usersReadyCopy, waitingConnectionCopy)).start();
     }
 
+
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
 
         GameManager gameManager = new GameManager(gameInstance);

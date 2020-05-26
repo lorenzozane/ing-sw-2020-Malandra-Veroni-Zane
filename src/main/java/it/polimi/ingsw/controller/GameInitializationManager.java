@@ -42,6 +42,7 @@ public class GameInitializationManager extends MessageForwarder {
             turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
     }
 
+    //TODO: da mettere lato client
     public void setPlayerColor(String playerColor) {
         switch (playerColor) {
             case "red":
@@ -91,4 +92,5 @@ public class GameInitializationManager extends MessageForwarder {
     public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {
         return playerMoveStartupReceiver;
     }
+
 }

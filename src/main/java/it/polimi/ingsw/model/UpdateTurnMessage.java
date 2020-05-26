@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class UpdateTurnMessage implements Serializable {
 
@@ -12,14 +13,15 @@ public class UpdateTurnMessage implements Serializable {
     private final boolean startupPhase;
     private final Player currentPlayer;
     private final Worker currentWorker;
-    //private ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
+    private final ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
     //private ArrayList<GodsCard> chosenGodsCard= new ArrayList<>(); //passiamo le carte fra cui scegliere
 
 
-    public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer) {
+    public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer, ArrayList<Color.PlayerColor> playerColor) {
         this.startupPhase = true;
         this.nextStartupMove = nextStartupMove;
         this.currentPlayer = currentPlayer;
+        this.availableColor.addAll(playerColor);
         this.currentWorker = null;
 //        this.turn = turn;
         this.boardCopy = null;
