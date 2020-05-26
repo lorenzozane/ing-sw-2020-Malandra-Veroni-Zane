@@ -78,6 +78,8 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.placeWorker);
         }
         else {
+            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
+                refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -104,6 +106,8 @@ public class View extends MessageForwarder {
     //TODO: Nel caso la lastMovePerformedBy non sia stata fatta dal playerOwner della view deve anche essere refreshata la board
     //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
     private void handleMessageForOthers(UpdateTurnMessage message) {
+        if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
+            refreshView(message.getBoardCopy(), chosenUserInterface);
         if (message.getNextMove() == Actions.MOVE_STANDARD)
             showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
         else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -144,6 +148,17 @@ public class View extends MessageForwarder {
 
     public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
         playerMoveStartupSender.addObserver(observer);
+    }
+
+
+
+    public void refreshView(Board newBoard, UserInterface userInterface){
+        if(userInterface == UserInterface.CLI && playerCli != null)
+            playerCli.refreshBoard(newBoard);
+        else if (userInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+            //playerGui.refreshBoard()
+        }
     }
 }
 

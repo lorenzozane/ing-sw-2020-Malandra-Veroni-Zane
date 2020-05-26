@@ -169,4 +169,20 @@ public class Cli {
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
     }
+
+    private Slot convertStringPositionToSlot(String coordinates) {
+        int x = -1, y = -1;
+        for (int i = 0; i < 5; i++) {
+            if ((int) coordinates.charAt(0) == (i+65)) {
+                x=i;
+            }
+            if ((int) coordinates.charAt(1) == (i+1)) {
+                y=i;
+            }
+        }
+        return new Slot(new Position(x, y));
+    }
+
 }
+
+

@@ -64,6 +64,8 @@ public class UpdateTurnMessage implements Serializable {
     }
 
 
+    public Board getBoardCopy(){return boardCopy; }
+
 
 
 }
