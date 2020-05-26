@@ -41,7 +41,7 @@ public class GameManager extends MessageForwarder {
      * @param move The player move containing the information about the worker and the target slot of the move
      */
     protected synchronized void handleMove(PlayerMove move) {
-        if (!turn.isPlayerTurn(move.getPlayer())) {
+        if (!turn.isPlayerTurn(move.getPlayerOwner())) {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
@@ -78,7 +78,7 @@ public class GameManager extends MessageForwarder {
                         }
 
                         assert opponentMove != null;
-                        opponentMove.setForcedMove(move.getPlayer());
+                        opponentMove.setForcedMove(move.getPlayerOwner());
 
                         //Temporary movement of player's worker in a "TempSlot"
                         //TODO: Verificare che l'UNDO funzioni correttamente

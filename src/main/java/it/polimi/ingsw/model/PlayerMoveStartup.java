@@ -6,7 +6,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 public class PlayerMoveStartup {
 
-    private final Turn turn;
+    private final Turn turn; //TODO: Da togliere (?)
     private RemoteView remoteView;
     private final Player playerOwner;
     private final StartupActions action;

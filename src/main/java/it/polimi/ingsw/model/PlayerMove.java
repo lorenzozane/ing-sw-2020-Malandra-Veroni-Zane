@@ -7,7 +7,7 @@ public class PlayerMove {
 
     private final Turn turn;
     private RemoteView remoteView;
-    private final Player player;
+    private final Player playerOwner;
     private final Worker movedWorker;
     private final Actions move;
     private final Slot startingSlot;
@@ -17,7 +17,7 @@ public class PlayerMove {
     public PlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn) {
         this.turn = turn;
         this.movedWorker = worker;
-        this.player = worker.getPlayerOwner();
+        this.playerOwner = worker.getPlayerOwner();
         this.move = move;
         this.startingSlot = worker.getWorkerSlot();
         this.targetSlot = targetSlot;
@@ -36,8 +36,8 @@ public class PlayerMove {
         return movedWorker;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getPlayerOwner() {
+        return playerOwner;
     }
 
     public Actions getMove() {

@@ -2,13 +2,22 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
+import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Cli {
 
     protected Player playerOwner;
+    protected View viewOwner = null;
     private static final int SLOT_HEIGHT = 6;
+
+    public void setViewOwner(View viewOwner) {
+        if (this.viewOwner == null)
+            this.viewOwner = viewOwner;
+    }
 
     private final String[][] emptyGameBoard = {{" ", Color.ANSI_BRIGHT_BLUE + "         1          " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "          2         " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "         3          " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "          4         " + Color.RESET, " ", Color.ANSI_BRIGHT_BLUE + "          5         " + Color.RESET},
             {" ", "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    ", Color.ANSI_GREEN + "║" + Color.RESET, "                    "},
@@ -165,24 +174,17 @@ public class Cli {
         }
     }
 
-    //TODO: printMessage
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
+        if (!messageToShow.contains("Error: "))
+            readResponse();
     }
 
-    private Slot convertStringPositionToSlot(String coordinates) {
-        int x = -1, y = -1;
-        for (int i = 0; i < 5; i++) {
-            if ((int) coordinates.charAt(0) == (i+65)) {
-                x=i;
-            }
-            if ((int) coordinates.charAt(1) == (i+1)) {
-                y=i;
-            }
-        }
-        return new Slot(new Position(x, y));
+    private void readResponse() {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        viewOwner.readResponse(input);
     }
-
 }
 
 
