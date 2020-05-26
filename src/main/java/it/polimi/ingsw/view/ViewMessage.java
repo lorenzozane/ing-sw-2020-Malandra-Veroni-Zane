@@ -37,4 +37,7 @@ public class ViewMessage {
     public static String buildNotSamePlaceOthers = " is building one additional time, but not on the same space.\n";
     public static String buildSamePlaceNotDomeOthers = " is building one additional block (not dome) on top of his first block.\n" ;
     public static String buildDomeAnyLevelOthers = " is building a dome.\n" ;
+
+    //Wrong-Input-Message
+    public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
 }

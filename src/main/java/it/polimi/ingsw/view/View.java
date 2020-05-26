@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Client.UserInterface;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
@@ -19,6 +20,7 @@ public class View extends MessageForwarder {
     private RemoteView remoteView;
     private final Cli playerCli;
     private final Gui playerGui;
+    private UpdateTurnMessage currentMove;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
@@ -28,6 +30,7 @@ public class View extends MessageForwarder {
     public View(Cli playerCli) {
         this.chosenUserInterface = UserInterface.CLI;
         this.playerCli = playerCli;
+        this.playerCli.setViewOwner(this);
         this.playerGui = null;
     }
 
@@ -47,19 +50,99 @@ public class View extends MessageForwarder {
             this.playerOwnerNickname = playerOwnerNickname;
     }
 
-    private void showMessage(String messageToShow) {
-        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
-            playerCli.showMessage(messageToShow);
-        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
-        }
-    }
-    protected void createPlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn) {
-        playerMoveSender.notifyAll(new PlayerMove(worker, move, targetSlot, turn));
+    public void showErrorMessage(String errorToShow) {
+        showMessage(errorToShow);
     }
 
-    protected void createPlayerMoveStartup(Player playerOwner, StartupActions action, Turn turn) {
-        playerMoveStartupSender.notifyAll(new PlayerMoveStartup(playerOwner, action, turn));
+    private void showMessage(String messageToShow) {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
+            playerCli.showMessage(messageToShow);
+        } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        if (messageToShow.contains("Error: "))
+            repeatCurrentMove(currentMove);
+    }
+
+    private void repeatCurrentMove(UpdateTurnMessage currentMove) {
+        handleUpdateTurn(currentMove);
+
+//        if (lastMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
+//            handleMessageForMe(currentMove);
+//        else
+//            handleMessageForOthers(currentMove);
+    }
+
+    public void readResponse(String response) {
+        if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
+            if (currentMove.isStartupPhase()) {
+//                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST)
+//
+//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
+//
+//                else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+//
+//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
+//
+//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
+//
+//                else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER)
+
+            } else {
+                convertStringPositionToSlot(response);
+            }
+        } else
+            showMessage(Message.wrongTurnMessage);
+    }
+
+    private Position convertStringPositionToSlot(String coordinates) {
+//        int x = -1, y = -1;
+
+        if (coordinates.length() > 2) {
+            showErrorMessage(ViewMessage.wrongInputCoordinates);
+            return null;
+        }
+
+        int coordinateX = coordinates.charAt(0);
+        int coordinateY = coordinates.charAt(1);
+        if (coordinateY >= 1 && coordinateY <= 5)
+            if (coordinateX >= 65 && coordinateX <= 69)
+                return new Position(coordinateX - 65, coordinateY - 1);
+            else if (coordinateX >= 97 && coordinateX <= 101)
+                return new Position(coordinateX - 97, coordinateY - 1);
+
+        showErrorMessage(ViewMessage.wrongInputCoordinates);
+        return null;
+
+//        for (int i = 0; i < 5; i++) {
+//            if ((int) coordinates.charAt(0) == (i+65)) {
+//                x=i;
+//            }
+//            if ((int) coordinates.charAt(1) == (i+1)) {
+//                y=i;
+//            }
+//        }
+//        return new Slot(new Position(x, y));
+    }
+
+    protected void createPlayerMove(Slot targetSlot, Turn turn) {
+        playerMoveSender.notifyAll(
+                new PlayerMove(
+                        currentMove.getCurrentWorker(),
+                        currentMove.getNextMove(),
+                        targetSlot,
+                        turn));
+    }
+
+    protected void createPlayerMoveStartup(Turn turn) {
+        playerMoveStartupSender.notifyAll(
+                new PlayerMoveStartup(
+                        currentMove.getCurrentPlayer(),
+                        currentMove.getNextStartupMove(),
+                        turn));
+
+        //TODO: Logica set proprietà
     }
 
     private void handleMessageForMe(UpdateTurnMessage message) {
@@ -76,8 +159,7 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.pickLastCard);
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
-        }
-        else {
+        } else {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.MOVE_STANDARD)
@@ -132,6 +214,8 @@ public class View extends MessageForwarder {
 
     @Override
     protected void handleUpdateTurn(UpdateTurnMessage message) {
+        this.currentMove = message;
+
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
             handleMessageForMe(message);
         else
@@ -151,9 +235,8 @@ public class View extends MessageForwarder {
     }
 
 
-
-    public void refreshView(Board newBoard, UserInterface userInterface){
-        if(userInterface == UserInterface.CLI && playerCli != null)
+    public void refreshView(Board newBoard, UserInterface userInterface) {
+        if (userInterface == UserInterface.CLI && playerCli != null)
             playerCli.refreshBoard(newBoard);
         else if (userInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui

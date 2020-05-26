@@ -143,6 +143,7 @@ public class Server {
 
         gameThread(gameInstance, userReadyCopy, waitingConnectionCopy);
 
+        nPlayer = 0;
         checkNewCreator();
     }
 

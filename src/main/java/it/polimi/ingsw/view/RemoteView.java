@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.UpdateTurnMessage;
-import it.polimi.ingsw.network.Connection;
 import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;

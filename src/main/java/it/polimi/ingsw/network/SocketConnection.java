@@ -153,7 +153,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
             server.lobby(nickname, playerBirthday, this);
 
 
-            asyncReadFromSocket(in);
+//            asyncReadFromSocket(in);
             while (isActive());
 
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {

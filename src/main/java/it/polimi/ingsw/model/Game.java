@@ -8,7 +8,6 @@ import java.util.Comparator;
 public class Game {
 
     private final Turn turn = new Turn(this);
-    private int phase = 0;
     private final ArrayList<Player> playerList = new ArrayList<>();
     private int playerNumber/* = 1*/;
     private final Board board = new Board();
@@ -42,14 +41,6 @@ public class Game {
 
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
-    }
-
-    public int getPhase() {
-        return phase;
-    }
-
-    public void setPhase(int nPhase){
-        this.phase = nPhase;
     }
 
     public String getAvailableColor() {
