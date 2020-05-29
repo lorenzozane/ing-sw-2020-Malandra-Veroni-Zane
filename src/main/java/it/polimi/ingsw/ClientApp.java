@@ -27,6 +27,7 @@ public class ClientApp {
             client.addUpdateTurnMessageObserver(view.getUpdateTurnMessageReceiver());
             view.addPlayerMoveObserver(client.getPlayerMoveReceiver());
             view.addPlayerMoveStartupObserver(client.getPlayerMoveStartupReceiver());
+            //view.addStringObserver(client.getStringReceiver());
         } else if (input.equalsIgnoreCase("GUI")){
             View view = new View(new Gui());
             client.setChosenUserInterface(view, UserInterface.GUI);

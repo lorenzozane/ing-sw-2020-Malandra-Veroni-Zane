@@ -98,4 +98,40 @@ public abstract class MessageForwarder {
         }
     }
 
+
+
+/*
+    //String
+    public class StringReceiver implements Observer<String> {
+
+        @Override
+        public void update(String message) {
+            handleString(message);
+        }
+    }
+
+    protected void handleString(String message) {
+
+    };
+
+
+    public class StringSender extends Observable<String> {
+        @Override
+        public void addObserver(Observer<String> observer) {
+            super.addObserver(observer);
+        }
+
+        @Override
+        public void removeObserver(Observer<String> observer) {
+            super.removeObserver(observer);
+        }
+
+        @Override
+        public void notifyAll(String message) {
+            super.notifyAll(message);
+        }
+    }
+
+ */
+
 }

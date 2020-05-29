@@ -25,6 +25,8 @@ public class GameInitializationManager extends MessageForwarder {
         chosenCardList = new ArrayList<>(gameInstance.getPlayerNumber());
     }
 
+
+    //arriva il messaggio con il nome del dio scelto dal challenger e lo gestisce
     public void buildChosenCard(PlayerMoveStartup message) {
         String godCardName = message.getChosenCard();
 

@@ -2,7 +2,6 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameInitializationManager;
 import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.RemoteView;
@@ -12,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +29,7 @@ public class Server {
     private final ArrayList<Player> usersReady = new ArrayList<>();
     private boolean isSomeoneCreatingAGame = false;
     private int nPlayer = 0;
-    private final Object lock = new Object();
+    protected final Object lock = new Object();
     private final ArrayList<Game> gamesStarted = new ArrayList<>();
 
 
@@ -93,6 +95,23 @@ public class Server {
         this.nicknameDatabase.add(nickname);
     }
 
+    protected synchronized void setnPlayer(int nPlayer){
+        this.nPlayer = nPlayer;
+    }
+
+    protected int getnPlayer(){
+        return nPlayer;
+    }
+
+
+    public Map<String, SocketConnection> getWaitingConnection() {
+        return waitingConnection;
+    }
+
+    public String getCurrentCreator(){
+        return currentCreator;
+    }
+
 
     /**
      * Check if the input string about number of player is legal
@@ -116,11 +135,18 @@ public class Server {
             isSomeoneCreatingAGame = true;
             currentCreator = nickname;
 
-            creatorSetup(c);
-        } else {
+            //creatorSetup(c);
+        }/* else {
             if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-                gameLobby();
+                new Thread(() -> {
+                    try {
+                        gameLobby();
+                    } catch (IllegalAccessException | IOException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
         }
+        */
     }
 
 
@@ -140,10 +166,10 @@ public class Server {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
         usersReady.subList(0, nPlayer).clear();
+        nPlayer = 0;
 
         gameThread(gameInstance, userReadyCopy, waitingConnectionCopy);
 
-        nPlayer = 0;
         checkNewCreator();
     }
 
@@ -151,12 +177,12 @@ public class Server {
     private synchronized void checkNewCreator() throws IOException, IllegalAccessException, ParseException {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
-            nPlayer = 0;
             currentCreator = "";
+            nPlayer = 0;;
         } else {
+            nPlayer = 0;
             currentCreator = usersReady.get(0).getNickname();
-            creatorSetup(waitingConnection.get(currentCreator));
-
+            //creatorSetup(waitingConnection.get(currentCreator));
         }
     }
 
@@ -190,19 +216,6 @@ public class Server {
         if (nPlayer <= waitingConnection.size() && nPlayer > 0)
             gameLobby();
 
-    }
-
-
-    //da mettere lato client
-    /**
-     * Check if the input string about the color choice is legal
-     *
-     * @param s String from user input that must be checked
-     * @return true if the color is available in the game otherwise false
-     */
-    public static boolean colorChecker(String s) {
-        //TODO: Check del toString()
-        return Arrays.toString(Color.PlayerColor.values()).contains(s);
     }
 
 

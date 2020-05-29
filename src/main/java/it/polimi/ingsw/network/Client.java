@@ -7,11 +7,11 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.View;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client extends MessageForwarder {
 
@@ -30,6 +30,7 @@ public class Client extends MessageForwarder {
     private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
     private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
+    //private final StringReceiver stringReceiver = new StringReceiver();
 
     /**
      * Constructor of Client
@@ -72,7 +73,7 @@ public class Client extends MessageForwarder {
                         if (((String) inputObject).contains("Nickname: "))
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
                         else
-                            System.out.println((String)inputObject);
+                            clientView.showMessage((String) inputObject);
                         //notify()
 
                     }
@@ -143,16 +144,10 @@ public class Client extends MessageForwarder {
         ObjectInputStream socketIn;
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            socketIn = new ObjectInputStream(socket.getInputStream());
+            socketIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             asyncReadFromSocket(socketIn);
 
-
-            while (isActive()){
-                Scanner stdin = new Scanner(System.in);
-                String inputLine = stdin.nextLine();
-                asyncSend(inputLine);
-            }
-
+            //while (isActive());
         } catch (Exception e) {
             System.out.println("Connection closed by Exception");
         } finally {
@@ -188,6 +183,13 @@ public class Client extends MessageForwarder {
 //    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
 //        return updateTurnMessageReceiver;
 //    }
+
+    /*@Override
+    protected void handleString(String message){ asyncSend(message);}
+
+    public StringReceiver getStringReceiver(){ return stringReceiver; }
+
+     */
 
     public PlayerMoveReceiver getPlayerMoveReceiver() {
         return playerMoveReceiver;

@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -179,6 +178,7 @@ public class Cli {
         System.out.println(messageToShow);
         if (!messageToShow.contains("Error: "))
             readResponse();
+        readResponse();
     }
 
     private void readResponse() {

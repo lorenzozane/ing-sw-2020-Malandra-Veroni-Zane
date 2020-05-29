@@ -22,6 +22,7 @@ public final class Message {
     public static String wait = "Waiting for the other players";
     public static String gameLoading = "All players are ready, the game will start soon...";
     //Message about not allowed movement
+    public static String error = "Error: Error network";
     public static String wrongTurnMessage = "Error: It's not your turn. Wait your turn to make a move!";
     public static String wrongWorkerMessage = "Error: You must use the same worker during the entire turn!";
     public static String moveNotAllowed = "Error: This move is not allowed!";

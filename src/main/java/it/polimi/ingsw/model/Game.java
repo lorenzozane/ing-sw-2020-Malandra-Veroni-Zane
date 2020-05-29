@@ -43,16 +43,6 @@ public class Game {
         this.playerNumber = playerNumber;
     }
 
-    public String getAvailableColor() {
-        StringBuilder temp = new StringBuilder();
-        for (PlayerColor color : colorList) {
-            //TODO: Sarà da spostare nella view
-            temp.append(" ").append(color.getEscape()).append(color.getColorAsString(color)).append(Color.RESET).append(" or");
-        }
-        temp.replace(temp.length() - 2, temp.length(), "");
-        return String.valueOf(temp);
-    }
-
     public ArrayList<PlayerColor> getColorList() {
         return colorList;
     }
@@ -103,7 +93,7 @@ public class Game {
 
     private void stopGame() throws IllegalAccessException { //quando si disconnette un player la partita finisce
         if(playerNumber == 2){
-            System.out.println("ramo di stopGame Hai vinto");// al playerList.get(0) (l'unico rimasto)  notificare che ha vinto
+            //System.out.println("ramo di stopGame Hai vinto");// al playerList.get(0) (l'unico rimasto)  notificare che ha vinto
         }
         else if(playerNumber == 3){
             for (Player p : playerList) {

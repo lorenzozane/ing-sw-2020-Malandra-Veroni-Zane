@@ -6,7 +6,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 public class PlayerMoveStartup {
 
-    private final Turn turn; //TODO: Da togliere (?)
+    //private final Turn turn; //TODO: Da togliere (?)
     private RemoteView remoteView;
     private final Player playerOwner;
     private final StartupActions action;
@@ -14,10 +14,10 @@ public class PlayerMoveStartup {
     private String chosenCard;
     private Position workerPosition;
 
-    public PlayerMoveStartup(Player playerOwner, StartupActions action, Turn turn) {
+    public PlayerMoveStartup(Player playerOwner, StartupActions action/*, Turn turn*/) {
         this.playerOwner = playerOwner;
         this.action = action;
-        this.turn = turn;
+        //this.turn = turn;
     }
 
     public void setRemoteView(RemoteView remoteView) {

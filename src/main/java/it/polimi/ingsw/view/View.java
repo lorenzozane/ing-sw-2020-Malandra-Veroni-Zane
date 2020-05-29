@@ -1,17 +1,15 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
-import it.polimi.ingsw.model.PlayerMove;
-import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Client.UserInterface;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
+import java.util.ArrayList;
 
 public class View extends MessageForwarder {
 
@@ -20,10 +18,11 @@ public class View extends MessageForwarder {
     private RemoteView remoteView;
     private final Cli playerCli;
     private final Gui playerGui;
-    private UpdateTurnMessage currentMove;
+    private UpdateTurnMessage currentMove = null;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
+    //private final StringSender stringSender = new StringSender();
 
     //TODO: Mich completa tu i costruttori in base a quello che ti serve
     //Ne ho fatti due in modo da averne uno in caso di creazione CLI e uno GUI (se non serve risistema tu)
@@ -54,7 +53,7 @@ public class View extends MessageForwarder {
         showMessage(errorToShow);
     }
 
-    private void showMessage(String messageToShow) {
+    public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             playerCli.showMessage(messageToShow);
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
@@ -77,7 +76,7 @@ public class View extends MessageForwarder {
     public void readResponse(String response) {
         if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
             if (currentMove.isStartupPhase()) {
-//                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST)
+//                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST){
 //
 //                else if (currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
 //
@@ -139,8 +138,8 @@ public class View extends MessageForwarder {
         playerMoveStartupSender.notifyAll(
                 new PlayerMoveStartup(
                         currentMove.getCurrentPlayer(),
-                        currentMove.getNextStartupMove(),
-                        turn));
+                        currentMove.getNextStartupMove()/*,
+                        turn)*/));
 
         //TODO: Logica set proprietà
     }
@@ -148,7 +147,7 @@ public class View extends MessageForwarder {
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
-                showMessage(ViewMessage.colorRequest);
+                showMessage(ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
                 showMessage(ViewMessage.pickLastColor);
             else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
@@ -242,6 +241,45 @@ public class View extends MessageForwarder {
             //TODO: Gui
             //playerGui.refreshBoard()
         }
+    }
+
+    /*
+    public void addStringObserver(Observer<String> observer){
+        stringSender.addObserver(observer);
+    }
+    public void testPlayerMoveStartup(Color.PlayerColor playerColor){
+        PlayerMoveStartup pms = new PlayerMoveStartup(playerOwnerNickname, currentMove.getNextStartupMove());
+        pms.setChosenColor(playerColor);
+        playerMoveStartupSender.notifyAll();
+    }
+
+*/
+
+
+    private String getAvailableColorBuilder(ArrayList<Color.PlayerColor> availableColor){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Color.PlayerColor playerColor : availableColor) {
+            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
+        }
+        stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
+        return String.valueOf(stringBuilder);
+    }
+
+    protected Color.PlayerColor getColorFromString(String string){
+        switch (string){
+            case "red":
+                return Color.PlayerColor.RED;
+            case "yellow":
+                return Color.PlayerColor.YELLOW;
+            case "cyan":
+                return Color.PlayerColor.CYAN;
+            default:
+                return null;
+        }
+    }
+
+    protected boolean colorChecker(Color.PlayerColor playerColor){
+        return playerColor != null;
     }
 }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class UpdateTurnMessage implements Serializable {
 
+    private static final long serialVersionUID = 4116568860427433236L;
     private final Board boardCopy;
     private final String lastMovePerformedBy;
     private final TurnEvents.StartupActions nextStartupMove;
@@ -14,7 +15,7 @@ public class UpdateTurnMessage implements Serializable {
     private final Player currentPlayer;
     private final Worker currentWorker;
     private final ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
-    //private ArrayList<GodsCard> chosenGodsCard= new ArrayList<>(); //passiamo le carte fra cui scegliere
+    private ArrayList<GodsCard> chosenGodsCard= new ArrayList<>(); //passiamo le carte fra cui scegliere
 
 
     public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer, ArrayList<Color.PlayerColor> playerColor) {
@@ -65,9 +66,10 @@ public class UpdateTurnMessage implements Serializable {
         return lastMovePerformedBy;
     }
 
-
     public Board getBoardCopy(){return boardCopy; }
 
-
+    public ArrayList<Color.PlayerColor> getAvailableColor(){
+        return availableColor;
+    }
 
 }
