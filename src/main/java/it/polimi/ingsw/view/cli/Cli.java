@@ -184,7 +184,7 @@ public class Cli {
     private void readResponse() {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        viewOwner.readResponse(input);
+        viewOwner.handleResponse(input);
     }
 
 }

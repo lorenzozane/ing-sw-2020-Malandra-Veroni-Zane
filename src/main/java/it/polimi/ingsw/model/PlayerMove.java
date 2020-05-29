@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 public class PlayerMove {
 
-    private final Turn turn;
+    private final String currentPlayer;
     private RemoteView remoteView;
     private final Player playerOwner;
     private final Worker movedWorker;
@@ -16,8 +16,8 @@ public class PlayerMove {
     private Slot targetSlot;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, Actions move, Position targetPosition, Turn turn) {
-        this.turn = turn;
+    public PlayerMove(Worker worker, Actions move, Position targetPosition, String currentPlayer) {
+        this.currentPlayer = currentPlayer;
         this.movedWorker = worker;
         this.playerOwner = worker.getPlayerOwner();
         this.move = move;
@@ -74,7 +74,7 @@ public class PlayerMove {
 
     //TODO: Check se deve essere necessariamente public
     public void setForcedMove(Player player) {
-        if (player == turn.getCurrentPlayer())
+        if (player.getNickname().equals(currentPlayer))
             forcedMove = true;
     }
 

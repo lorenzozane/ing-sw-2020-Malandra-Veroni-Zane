@@ -75,33 +75,44 @@ public class View extends MessageForwarder {
 //            handleMessageForOthers(currentMove);
     }
 
-    public void readResponse(String response) {
+    public void handleResponse(String response) {
         if (currentMove == null) {
             //TODO: Implementare gestione risposte pre partita
         } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
             if (currentMove.isStartupPhase()) {
+                PlayerMoveStartup moveStartupToSend = createPlayerMoveStartup();
+
                 if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST) {
                     PlayerColor chosenPlayerColor = convertStringToPlayerColor(response);
-                    if (chosenPlayerColor == null)
+                    if (chosenPlayerColor == null) {
                         showMessage(ViewMessage.wrongInput);
-                    else {
-                        //TODO: Crea risposta con PlayerColor
+                        return;
+                    } else {
+                        moveStartupToSend.setChosenColor(chosenPlayerColor);
                     }
+                } else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST ||
+                        currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST) {
+                    moveStartupToSend.setChosenCard(response);
+                } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
+                    moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
                 }
-                else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
-                    //TODO: Crea risposta con GodsCardName
-                }
-                else if (currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST) {
 
-                }
-                else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
-
-                }
+                sendPlayerMoveStartup(moveStartupToSend);
             } else {
+                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
                 convertStringToPosition(response);
+                sendPlayerMove(playerMoveToSend);
             }
         } else
             showMessage(Message.wrongTurnMessage);
+    }
+
+    private void sendPlayerMove(PlayerMove playerMove) {
+        playerMoveSender.notifyAll(playerMove);
+    }
+
+    private void sendPlayerMoveStartup(PlayerMoveStartup playerMoveStartup) {
+        playerMoveStartupSender.notifyAll(playerMoveStartup);
     }
 
     private Position convertStringToPosition(String coordinates) {
@@ -149,7 +160,7 @@ public class View extends MessageForwarder {
         }
     }
 
-    private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor){
+    private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Color.PlayerColor playerColor : availableColor) {
             stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
@@ -158,24 +169,22 @@ public class View extends MessageForwarder {
         return String.valueOf(stringBuilder);
     }
 
-    protected boolean colorChecker(Color.PlayerColor playerColor){
+    protected boolean colorChecker(PlayerColor playerColor) {
         return playerColor != null;
     }
 
-    protected void createPlayerMove(Position targetSlotPosition, Turn turn) {
-        playerMoveSender.notifyAll(
-                new PlayerMove(
+    protected PlayerMove createPlayerMove(Position targetSlotPosition) {
+        return new PlayerMove(
                         currentMove.getCurrentWorker(),
                         currentMove.getNextMove(),
                         targetSlotPosition,
-                        turn));
+                        currentMove.getCurrentPlayer().getNickname());
     }
 
-    protected void createPlayerMoveStartup() {
-        playerMoveStartupSender.notifyAll(
-                new PlayerMoveStartup(
+    protected PlayerMoveStartup createPlayerMoveStartup() {
+        return new PlayerMoveStartup(
                         currentMove.getCurrentPlayer(),
-                        currentMove.getNextStartupMove()));
+                        currentMove.getNextStartupMove());
 
         //TODO: Logica set proprietà
     }

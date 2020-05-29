@@ -64,7 +64,7 @@ public class GameManager extends MessageForwarder {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
                                     move.getStartingSlot().getSlotPosition(),
-                                    turn);
+                                    turn.getCurrentPlayer().getNickname());
                             opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(opponentMove.getTargetPosition()));
                         } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                             Position backwardsSlotPosition = gameInstance.getBoard().getBackwardsSlotPosition(move.getStartingPosition(), move.getTargetPosition());
@@ -75,7 +75,7 @@ public class GameManager extends MessageForwarder {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
                                     backwardsSlotPosition,
-                                    turn);
+                                    turn.getCurrentPlayer().getNickname());
                             opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(backwardsSlotPosition));
                         }
 
@@ -88,7 +88,7 @@ public class GameManager extends MessageForwarder {
                             PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
                                     Actions.MOVE_STANDARD,
                                     new Position(-1, -1),
-                                    turn);
+                                    turn.getCurrentPlayer().getNickname());
                             tempMove.setTargetSlot(new Slot(new Position(-1, -1)));
                             performMove(tempMove);
                         }
