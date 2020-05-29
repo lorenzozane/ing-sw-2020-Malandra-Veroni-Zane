@@ -154,7 +154,9 @@ public class Turn extends MessageForwarder {
                 StartupActions nextStartupMove = startupTurnSequence.get(currentMoveIndex).getValue();
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
-                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList()));
+                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());
+                updateTurnMessage.setChosenGodsCard(gameInstance.getDeck().getCardListCopy());
+                updateTurnMessageSender.notifyAll(updateTurnMessage);
             } else
                 setUpGameTurn();
         }

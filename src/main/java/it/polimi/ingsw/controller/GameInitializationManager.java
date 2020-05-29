@@ -8,7 +8,7 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import java.util.*;
 
 
-public class GameInitializationManager extends MessageForwarder {
+public class  GameInitializationManager extends MessageForwarder {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -44,25 +44,6 @@ public class GameInitializationManager extends MessageForwarder {
             turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
     }
 
-    //TODO: da mettere lato client
-    public void setPlayerColor(String playerColor) {
-        switch (playerColor) {
-            case "red":
-                turn.getCurrentPlayer().setPlayerColor(PlayerColor.RED);
-                gameInstance.removeColor(PlayerColor.RED);
-                break;
-            case "cyan":
-                turn.getCurrentPlayer().setPlayerColor(PlayerColor.CYAN);
-                gameInstance.removeColor(PlayerColor.CYAN);
-                break;
-            case "yellow":
-                turn.getCurrentPlayer().setPlayerColor(PlayerColor.YELLOW);
-                gameInstance.removeColor(PlayerColor.YELLOW);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
 
     public void setPlayerColor(PlayerMoveStartup message) {
         PlayerColor playerColor = message.getChosenColor();

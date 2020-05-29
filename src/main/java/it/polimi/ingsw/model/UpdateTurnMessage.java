@@ -72,4 +72,8 @@ public class UpdateTurnMessage implements Serializable {
         return availableColor;
     }
 
+    public void setChosenGodsCard(ArrayList<GodsCard> godsCard){
+        this.chosenGodsCard.addAll(godsCard);
+    }
+
 }
