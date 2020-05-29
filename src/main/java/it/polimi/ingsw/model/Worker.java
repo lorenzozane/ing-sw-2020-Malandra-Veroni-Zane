@@ -34,6 +34,10 @@ public class Worker implements Serializable {
         return workerSlot;
     }
 
+    public Position getWorkerPosition() {
+        return workerSlot.getSlotPosition();
+    }
+
     public void setColor(PlayerColor color) {
         this.color = color;
     }

@@ -56,14 +56,15 @@ public class Board implements Cloneable, Serializable {
      * @param targetSlot The target slot of the movement
      * @return The next slot along the movement direction
      */
-    public Slot getBackwardsSlot(Slot startingSlot, Slot targetSlot) {
-        int nextSlotX = targetSlot.getSlotPosition().getCoordinateX() + (targetSlot.getSlotPosition().getCoordinateX() - startingSlot.getSlotPosition().getCoordinateX());
-        int nextSlotY = targetSlot.getSlotPosition().getCoordinateY() + (targetSlot.getSlotPosition().getCoordinateY() - startingSlot.getSlotPosition().getCoordinateY());
+    public Position getBackwardsSlotPosition(Position startingSlot, Position targetSlot) {
+        int nextSlotX = targetSlot.getCoordinateX() + (targetSlot.getCoordinateX() - startingSlot.getCoordinateX());
+        int nextSlotY = targetSlot.getCoordinateY() + (targetSlot.getCoordinateY() - startingSlot.getCoordinateY());
 
         if (nextSlotX < 0 || nextSlotX > BOARD_DIMENSION - 1 || nextSlotY < 0 || nextSlotY > BOARD_DIMENSION - 1)
             return null;
 
-        return gameBoardSlots[nextSlotX][nextSlotY];
+        return new Position(nextSlotX, nextSlotY);
+//        return gameBoardSlots[nextSlotX][nextSlotY];
     }
 
     @Override

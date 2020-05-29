@@ -63,18 +63,20 @@ public class GameManager extends MessageForwarder {
                         if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
-                                    move.getStartingSlot(),
+                                    move.getStartingSlot().getSlotPosition(),
                                     turn);
+                            opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(opponentMove.getTargetPosition()));
                         } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                            Slot backwardsSlot = gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot());
-                            if (backwardsSlot == null) {
+                            Position backwardsSlotPosition = gameInstance.getBoard().getBackwardsSlotPosition(move.getStartingPosition(), move.getTargetPosition());
+                            if (backwardsSlotPosition == null) {
                                 move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
                                 return;
                             }
                             opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
                                     Actions.MOVE_STANDARD,
-                                    gameInstance.getBoard().getBackwardsSlot(move.getStartingSlot(), move.getTargetSlot()),
+                                    backwardsSlotPosition,
                                     turn);
+                            opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(backwardsSlotPosition));
                         }
 
                         assert opponentMove != null;
@@ -85,8 +87,9 @@ public class GameManager extends MessageForwarder {
                         if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
                             PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
                                     Actions.MOVE_STANDARD,
-                                    new Slot(new Position(-1, -1)),
+                                    new Position(-1, -1),
                                     turn);
+                            tempMove.setTargetSlot(new Slot(new Position(-1, -1)));
                             performMove(tempMove);
                         }
 
@@ -219,6 +222,8 @@ public class GameManager extends MessageForwarder {
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
+        message.setStartingSlot(gameInstance.getBoard().getSlot(message.getStartingPosition()));
+        message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));
         handleMove(message);
     }
 

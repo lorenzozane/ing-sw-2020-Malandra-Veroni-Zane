@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Color.PlayerColor;
+import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.network.Client.UserInterface;
@@ -74,30 +76,35 @@ public class View extends MessageForwarder {
     }
 
     public void readResponse(String response) {
-        if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
+        if (currentMove == null) {
+            //TODO: Implementare gestione risposte pre partita
+        } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
             if (currentMove.isStartupPhase()) {
-//                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST){
-//
-//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
-//
-//                else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
-//
-//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
-//
-//                else if (currentMove.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
-//
-//                else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER)
+                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST) {
+                    PlayerColor chosenPlayerColor = convertStringToPlayerColor(response);
+                    if (chosenPlayerColor == null)
+                        showMessage(ViewMessage.wrongInput);
+                    else {
+                        //TODO: Crea risposta con PlayerColor
+                    }
+                }
+                else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
+                    //TODO: Crea risposta con GodsCardName
+                }
+                else if (currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST) {
 
+                }
+                else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
+
+                }
             } else {
-                convertStringPositionToSlot(response);
+                convertStringToPosition(response);
             }
         } else
             showMessage(Message.wrongTurnMessage);
     }
 
-    private Position convertStringPositionToSlot(String coordinates) {
-//        int x = -1, y = -1;
-
+    private Position convertStringToPosition(String coordinates) {
         if (coordinates.length() > 2) {
             showErrorMessage(ViewMessage.wrongInputCoordinates);
             return null;
@@ -114,6 +121,7 @@ public class View extends MessageForwarder {
         showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
 
+//        int x = -1, y = -1;
 //        for (int i = 0; i < 5; i++) {
 //            if ((int) coordinates.charAt(0) == (i+65)) {
 //                x=i;
@@ -125,21 +133,49 @@ public class View extends MessageForwarder {
 //        return new Slot(new Position(x, y));
     }
 
-    protected void createPlayerMove(Slot targetSlot, Turn turn) {
+    private PlayerColor convertStringToPlayerColor(String playerColor) {
+        switch (playerColor.toLowerCase()) {
+            case "red":
+                return PlayerColor.RED;
+//                TODO: Queste cose le dovrà fare il GameInitializationManager
+//                turn.getCurrentPlayer().setPlayerColor(Color.PlayerColor.RED);
+//                gameInstance.removeColor(Color.PlayerColor.RED);
+            case "cyan":
+                return PlayerColor.CYAN;
+            case "yellow":
+                return PlayerColor.YELLOW;
+            default:
+                return null;
+        }
+    }
+
+    private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Color.PlayerColor playerColor : availableColor) {
+            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
+        }
+        stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
+        return String.valueOf(stringBuilder);
+    }
+
+    protected boolean colorChecker(Color.PlayerColor playerColor){
+        return playerColor != null;
+    }
+
+    protected void createPlayerMove(Position targetSlotPosition, Turn turn) {
         playerMoveSender.notifyAll(
                 new PlayerMove(
                         currentMove.getCurrentWorker(),
                         currentMove.getNextMove(),
-                        targetSlot,
+                        targetSlotPosition,
                         turn));
     }
 
-    protected void createPlayerMoveStartup(Turn turn) {
+    protected void createPlayerMoveStartup() {
         playerMoveStartupSender.notifyAll(
                 new PlayerMoveStartup(
                         currentMove.getCurrentPlayer(),
-                        currentMove.getNextStartupMove()/*,
-                        turn)*/));
+                        currentMove.getNextStartupMove()));
 
         //TODO: Logica set proprietà
     }
@@ -233,7 +269,6 @@ public class View extends MessageForwarder {
         playerMoveStartupSender.addObserver(observer);
     }
 
-
     public void refreshView(Board newBoard, UserInterface userInterface) {
         if (userInterface == UserInterface.CLI && playerCli != null)
             playerCli.refreshBoard(newBoard);
@@ -254,32 +289,5 @@ public class View extends MessageForwarder {
     }
 
 */
-
-
-    private String getAvailableColorBuilder(ArrayList<Color.PlayerColor> availableColor){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Color.PlayerColor playerColor : availableColor) {
-            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
-        }
-        stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
-        return String.valueOf(stringBuilder);
-    }
-
-    protected Color.PlayerColor getColorFromString(String string){
-        switch (string){
-            case "red":
-                return Color.PlayerColor.RED;
-            case "yellow":
-                return Color.PlayerColor.YELLOW;
-            case "cyan":
-                return Color.PlayerColor.CYAN;
-            default:
-                return null;
-        }
-    }
-
-    protected boolean colorChecker(Color.PlayerColor playerColor){
-        return playerColor != null;
-    }
 }
 

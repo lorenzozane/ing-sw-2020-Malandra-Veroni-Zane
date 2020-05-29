@@ -10,17 +10,19 @@ public class PlayerMove {
     private final Player playerOwner;
     private final Worker movedWorker;
     private final Actions move;
-    private final Slot startingSlot;
-    private final Slot targetSlot;
+    private final Position startingPosition;
+    private final Position targetPosition;
+    private Slot startingSlot;
+    private Slot targetSlot;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, Actions move, Slot targetSlot, Turn turn) {
+    public PlayerMove(Worker worker, Actions move, Position targetPosition, Turn turn) {
         this.turn = turn;
         this.movedWorker = worker;
         this.playerOwner = worker.getPlayerOwner();
         this.move = move;
-        this.startingSlot = worker.getWorkerSlot();
-        this.targetSlot = targetSlot;
+        this.startingPosition = worker.getWorkerPosition();
+        this.targetPosition = targetPosition;
     }
 
     public void setRemoteView(RemoteView remoteView) {
@@ -44,12 +46,30 @@ public class PlayerMove {
         return move;
     }
 
-    public Slot getTargetSlot() {
-        return targetSlot;
+    public void setStartingSlot(Slot startingSlot) {
+        if (this.startingSlot == null)
+            this.startingSlot = startingSlot;
+    }
+
+    public void setTargetSlot(Slot targetSlot) {
+        if (this.targetSlot == null)
+            this.targetSlot = targetSlot;
     }
 
     public Slot getStartingSlot() {
         return startingSlot;
+    }
+
+    public Slot getTargetSlot() {
+        return targetSlot;
+    }
+
+    public Position getStartingPosition() {
+        return startingPosition;
+    }
+
+    public Position getTargetPosition() {
+        return targetPosition;
     }
 
     //TODO: Check se deve essere necessariamente public

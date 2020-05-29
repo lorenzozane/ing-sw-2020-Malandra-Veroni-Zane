@@ -147,7 +147,7 @@ public class Client extends MessageForwarder {
             socketIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             asyncReadFromSocket(socketIn);
 
-            //while (isActive());
+            while (isActive());
         } catch (Exception e) {
             System.out.println("Connection closed by Exception");
         } finally {
