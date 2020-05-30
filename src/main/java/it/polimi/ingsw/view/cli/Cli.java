@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.view.View;
 
 import java.util.Arrays;
@@ -176,9 +177,8 @@ public class Cli {
     //TODO: printMessage
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
-        if (!messageToShow.contains("Error: "))
+        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.gameLoading) && !messageToShow.equals(Message.lobby))
             readResponse();
-        readResponse();
     }
 
     private void readResponse() {

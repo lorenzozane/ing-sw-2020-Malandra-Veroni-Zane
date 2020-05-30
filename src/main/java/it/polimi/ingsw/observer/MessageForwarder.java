@@ -100,7 +100,7 @@ public abstract class MessageForwarder {
 
 
 
-/*
+
     //String
     public class StringReceiver implements Observer<String> {
 
@@ -132,6 +132,5 @@ public abstract class MessageForwarder {
         }
     }
 
- */
 
 }

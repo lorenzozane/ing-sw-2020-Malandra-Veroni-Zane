@@ -24,7 +24,8 @@ public class View extends MessageForwarder {
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
-    //private final StringSender stringSender = new StringSender();
+    private final StringSender stringSender = new StringSender();
+    private final StringReceiver stringReceiver = new StringReceiver();
 
     //TODO: Mich completa tu i costruttori in base a quello che ti serve
     //Ne ho fatti due in modo da averne uno in caso di creazione CLI e uno GUI (se non serve risistema tu)
@@ -78,6 +79,8 @@ public class View extends MessageForwarder {
     public void handleResponse(String response) {
         if (currentMove == null) {
             //TODO: Implementare gestione risposte pre partita
+            stringSender.notifyAll(response);
+
         } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
             if (currentMove.isStartupPhase()) {
                 PlayerMoveStartup moveStartupToSend = createPlayerMoveStartup();
@@ -256,27 +259,6 @@ public class View extends MessageForwarder {
             showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
     }
 
-    @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
-        this.currentMove = message;
-
-        if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
-            handleMessageForMe(message);
-        else
-            handleMessageForOthers(message);
-    }
-
-    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
-        return updateTurnMessageReceiver;
-    }
-
-    public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
-        playerMoveSender.addObserver(observer);
-    }
-
-    public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
-        playerMoveStartupSender.addObserver(observer);
-    }
 
     public void refreshView(Board newBoard, UserInterface userInterface) {
         if (userInterface == UserInterface.CLI && playerCli != null)
@@ -287,16 +269,54 @@ public class View extends MessageForwarder {
         }
     }
 
-    /*
+
+
+
+
+    public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
+        playerMoveSender.addObserver(observer);
+    }
+
+    public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
+        playerMoveStartupSender.addObserver(observer);
+    }
+
     public void addStringObserver(Observer<String> observer){
         stringSender.addObserver(observer);
     }
-    public void testPlayerMoveStartup(Color.PlayerColor playerColor){
-        PlayerMoveStartup pms = new PlayerMoveStartup(playerOwnerNickname, currentMove.getNextStartupMove());
-        pms.setChosenColor(playerColor);
-        playerMoveStartupSender.notifyAll();
+
+
+    @Override
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
+        this.currentMove = message;
+
+        if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
+            handleMessageForMe(message);
+        else
+            handleMessageForOthers(message);
     }
 
-*/
+    @Override
+    public void handleString(String messageString){
+        showMessage(messageString);
+    }
+
+    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
+        return updateTurnMessageReceiver;
+    }
+
+    public StringReceiver getStringReceiver(){ return stringReceiver;}
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

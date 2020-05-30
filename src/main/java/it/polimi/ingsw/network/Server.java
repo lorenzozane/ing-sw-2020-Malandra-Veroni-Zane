@@ -135,18 +135,11 @@ public class Server {
             isSomeoneCreatingAGame = true;
             currentCreator = nickname;
 
-            //creatorSetup(c);
-        }/* else {
+            creatorSetup(c);
+        }else {
             if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-                new Thread(() -> {
-                    try {
-                        gameLobby();
-                    } catch (IllegalAccessException | IOException | ParseException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                gameLobby();
         }
-        */
     }
 
 
@@ -166,7 +159,7 @@ public class Server {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
         usersReady.subList(0, nPlayer).clear();
-        nPlayer = 0;
+        this.nPlayer = 0;
 
         gameThread(gameInstance, userReadyCopy, waitingConnectionCopy);
 
@@ -182,7 +175,7 @@ public class Server {
         } else {
             nPlayer = 0;
             currentCreator = usersReady.get(0).getNickname();
-            //creatorSetup(waitingConnection.get(currentCreator));
+            creatorSetup(waitingConnection.get(currentCreator));
         }
     }
 

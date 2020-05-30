@@ -30,7 +30,8 @@ public class Client extends MessageForwarder {
     private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
     private final PlayerMoveStartupReceiver playerMoveStartupReceiver = new PlayerMoveStartupReceiver();
-    //private final StringReceiver stringReceiver = new StringReceiver();
+    private final StringReceiver stringReceiver = new StringReceiver();
+    private final StringSender stringSender = new StringSender();
 
     /**
      * Constructor of Client
@@ -73,7 +74,8 @@ public class Client extends MessageForwarder {
                         if (((String) inputObject).contains("Nickname: "))
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
                         else
-                            clientView.showMessage((String) inputObject);
+                            //clientView.showMessage((String) inputObject);
+                            handleString((String) inputObject);
                         //notify()
 
                     }
@@ -119,6 +121,7 @@ public class Client extends MessageForwarder {
     public void asyncSend(Object message) {
         new Thread(() -> send(message)).start();
     }
+
     /**
      * Send an object by socket
      *
@@ -166,9 +169,9 @@ public class Client extends MessageForwarder {
     }
 
 
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
-        updateTurnMessageSender.notifyAll(message);
-    }
+
+
+
 
     @Override
     protected void handlePlayerMove(PlayerMove message) {
@@ -180,16 +183,17 @@ public class Client extends MessageForwarder {
         asyncSend(message);
     }
 
-//    public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {
-//        return updateTurnMessageReceiver;
-//    }
+    @Override
+    protected void handleUpdateTurn(UpdateTurnMessage message) {
+        updateTurnMessageSender.notifyAll(message);
+    }
 
-    /*@Override
-    protected void handleString(String message){ asyncSend(message);}
+    @Override
+    protected void handleString(String message){
+        stringSender.notifyAll(message);
+    }
 
-    public StringReceiver getStringReceiver(){ return stringReceiver; }
 
-     */
 
     public PlayerMoveReceiver getPlayerMoveReceiver() {
         return playerMoveReceiver;
@@ -199,7 +203,15 @@ public class Client extends MessageForwarder {
         return playerMoveStartupReceiver;
     }
 
+    public StringReceiver getStringReceiver(){ return stringReceiver; }
+
+
+
     public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
         updateTurnMessageSender.addObserver(observer);
+    }
+
+    public void addStringObserver(Observer<String> observer){
+        stringSender.addObserver(observer);
     }
 }

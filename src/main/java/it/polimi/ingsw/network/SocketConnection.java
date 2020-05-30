@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-public class SocketConnection extends MessageForwarder implements /*Connection,*/ Runnable {
+public class SocketConnection extends MessageForwarder implements Runnable {
 
     //private final Game gameInstance;
     private final Socket socket;
@@ -33,8 +34,7 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     /**
      * Constructor of SocketConnection
      */
-    public SocketConnection(Socket socket, Server server/*, Game gameInstance*/) {
-        //this.gameInstance = gameInstance;
+    public SocketConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
@@ -53,10 +53,6 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     private synchronized void send(Object message) {
         try {
             out.reset();
-            /*ObjectMapper objectMapper = new ObjectMapper();
-            String serialized = null;
-            serialized = objectMapper.writeValueAsString(message);
-             */
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
@@ -69,7 +65,6 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     /**
      * Close the socketConnection
      */
-    /*@Override*/
     public synchronized void closeConnection() {
         send("Connection closed!");
         try {
@@ -97,11 +92,9 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     /**
      * Send an object by socket with thread
      */
-    /*@Override*/
     public void asyncSend(Object message) {
         new Thread(() -> send(message)).start();
     }
-
 
     public ObjectInputStream getIn() {
         return in;
@@ -115,9 +108,8 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
     public void run() {
         String nickname = "";
         try {
-            in = new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             out = new ObjectOutputStream(socket.getOutputStream());
-            //asyncSend(Message.santorini);
 
             asyncSend(Message.chooseNickname);
             Object inputObject = in.readObject();
@@ -188,8 +180,8 @@ public class SocketConnection extends MessageForwarder implements /*Connection,*
                     else if(inputObject instanceof PlayerMove){
                         handlePlayerMove((PlayerMove) inputObject);
                     }
-
-
+                    else
+                        asyncSend(Message.error);
                 }
             } catch (Exception e) {
                 this.active = false;
