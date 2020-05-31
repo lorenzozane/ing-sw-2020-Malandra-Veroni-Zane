@@ -136,7 +136,8 @@ public class Server {
             currentCreator = nickname;
 
             creatorSetup(c);
-        }else {
+        }
+        else {
             if (nPlayer <= waitingConnection.size() && nPlayer > 0)
                 gameLobby();
         }
@@ -161,7 +162,7 @@ public class Server {
         usersReady.subList(0, nPlayer).clear();
         this.nPlayer = 0;
 
-        gameThread(gameInstance, userReadyCopy, waitingConnectionCopy);
+        new Thread(() -> gameSettings(gameInstance, userReadyCopy, waitingConnectionCopy)).start();
 
         checkNewCreator();
     }

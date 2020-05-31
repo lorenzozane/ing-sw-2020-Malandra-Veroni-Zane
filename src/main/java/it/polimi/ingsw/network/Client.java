@@ -73,10 +73,11 @@ public class Client extends MessageForwarder {
                     if (inputObject instanceof String) {
                         if (((String) inputObject).contains("Nickname: "))
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
-                        else
+                        else {
                             //clientView.showMessage((String) inputObject);
 //                            handleString((String) inputObject);
                             sendStringToClient((String) inputObject);
+                        }
                         //notify()
 
                     } else if (inputObject instanceof UpdateTurnMessage) {
@@ -154,7 +155,7 @@ public class Client extends MessageForwarder {
         } catch (Exception e) {
             System.out.println("Connection closed by Exception");
         } finally {
-            System.out.println("Connection closed");
+            System.out.println("Connection closed from 159 Client");
             closeConnection();
         }
     }
@@ -179,7 +180,7 @@ public class Client extends MessageForwarder {
         asyncSend(message);
     }
 
-    @Override
+    //@Override
     protected void handleUpdateTurn(UpdateTurnMessage message) {
         updateTurnMessageSender.notifyAll(message);
     }

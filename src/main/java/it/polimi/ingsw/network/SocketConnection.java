@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -66,7 +65,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      * Close the socketConnection
      */
     public synchronized void closeConnection() {
-        send("Connection closed!");
+        send("Connection closed! by server");
         try {
             socket.close();
         } catch (IOException e) {
@@ -146,8 +145,22 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
 //            asyncReadFromSocket(in);
-            while (isActive());
+            while (server.getWaitingConnection().containsKey(nickname));
 
+            while(isActive()){
+                inputObject= in.readObject();
+
+                if(inputObject instanceof PlayerMoveStartup){
+                    handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
+
+                }
+                else if(inputObject instanceof PlayerMove){
+                    handlePlayerMove((PlayerMove) inputObject);
+                }
+                else
+                    asyncSend(Message.error);
+
+            }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
             e.printStackTrace();
             System.err.println("Error!" + e.getMessage());
@@ -251,14 +264,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
         playerMoveStartupSender.addObserver(observer);
     }
-
-
-
-
-
-
-
-
 
 
 

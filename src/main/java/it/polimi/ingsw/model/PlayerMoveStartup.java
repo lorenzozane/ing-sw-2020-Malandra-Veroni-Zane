@@ -4,7 +4,9 @@ import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.view.RemoteView;
 
-public class PlayerMoveStartup {
+import java.io.Serializable;
+
+public class PlayerMoveStartup implements Serializable {
 
     //private final Turn turn; //TODO: Da togliere (?)
     private RemoteView remoteView;

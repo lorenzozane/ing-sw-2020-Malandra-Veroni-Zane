@@ -70,6 +70,8 @@ public class  GameInitializationManager extends MessageForwarder {
             pickUpCard(message);
         else if (message.getAction() == StartupActions.PLACE_WORKER)
             placeWorker(message);
+
+        //TODO: fare update del turno? per inviare un nuovo turn message?
     }
 
     public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {

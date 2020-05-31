@@ -235,28 +235,34 @@ public class View extends MessageForwarder {
     //TODO: Nel caso la lastMovePerformedBy non sia stata fatta dal playerOwner della view deve anche essere refreshata la board
     //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
     private void handleMessageForOthers(UpdateTurnMessage message) {
-        if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
-            refreshView(message.getBoardCopy(), chosenUserInterface);
-        if (message.getNextMove() == Actions.MOVE_STANDARD)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
-        else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
-        else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
-        else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
-        else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
-        else if (message.getNextMove() == Actions.BUILD_STANDARD)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
-        else if (message.getNextMove() == Actions.BUILD_BEFORE)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
-        else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
-        else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
-        else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-            showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
+        if (message.isStartupPhase()) {
+            if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
+                showMessage(message.getCurrentPlayer().getNickname() + "sta scegliendo tra questi colori" + ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
+
+        } else {
+            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
+                refreshView(message.getBoardCopy(), chosenUserInterface);
+            if (message.getNextMove() == Actions.MOVE_STANDARD)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
+            else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+            else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+            else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
+            else if (message.getNextMove() == Actions.BUILD_STANDARD)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
+            else if (message.getNextMove() == Actions.BUILD_BEFORE)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
+            else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+            else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+            else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
+        }
     }
 
 

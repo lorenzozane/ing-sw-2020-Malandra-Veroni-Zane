@@ -29,8 +29,7 @@ public class Turn extends MessageForwarder {
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
     protected String lastMovePerformedBy = null;
-
-    private final MessageForwarder.UpdateTurnMessageSender updateTurnMessageSender = new MessageForwarder.UpdateTurnMessageSender();
+    private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
 
     protected Turn(Game gameInstance) {
         this.gameInstance = gameInstance;

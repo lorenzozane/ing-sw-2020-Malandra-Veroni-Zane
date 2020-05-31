@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.view.RemoteView;
 
-public class PlayerMove {
+import java.io.Serializable;
+
+public class PlayerMove implements Serializable {
 
     private final String currentPlayer;
     private RemoteView remoteView;
