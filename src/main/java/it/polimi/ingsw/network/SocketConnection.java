@@ -108,7 +108,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     public void run() {
         String nickname = "";
         try {
-            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
 
             asyncSend(Message.chooseNickname);
