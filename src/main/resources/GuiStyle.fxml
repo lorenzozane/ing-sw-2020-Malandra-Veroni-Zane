@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller=""
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="634.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="283.0" fitWidth="442.0" layoutX="-18.0" layoutY="117.0">
+         <image>
+            <Image url="@../../../../../Desktop/SANTORINI/SantoriniBoard.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="114.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="1" visible="false" />
+      <Button layoutX="150.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="2" visible="false" />
+      <Button layoutX="187.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="3" visible="false" />
+      <Button layoutX="223.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="4" visible="false" />
+      <Button layoutX="260.0" layoutY="159.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="5" visible="false" />
 
+      <Button layoutX="114.0" layoutY="199.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="6" visible="false" />
+      <Button layoutX="150.0" layoutY="199.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="7" visible="false" />
+      <Button layoutX="187.0" layoutY="199.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="8" visible="false" />
+      <Button layoutX="223.0" layoutY="199.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="9" visible="false" />
+      <Button layoutX="260.0" layoutY="199.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="10" visible="false" />
+
+      <Button layoutX="114.0" layoutY="240" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="11" visible="false" />
+      <Button layoutX="150.0" layoutY="240" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="12" visible="false" />
+      <Button layoutX="187.0" layoutY="240" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="13" visible="false" />
+      <Button layoutX="223.0" layoutY="240" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="14" visible="false" />
+      <Button layoutX="260.0" layoutY="240" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="15" visible="false" />
+
+      <Button layoutX="114.0" layoutY="280.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="16" />
+      <Button layoutX="150.0" layoutY="280.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="17" />
+      <Button layoutX="187.0" layoutY="280.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="18" />
+      <Button layoutX="223.0" layoutY="280.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="19" />
+      <Button layoutX="260.0" layoutY="280.5" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="20" />
+
+      <Button layoutX="114.0" layoutY="321" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="21" />
+      <Button layoutX="150.0" layoutY="321" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="22" />
+      <Button layoutX="187.0" layoutY="321" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="23" />
+      <Button layoutX="223.0" layoutY="321" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="24" />
+      <Button layoutX="260.0" layoutY="321" mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" text="25" />
+   </children>
 </AnchorPane>
