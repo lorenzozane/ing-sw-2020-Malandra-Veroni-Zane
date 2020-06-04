@@ -67,6 +67,8 @@ public class Client extends MessageForwarder {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
+                    Thread.sleep(250);
+
                     Object inputObject = socketIn.readObject();
 
 
@@ -76,7 +78,7 @@ public class Client extends MessageForwarder {
                         else {
                             //clientView.showMessage((String) inputObject);
 //                            handleString((String) inputObject);
-                            sendStringToClient((String) inputObject);
+                            new Thread(() -> sendStringToClient((String) inputObject)).start();
                         }
                         //notify()
 

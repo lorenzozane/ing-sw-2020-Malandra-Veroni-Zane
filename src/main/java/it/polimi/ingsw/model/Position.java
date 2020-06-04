@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
-public class Position {
+import java.io.Serializable;
 
+public class Position implements Serializable {
+
+    private static final long serialVersionUID = -3555337604374755501L;
     private int coordinateX, coordinateY;
 
     public Position(int coordinateX, int coordinateY){

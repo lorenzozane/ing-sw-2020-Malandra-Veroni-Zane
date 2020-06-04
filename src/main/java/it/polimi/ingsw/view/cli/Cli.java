@@ -177,7 +177,7 @@ public class Cli {
     //TODO: printMessage
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
-        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.gameLoading) && !messageToShow.equals(Message.lobby))
+        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.lobby) && !messageToShow.equals(Message.wait) && !messageToShow.equals(Message.gameLoading))
             readResponse();
     }
 

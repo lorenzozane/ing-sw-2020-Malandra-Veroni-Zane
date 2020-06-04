@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class PlayerMoveStartup implements Serializable {
 
+    private static final long serialVersionUID = -7581105397668977776L;
     //private final Turn turn; //TODO: Da togliere (?)
     private RemoteView remoteView;
     private final Player playerOwner;

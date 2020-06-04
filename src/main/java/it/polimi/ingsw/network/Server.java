@@ -54,7 +54,7 @@ public class Server {
         gamesStarted.removeIf(game -> game.getPlayerList().size() == 0); //caso in cui il game ha 0 player == finito == lo elimino
 
         nicknameDatabase.remove(nick);
-        c.closeConnection();
+
         if (nick.equals(currentCreator)) {
             checkNewCreator();
         }
@@ -139,12 +139,18 @@ public class Server {
         }
         else {
             if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-                gameLobby();
+                new Thread(() -> {
+                    try {
+                        gameLobby();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
         }
     }
 
 
-    public synchronized void gameLobby() throws IllegalAccessException, IOException, ParseException {
+    public void gameLobby() throws IllegalAccessException, IOException, ParseException {
         Game gameInstance = new Game();
         gamesStarted.add(gameInstance);
 
@@ -153,16 +159,15 @@ public class Server {
         ArrayList<Player> userReadyCopy = new ArrayList<>(usersReady);
         Map<String, SocketConnection> waitingConnectionCopy = new LinkedHashMap<>(waitingConnection);
 
-        for (int i = 0; i < nPlayer; i++) {
-            waitingConnection.get(usersReady.get(i).getNickname()).asyncSend(Message.gameLoading);
-        }
+        new Thread(() -> gameSettings(gameInstance, userReadyCopy, waitingConnectionCopy)).start();
+
         for (int i = 0; i < nPlayer; i++) {
             waitingConnection.remove(usersReady.get(i).getNickname());
         }
         usersReady.subList(0, nPlayer).clear();
         this.nPlayer = 0;
 
-        new Thread(() -> gameSettings(gameInstance, userReadyCopy, waitingConnectionCopy)).start();
+
 
         checkNewCreator();
     }
@@ -208,7 +213,13 @@ public class Server {
         c.asyncSend(Message.wait);
 
         if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-            gameLobby();
+            new Thread(() -> {
+                try {
+                    gameLobby();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
 
     }
 
@@ -219,7 +230,6 @@ public class Server {
 
 
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
-
         GameManager gameManager = new GameManager(gameInstance);
         GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
 

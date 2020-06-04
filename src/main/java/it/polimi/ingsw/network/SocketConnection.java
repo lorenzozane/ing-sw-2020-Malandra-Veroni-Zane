@@ -36,6 +36,11 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     public SocketConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
+        try {
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -54,6 +59,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             out.reset();
             out.writeObject(message);
             out.flush();
+            out.reset();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
@@ -108,7 +114,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         String nickname = "";
         try {
             in = new ObjectInputStream(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
 
             asyncSend(Message.chooseNickname);
             Object inputObject = in.readObject();
@@ -147,6 +152,8 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 //            asyncReadFromSocket(in);
             while (server.getWaitingConnection().containsKey(nickname));
 
+            asyncSend(Message.gameLoading);
+
             while(isActive()){
                 inputObject= in.readObject();
 
@@ -167,6 +174,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         } finally {
             try {
                 server.deregisterConnection(nickname, this);
+                closeConnection();
             } catch (IOException | IllegalAccessException | ParseException e) {
                 e.printStackTrace();
             }
