@@ -67,10 +67,9 @@ public class Client extends MessageForwarder {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    Thread.sleep(250);
+//                    Thread.sleep(250);
 
                     Object inputObject = socketIn.readObject();
-
 
                     if (inputObject instanceof String) {
                         if (((String) inputObject).contains("Nickname: "))
@@ -80,10 +79,9 @@ public class Client extends MessageForwarder {
 //                            handleString((String) inputObject);
                             new Thread(() -> sendStringToClient((String) inputObject)).start();
                         }
-                        //notify()
 
                     } else if (inputObject instanceof UpdateTurnMessage) {
-                        handleUpdateTurn((UpdateTurnMessage) inputObject);
+                        handleUpdateTurnFromSocket((UpdateTurnMessage) inputObject);
                     }
 
 
@@ -150,7 +148,7 @@ public class Client extends MessageForwarder {
         ObjectInputStream socketIn;
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            socketIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            socketIn = new ObjectInputStream(socket.getInputStream());
             asyncReadFromSocket(socketIn);
 
             while (isActive()) ;
@@ -183,7 +181,7 @@ public class Client extends MessageForwarder {
     }
 
     //@Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
+    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
         updateTurnMessageSender.notifyAll(message);
     }
 

@@ -3,7 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
+import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.*;
 
@@ -30,8 +32,11 @@ public class  GameInitializationManager extends MessageForwarder {
     public void buildChosenCard(PlayerMoveStartup message) {
         String godCardName = message.getChosenCard();
 
-        if (deck.isAGodName(godCardName))
+        if (deck.isAGodName(godCardName)) {
             chosenCardList.add(godCardName);
+        } else {
+             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+        }
 
         if (chosenCardList.size() == gameInstance.getPlayerNumber())
             deck.chooseCards(chosenCardList.toArray(new String[0]));
@@ -40,16 +45,20 @@ public class  GameInitializationManager extends MessageForwarder {
     public void pickUpCard(PlayerMoveStartup message) {
         String godCardName = message.getChosenCard();
 
-        if (deck.isAGodName(godCardName))
+        if (deck.isAGodName(godCardName)) {
             turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
+            turn.updateTurn();
+        } else {
+            message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+        }
     }
-
 
     public void setPlayerColor(PlayerMoveStartup message) {
         PlayerColor playerColor = message.getChosenColor();
 
         turn.getCurrentPlayer().setPlayerColor(playerColor);
         gameInstance.removeColor(playerColor);
+        turn.updateTurn();
     }
 
     private void placeWorker(PlayerMoveStartup message) {

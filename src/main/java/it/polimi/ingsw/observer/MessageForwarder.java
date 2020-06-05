@@ -11,11 +11,11 @@ public abstract class MessageForwarder {
 
         @Override
         public void update(UpdateTurnMessage message) {
-            handleUpdateTurn(message);
+            handleUpdateTurnFromSocket(message);
         }
     }
 
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
+    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
 
     };
 

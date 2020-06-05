@@ -165,7 +165,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                     handlePlayerMove((PlayerMove) inputObject);
                 }
                 else
-                    asyncSend(Message.error);
+                    asyncSend(Message.error + " at 161");
 
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
@@ -193,7 +193,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                 while (isActive()) {
                     Object inputObject = socketIn.readObject();
 
-
                     if(inputObject instanceof PlayerMoveStartup){
                         handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
 
@@ -202,9 +201,10 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                         handlePlayerMove((PlayerMove) inputObject);
                     }
                     else
-                        asyncSend(Message.error);
+                        asyncSend(Message.error + " at 197");
                 }
             } catch (Exception e) {
+                System.err.println("Error!" + e.getMessage());
                 this.active = false;
             }
         });
@@ -249,7 +249,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
     @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
+    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
         asyncSend(message);
     }
 

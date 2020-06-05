@@ -68,7 +68,7 @@ public class View extends MessageForwarder {
     }
 
     private void repeatCurrentMove(UpdateTurnMessage currentMove) {
-        handleUpdateTurn(currentMove);
+        handleUpdateTurnFromSocket(currentMove);
 
 //        if (lastMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
 //            handleMessageForMe(currentMove);
@@ -78,7 +78,7 @@ public class View extends MessageForwarder {
 
     public void handleResponse(String response) {
         if (currentMove == null) {
-            //TODO: Implementare gestione risposte pre partita
+            //TODO: Implementare gestione risposte pre partita (a posto così?)
             stringSender.notifyAll(response);
 
         } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
@@ -243,25 +243,25 @@ public class View extends MessageForwarder {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.MOVE_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveNotInitialPositionOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotFlipOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotPushOthers);
             else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveDisableOpponentUpOthers);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildStandardOthers);
             else if (message.getNextMove() == Actions.BUILD_BEFORE)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildBeforeOthers);
             else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildNotSamePlaceOthers);
             else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildSamePlaceNotDomeOthers);
             else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildDomeAnyLevelOthers);
         }
     }
 
@@ -293,7 +293,7 @@ public class View extends MessageForwarder {
 
 
     @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
+    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
         this.currentMove = message;
 
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
