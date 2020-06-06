@@ -21,6 +21,7 @@ public class View extends MessageForwarder {
     private final Cli playerCli;
     private final Gui playerGui;
     private UpdateTurnMessage currentMove = null;
+    private boolean activeReadResponse = false;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
@@ -42,6 +43,7 @@ public class View extends MessageForwarder {
         this.playerCli = null;
     }
 
+    //TODO: Non l'abbiamo collegato?
     public void setRemoteView(RemoteView remoteView) {
         if (this.remoteView == null)
             this.remoteView = remoteView;
@@ -59,6 +61,17 @@ public class View extends MessageForwarder {
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             playerCli.showMessage(messageToShow);
+        } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        if (messageToShow.contains("Error: "))
+            repeatCurrentMove(currentMove);
+    }
+
+    public void showSimultaneousMessage(String messageToShow) {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
+            playerCli.showSimultaneousMessage(messageToShow);
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
         }
@@ -237,7 +250,7 @@ public class View extends MessageForwarder {
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
-                showMessage(message.getCurrentPlayer().getNickname() + "sta scegliendo tra questi colori" + ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
+                showMessage(message.getCurrentPlayer().getNickname() + " is choosing between these colors " + getAvailableColorBuilder(message.getAvailableColor()));
 
         } else {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
@@ -294,6 +307,9 @@ public class View extends MessageForwarder {
 
     @Override
     protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+        if (!activeReadResponse)
+            activateReadResponse();
+
         this.currentMove = message;
 
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
@@ -302,9 +318,19 @@ public class View extends MessageForwarder {
             handleMessageForOthers(message);
     }
 
+    private void activateReadResponse() {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
+            playerCli.activateAsyncReadResponse();
+        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        activeReadResponse = true;
+    }
+
     @Override
     public void handleString(String messageString){
-        showMessage(messageString);
+        showSimultaneousMessage(messageString);
     }
 
     public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {

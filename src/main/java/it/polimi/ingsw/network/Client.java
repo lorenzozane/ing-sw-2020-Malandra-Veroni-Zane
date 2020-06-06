@@ -75,7 +75,7 @@ public class Client extends MessageForwarder {
                         if (((String) inputObject).contains("Nickname: "))
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
                         else {
-                            //clientView.showMessage((String) inputObject);
+//                            clientView.showMessage((String) inputObject);
 //                            handleString((String) inputObject);
                             new Thread(() -> sendStringToClient((String) inputObject)).start();
                         }
