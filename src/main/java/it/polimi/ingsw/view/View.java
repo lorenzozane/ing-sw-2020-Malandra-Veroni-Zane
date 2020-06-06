@@ -21,6 +21,7 @@ public class View extends MessageForwarder {
     private final Cli playerCli;
     private final Gui playerGui;
     private UpdateTurnMessage currentMove = null;
+    private boolean activeReadResponse = false;
     private final UpdateTurnMessageReceiver updateTurnMessageReceiver = new UpdateTurnMessageReceiver();
     private final PlayerMoveSender playerMoveSender = new PlayerMoveSender();
     private final PlayerMoveStartupSender playerMoveStartupSender = new PlayerMoveStartupSender();
@@ -42,6 +43,7 @@ public class View extends MessageForwarder {
         this.playerCli = null;
     }
 
+    //TODO: Non l'abbiamo collegato?
     public void setRemoteView(RemoteView remoteView) {
         if (this.remoteView == null)
             this.remoteView = remoteView;
@@ -67,8 +69,19 @@ public class View extends MessageForwarder {
             repeatCurrentMove(currentMove);
     }
 
+    public void showSimultaneousMessage(String messageToShow) {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
+            playerCli.showSimultaneousMessage(messageToShow);
+        } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        if (messageToShow.contains("Error: "))
+            repeatCurrentMove(currentMove);
+    }
+
     private void repeatCurrentMove(UpdateTurnMessage currentMove) {
-        handleUpdateTurn(currentMove);
+        handleUpdateTurnFromSocket(currentMove);
 
 //        if (lastMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
 //            handleMessageForMe(currentMove);
@@ -78,7 +91,7 @@ public class View extends MessageForwarder {
 
     public void handleResponse(String response) {
         if (currentMove == null) {
-            //TODO: Implementare gestione risposte pre partita
+            //TODO: Implementare gestione risposte pre partita (a posto così?)
             stringSender.notifyAll(response);
 
         } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname)) {
@@ -237,31 +250,31 @@ public class View extends MessageForwarder {
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
-                showMessage(message.getCurrentPlayer().getNickname() + "sta scegliendo tra questi colori" + ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
+                showMessage(message.getCurrentPlayer().getNickname() + " is choosing between these colors " + getAvailableColorBuilder(message.getAvailableColor()));
 
         } else {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.MOVE_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveNotInitialPositionOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotFlipOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotPushOthers);
             else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveDisableOpponentUpOthers);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildStandardOthers);
             else if (message.getNextMove() == Actions.BUILD_BEFORE)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildBeforeOthers);
             else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildNotSamePlaceOthers);
             else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildSamePlaceNotDomeOthers);
             else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildDomeAnyLevelOthers);
         }
     }
 
@@ -293,7 +306,10 @@ public class View extends MessageForwarder {
 
 
     @Override
-    protected void handleUpdateTurn(UpdateTurnMessage message) {
+    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+        if (!activeReadResponse)
+            activateReadResponse();
+
         this.currentMove = message;
 
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
@@ -302,9 +318,19 @@ public class View extends MessageForwarder {
             handleMessageForOthers(message);
     }
 
+    private void activateReadResponse() {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
+            playerCli.activateAsyncReadResponse();
+        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        activeReadResponse = true;
+    }
+
     @Override
     public void handleString(String messageString){
-        showMessage(messageString);
+        showSimultaneousMessage(messageString);
     }
 
     public UpdateTurnMessageReceiver getUpdateTurnMessageReceiver() {

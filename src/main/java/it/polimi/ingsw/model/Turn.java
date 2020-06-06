@@ -92,9 +92,10 @@ public class Turn extends MessageForwarder {
      */
     protected void setUpStartupPhase() {
         if (startupPhase && playerOrder.size() == gameInstance.getPlayerNumber()) {
-            for (Player player : playerOrder.subList(0, playerOrder.size() - 1))
+            for (Player player : playerOrder.subList(0, 2))
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.COLOR_REQUEST));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
+            if (playerOrder.size() > 2)
+                startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
             startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
@@ -111,7 +112,7 @@ public class Turn extends MessageForwarder {
     /**
      * Set up the game turn after the game initialization
      */
-    public void setUpGameTurn(){
+    public void setUpGameTurn() {
         if (startupPhase) {
             setUpTurnSequence();
             currentPlayer = null;
@@ -133,6 +134,7 @@ public class Turn extends MessageForwarder {
     }
 
     //TODO: Possibile rendere protected?
+
     /**
      * Throughout the game allow to update the turn to the next move to be performed, or to the next player
      */
@@ -144,6 +146,7 @@ public class Turn extends MessageForwarder {
     }
 
     //TODO: Vogliamo mettere la lastMovePerformedBy anche nella fase di starup?
+
     /**
      * Update the turn to the next move to be performed in the startup phase of the game
      */
@@ -189,8 +192,7 @@ public class Turn extends MessageForwarder {
             if (currentPlayer == null) {
                 lastMovePerformedBy = null;
                 currentPlayer = playerOrder.get(0);
-            }
-            else {
+            } else {
                 lastMovePerformedBy = currentPlayer.getNickname();
                 currentPlayer = getNextPlayer();
             }

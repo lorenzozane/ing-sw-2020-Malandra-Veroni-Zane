@@ -177,8 +177,33 @@ public class Cli {
     //TODO: printMessage
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
-        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.gameLoading) && !messageToShow.equals(Message.lobby))
-            readResponse();
+//        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.lobby) && !messageToShow.equals(Message.wait) && !messageToShow.equals(Message.gameLoading))
+//            new Thread(this::readResponse).start();
+    }
+
+    public void activateAsyncReadResponse() {
+        asyncReadResponse();
+    }
+
+    private void asyncReadResponse() {
+        Scanner scanner = new Scanner(System.in);
+        Thread asyncReadResponse = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) { //TODO: Modificare con isActive()?
+                    String input = scanner.nextLine();
+                    viewOwner.handleResponse(input);
+                }
+            }
+        });
+
+        asyncReadResponse.start();
+    }
+
+    public void showSimultaneousMessage(String messageToShow) {
+        System.out.println(messageToShow);
+        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.lobby) && !messageToShow.equals(Message.wait) && !messageToShow.equals(Message.gameLoading))
+            new Thread(this::readResponse).start();
     }
 
     private void readResponse() {
@@ -186,7 +211,4 @@ public class Cli {
         String input = scanner.nextLine();
         viewOwner.handleResponse(input);
     }
-
 }
-
-

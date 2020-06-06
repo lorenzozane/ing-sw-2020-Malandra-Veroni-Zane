@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public class PlayerMove implements Serializable {
 
+    private static final long serialVersionUID = -7736062440222355391L;
     private final String currentPlayer;
     private RemoteView remoteView;
     private final Player playerOwner;
