@@ -11,6 +11,7 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
+
 import java.util.ArrayList;
 
 public class View extends MessageForwarder {
@@ -101,7 +102,7 @@ public class View extends MessageForwarder {
                 if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST) {
                     PlayerColor chosenPlayerColor = convertStringToPlayerColor(response);
                     if (chosenPlayerColor == null) {
-                        showMessage(ViewMessage.wrongInput);
+                        showErrorMessage(ViewMessage.wrongColorChose);
                         return;
                     } else {
                         moveStartupToSend.setChosenColor(chosenPlayerColor);
@@ -163,17 +164,20 @@ public class View extends MessageForwarder {
     private PlayerColor convertStringToPlayerColor(String playerColor) {
         switch (playerColor.toLowerCase()) {
             case "red":
-                return PlayerColor.RED;
-//                TODO: Queste cose le dovrà fare il GameInitializationManager
-//                turn.getCurrentPlayer().setPlayerColor(Color.PlayerColor.RED);
-//                gameInstance.removeColor(Color.PlayerColor.RED);
+                if (currentMove.getAvailableColor().contains(PlayerColor.RED))
+                    return PlayerColor.RED;
+                break;
             case "cyan":
-                return PlayerColor.CYAN;
+                if (currentMove.getAvailableColor().contains(PlayerColor.CYAN))
+                    return PlayerColor.CYAN;
+                break;
             case "yellow":
-                return PlayerColor.YELLOW;
-            default:
-                return null;
+                if (currentMove.getAvailableColor().contains(PlayerColor.YELLOW))
+                    return PlayerColor.YELLOW;
+                break;
         }
+
+        return null;
     }
 
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
@@ -201,16 +205,16 @@ public class View extends MessageForwarder {
 
     protected PlayerMove createPlayerMove(Position targetSlotPosition) {
         return new PlayerMove(
-                        currentMove.getCurrentWorker(),
-                        currentMove.getNextMove(),
-                        targetSlotPosition,
-                        currentMove.getCurrentPlayer().getNickname());
+                currentMove.getCurrentWorker(),
+                currentMove.getNextMove(),
+                targetSlotPosition,
+                currentMove.getCurrentPlayer().getNickname());
     }
 
     protected PlayerMoveStartup createPlayerMoveStartup() {
         return new PlayerMoveStartup(
-                        currentMove.getCurrentPlayer(),
-                        currentMove.getNextStartupMove());
+                currentMove.getCurrentPlayer(),
+                currentMove.getNextStartupMove());
 
         //TODO: Logica set proprietà
     }
@@ -220,13 +224,13 @@ public class View extends MessageForwarder {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
-                showMessage(ViewMessage.pickLastColor);
+                showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0));
             else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
                 showMessage(ViewMessage.pickUpCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
-                showMessage(ViewMessage.pickLastCard);
+                showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0));
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
         } else {
@@ -260,8 +264,17 @@ public class View extends MessageForwarder {
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
-                showMessage(message.getCurrentPlayer().getNickname() + " is choosing between these colors " + getAvailableColorBuilder(message.getAvailableColor()));
-
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.colorRequestOthers + getAvailableColorBuilder(message.getAvailableColor()));
+//            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
+//                showMessage(ViewMessage.pickLastCard);
+            else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.chooseCardRequestOthers);
+            else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.pickUpCardRequestOthers);
+//            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
+//                showMessage(ViewMessage.pickLastCard);
+            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
         } else {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
                 refreshView(message.getBoardCopy(), chosenUserInterface);
@@ -288,7 +301,6 @@ public class View extends MessageForwarder {
         }
     }
 
-
     public void refreshView(Board newBoard, UserInterface userInterface) {
         if (userInterface == UserInterface.CLI && playerCli != null)
             playerCli.refreshBoard(newBoard);
@@ -298,10 +310,6 @@ public class View extends MessageForwarder {
         }
     }
 
-
-
-
-
     public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
         playerMoveSender.addObserver(observer);
     }
@@ -310,7 +318,7 @@ public class View extends MessageForwarder {
         playerMoveStartupSender.addObserver(observer);
     }
 
-    public void addStringObserver(Observer<String> observer){
+    public void addStringObserver(Observer<String> observer) {
         stringSender.addObserver(observer);
     }
 
@@ -339,7 +347,7 @@ public class View extends MessageForwarder {
     }
 
     @Override
-    public void handleString(String messageString){
+    public void handleString(String messageString) {
         showSimultaneousMessage(messageString);
     }
 
@@ -347,17 +355,9 @@ public class View extends MessageForwarder {
         return updateTurnMessageReceiver;
     }
 
-    public StringReceiver getStringReceiver(){ return stringReceiver;}
-
-
-
-
-
-
-
-
-
-
+    public StringReceiver getStringReceiver() {
+        return stringReceiver;
+    }
 
 
 }

@@ -10,6 +10,12 @@ public class ViewMessage {
     public static String pickLastCard = "You have been assigned the following card: ";
     public static String placeWorker = "Choose worker's position.\n";
 
+    //SetUpActions-ForOthers
+    public static String colorRequestOthers = " is choosing between these colors ";
+    public static String chooseCardRequestOthers = " is choosing the cards to play with.\n";
+    public static String pickUpCardRequestOthers = " is choosing his card.\n";
+    public static String placeWorkerOthers = " is placing his workers.\n";
+
     //Actions-MOVE-ForMe
     public static String moveStandard = "Move your selected Worker into one of the neighboring spaces (not containing a Worker or Dome).\n";
     public static String moveNotInitialPosition = "Move your Worker one additional time, but not back to its initial space.\n";
@@ -39,7 +45,8 @@ public class ViewMessage {
     public static String buildDomeAnyLevelOthers = " is building a dome.\n" ;
 
     //Wrong-Input-Message
-    public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
     public static String wrongInput = "Error: The input entered is not an accepted command.\n";
+    public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
+    public static String wrongColorChose = "Error: This color doesn't exists or has already been chosen.\n";
     public static String cardAlreadyChoose = "Error: You have already chose these card.\n";
 }

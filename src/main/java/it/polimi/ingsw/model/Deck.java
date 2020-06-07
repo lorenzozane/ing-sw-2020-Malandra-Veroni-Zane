@@ -86,6 +86,7 @@ public class Deck {
                 addCardToChosen(cardName);
 
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.chooseCards");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -111,6 +112,7 @@ public class Deck {
                 }
             }
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.addCardToChosen");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -137,6 +139,7 @@ public class Deck {
             }
             return null;
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.pickUpCard");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -218,6 +221,11 @@ public class Deck {
         return clonedCardList;
     }
 
+    /**
+     * Return a copy of the ArrayList containing the chosen cards
+     *
+     * @return ArrayList of GodsCard containing the chosen cards
+     */
     public ArrayList<GodsCard> getChosenCardsCopy() {
         ArrayList<GodsCard> clonedChosenCards = new ArrayList<>(chosenCards.size());
         for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
@@ -226,11 +234,6 @@ public class Deck {
         return clonedChosenCards;
     }
 
-    /**
-     * Return a copy of the HashMap containing the chosen cards
-     *
-     * @return HashMap containing the chosen cards
-     */
 //    public HashMap<String, GodsCard> getChosenCardsCopy() {
 //        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
 //        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
