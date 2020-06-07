@@ -133,7 +133,7 @@ public class View extends MessageForwarder {
     }
 
     private Position convertStringToPosition(String coordinates) {
-        if (coordinates.length() > 2) {
+        if (coordinates.length() != 2) {
             showErrorMessage(ViewMessage.wrongInputCoordinates);
             return null;
         }

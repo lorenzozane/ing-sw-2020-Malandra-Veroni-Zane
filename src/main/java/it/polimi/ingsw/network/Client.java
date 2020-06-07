@@ -7,7 +7,6 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.View;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -87,6 +86,7 @@ public class Client extends MessageForwarder {
 
                 }
             } catch (Exception e) {
+                System.out.println("eccezione Client line 89");
                 setActive(false);
             }
         });
@@ -134,6 +134,7 @@ public class Client extends MessageForwarder {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
+            System.out.println("eccezzione client line 137");
             System.err.println(e.getMessage());
         }
 
@@ -153,9 +154,9 @@ public class Client extends MessageForwarder {
 
             while (isActive()) ;
         } catch (Exception e) {
-            System.out.println("Connection closed by Exception");
+            System.out.println("Connection closed by client line 157" + e.getMessage());
         } finally {
-            System.out.println("Connection closed from 159 Client");
+            System.out.println("Connection closed Client line 159");
             closeConnection();
         }
     }
@@ -164,7 +165,7 @@ public class Client extends MessageForwarder {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error when closing socket!");
+            System.err.println("Error when closing socket! client line 168");
         }
         active = false;
     }

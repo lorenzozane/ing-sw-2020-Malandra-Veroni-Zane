@@ -309,7 +309,7 @@ public class Turn extends MessageForwarder {
                 turnSequenceMap.put(player, turnSequence);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Turn.java line 312");
         }
     }
 
@@ -345,7 +345,7 @@ public class Turn extends MessageForwarder {
 
             return new ArrayList<>(moveSequence.keySet());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Turn.java line 348");
             return null;
         }
     }
@@ -376,7 +376,7 @@ public class Turn extends MessageForwarder {
 
             return winConditions;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Turn.java line 379");
             return null;
         }
     }

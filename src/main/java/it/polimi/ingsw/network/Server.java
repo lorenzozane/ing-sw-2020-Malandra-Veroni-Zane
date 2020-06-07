@@ -23,7 +23,7 @@ public class Server {
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
     private final Map<String, SocketConnection> waitingConnection = new LinkedHashMap<>();
-    // ci serve? private final Map<Connection, Connection> playingConnection = new HashMap<>();
+    private final Map<String, SocketConnection> playingConnection = new LinkedHashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private String currentCreator = "";
     private final ArrayList<Player> usersReady = new ArrayList<>();
@@ -47,11 +47,23 @@ public class Server {
             for (Player p : game.getPlayerList()){
                 if(p.getNickname().equals(nick)){
                     game.removePlayerByName(nick);
+                    for(Player otherPlayer: game.getPlayerList()){
+                        playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            System.out.println("Eccezione server line 55");
+                            e.printStackTrace();
+                        }
+                        playingConnection.get(otherPlayer.getNickname()).closeConnection();
+                        playingConnection.remove(otherPlayer.getNickname());
+                    }
+                    playingConnection.remove(nick);
                 }
             }
         }
 
-        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0); //caso in cui il game ha 0 player == finito == lo elimino
+        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0);
 
         nicknameDatabase.remove(nick);
 
@@ -80,7 +92,7 @@ public class Server {
                 SocketConnection socketConnection = new SocketConnection(newSocket, this);
                 executor.submit(socketConnection);
             } catch (IOException e) {
-                System.out.println("Connection Error!");
+                System.out.println("Connection Error! server line 95");
             }
         }
     }
@@ -143,6 +155,7 @@ public class Server {
                     try {
                         gameLobby();
                     } catch (Exception e) {
+                        System.out.println("Eccezione server line 158");
                         e.printStackTrace();
                     }
                 }).start();
@@ -207,6 +220,7 @@ public class Server {
             }
         }
         catch (ClassNotFoundException e){
+            System.out.println("Eccezione server line 223");
             e.printStackTrace();
         }
 
@@ -217,15 +231,11 @@ public class Server {
                 try {
                     gameLobby();
                 } catch (Exception e) {
+                    System.out.println("Eccezione server line 234");
                     e.printStackTrace();
                 }
             }).start();
 
-    }
-
-
-    public void gameThread(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
-        new Thread(() -> gameSettings(gameInstance, usersReadyCopy, waitingConnectionCopy)).start();
     }
 
 
@@ -235,6 +245,7 @@ public class Server {
 
         for (int i = 0; i < gameInstance.getPlayerNumber(); i++) {
             SocketConnection socketConnection = waitingConnectionCopy.get(usersReadyCopy.get(i).getNickname());
+            playingConnection.put(usersReadyCopy.get(i).getNickname(), socketConnection);
             RemoteView remoteView = new RemoteView(usersReadyCopy.get(i).getNickname(), socketConnection);
 
             gameInstance.getTurn().addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
@@ -247,6 +258,7 @@ public class Server {
             try {
                 gameInstance.addPlayer(usersReadyCopy.get(i));
             } catch (IllegalAccessException e) {
+                System.out.println("Eccezione server line 261");
                 e.printStackTrace();
             }
         }

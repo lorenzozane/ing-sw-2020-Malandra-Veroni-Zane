@@ -170,12 +170,13 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
             e.printStackTrace();
-            System.err.println("Error!" + e.getMessage());
+            System.err.println("Error! socket line 173" + e.getMessage());
         } finally {
             try {
                 server.deregisterConnection(nickname, this);
                 closeConnection();
             } catch (IOException | IllegalAccessException | ParseException e) {
+                System.out.println("Eccezione server line 179");
                 e.printStackTrace();
             }
         }
@@ -201,9 +202,10 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                         handlePlayerMove((PlayerMove) inputObject);
                     }
                     else
-                        asyncSend(Message.error + " at 197");
+                        asyncSend(Message.error + " at 205");
                 }
             } catch (Exception e) {
+                System.out.println("Eccezione server line 208");
                 System.err.println("Error!" + e.getMessage());
                 this.active = false;
             }
@@ -239,12 +241,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
 
     }
-
-
-    public Socket getSocket() {
-        return this.socket;
-    }
-
 
 
 

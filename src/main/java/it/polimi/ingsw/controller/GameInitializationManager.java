@@ -3,11 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
-import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.view.ViewMessage;
 
-import java.util.*;
+import java.util.ArrayList;
 
 
 public class GameInitializationManager extends MessageForwarder {
