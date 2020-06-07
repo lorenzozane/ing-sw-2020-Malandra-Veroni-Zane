@@ -55,6 +55,7 @@ public class View extends MessageForwarder {
             this.playerOwnerNickname = playerOwnerNickname;
     }
 
+    //TODO: Agli errori che passano di qua viene aggiunto un a capo. Verificare
     public void showErrorMessage(String errorToShow) {
         showMessage(errorToShow);
     }
@@ -99,7 +100,8 @@ public class View extends MessageForwarder {
             if (currentMove.isStartupPhase()) {
                 PlayerMoveStartup moveStartupToSend = createPlayerMoveStartup();
 
-                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST) {
+                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
+                        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
                     PlayerColor chosenPlayerColor = convertStringToPlayerColor(response);
                     if (chosenPlayerColor == null) {
                         showErrorMessage(ViewMessage.wrongColorChose);
@@ -108,7 +110,8 @@ public class View extends MessageForwarder {
                         moveStartupToSend.setChosenColor(chosenPlayerColor);
                     }
                 } else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST ||
-                        currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST) {
+                        currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST ||
+                        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
                     moveStartupToSend.setChosenCard(response);
                 } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
                     moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
@@ -183,7 +186,7 @@ public class View extends MessageForwarder {
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
         for (PlayerColor playerColor : availableColor) {
-            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
+            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString()).append(Color.RESET).append(" or");
         }
         stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
         return String.valueOf(stringBuilder);
@@ -223,14 +226,18 @@ public class View extends MessageForwarder {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
-                showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0));
+            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
+                showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0).getColorAsString());
+                new Thread(() -> handleResponse(message.getAvailableColor().get(0).getColorAsString())).start();
+            }
             else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
                 showMessage(ViewMessage.pickUpCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
-                showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0));
+            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
+                showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
+                new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
+            }
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
         } else {

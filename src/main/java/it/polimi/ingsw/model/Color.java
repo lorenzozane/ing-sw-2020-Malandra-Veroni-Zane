@@ -23,12 +23,12 @@ public enum Color implements Serializable {
             return escape;
         }
 
-        public String getColorAsString(PlayerColor color){
-            if(color.getEscape().equals(RED.getEscape()))
+        public String getColorAsString(){
+            if(this.getEscape().equals(RED.getEscape()))
                 return "RED";
-            else if (color.getEscape().equals(CYAN.getEscape()))
+            else if (this.getEscape().equals(CYAN.getEscape()))
                 return "CYAN";
-            else if(color.getEscape().equals(YELLOW.getEscape()))
+            else if(this.getEscape().equals(YELLOW.getEscape()))
                 return "YELLOW";
             else
                 throw new IllegalArgumentException();

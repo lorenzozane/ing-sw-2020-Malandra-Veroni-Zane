@@ -3,7 +3,7 @@ package it.polimi.ingsw.view;
 public class ViewMessage {
 
     //SetUpActions
-    public static String colorRequest = "Choose worker's color from these colors: ";
+    public static String colorRequest = "Choose worker's color from these colors:";
     public static String pickLastColor = "You have been assigned the following color: ";
     public static String chooseCardRequest = "Choose cards from these cards: ";
     public static String pickUpCardRequest = "Pick up your card from these card: ";
@@ -11,7 +11,7 @@ public class ViewMessage {
     public static String placeWorker = "Choose worker's position.\n";
 
     //SetUpActions-ForOthers
-    public static String colorRequestOthers = " is choosing between these colors ";
+    public static String colorRequestOthers = " is choosing between these colors:";
     public static String chooseCardRequestOthers = " is choosing the cards to play with.\n";
     public static String pickUpCardRequestOthers = " is choosing his card.\n";
     public static String placeWorkerOthers = " is placing his workers.\n";
@@ -46,6 +46,7 @@ public class ViewMessage {
 
     //Wrong-Input-Message
     public static String wrongInput = "Error: The input entered is not an accepted command.\n";
+    public static String wrongCardChose = "Error: This card is not available or it doesn't exists.\n";
     public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
     public static String wrongColorChose = "Error: This color doesn't exists or has already been chosen.\n";
     public static String cardAlreadyChoose = "Error: You have already chose these card.\n";
