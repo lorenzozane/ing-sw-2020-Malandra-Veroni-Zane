@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +20,7 @@ public class Deck {
 
     Game gameInstance;
     private final ArrayList<GodsCard> cardList = new ArrayList<>();
-    private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
+    private final LinkedHashMap<String, GodsCard> chosenCards = new LinkedHashMap<>();
     private ArrayList<GodsCard> availableCardsToChose = new ArrayList<>();
 
     /**
@@ -63,7 +64,7 @@ public class Deck {
                 }
             }
 
-            availableCardsToChose = cardList;
+            availableCardsToChose = getCardListCopy();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

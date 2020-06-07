@@ -33,19 +33,20 @@ public class GameInitializationManager extends MessageForwarder {
         String godCardName = message.getChosenCard();
 
         if (deck.isAGodName(godCardName)) {
-            if (chosenCardList.contains(godCardName))
-                message.getRemoteView().errorMessage(ViewMessage.cardAlreadyChoose);
-            else {
+            if (!chosenCardList.contains(godCardName)) {
                 chosenCardList.add(godCardName);
                 deck.removeAvailableCard(godCardName);
+
+                if (chosenCardList.size() == gameInstance.getPlayerNumber())
+                    deck.chooseCards(chosenCardList.toArray(new String[0]));
+
                 turn.updateTurn();
+            } else {
+                message.getRemoteView().errorMessage(ViewMessage.cardAlreadyChoose);
             }
         } else {
             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
         }
-
-        if (chosenCardList.size() == gameInstance.getPlayerNumber())
-            deck.chooseCards(chosenCardList.toArray(new String[0]));
     }
 
     public void pickUpCard(PlayerMoveStartup message) {

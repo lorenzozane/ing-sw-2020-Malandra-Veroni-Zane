@@ -188,7 +188,7 @@ public class View extends MessageForwarder {
     private String getAvailableCardsBuilder(ArrayList<GodsCard> availableCards) {
         StringBuilder stringBuilder = new StringBuilder();
         for (GodsCard godsCard : availableCards) {
-            stringBuilder.append("\n").append(godsCard.getCardName()).append(": ").append(godsCard.getCardDescription());
+            stringBuilder.append("\n").append(godsCard.getCardName().toUpperCase()).append(": ").append(godsCard.getCardDescription());
         }
 
         return String.valueOf(stringBuilder);
