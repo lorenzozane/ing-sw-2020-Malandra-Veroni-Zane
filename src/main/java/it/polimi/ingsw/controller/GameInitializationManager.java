@@ -82,11 +82,13 @@ public class GameInitializationManager extends MessageForwarder {
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        if (message.getAction() == StartupActions.COLOR_REQUEST)
+        if (message.getAction() == StartupActions.COLOR_REQUEST ||
+                message.getAction() == StartupActions.PICK_LAST_COLOR)
             setPlayerColor(message);
         else if (message.getAction() == StartupActions.CHOOSE_CARD_REQUEST)
             buildChosenCard(message);
-        else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST)
+        else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST ||
+                message.getAction() == StartupActions.PICK_LAST_CARD)
             pickUpCard(message);
         else if (message.getAction() == StartupActions.PLACE_WORKER)
             placeWorker(message);

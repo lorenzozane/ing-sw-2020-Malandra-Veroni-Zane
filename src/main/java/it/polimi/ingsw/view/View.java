@@ -229,20 +229,18 @@ public class View extends MessageForwarder {
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
                 showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0).getColorAsString());
                 new Thread(() -> handleResponse(message.getAvailableColor().get(0).getColorAsString())).start();
-            }
-            else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+            } else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
                 showMessage(ViewMessage.pickUpCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
                 showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
                 new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
-            }
-            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
+            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
                 showMessage(ViewMessage.placeWorker);
         } else {
-            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
-                refreshView(message.getBoardCopy(), chosenUserInterface);
+            refreshView(message.getBoardCopy(), chosenUserInterface);
+
             if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -283,8 +281,8 @@ public class View extends MessageForwarder {
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
         } else {
-            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
-                refreshView(message.getBoardCopy(), chosenUserInterface);
+            refreshView(message.getBoardCopy(), chosenUserInterface);
+
             if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)

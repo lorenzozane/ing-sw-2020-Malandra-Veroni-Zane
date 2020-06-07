@@ -100,8 +100,7 @@ public class Turn extends MessageForwarder {
                 startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
-            if (playerOrder.size() > 2)
-                startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
+            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
             for (Player player : playerOrder) {
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
