@@ -41,4 +41,5 @@ public class ViewMessage {
     //Wrong-Input-Message
     public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
     public static String wrongInput = "Error: The input entered is not an accepted command.\n";
+    public static String cardAlreadyChoose = "Error: You have already chose these card.\n";
 }

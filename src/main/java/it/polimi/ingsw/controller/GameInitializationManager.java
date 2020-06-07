@@ -10,7 +10,7 @@ import it.polimi.ingsw.view.ViewMessage;
 import java.util.*;
 
 
-public class  GameInitializationManager extends MessageForwarder {
+public class GameInitializationManager extends MessageForwarder {
 
     //TODO: Metodi inizializzazione deck e scelta carte (challenge)
 
@@ -33,9 +33,15 @@ public class  GameInitializationManager extends MessageForwarder {
         String godCardName = message.getChosenCard();
 
         if (deck.isAGodName(godCardName)) {
-            chosenCardList.add(godCardName);
+            if (chosenCardList.contains(godCardName))
+                message.getRemoteView().errorMessage(ViewMessage.cardAlreadyChoose);
+            else {
+                chosenCardList.add(godCardName);
+                deck.removeAvailableCard(godCardName);
+                turn.updateTurn();
+            }
         } else {
-             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+            message.getRemoteView().errorMessage(ViewMessage.wrongInput);
         }
 
         if (chosenCardList.size() == gameInstance.getPlayerNumber())
@@ -46,8 +52,12 @@ public class  GameInitializationManager extends MessageForwarder {
         String godCardName = message.getChosenCard();
 
         if (deck.isAGodName(godCardName)) {
-            turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
-            turn.updateTurn();
+            try {
+                turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
+                turn.updateTurn();
+            } catch (IllegalArgumentException ex) {
+                message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+            }
         } else {
             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
         }
@@ -61,6 +71,7 @@ public class  GameInitializationManager extends MessageForwarder {
         turn.updateTurn();
     }
 
+    //TODO: Completare posizionamento del worker
     private void placeWorker(PlayerMoveStartup message) {
         Position workerPosition = message.getWorkerPosition();
 

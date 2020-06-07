@@ -96,7 +96,8 @@ public class Turn extends MessageForwarder {
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.COLOR_REQUEST));
             if (playerOrder.size() > 2)
                 startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
+            for (int i = 0; i < playerOrder.size(); i++)
+                startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
             startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
@@ -157,7 +158,10 @@ public class Turn extends MessageForwarder {
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());
-                updateTurnMessage.setChosenGodsCard(gameInstance.getDeck().getCardListCopy());
+                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST)
+                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getAvailableCardsToChoseCopy());
+                else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST)
+                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
             } else
                 setUpGameTurn();

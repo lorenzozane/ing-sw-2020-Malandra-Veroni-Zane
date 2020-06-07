@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Color.PlayerColor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Game {
@@ -12,15 +13,11 @@ public class Game {
     private int playerNumber/* = 1*/;
     private final Board board = new Board();
     private final Deck deck = new Deck(this);
+    private final ArrayList<PlayerColor> colorList = new ArrayList<>();
     private Player challengerPlayer;
-    private final ArrayList<PlayerColor> colorList = new ArrayList<PlayerColor>() {{
-        add(PlayerColor.CYAN);
-        add(PlayerColor.RED);
-        add(PlayerColor.YELLOW);
-    }};
 
     public Game() {
-
+        colorList.addAll(Arrays.asList(PlayerColor.values()));
     }
 
     public Turn getTurn() {
@@ -103,10 +100,7 @@ public class Game {
         else {
             throw new IllegalAccessException();
         }
-        
-        
     }
-
 }
 
 

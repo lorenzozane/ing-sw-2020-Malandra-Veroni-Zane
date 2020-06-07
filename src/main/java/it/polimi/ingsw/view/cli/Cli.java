@@ -187,13 +187,10 @@ public class Cli {
 
     private void asyncReadResponse() {
         Scanner scanner = new Scanner(System.in);
-        Thread asyncReadResponse = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) { //TODO: Modificare con isActive()?
-                    String input = scanner.nextLine();
-                    viewOwner.handleResponse(input);
-                }
+        Thread asyncReadResponse = new Thread(() -> {
+            while (true) { //TODO: Modificare con isActive()?
+                String input = scanner.nextLine();
+                new Thread(() -> viewOwner.handleResponse(input)).start();
             }
         });
 

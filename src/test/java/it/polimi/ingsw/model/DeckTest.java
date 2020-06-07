@@ -29,13 +29,18 @@ public class DeckTest {
         gameInstance.setPlayerNumber(3);
         Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "athena");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
+        ArrayList<GodsCard> chosenCards = deck.getChosenCardsCopy();
+//        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
-            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
-            chosenCardsExpected.remove(godCard.getValue().getCardName());
+        for (GodsCard godCard : chosenCards) {
+            assertTrue(chosenCardsExpected.contains(godCard.getCardName()));
+            chosenCardsExpected.remove(godCard.getCardName());
         }
+//        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+//            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+//            chosenCardsExpected.remove(godCard.getValue().getCardName());
+//        }
     }
 
     @Test
@@ -54,39 +59,54 @@ public class DeckTest {
         Deck deck = gameInstance.getDeck();
         gameInstance.setPlayerNumber(3);
         deck.chooseCards("apollo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
+        ArrayList<GodsCard> chosenCards = deck.getChosenCardsCopy();
+//        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
-            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
-            chosenCardsExpected.remove(godCard.getValue().getCardName());
+        for (GodsCard godCard : chosenCards) {
+            assertTrue(chosenCardsExpected.contains(godCard.getCardName()));
+            chosenCardsExpected.remove(godCard.getCardName());
         }
+//        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+//            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+//            chosenCardsExpected.remove(godCard.getValue().getCardName());
+//        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionWrongCard() {
         Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "foo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
+        ArrayList<GodsCard> chosenCards = deck.getChosenCardsCopy();
+//        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
-            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
-            chosenCardsExpected.remove(godCard.getValue().getCardName());
+        for (GodsCard godCard : chosenCards) {
+            assertTrue(chosenCardsExpected.contains(godCard.getCardName()));
+            chosenCardsExpected.remove(godCard.getCardName());
         }
+//        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+//            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+//            chosenCardsExpected.remove(godCard.getValue().getCardName());
+//        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void chooseCardsTestExceptionSameCardTwice() {
         Deck deck = gameInstance.getDeck();
         deck.chooseCards("apollo", "artemis", "apollo");
-        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
+        ArrayList<GodsCard> chosenCards = deck.getChosenCardsCopy();
+//        HashMap<String, GodsCard> chosenCards = deck.getChosenCardsCopy();
         ArrayList<String> chosenCardsExpected = new ArrayList<>(Arrays.asList("apollo", "artemis", "athena"));
 
-        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
-            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
-            chosenCardsExpected.remove(godCard.getValue().getCardName());
+        for (GodsCard godCard : chosenCards) {
+            assertTrue(chosenCardsExpected.contains(godCard.getCardName()));
+            chosenCardsExpected.remove(godCard.getCardName());
         }
+//        for (Map.Entry<String, GodsCard> godCard : chosenCards.entrySet()) {
+//            assertTrue(chosenCardsExpected.contains(godCard.getValue().getCardName()));
+//            chosenCardsExpected.remove(godCard.getValue().getCardName());
+//        }
     }
 
     @Test(expected = IllegalArgumentException.class)

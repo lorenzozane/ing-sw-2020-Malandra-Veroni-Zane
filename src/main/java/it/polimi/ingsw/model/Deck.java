@@ -20,6 +20,7 @@ public class Deck {
     Game gameInstance;
     private final ArrayList<GodsCard> cardList = new ArrayList<>();
     private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
+    private ArrayList<GodsCard> availableCardsToChose = new ArrayList<>();
 
     /**
      * Constructor of the game deck
@@ -61,6 +62,8 @@ public class Deck {
                     cardList.add(card);
                 }
             }
+
+            availableCardsToChose = cardList;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -127,8 +130,7 @@ public class Deck {
                     GodsCard detectedCard = chosenCards.get(godCardName);
                     chosenCards.remove(godCardName);
                     return detectedCard;
-                }
-                else {
+                } else {
                     throw new IllegalArgumentException();
                 }
             }
@@ -139,6 +141,10 @@ public class Deck {
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+
+    public void removeAvailableCard(String godCardName) {
+        availableCardsToChose.removeIf(x -> x.getCardName().equals(godCardName.toLowerCase()));
     }
 
     public boolean isAGodName(String godCardName) {
@@ -203,21 +209,37 @@ public class Deck {
         return clonedCardList;
     }
 
+    public ArrayList<GodsCard> getAvailableCardsToChoseCopy() {
+        ArrayList<GodsCard> clonedCardList = new ArrayList<>(availableCardsToChose.size());
+        for (GodsCard card : availableCardsToChose)
+            clonedCardList.add(card.clone());
+
+        return clonedCardList;
+    }
+
+    public ArrayList<GodsCard> getChosenCardsCopy() {
+        ArrayList<GodsCard> clonedChosenCards = new ArrayList<>(chosenCards.size());
+        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
+            clonedChosenCards.add(card.getValue().clone());
+
+        return clonedChosenCards;
+    }
+
     /**
      * Return a copy of the HashMap containing the chosen cards
      *
      * @return HashMap containing the chosen cards
      */
-    public HashMap<String, GodsCard> getChosenCardsCopy() {
-        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
-        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
-            clonedChosenCards.put(card.getKey(), card.getValue().clone());
-
-        return clonedChosenCards;
-    }
+//    public HashMap<String, GodsCard> getChosenCardsCopy() {
+//        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
+//        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
+//            clonedChosenCards.put(card.getKey(), card.getValue().clone());
+//
+//        return clonedChosenCards;
+//    }
 
     //TODO: View
-    public void printAllDeck(){
+    public void printAllDeck() {
         for (GodsCard godsCard : cardList) {
             System.out.println(godsCard.toString());
         }

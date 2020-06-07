@@ -178,13 +178,23 @@ public class View extends MessageForwarder {
 
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Color.PlayerColor playerColor : availableColor) {
+        for (PlayerColor playerColor : availableColor) {
             stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
         }
         stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
         return String.valueOf(stringBuilder);
     }
 
+    private String getAvailableCardsBuilder(ArrayList<GodsCard> availableCards) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (GodsCard godsCard : availableCards) {
+            stringBuilder.append("\n").append(godsCard.getCardName()).append(": ").append(godsCard.getCardDescription());
+        }
+
+        return String.valueOf(stringBuilder);
+    }
+
+    //TODO: ??
     protected boolean colorChecker(PlayerColor playerColor) {
         return playerColor != null;
     }
@@ -212,9 +222,9 @@ public class View extends MessageForwarder {
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
                 showMessage(ViewMessage.pickLastColor);
             else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
-                showMessage(ViewMessage.chooseCardRequest);
+                showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
-                showMessage(ViewMessage.pickUpCardRequest);
+                showMessage(ViewMessage.pickUpCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
                 showMessage(ViewMessage.pickLastCard);
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
@@ -256,25 +266,25 @@ public class View extends MessageForwarder {
             if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.MOVE_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveNotInitialPositionOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotFlipOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotPushOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
             else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveDisableOpponentUpOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
             else if (message.getNextMove() == Actions.BUILD_BEFORE)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildBeforeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
             else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildNotSamePlaceOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
             else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildSamePlaceNotDomeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
             else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildDomeAnyLevelOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
         }
     }
 

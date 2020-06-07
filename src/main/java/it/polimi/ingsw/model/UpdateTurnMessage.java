@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Color.PlayerColor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,11 +16,12 @@ public class UpdateTurnMessage implements Serializable {
     private final boolean startupPhase;
     private final Player currentPlayer;
     private final Worker currentWorker;
-    private final ArrayList<Color.PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
-    private ArrayList<GodsCard> chosenGodsCard= new ArrayList<>(); //passiamo le carte fra cui scegliere
+    private final ArrayList<PlayerColor> availableColor = new ArrayList<>(); //passiamo i colori disponibili in quel momento
+    private final ArrayList<GodsCard> availableCards = new ArrayList<>();
+//    private ArrayList<GodsCard> chosenGodsCards = new ArrayList<>(); //passiamo le carte fra cui scegliere
 
 
-    public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer, ArrayList<Color.PlayerColor> playerColor) {
+    public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer, ArrayList<PlayerColor> playerColor) {
         this.startupPhase = true;
         this.nextStartupMove = nextStartupMove;
         this.currentPlayer = currentPlayer;
@@ -66,14 +69,19 @@ public class UpdateTurnMessage implements Serializable {
         return lastMovePerformedBy;
     }
 
-    public Board getBoardCopy(){return boardCopy; }
+    public Board getBoardCopy() {
+        return boardCopy;
+    }
 
-    public ArrayList<Color.PlayerColor> getAvailableColor(){
+    public ArrayList<PlayerColor> getAvailableColor() {
         return availableColor;
     }
 
-    public void setChosenGodsCard(ArrayList<GodsCard> godsCard){
-        this.chosenGodsCard.addAll(godsCard);
+    public void setAvailableCards(ArrayList<GodsCard> godsCard) {
+        this.availableCards.addAll(godsCard);
     }
 
+    public ArrayList<GodsCard> getAvailableCards() {
+        return availableCards;
+    }
 }
