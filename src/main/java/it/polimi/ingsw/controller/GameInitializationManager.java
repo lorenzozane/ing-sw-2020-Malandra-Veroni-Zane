@@ -79,7 +79,8 @@ public class GameInitializationManager extends MessageForwarder {
         Board gameBoard = gameInstance.getBoard();
         Slot targetSlot = gameBoard.getSlot(workerPosition);
         if (targetSlot.getWorkerInSlot() == null) {
-            targetSlot.setWorkerInSlot(message.getPlayerOwner().getWorkers().get(workerIndex));
+            message.getPlayerOwner().getWorkers().get(workerIndex - 1).setWorkerSlot(targetSlot);
+//            targetSlot.setWorkerInSlot(message.getPlayerOwner().getWorkers().get(workerIndex));
             turn.updateTurn();
         } else {
             message.getRemoteView().errorMessage(ViewMessage.slotOccupied);
