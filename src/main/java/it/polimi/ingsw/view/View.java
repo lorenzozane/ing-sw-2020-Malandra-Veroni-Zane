@@ -113,7 +113,8 @@ public class View extends MessageForwarder {
                         currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST ||
                         currentMove.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
                     moveStartupToSend.setChosenCard(response);
-                } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
+                } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                        currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                     moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
                 }
 
@@ -143,11 +144,11 @@ public class View extends MessageForwarder {
 
         int coordinateX = coordinates.charAt(0);
         int coordinateY = coordinates.charAt(1);
-        if (coordinateY >= 1 && coordinateY <= 5)
+        if (coordinateY >= 49 && coordinateY <= 53)
             if (coordinateX >= 65 && coordinateX <= 69)
-                return new Position(coordinateX - 65, coordinateY - 1);
+                return new Position(coordinateX - 65, coordinateY - 49);
             else if (coordinateX >= 97 && coordinateX <= 101)
-                return new Position(coordinateX - 97, coordinateY - 1);
+                return new Position(coordinateX - 97, coordinateY - 49);
 
         showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
@@ -236,7 +237,8 @@ public class View extends MessageForwarder {
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
                 showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
                 new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
-            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
+            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2)
                 showMessage(ViewMessage.placeWorker);
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
@@ -278,7 +280,8 @@ public class View extends MessageForwarder {
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.pickUpCardRequestOthers);
 //            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
 //                showMessage(ViewMessage.pickLastCard);
-            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
+            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);

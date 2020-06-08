@@ -49,5 +49,6 @@ public class ViewMessage {
     public static String wrongCardChose = "Error: This card is not available or it doesn't exists.\n";
     public static String wrongInputCoordinates = "Error: The coordinates entered are not in a valid format.\n";
     public static String wrongColorChose = "Error: This color doesn't exists or has already been chosen.\n";
+    public static String slotOccupied = "Error: This slot isn't empty. Chose another slot for your worker.\n";
     public static String cardAlreadyChoose = "Error: You have already chose these card.\n";
 }

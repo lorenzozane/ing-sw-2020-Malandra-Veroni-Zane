@@ -13,7 +13,8 @@ public class TurnEvents implements Serializable {
         CHOOSE_CARD_REQUEST,
         PICK_UP_CARD_REQUEST,
         PICK_LAST_CARD,
-        PLACE_WORKER;
+        PLACE_WORKER_1,
+        PLACE_WORKER_2;
     }
 
     /**

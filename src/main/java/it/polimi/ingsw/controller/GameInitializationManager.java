@@ -3,7 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.ArrayList;
@@ -72,12 +74,16 @@ public class GameInitializationManager extends MessageForwarder {
     }
 
     //TODO: Completare posizionamento del worker
-    private void placeWorker(PlayerMoveStartup message) {
+    private void placeWorker(PlayerMoveStartup message, int workerIndex) {
         Position workerPosition = message.getWorkerPosition();
-
         Board gameBoard = gameInstance.getBoard();
-
-
+        Slot targetSlot = gameBoard.getSlot(workerPosition);
+        if (targetSlot.getWorkerInSlot() == null) {
+            targetSlot.setWorkerInSlot(message.getPlayerOwner().getWorkers().get(workerIndex));
+            turn.updateTurn();
+        } else {
+            message.getRemoteView().errorMessage(ViewMessage.slotOccupied);
+        }
     }
 
     @Override
@@ -90,8 +96,10 @@ public class GameInitializationManager extends MessageForwarder {
         else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST ||
                 message.getAction() == StartupActions.PICK_LAST_CARD)
             pickUpCard(message);
-        else if (message.getAction() == StartupActions.PLACE_WORKER)
-            placeWorker(message);
+        else if (message.getAction() == StartupActions.PLACE_WORKER_1)
+            placeWorker(message, 1);
+        else if (message.getAction() == StartupActions.PLACE_WORKER_2)
+            placeWorker(message, 2);
 
         //TODO: fare update del turno? per inviare un nuovo turn message?
     }
