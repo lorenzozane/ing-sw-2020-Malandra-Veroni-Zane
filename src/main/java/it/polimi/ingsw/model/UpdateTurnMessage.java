@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class UpdateTurnMessage implements Serializable {
 
     private static final long serialVersionUID = 4116568860427433236L;
-    private final Board boardCopy;
+    private Board boardCopy;
     private final String lastMovePerformedBy;
     private final TurnEvents.StartupActions nextStartupMove;
     private final TurnEvents.Actions nextMove;
@@ -79,6 +79,10 @@ public class UpdateTurnMessage implements Serializable {
 
     public void setAvailableCards(ArrayList<GodsCard> godsCard) {
         this.availableCards.addAll(godsCard);
+    }
+
+    public void setBoardCopy(Board boardCopy){
+        this.boardCopy = boardCopy;
     }
 
     public ArrayList<GodsCard> getAvailableCards() {

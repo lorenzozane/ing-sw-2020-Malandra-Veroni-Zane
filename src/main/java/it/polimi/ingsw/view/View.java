@@ -238,8 +238,10 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
                 new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
             } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
-                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2)
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2){
+                refreshView(message.getBoardCopy(), chosenUserInterface);
                 showMessage(ViewMessage.placeWorker);
+            }
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
 
@@ -281,8 +283,10 @@ public class View extends MessageForwarder {
 //            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
 //                showMessage(ViewMessage.pickLastCard);
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
-                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2)
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2){
+                refreshView(message.getBoardCopy(), chosenUserInterface);
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
+            }
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
 

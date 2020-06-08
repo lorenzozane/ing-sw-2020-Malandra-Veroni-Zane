@@ -71,7 +71,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      * Close the socketConnection
      */
     public synchronized void closeConnection() {
-        send("Connection closed! by server");
+        send("Connection closed! by server line 74");
         try {
             socket.close();
         } catch (IOException e) {
@@ -86,12 +86,13 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      *
      * @param nickname The client unique name
      */
+    /*
     private void closeSocket(String nickname) throws IOException, IllegalAccessException, ParseException {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
         System.out.println("Done!");
-    }
+    }*/
 
 
     /**

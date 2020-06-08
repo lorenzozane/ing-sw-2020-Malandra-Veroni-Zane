@@ -75,9 +75,12 @@ public class Cli {
     public void refreshBoard(Board board) {
         currentGameBoard = deepCopyStringArray(emptyGameBoard);
 
-        for (int i = 0; i < board.getBoardDimension(); i++)
-            for (int j = 0; j < board.getBoardDimension(); j++)
+        for (int i = 0; i < board.getBoardDimension(); i++) {
+            for (int j = 0; j < board.getBoardDimension(); j++) {
                 refreshSlot(board.getSlot(new Position(i, j)));
+            }
+        }
+        printGameBoard();
     }
 
     public void refreshSlot(Slot slot) {

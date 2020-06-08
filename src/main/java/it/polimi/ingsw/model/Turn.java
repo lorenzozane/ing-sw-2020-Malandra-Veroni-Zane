@@ -158,10 +158,18 @@ public class Turn extends MessageForwarder {
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());
-                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST)
+                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST){
                     updateTurnMessage.setAvailableCards(gameInstance.getDeck().getAvailableCardsToChoseCopy());
-                else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD)
+                }
+                else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD){
                     updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());
+                }
+                else if(nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2){
+                    updateTurnMessage.setBoardCopy(gameInstance.getBoard().clone());
+                }
+
+
+
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
             } else
                 setUpGameTurn();

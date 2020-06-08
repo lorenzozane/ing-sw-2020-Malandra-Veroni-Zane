@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Board implements Cloneable, Serializable {
 
+    private static final long serialVersionUID = 4116564860427433236L;
     private static final int BOARD_DIMENSION = 5;
 
     private Slot[][] gameBoardSlots = new Slot[BOARD_DIMENSION][BOARD_DIMENSION];
