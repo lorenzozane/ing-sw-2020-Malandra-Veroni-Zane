@@ -45,8 +45,19 @@ public class GameManager extends MessageForwarder {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
-        if (move.getMove().getActionType() == Actions.ActionType.UNDO) {
+        if (move.getMove().getActionType() == Actions.ActionType.UNDO || move.getMove() == Actions.UNDO) {
             turn.restoreToLastMovePerformed();
+        }
+        if (move.getMove().getActionType() == Actions.ActionType.SETUP || move.getMove() == Actions.CHOSE_WORKER) {
+            if (move.getTargetSlot().getWorkerInSlot() != null) {
+                if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
+                    turn.setCurrentWorker(move.getTargetSlot().getWorkerInSlot());
+                } else {
+                    move.getRemoteView().errorMessage(Message.choseNotYourWorker);
+                }
+            } else {
+                move.getRemoteView().errorMessage(Message.noWorkerInSlot);
+            }
         }
         if (turn.getCurrentWorker() == null)
             workerToSet = true;

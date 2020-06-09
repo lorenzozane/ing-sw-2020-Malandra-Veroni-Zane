@@ -36,6 +36,6 @@ public final class Message {
     public static String cantBuildADomeMessage = "Error: You cannot build a dome as second build!";
     public static String buildMoveError = "Error: You cannot build in this cell!";
     public static String outOfBoardBorderMessage = "Error: Your opponent's worker cannot be pushed off the board!";
-
-
+    public static String noWorkerInSlot = "Error: In this slot there are no workers!";
+    public static String choseNotYourWorker = "Error: You must chose one of your's workers!";
 }

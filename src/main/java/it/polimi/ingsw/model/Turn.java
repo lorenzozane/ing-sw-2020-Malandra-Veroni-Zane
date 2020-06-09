@@ -317,7 +317,7 @@ public class Turn extends MessageForwarder {
                 turnSequenceMap.put(player, turnSequence);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "Turn.java line 312");
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.setUpTurnSequence");
         }
     }
 
@@ -336,7 +336,8 @@ public class Turn extends MessageForwarder {
             Element godElementMove = (Element) list.item(0);
             list = godElementMove.getChildNodes();
 
-            HashMap<Actions, Integer> moveSequence = new HashMap<>();
+            LinkedHashMap<Actions, Integer> moveSequence = new LinkedHashMap<>();
+            moveSequence.put(Actions.CHOSE_WORKER, 0);
             for (int i = 0; i < list.getLength(); i++) {
                 Node moveNode = list.item(i);
                 if (moveNode.getNodeType() != Node.ELEMENT_NODE && moveNode.getNextSibling() != null) {
@@ -353,7 +354,7 @@ public class Turn extends MessageForwarder {
 
             return new ArrayList<>(moveSequence.keySet());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "Turn.java line 348");
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.loadMoveSequence");
             return null;
         }
     }
@@ -384,7 +385,7 @@ public class Turn extends MessageForwarder {
 
             return winConditions;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "Turn.java line 379");
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.loadWinCondition");
             return null;
         }
     }

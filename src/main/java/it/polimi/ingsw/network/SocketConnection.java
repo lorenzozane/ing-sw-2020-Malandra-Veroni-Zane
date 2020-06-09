@@ -166,18 +166,18 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                     handlePlayerMove((PlayerMove) inputObject);
                 }
                 else
-                    asyncSend(Message.error + " at 161");
+                    asyncSend(Message.error + " Exception thrown from SocketConnection.run");
 
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
             e.printStackTrace();
-            System.err.println("Error! socket line 173" + e.getMessage());
+            System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
         } finally {
             try {
                 server.deregisterConnection(nickname, this);
                 closeConnection();
             } catch (IOException | IllegalAccessException | ParseException e) {
-                System.out.println("Eccezione server line 179");
+                System.out.println("Exception thrown from SocketConnection.run");
                 e.printStackTrace();
             }
         }
@@ -206,7 +206,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                         asyncSend(Message.error + " at 205");
                 }
             } catch (Exception e) {
-                System.out.println("Eccezione server line 208");
+                System.out.println("Exception thrown from SocketConnection.asyncReadFromSocket");
                 System.err.println("Error!" + e.getMessage());
                 this.active = false;
             }

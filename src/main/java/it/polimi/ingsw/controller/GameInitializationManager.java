@@ -73,14 +73,13 @@ public class GameInitializationManager extends MessageForwarder {
         turn.updateTurn();
     }
 
-    //TODO: Completare posizionamento del worker
+    //TODO: Il worker che viene posizionato è un clone? Sistemare
     private void placeWorker(PlayerMoveStartup message, int workerIndex) {
         Position workerPosition = message.getWorkerPosition();
         Board gameBoard = gameInstance.getBoard();
         Slot targetSlot = gameBoard.getSlot(workerPosition);
         if (targetSlot.getWorkerInSlot() == null) {
             message.getPlayerOwner().getWorkers().get(workerIndex - 1).setWorkerSlot(targetSlot);
-//            targetSlot.setWorkerInSlot(message.getPlayerOwner().getWorkers().get(workerIndex));
             turn.updateTurn();
         } else {
             message.getRemoteView().errorMessage(ViewMessage.slotOccupied);
@@ -101,8 +100,6 @@ public class GameInitializationManager extends MessageForwarder {
             placeWorker(message, 1);
         else if (message.getAction() == StartupActions.PLACE_WORKER_2)
             placeWorker(message, 2);
-
-        //TODO: fare update del turno? per inviare un nuovo turn message?
     }
 
     public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {

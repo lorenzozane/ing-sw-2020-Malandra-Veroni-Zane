@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class View extends MessageForwarder {
 
@@ -115,14 +116,32 @@ public class View extends MessageForwarder {
                     moveStartupToSend.setChosenCard(response);
                 } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
                         currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
-                    moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
+                    if (convertStringToPosition(response) != null)
+                        moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
                 }
 
                 sendPlayerMoveStartup(moveStartupToSend);
             } else {
-                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
-                convertStringToPosition(response);
-                sendPlayerMove(playerMoveToSend);
+                Worker workerInSlot = null;
+
+                //TODO: Si può fare diversamente?
+                if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
+                    if (convertStringToPosition(response) != null)
+                        workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
+                        if (workerInSlot != null) {
+                            if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
+                                Worker finalWorkerInSlot = workerInSlot;
+                                workerInSlot = currentMove.getCurrentPlayer().getWorkers().stream().filter(worker -> worker.getIdWorker().equals(finalWorkerInSlot.getIdWorker())).findFirst().orElse(null);
+                                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot);
+                                sendPlayerMove(playerMoveToSend);
+                            }
+                        }
+                }
+
+                if (convertStringToPosition(response) != null) {
+                    PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
+                    sendPlayerMove(playerMoveToSend);
+                }
             }
         } else
             showMessage(Message.wrongTurnMessage);
@@ -142,14 +161,15 @@ public class View extends MessageForwarder {
             return null;
         }
 
-        int coordinateX = coordinates.charAt(0);
-        int coordinateY = coordinates.charAt(1);
-        if (coordinateY >= 49 && coordinateY <= 53)
-            if (coordinateX >= 65 && coordinateX <= 69)
-                return new Position(coordinateX - 65, coordinateY - 49);
-            else if (coordinateX >= 97 && coordinateX <= 101)
-                return new Position(coordinateX - 97, coordinateY - 49);
+        int coordinateX = coordinates.charAt(1);
+        int coordinateY = coordinates.charAt(0);
+        if (coordinateX >= 49 && coordinateX <= 53)
+            if (coordinateY >= 65 && coordinateY <= 69)
+                return new Position(coordinateX - 49, coordinateY - 65);
+            else if (coordinateY >= 97 && coordinateY <= 101)
+                return new Position(coordinateX - 49, coordinateY - 97);
 
+            //TODO: Stampare messaggio fuori da questo medoto ma if(convertStringToPosition(response) == null)
         showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
 
@@ -215,6 +235,14 @@ public class View extends MessageForwarder {
                 currentMove.getCurrentPlayer().getNickname());
     }
 
+    protected PlayerMove createPlayerMove(Position targetSlotPosition, Worker currentWorker) {
+        return new PlayerMove(
+                currentWorker,
+                currentMove.getNextMove(),
+                targetSlotPosition,
+                currentMove.getCurrentPlayer().getNickname());
+    }
+
     protected PlayerMoveStartup createPlayerMoveStartup() {
         return new PlayerMoveStartup(
                 currentMove.getCurrentPlayer(),
@@ -238,14 +266,16 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
                 new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
             } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
-                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2){
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                 refreshView(message.getBoardCopy(), chosenUserInterface);
                 showMessage(ViewMessage.placeWorker);
             }
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
 
-            if (message.getNextMove() == Actions.MOVE_STANDARD)
+            if (message.getNextMove() == Actions.CHOSE_WORKER)
+                showMessage(ViewMessage.choseYourWorker);
+            else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
                 showMessage(ViewMessage.moveNotInitialPosition);
@@ -283,14 +313,15 @@ public class View extends MessageForwarder {
 //            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
 //                showMessage(ViewMessage.pickLastCard);
             else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
-                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2){
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                 refreshView(message.getBoardCopy(), chosenUserInterface);
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
             }
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
-
-            if (message.getNextMove() == Actions.MOVE_STANDARD)
+            if (message.getNextMove() == Actions.CHOSE_WORKER)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.choseYourWorkerOthers);
+            else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);

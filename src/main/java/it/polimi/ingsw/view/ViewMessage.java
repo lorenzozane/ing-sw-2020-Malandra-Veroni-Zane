@@ -16,6 +16,12 @@ public class ViewMessage {
     public static String pickUpCardRequestOthers = " is choosing his card.\n";
     public static String placeWorkerOthers = " is placing his workers.\n";
 
+    //Actions-SETUP-ForMe
+    public static String choseYourWorker = "Chose the worker you want to play with this turn (insert the location of the worker): ";
+
+    //Actions-SETUP-ForOthers
+    public static String choseYourWorkerOthers = " is choosing the worker to play with this turn.\n";
+
     //Actions-MOVE-ForMe
     public static String moveStandard = "Move your selected Worker into one of the neighboring spaces (not containing a Worker or Dome).\n";
     public static String moveNotInitialPosition = "Move your Worker one additional time, but not back to its initial space.\n";

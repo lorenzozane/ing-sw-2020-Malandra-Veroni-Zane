@@ -22,6 +22,7 @@ public class TurnEvents implements Serializable {
      */
     public enum Actions {
         UNDO(ActionType.UNDO),
+        CHOSE_WORKER(ActionType.SETUP),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
         MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
@@ -37,6 +38,7 @@ public class TurnEvents implements Serializable {
 
         public enum ActionType {
             UNDO,
+            SETUP,
             MOVEMENT,
             BUILDING;
         }

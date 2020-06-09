@@ -52,7 +52,7 @@ public class Server {
                         try {
                             Thread.sleep(250);
                         } catch (InterruptedException e) {
-                            System.out.println("Eccezione server line 55");
+                            System.out.println("Exception thrown from Server.deregisterConnection");
                             e.printStackTrace();
                         }
                         playingConnection.get(otherPlayer.getNickname()).closeConnection();
@@ -92,16 +92,14 @@ public class Server {
                 SocketConnection socketConnection = new SocketConnection(newSocket, this);
                 executor.submit(socketConnection);
             } catch (IOException e) {
-                System.out.println("Connection Error! server line 95");
+                System.out.println("Connection Error! Exception thrown from Server.run");
             }
         }
     }
 
-
     public ArrayList<String> getNicknameDatabase() {
         return nicknameDatabase;
     }
-
 
     public void addNickname(String nickname) {
         this.nicknameDatabase.add(nickname);
@@ -111,10 +109,9 @@ public class Server {
         this.nPlayer = nPlayer;
     }
 
-    protected int getnPlayer(){
+    protected int getNPlayer(){
         return nPlayer;
     }
-
 
     public Map<String, SocketConnection> getWaitingConnection() {
         return waitingConnection;
@@ -123,7 +120,6 @@ public class Server {
     public String getCurrentCreator(){
         return currentCreator;
     }
-
 
     /**
      * Check if the input string about number of player is legal
@@ -134,7 +130,6 @@ public class Server {
     public boolean noPlayerChecker(String s) {
         return s.equals("2") || s.equals("3");
     }
-
 
     public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.put(nickname, c);
@@ -155,13 +150,12 @@ public class Server {
                     try {
                         gameLobby();
                     } catch (Exception e) {
-                        System.out.println("Eccezione server line 158");
+                        System.out.println("Exception thrown from Server.lobby");
                         e.printStackTrace();
                     }
                 }).start();
         }
     }
-
 
     public void gameLobby() throws IllegalAccessException, IOException, ParseException {
         Game gameInstance = new Game();
@@ -185,7 +179,6 @@ public class Server {
         checkNewCreator();
     }
 
-
     private synchronized void checkNewCreator() throws IOException, IllegalAccessException, ParseException {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
@@ -197,7 +190,6 @@ public class Server {
             creatorSetup(waitingConnection.get(currentCreator));
         }
     }
-
 
     private void creatorSetup(SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         c.asyncSend(Message.chooseNoPlayer);
@@ -220,7 +212,7 @@ public class Server {
             }
         }
         catch (ClassNotFoundException e){
-            System.out.println("Eccezione server line 223");
+            System.out.println("Exception thrown from Server.creatorSetup");
             e.printStackTrace();
         }
 
@@ -231,13 +223,12 @@ public class Server {
                 try {
                     gameLobby();
                 } catch (Exception e) {
-                    System.out.println("Eccezione server line 234");
+                    System.out.println("Exception thrown from Server.creatorSetup");
                     e.printStackTrace();
                 }
             }).start();
 
     }
-
 
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
         GameManager gameManager = new GameManager(gameInstance);
@@ -258,13 +249,10 @@ public class Server {
             try {
                 gameInstance.addPlayer(usersReadyCopy.get(i));
             } catch (IllegalAccessException e) {
-                System.out.println("Eccezione server line 261");
+                System.out.println("Exception thrown from Server.gameSettings");
                 e.printStackTrace();
             }
         }
-
-
-
     }
 
 }
