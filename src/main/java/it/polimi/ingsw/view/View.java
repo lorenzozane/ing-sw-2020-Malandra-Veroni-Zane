@@ -132,13 +132,12 @@ public class View extends MessageForwarder {
                             if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
                                 Worker finalWorkerInSlot = workerInSlot;
                                 workerInSlot = currentMove.getCurrentPlayer().getWorkers().stream().filter(worker -> worker.getIdWorker().equals(finalWorkerInSlot.getIdWorker())).findFirst().orElse(null);
-                                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot);
+                                assert workerInSlot != null;
+                                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot.getIdWorker());
                                 sendPlayerMove(playerMoveToSend);
                             }
                         }
-                }
-
-                if (convertStringToPosition(response) != null) {
+                } else if (convertStringToPosition(response) != null) {
                     PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
                     sendPlayerMove(playerMoveToSend);
                 }
@@ -172,17 +171,6 @@ public class View extends MessageForwarder {
             //TODO: Stampare messaggio fuori da questo medoto ma if(convertStringToPosition(response) == null)
         showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
-
-//        int x = -1, y = -1;
-//        for (int i = 0; i < 5; i++) {
-//            if ((int) coordinates.charAt(0) == (i+65)) {
-//                x=i;
-//            }
-//            if ((int) coordinates.charAt(1) == (i+1)) {
-//                y=i;
-//            }
-//        }
-//        return new Slot(new Position(x, y));
     }
 
     private PlayerColor convertStringToPlayerColor(String playerColor) {
@@ -229,13 +217,13 @@ public class View extends MessageForwarder {
 
     protected PlayerMove createPlayerMove(Position targetSlotPosition) {
         return new PlayerMove(
-                currentMove.getCurrentWorker(),
+                currentMove.getCurrentWorker().getIdWorker(),
                 currentMove.getNextMove(),
                 targetSlotPosition,
                 currentMove.getCurrentPlayer().getNickname());
     }
 
-    protected PlayerMove createPlayerMove(Position targetSlotPosition, Worker currentWorker) {
+    protected PlayerMove createPlayerMove(Position targetSlotPosition, String currentWorker) {
         return new PlayerMove(
                 currentWorker,
                 currentMove.getNextMove(),
@@ -244,9 +232,7 @@ public class View extends MessageForwarder {
     }
 
     protected PlayerMoveStartup createPlayerMoveStartup() {
-        return new PlayerMoveStartup(
-                currentMove.getCurrentPlayer(),
-                currentMove.getNextStartupMove());
+        return new PlayerMoveStartup(currentMove.getNextStartupMove());
 
         //TODO: Logica set proprietà
     }

@@ -211,7 +211,7 @@ public class Turn extends MessageForwarder {
         }
 
         resetCurrentWorker();
-        movesPerformed.clear();
+            movesPerformed.clear();
         currentMoveIndex = 0;
     }
 

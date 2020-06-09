@@ -88,6 +88,8 @@ public class GameInitializationManager extends MessageForwarder {
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
+        message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));
+
         if (message.getAction() == StartupActions.COLOR_REQUEST ||
                 message.getAction() == StartupActions.PICK_LAST_COLOR)
             setPlayerColor(message);

@@ -10,21 +10,24 @@ public class PlayerMove implements Serializable {
     private static final long serialVersionUID = -7736062440222355391L;
     private final String currentPlayer;
     private RemoteView remoteView;
-    private final Player playerOwner;
-    private final Worker movedWorker;
     private final Actions move;
-    private final Position startingPosition;
+    private Position startingPosition;
     private final Position targetPosition;
     private Slot startingSlot;
     private Slot targetSlot;
+    private final String movedWorkerId;
+    private Worker movedWorker;
+    private String playerOwnerNickname;
+    private Player playerOwner;
     private boolean forcedMove = false;
 
-    public PlayerMove(Worker worker, Actions move, Position targetPosition, String currentPlayer) {
+    public PlayerMove(String workerId, Actions move, Position targetPosition, String currentPlayer) {
         this.currentPlayer = currentPlayer;
-        this.movedWorker = worker;
-        this.playerOwner = worker.getPlayerOwner();
+        this.movedWorkerId = workerId;
+//        this.movedWorker = worker;
+//        this.playerOwner = worker.getPlayerOwner();
         this.move = move;
-        this.startingPosition = worker.getWorkerPosition();
+//        this.startingPosition = worker.getWorkerPosition();
         this.targetPosition = targetPosition;
     }
 
@@ -37,8 +40,33 @@ public class PlayerMove implements Serializable {
         return remoteView;
     }
 
+    public void setMovedWorker(Worker movedWorker) {
+        if (this.movedWorker == null) {
+            this.movedWorker = movedWorker;
+            setStartingSlot(movedWorker.getWorkerSlot());
+        }
+    }
+
     public Worker getMovedWorker() {
         return movedWorker;
+    }
+
+    public String getMovedWorkerId() {
+        return movedWorkerId;
+    }
+
+    public void setPlayerOwnerNickname(String playerOwnerNickname) {
+        if (this.playerOwnerNickname == null)
+            this.playerOwnerNickname = playerOwnerNickname;
+    }
+
+    public String getPlayerOwnerNickname() {
+        return playerOwnerNickname;
+    }
+
+    public void setPlayerOwner(Player playerOwner) {
+        if (this.playerOwner == null)
+            this.playerOwner = playerOwner;
     }
 
     public Player getPlayerOwner() {
@@ -50,8 +78,10 @@ public class PlayerMove implements Serializable {
     }
 
     public void setStartingSlot(Slot startingSlot) {
-        if (this.startingSlot == null)
+        if (this.startingSlot == null) {
             this.startingSlot = startingSlot;
+            this.startingPosition = this.startingSlot.getSlotPosition();
+        }
     }
 
     public void setTargetSlot(Slot targetSlot) {

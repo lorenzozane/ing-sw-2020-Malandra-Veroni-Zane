@@ -75,6 +75,20 @@ public class Game {
         return this.playerList;
     }
 
+    public Player getPlayerByName(String playerNickname) {
+        return playerList.stream().filter(player -> player.getNickname().equalsIgnoreCase(playerNickname)).findFirst().orElse(null);
+    }
+
+    public Worker getWorkerByName(String workerId) {
+        Worker workerFounded = null;
+        for (Player player : playerList) {
+            workerFounded = player.getWorkers().stream().filter(worker -> worker.getIdWorker().equalsIgnoreCase(workerId)).findFirst().orElse(null);
+            if (workerFounded != null)
+                return workerFounded;
+        }
+
+        return null;
+    }
 }
 
 

@@ -72,7 +72,7 @@ public class GameManager extends MessageForwarder {
                     if (move.getTargetSlot().getWorkerInSlot() != null) {
                         PlayerMove opponentMove = null;
                         if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),
                                     Actions.MOVE_STANDARD,
                                     move.getStartingSlot().getSlotPosition(),
                                     turn.getCurrentPlayer().getNickname());
@@ -83,7 +83,7 @@ public class GameManager extends MessageForwarder {
                                 move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
                                 return;
                             }
-                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
+                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),
                                     Actions.MOVE_STANDARD,
                                     backwardsSlotPosition,
                                     turn.getCurrentPlayer().getNickname());
@@ -96,7 +96,7 @@ public class GameManager extends MessageForwarder {
                         //Temporary movement of player's worker in a "TempSlot"
                         //TODO: Verificare che l'UNDO funzioni correttamente
                         if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                            PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
+                            PlayerMove tempMove = new PlayerMove(move.getMovedWorker().getIdWorker(),
                                     Actions.MOVE_STANDARD,
                                     new Position(-1, -1),
                                     turn.getCurrentPlayer().getNickname());
@@ -233,7 +233,9 @@ public class GameManager extends MessageForwarder {
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
-        message.setStartingSlot(gameInstance.getBoard().getSlot(message.getStartingPosition()));
+        message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));
+        message.setMovedWorker(gameInstance.getWorkerByName(message.getMovedWorkerId()));
+//        message.setStartingSlot(gameInstance.getBoard().getSlot(message.getStartingPosition()));
         message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));
         handleMove(message);
     }

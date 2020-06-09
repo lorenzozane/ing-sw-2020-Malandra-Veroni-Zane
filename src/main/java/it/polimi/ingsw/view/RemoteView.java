@@ -43,12 +43,14 @@ public class RemoteView extends MessageForwarder {
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         message.setRemoteView(this);
+        message.setPlayerOwnerNickname(playerOwner);
         playerMoveSender.notifyAll(message);
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         message.setRemoteView(this);
+        message.setPlayerOwnerNickname(playerOwner);
         playerMoveStartupSender.notifyAll(message);
     }
 
