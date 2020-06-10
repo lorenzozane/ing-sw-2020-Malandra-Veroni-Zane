@@ -45,13 +45,15 @@ public class GameManager extends MessageForwarder {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
-        if (move.getMove().getActionType() == Actions.ActionType.UNDO || move.getMove() == Actions.UNDO) {
+        if (move.getMove().getActionType() == Actions.ActionType.UNDO && move.getMove() == Actions.UNDO) {
             turn.restoreToLastMovePerformed();
         }
-        if (move.getMove().getActionType() == Actions.ActionType.SETUP || move.getMove() == Actions.CHOSE_WORKER) {
+        if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER/* &&
+                turn.getCurrentWorker() == null*/) {
             if (move.getTargetSlot().getWorkerInSlot() != null) {
                 if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
-                    turn.setCurrentWorker(move.getTargetSlot().getWorkerInSlot());
+                    setCurrentWorker(move);
+//                    turn.setCurrentWorker(move.getTargetSlot().getWorkerInSlot());
                 } else {
                     move.getRemoteView().errorMessage(Message.choseNotYourWorker);
                 }
@@ -59,12 +61,13 @@ public class GameManager extends MessageForwarder {
                 move.getRemoteView().errorMessage(Message.noWorkerInSlot);
             }
         }
-        if (turn.getCurrentWorker() == null)
-            workerToSet = true;
-        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
-            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
-            return;
-        }
+        //TODO: Modificare
+//        if (turn.getCurrentWorker() == null)
+//            workerToSet = true;
+//        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
+//            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
+//            return;
+//        }
         if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
@@ -167,8 +170,8 @@ public class GameManager extends MessageForwarder {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
         if (!move.getForcedMove()) {
-            if (workerToSet)
-                setCurrentWorker(move);
+//            if (workerToSet)
+//                setCurrentWorker(move);
             checkWinConditions(move);
             turn.updateTurn();
         }
@@ -182,8 +185,8 @@ public class GameManager extends MessageForwarder {
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
-        if (workerToSet)
-            setCurrentWorker(move);
+//        if (workerToSet)
+//            setCurrentWorker(move);
         turn.updateTurn();
     }
 
@@ -195,8 +198,8 @@ public class GameManager extends MessageForwarder {
     protected void performBuildingDome(PlayerMove move) {
         move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
         turn.addLastMovePerformed(move);
-        if (workerToSet)
-            setCurrentWorker(move);
+//        if (workerToSet)
+//            setCurrentWorker(move);
         turn.updateTurn();
     }
 
@@ -206,8 +209,10 @@ public class GameManager extends MessageForwarder {
      * @param move The player move containing the information about the worker to set as current worker
      */
     protected void setCurrentWorker(PlayerMove move) {
-        if (workerToSet && !move.getForcedMove() && turn.getCurrentWorker() == null)
-            turn.setCurrentWorker(move.getMovedWorker());
+//        if (!move.getForcedMove() && turn.getCurrentWorker() == null) {
+        turn.setCurrentWorker(move.getMovedWorker());
+        turn.updateTurn();
+//        }
     }
 
     /**
