@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.EnumSet;
 
 
-public class Building {
+public class Building implements Serializable {
 
     public enum BuildingProperty {
         CAN_BUILD_ON_IT,

@@ -71,7 +71,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      * Close the socketConnection
      */
     public synchronized void closeConnection() {
-        send("Connection closed! by server line 74");
+        send("Connection closed! socketConnection.closeconnection");
         try {
             socket.close();
         } catch (IOException e) {

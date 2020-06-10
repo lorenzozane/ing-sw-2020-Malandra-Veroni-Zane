@@ -165,7 +165,7 @@ public class Turn extends MessageForwarder {
                     updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());
                 }
                 else if(nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2){
-                    updateTurnMessage.setBoardCopy(gameInstance.getBoard().clone());
+                    updateTurnMessage.setBoardCopy(gameInstance.getBoard());
                 }
 
 
@@ -191,7 +191,8 @@ public class Turn extends MessageForwarder {
             if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
                 Actions nextMove = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
                 currentMoveIndex++;
-                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker));
+                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker);
+                updateTurnMessageSender.notifyAll(updateTurnMessage);
             }
         }
     }
@@ -211,7 +212,7 @@ public class Turn extends MessageForwarder {
         }
 
         resetCurrentWorker();
-            movesPerformed.clear();
+        movesPerformed.clear();
         currentMoveIndex = 0;
     }
 

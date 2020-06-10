@@ -13,6 +13,7 @@ public class Cli {
     protected Player playerOwner;
     protected View viewOwner = null;
     private static final int SLOT_HEIGHT = 6;
+    private Scanner scanner = new Scanner(System.in);
 
     public void setViewOwner(View viewOwner) {
         if (this.viewOwner == null)
@@ -189,7 +190,7 @@ public class Cli {
     }
 
     private void asyncReadResponse() {
-        Scanner scanner = new Scanner(System.in);
+        //this.scanner = new Scanner(System.in);
         Thread asyncReadResponse = new Thread(() -> {
             while (true) { //TODO: Modificare con isActive()?
                 String input = scanner.nextLine();
@@ -207,7 +208,7 @@ public class Cli {
     }
 
     private void readResponse() {
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         viewOwner.handleResponse(input);
     }

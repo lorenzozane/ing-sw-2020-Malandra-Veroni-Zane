@@ -126,7 +126,7 @@ public class View extends MessageForwarder {
 
                 //TODO: Si può fare diversamente?
                 if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
-                    if (convertStringToPosition(response) != null)
+                    if (convertStringToPosition(response) != null) {
                         workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
                         if (workerInSlot != null) {
                             if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
@@ -137,6 +137,7 @@ public class View extends MessageForwarder {
                                 sendPlayerMove(playerMoveToSend);
                             }
                         }
+                    }
                 } else if (convertStringToPosition(response) != null) {
                     PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
                     sendPlayerMove(playerMoveToSend);
@@ -269,7 +270,7 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.moveOpponentSlotFlip);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
                 showMessage(ViewMessage.moveOpponentSlotPush);
-            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
+            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP) //TODO: se ho atena questo messaggio non devve essere stampatp a me
                 showMessage(ViewMessage.moveDisableOpponentUp);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
                 showMessage(ViewMessage.buildStandard);
