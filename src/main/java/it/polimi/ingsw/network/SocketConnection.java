@@ -156,7 +156,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             asyncSend(Message.gameLoading);
 
             while(isActive()){
-                inputObject= in.readObject();
+                inputObject = in.readObject();
 
                 if(inputObject instanceof PlayerMoveStartup){
                     handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
