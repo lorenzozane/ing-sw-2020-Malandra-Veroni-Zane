@@ -130,14 +130,18 @@ public class View extends MessageForwarder {
                     if (currentMove.getNextMove() != Actions.CHOSE_WORKER) {
                         PlayerMove playerMoveToSend = createPlayerMoveUndo();
                         sendPlayerMove(playerMoveToSend);
-                    } else
-                       showErrorMessage(ViewMessage.cannotUndo);
+                    } else {
+                        showErrorMessage(ViewMessage.cannotUndo);
+                        return;
+                    }
                 } else if (response.equalsIgnoreCase("skip")) {
                     if (currentMove.getNextMove() == Actions.BUILD_BEFORE) {
                         PlayerMove playerMoveToSend = createPlayerMoveSkip();
                         sendPlayerMove(playerMoveToSend);
-                    } else
+                    } else {
                         showErrorMessage(ViewMessage.cannotSkipThisMove);
+                        return;
+                    }
                 } else {
                     Worker workerInSlot;
 
@@ -154,7 +158,13 @@ public class View extends MessageForwarder {
                                     assert workerInSlot != null;
                                     PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot.getIdWorker());
                                     sendPlayerMove(playerMoveToSend);
+                                } else {
+                                    showErrorMessage(ViewMessage.choseNotYourWorker);
+                                    return;
                                 }
+                            } else {
+                                showErrorMessage(ViewMessage.noWorkerInSlot);
+                                return;
                             }
                         } else {
                             PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
@@ -163,8 +173,10 @@ public class View extends MessageForwarder {
                     }
                 }
             }
-        } else
+        } else {
             showMessage(ViewMessage.wrongTurnMessage);
+            return;
+        }
     }
 
     private void sendPlayerMove(PlayerMove playerMove) {

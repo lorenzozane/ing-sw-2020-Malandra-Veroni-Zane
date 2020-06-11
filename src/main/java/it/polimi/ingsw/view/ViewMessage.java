@@ -60,5 +60,6 @@ public class ViewMessage {
     public static String cardAlreadyChoose = "Error: You have already chose these card.\n";
     public static String cannotUndo = "Error: You have not move to UNDO!\n";
     public static String cannotSkipThisMove = "Error: You can't skip this move!\n";
-
+    public static String noWorkerInSlot = "Error: In this slot there are no workers!\n";
+    public static String choseNotYourWorker = "Error: You must chose one of your's workers!\n";
 }

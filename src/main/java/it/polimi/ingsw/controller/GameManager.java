@@ -48,15 +48,19 @@ public class GameManager extends MessageForwarder {
             if (move.getMove() == Actions.UNDO)
                 if (turn.areThereMovesToUndo())
                     turn.restoreToLastMovePerformed();
-                else
+                else {
                     move.getRemoteView().errorMessage(Message.cannotUndo);
+                    return;
+                }
             else if (move.getMove() == Actions.SKIP)
                 if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
                     turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
                     turn.updateTurn();
                 }
-                else
+                else {
                     move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
+                    return;
+                }
         }
         else if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
             if (move.getTargetSlot().getWorkerInSlot() != null) {
@@ -64,9 +68,11 @@ public class GameManager extends MessageForwarder {
                     setCurrentWorker(move);
                 } else {
                     move.getRemoteView().errorMessage(Message.choseNotYourWorker);
+                    return;
                 }
             } else {
                 move.getRemoteView().errorMessage(Message.noWorkerInSlot);
+                return;
             }
         }
 //        if (turn.getCurrentWorker() == null)
