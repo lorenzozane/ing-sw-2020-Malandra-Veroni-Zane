@@ -240,11 +240,17 @@ public class Turn extends MessageForwarder {
                     moveToRestore.getTargetSlot().destroyTopBuilding();
                 }
 
+                if (moveToRestore.getMove() == Actions.BUILD_BEFORE) {
+                    turnSequenceMap.get(moveToRestore.getPlayerOwner()).setCanMoveUp(true);
+                } else if (moveToRestore.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
+                    setOtherPlayerCanMoveUpTo(true);
+                }
                 movesPerformed.removeLast();
-                if (currentMoveIndex > 0)
-                    currentMoveIndex--;
             }
-            while (!movesPerformed.isEmpty() && !movesPerformed.getLast().getForcedMove());
+            while (!movesPerformed.isEmpty() && movesPerformed.getLast().getForcedMove());
+
+            if (currentMoveIndex > 0)
+                currentMoveIndex = currentMoveIndex - 2;
 
             updateTurn();
         } else

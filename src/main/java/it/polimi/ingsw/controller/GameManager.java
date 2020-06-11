@@ -46,7 +46,7 @@ public class GameManager extends MessageForwarder {
         }
         if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
             if (move.getMove() == Actions.UNDO)
-                if (move.getMove() == Actions.UNDO)
+                if (turn.areThereMovesToUndo())
                     turn.restoreToLastMovePerformed();
                 else
                     move.getRemoteView().errorMessage(Message.cannotUndo);
@@ -58,7 +58,7 @@ public class GameManager extends MessageForwarder {
                 else
                     move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
         }
-        if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
+        else if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
             if (move.getTargetSlot().getWorkerInSlot() != null) {
                 if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
                     setCurrentWorker(move);
@@ -75,7 +75,7 @@ public class GameManager extends MessageForwarder {
 //            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
 //            return;
 //        }
-        if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+        else if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
@@ -106,8 +106,6 @@ public class GameManager extends MessageForwarder {
                             opponentMove.setForcedMove(move.getPlayerOwner());
 
                             //Temporary movement of player's worker in a "TempSlot"
-                            //TODO: Verificare che l'UNDO funzioni correttamente
-                            //TODO: Cambiare chi va in (-1, -1) per poter verificare winConditions (?)
                             if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
                                 PlayerMove tempMove = new PlayerMove(move.getMovedWorker().getIdWorker(),
                                         Actions.MOVE_STANDARD,
@@ -116,7 +114,6 @@ public class GameManager extends MessageForwarder {
                                 tempMove.setTargetSlot(new Slot(tempMove.getTargetPosition()));
                                 tempMove.setMovedWorker(gameInstance.getWorkerByName(tempMove.getMovedWorkerId()));
                                 tempMove.setForcedMove(move.getPlayerOwner());
-//                                tempMove.setPlayerOwner(tempMove.getMovedWorker().getPlayerOwner());
                                 performMove(tempMove);
                             }
 
@@ -224,6 +221,7 @@ public class GameManager extends MessageForwarder {
     protected void setCurrentWorker(PlayerMove move) {
 //        if (!move.getForcedMove() && turn.getCurrentWorker() == null) {
         turn.setCurrentWorker(move.getMovedWorker());
+        turn.addLastMovePerformed(move);
         turn.updateTurn();
 //        }
     }
