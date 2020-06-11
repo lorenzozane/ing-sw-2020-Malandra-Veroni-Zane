@@ -27,7 +27,7 @@ public final class Message {
     public static String wrongTurnMessage = "Error: It's not your turn. Wait your turn to make a move!";
     public static String wrongWorkerMessage = "Error: You must use the same worker during the entire turn!";
     public static String moveNotAllowed = "Error: This move is not allowed!";
-    public static String occupiedCellMessage = "Error: The chosen cell is occupied by another player!";
+    public static String occupiedCellMessage = "Error: The chosen cell is occupied!";
     public static String domeOccupiedCellMessage = "Error: The chosen cell is occupied by a dome!";
     public static String tooHighMoveMessage = "Error: You cannot go that high! Lay low.";
     public static String notInitialPositionMessage = "Error: You cannot go back to your starting slot!";
@@ -38,4 +38,5 @@ public final class Message {
     public static String outOfBoardBorderMessage = "Error: Your opponent's worker cannot be pushed off the board!";
     public static String noWorkerInSlot = "Error: In this slot there are no workers!";
     public static String choseNotYourWorker = "Error: You must chose one of your's workers!";
+    public static String mustBeOpponentWorker = "Error: You can only move in an opponent worker's slot (or an empty one)!";
 }

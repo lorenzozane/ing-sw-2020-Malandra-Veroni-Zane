@@ -146,8 +146,6 @@ public class Turn extends MessageForwarder {
             updateTurnInGame();
     }
 
-    //TODO: Vogliamo mettere la lastMovePerformedBy anche nella fase di starup?
-
     /**
      * Update the turn to the next move to be performed in the startup phase of the game
      */

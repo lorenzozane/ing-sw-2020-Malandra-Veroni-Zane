@@ -86,7 +86,7 @@ public class Client extends MessageForwarder {
 
                 }
             } catch (Exception e) {
-                System.out.println("eccezione Client line 89");
+                System.out.println("Exception thrown from Client.asyncReadFromSocket");
                 setActive(false);
             }
         });
@@ -134,7 +134,7 @@ public class Client extends MessageForwarder {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
-            System.out.println("eccezzione client line 137");
+            System.out.println("Exception thrown from Client.send");
             System.err.println(e.getMessage());
         }
 
@@ -154,9 +154,9 @@ public class Client extends MessageForwarder {
 
             while (isActive()) ;
         } catch (Exception e) {
-            System.out.println("Connection closed by client line 157" + e.getMessage());
+            System.out.println("Connection closed from Client.run: " + e.getMessage());
         } finally {
-            System.out.println("Connection closed Client line 159");
+            System.out.println("Client.run: Connection closed");
             closeConnection();
         }
     }
@@ -165,7 +165,7 @@ public class Client extends MessageForwarder {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error when closing socket! client line 168");
+            System.err.println("Client.closeConnection: Error during socket closure");
         }
         active = false;
     }

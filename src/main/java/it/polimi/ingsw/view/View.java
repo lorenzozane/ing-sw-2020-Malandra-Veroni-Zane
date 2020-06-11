@@ -118,15 +118,21 @@ public class View extends MessageForwarder {
                         currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                     if (convertStringToPosition(response) != null)
                         moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
+                    else {
+                        showErrorMessage(ViewMessage.wrongInputCoordinates);
+                        return;
+                    }
                 }
 
                 sendPlayerMoveStartup(moveStartupToSend);
             } else {
-                Worker workerInSlot = null;
+                Worker workerInSlot;
 
                 //TODO: Si può fare diversamente?
-                if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
-                    if (convertStringToPosition(response) != null) {
+                if (convertStringToPosition(response) == null) {
+                    showErrorMessage(ViewMessage.wrongInputCoordinates);
+                } else {
+                    if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
                         workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
                         if (workerInSlot != null) {
                             if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
@@ -137,10 +143,10 @@ public class View extends MessageForwarder {
                                 sendPlayerMove(playerMoveToSend);
                             }
                         }
+                    } else {
+                        PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
+                        sendPlayerMove(playerMoveToSend);
                     }
-                } else if (convertStringToPosition(response) != null) {
-                    PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
-                    sendPlayerMove(playerMoveToSend);
                 }
             }
         } else
@@ -169,8 +175,6 @@ public class View extends MessageForwarder {
             else if (coordinateY >= 97 && coordinateY <= 101)
                 return new Position(coordinateX - 49, coordinateY - 97);
 
-            //TODO: Stampare messaggio fuori da questo medoto ma if(convertStringToPosition(response) == null)
-        showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
     }
 
