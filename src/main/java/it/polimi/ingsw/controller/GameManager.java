@@ -44,8 +44,19 @@ public class GameManager extends MessageForwarder {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
-        if (move.getMove().getActionType() == Actions.ActionType.UNDO && move.getMove() == Actions.UNDO) {
-            turn.restoreToLastMovePerformed();
+        if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
+            if (move.getMove() == Actions.UNDO)
+                if (move.getMove() == Actions.UNDO)
+                    turn.restoreToLastMovePerformed();
+                else
+                    move.getRemoteView().errorMessage(Message.cannotUndo);
+            else if (move.getMove() == Actions.SKIP)
+                if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
+                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
+                    turn.updateTurn();
+                }
+                else
+                    move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
         }
         if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
             if (move.getTargetSlot().getWorkerInSlot() != null) {
@@ -91,17 +102,21 @@ public class GameManager extends MessageForwarder {
                             }
 
                             assert opponentMove != null;
+                            opponentMove.setMovedWorker(gameInstance.getWorkerByName(opponentMove.getMovedWorkerId()));
                             opponentMove.setForcedMove(move.getPlayerOwner());
 
                             //Temporary movement of player's worker in a "TempSlot"
                             //TODO: Verificare che l'UNDO funzioni correttamente
-                            //TODO: Correggere completamente (cambiare chi va in (-1, -1) per poter verificare winConditions (?))
+                            //TODO: Cambiare chi va in (-1, -1) per poter verificare winConditions (?)
                             if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
                                 PlayerMove tempMove = new PlayerMove(move.getMovedWorker().getIdWorker(),
                                         Actions.MOVE_STANDARD,
                                         new Position(-1, -1),
                                         turn.getCurrentPlayer().getNickname());
                                 tempMove.setTargetSlot(new Slot(tempMove.getTargetPosition()));
+                                tempMove.setMovedWorker(gameInstance.getWorkerByName(tempMove.getMovedWorkerId()));
+                                tempMove.setForcedMove(move.getPlayerOwner());
+//                                tempMove.setPlayerOwner(tempMove.getMovedWorker().getPlayerOwner());
                                 performMove(tempMove);
                             }
 
@@ -136,6 +151,8 @@ public class GameManager extends MessageForwarder {
                 if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {
                     performBuildingDome(move);
                     return;
+                } else if (move.getMove() == Actions.BUILD_BEFORE) {
+                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(false);
                 }
 
                 performBuilding(move);

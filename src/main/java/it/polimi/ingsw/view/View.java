@@ -126,31 +126,45 @@ public class View extends MessageForwarder {
 
                 sendPlayerMoveStartup(moveStartupToSend);
             } else {
-                Worker workerInSlot;
-
-                //TODO: Si può fare diversamente?
-                if (convertStringToPosition(response) == null) {
-                    showErrorMessage(ViewMessage.wrongInputCoordinates);
-                } else {
-                    if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
-                        workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
-                        if (workerInSlot != null) {
-                            if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
-                                Worker finalWorkerInSlot = workerInSlot;
-                                workerInSlot = currentMove.getCurrentPlayer().getWorkers().stream().filter(worker -> worker.getIdWorker().equals(finalWorkerInSlot.getIdWorker())).findFirst().orElse(null);
-                                assert workerInSlot != null;
-                                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot.getIdWorker());
-                                sendPlayerMove(playerMoveToSend);
-                            }
-                        }
-                    } else {
-                        PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
+                if (response.equalsIgnoreCase("undo")) {
+                    if (currentMove.getNextMove() != Actions.CHOSE_WORKER) {
+                        PlayerMove playerMoveToSend = createPlayerMoveUndo();
                         sendPlayerMove(playerMoveToSend);
+                    } else
+                       showErrorMessage(ViewMessage.cannotUndo);
+                } else if (response.equalsIgnoreCase("skip")) {
+                    if (currentMove.getNextMove() == Actions.BUILD_BEFORE) {
+                        PlayerMove playerMoveToSend = createPlayerMoveSkip();
+                        sendPlayerMove(playerMoveToSend);
+                    } else
+                        showErrorMessage(ViewMessage.cannotSkipThisMove);
+                } else {
+                    Worker workerInSlot;
+
+                    //TODO: Si può fare diversamente?
+                    if (convertStringToPosition(response) == null) {
+                        showErrorMessage(ViewMessage.wrongInputCoordinates);
+                    } else {
+                        if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
+                            workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
+                            if (workerInSlot != null) {
+                                if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
+                                    Worker finalWorkerInSlot = workerInSlot;
+                                    workerInSlot = currentMove.getCurrentPlayer().getWorkers().stream().filter(worker -> worker.getIdWorker().equals(finalWorkerInSlot.getIdWorker())).findFirst().orElse(null);
+                                    assert workerInSlot != null;
+                                    PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot.getIdWorker());
+                                    sendPlayerMove(playerMoveToSend);
+                                }
+                            }
+                        } else {
+                            PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
+                            sendPlayerMove(playerMoveToSend);
+                        }
                     }
                 }
             }
         } else
-            showMessage(Message.wrongTurnMessage);
+            showMessage(ViewMessage.wrongTurnMessage);
     }
 
     private void sendPlayerMove(PlayerMove playerMove) {
@@ -234,6 +248,24 @@ public class View extends MessageForwarder {
                 currentMove.getNextMove(),
                 targetSlotPosition,
                 currentMove.getCurrentPlayer().getNickname());
+    }
+
+    protected PlayerMove createPlayerMoveUndo() {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.UNDO,
+                currentMove.getCurrentWorker().getWorkerPosition(),
+                currentMove.getCurrentPlayer().getNickname()
+                );
+    }
+
+    protected PlayerMove createPlayerMoveSkip() {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.SKIP,
+                currentMove.getCurrentWorker().getWorkerPosition(),
+                currentMove.getCurrentPlayer().getNickname()
+        );
     }
 
     protected PlayerMoveStartup createPlayerMoveStartup() {

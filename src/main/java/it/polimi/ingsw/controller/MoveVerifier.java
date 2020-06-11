@@ -98,18 +98,20 @@ public final class MoveVerifier {
                     gameManager.setErrorMessage(Message.notInitialPositionMessage);
                     return false;
                 }
+            }
 //            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
 //                    move.getMove() == Actions.MOVE_STANDARD) { TODO: Test
-            } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &&
-                    move.getMove() == Actions.MOVE_STANDARD) {
-                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
-                        .reduce((first, second) -> second).orElse(null);
-                if (initialMove != null)
-                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0) {
-                        gameManager.setErrorMessage(Message.tooHighMoveMessage);
-                        return false;
-                    }
-            }
+//
+//            } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &&
+//                    move.getMove() == Actions.MOVE_STANDARD) {
+//                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove() == Actions.BUILD_BEFORE)
+//                        .reduce((first, second) -> second).orElse(null);
+//                if (initialMove != null)
+//                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) > 0) {
+//                        gameManager.setErrorMessage(Message.tooHighMoveMessage);
+//                        return false;
+//                    }
+//            }
         }
 
         return true;

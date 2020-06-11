@@ -21,7 +21,8 @@ public class TurnEvents implements Serializable {
      * Set of possible actions that the player can perform (depending on which God owns)
      */
     public enum Actions {
-        UNDO(ActionType.UNDO),
+        UNDO(ActionType.COMMAND),
+        SKIP(ActionType.COMMAND),
         CHOSE_WORKER(ActionType.SETUP),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
@@ -37,7 +38,7 @@ public class TurnEvents implements Serializable {
         BUILD_DOME_ANY_LEVEL(ActionType.BUILDING);
 
         public enum ActionType {
-            UNDO,
+            COMMAND,
             SETUP,
             MOVEMENT,
             BUILDING;

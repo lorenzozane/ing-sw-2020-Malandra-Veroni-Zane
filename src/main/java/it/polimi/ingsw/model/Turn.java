@@ -47,6 +47,10 @@ public class Turn extends MessageForwarder {
         return player.equals(currentPlayer);
     }
 
+    public int getCurrentMoveIndex() {
+        return currentMoveIndex;
+    }
+
     public ArrayList<Worker> getCurrentPlayerWorkers() {
         return currentPlayer.getWorkers();
     }
@@ -156,16 +160,13 @@ public class Turn extends MessageForwarder {
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());
-                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST){
+                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST) {
                     updateTurnMessage.setAvailableCards(gameInstance.getDeck().getAvailableCardsToChoseCopy());
-                }
-                else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD){
+                } else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD) {
                     updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());
-                }
-                else if(nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2){
+                } else if (nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2) {
                     updateTurnMessage.setBoardCopy(gameInstance.getBoard());
                 }
-
 
 
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
@@ -229,18 +230,21 @@ public class Turn extends MessageForwarder {
      */
     public void restoreToLastMovePerformed() {
         if (!movesPerformed.isEmpty()) {
-            PlayerMove moveToRestore = movesPerformed.getLast();
-            if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
-                //Invert the sequence of starting and target slot to make the reverse move
-                Slot targetSlot = moveToRestore.getStartingSlot();
-                moveToRestore.getMovedWorker().move(targetSlot);
-            } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
-                moveToRestore.getTargetSlot().destroyTopBuilding();
-            }
+            do {
+                PlayerMove moveToRestore = movesPerformed.getLast();
+                if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+                    //Invert the sequence of starting and target slot to make the reverse move
+                    Slot targetSlot = moveToRestore.getStartingSlot();
+                    moveToRestore.getMovedWorker().move(targetSlot);
+                } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
+                    moveToRestore.getTargetSlot().destroyTopBuilding();
+                }
 
-            movesPerformed.removeLast();
-            if (currentMoveIndex > 0)
-                currentMoveIndex--;
+                movesPerformed.removeLast();
+                if (currentMoveIndex > 0)
+                    currentMoveIndex--;
+            }
+            while (!movesPerformed.isEmpty() && !movesPerformed.getLast().getForcedMove());
 
             updateTurn();
         } else
