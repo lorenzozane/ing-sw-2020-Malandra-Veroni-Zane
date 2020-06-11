@@ -34,7 +34,7 @@ La seguente documentazione include una descrizione per la maggiore parte delle c
 - Socket
 
 ### Funzionalità Aggiuntive Sviluppate
-- Multipartita
+- Partite multiple
 - Undo
 
 ## Componenti del gruppo
