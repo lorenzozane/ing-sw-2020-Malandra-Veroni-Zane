@@ -2,11 +2,9 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
-import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.network.Client.UserInterface;
-import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
@@ -63,7 +61,15 @@ public class View extends MessageForwarder {
 
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
-            playerCli.showMessage(messageToShow);
+            if(currentMove.isStartupPhase()){
+                playerCli.showMessage(messageToShow);
+            }
+            else if(!(currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))){
+                playerCli.showMessage(messageToShow);
+            }
+            else
+                playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
+
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
         }
@@ -380,8 +386,10 @@ public class View extends MessageForwarder {
     }
 
     public void refreshView(Board newBoard, UserInterface userInterface) {
-        if (userInterface == UserInterface.CLI && playerCli != null)
+        if (userInterface == UserInterface.CLI && playerCli != null){
+            clearConsole(); //funziona solo fuori da IntelliJ
             playerCli.refreshBoard(newBoard);
+        }
         else if (userInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
             //playerGui.refreshBoard()
@@ -438,5 +446,18 @@ public class View extends MessageForwarder {
     }
 
 
+    public static void clearConsole() {
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            }
+            else {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (final Exception ignored) {
+        }
+    }
 }
 

@@ -185,6 +185,10 @@ public class Cli {
 //            new Thread(this::readResponse).start();
     }
 
+    public void showMessage(String messageToShow, PlayerColor playerColor) {
+        System.out.println(playerColor.getEscape() + messageToShow + Color.RESET);
+    }
+
     public void activateAsyncReadResponse() {
         asyncReadResponse();
     }
