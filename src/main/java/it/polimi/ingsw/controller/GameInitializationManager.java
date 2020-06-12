@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class GameInitializationManager extends MessageForwarder {
 
-    //TODO: Metodi inizializzazione deck e scelta carte (challenge)
-
     private final Game gameInstance;
     private final Turn turn;
     private final Deck deck;

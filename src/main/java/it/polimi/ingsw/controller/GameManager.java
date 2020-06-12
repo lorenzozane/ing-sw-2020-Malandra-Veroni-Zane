@@ -220,7 +220,7 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Set the current worker for the current turn
+     * Set the current worker (the worker the player decided to play with) for the current turn
      *
      * @param move The player move containing the information about the worker to set as current worker
      */

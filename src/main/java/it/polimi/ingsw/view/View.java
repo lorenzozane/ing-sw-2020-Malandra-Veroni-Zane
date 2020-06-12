@@ -28,8 +28,11 @@ public class View extends MessageForwarder {
     private final StringSender stringSender = new StringSender();
     private final StringReceiver stringReceiver = new StringReceiver();
 
-    //TODO: Mich completa tu i costruttori in base a quello che ti serve
-    //Ne ho fatti due in modo da averne uno in caso di creazione CLI e uno GUI (se non serve risistema tu)
+    /**
+     * Constructor of the View that interact with the player's CLI or GUI
+     *
+     * @param playerCli Is the instance of the CLI that the player has chosen to use
+     */
     public View(Cli playerCli) {
         this.chosenUserInterface = UserInterface.CLI;
         this.playerCli = playerCli;
@@ -37,6 +40,11 @@ public class View extends MessageForwarder {
         this.playerGui = null;
     }
 
+    /**
+     * Constructor of the View that interact with the player's CLI or GUI
+     *
+     * @param playerGui Is the instance of the GUI that the player has chosen to use
+     */
     public View(Gui playerGui) {
         this.chosenUserInterface = UserInterface.GUI;
         this.playerGui = playerGui;
@@ -49,16 +57,32 @@ public class View extends MessageForwarder {
             this.remoteView = remoteView;
     }
 
+    /**
+     * Allows to define the player owner of this view nickname
+     *
+     * @param playerOwnerNickname The player nickname
+     */
     public void setPlayerOwnerNickname(String playerOwnerNickname) {
         if (this.playerOwnerNickname == null)
             this.playerOwnerNickname = playerOwnerNickname;
     }
 
     //TODO: Agli errori che passano di qua viene aggiunto un a capo. Verificare
+
+    /**
+     * Sends to the CLI or GUI an error message to be shown
+     *
+     * @param errorToShow The error message to be shown
+     */
     public void showErrorMessage(String errorToShow) {
         showMessage(errorToShow);
     }
 
+    /**
+     * Sends to the CLI or GUI a message to be shown
+     *
+     * @param messageToShow The message to be shown
+     */
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             if(currentMove.isStartupPhase()){
@@ -74,10 +98,16 @@ public class View extends MessageForwarder {
             //TODO: Gui
         }
 
+        //TODO: Spostare in showErrorMessage?
         if (messageToShow.contains("Error: "))
             repeatCurrentMove(currentMove);
     }
 
+    /**
+     * Sends to the CLI or GUI a message sent to all player to be shown
+     *
+     * @param messageToShow The message to be shown
+     */
     public void showSimultaneousMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             playerCli.showSimultaneousMessage(messageToShow);
@@ -89,6 +119,11 @@ public class View extends MessageForwarder {
             repeatCurrentMove(currentMove);
     }
 
+    /**
+     * Causes the player to repeat the last move, usually after an error
+     *
+     * @param currentMove The move to repeat
+     */
     private void repeatCurrentMove(UpdateTurnMessage currentMove) {
         handleUpdateTurnFromSocket(currentMove);
 
@@ -98,6 +133,11 @@ public class View extends MessageForwarder {
 //            handleMessageForOthers(currentMove);
     }
 
+    /**
+     * Logic used to handle the player response to a move request (or more generally a response)
+     *
+     * @param response The player response to handle
+     */
     public void handleResponse(String response) {
         if (currentMove == null) {
             //TODO: Implementare gestione risposte pre partita (a posto così?)
@@ -185,14 +225,30 @@ public class View extends MessageForwarder {
         }
     }
 
+    /**
+     * Sends to the controller the move performed by the player during the game
+     *
+     * @param playerMove PlayerMove performed by the player
+     */
     private void sendPlayerMove(PlayerMove playerMove) {
         playerMoveSender.notifyAll(playerMove);
     }
 
+    /**
+     * Sends to the controller the move performed by the player during the startup phase
+     *
+     * @param playerMoveStartup PlayerMoveStartup performed by the player
+     */
     private void sendPlayerMoveStartup(PlayerMoveStartup playerMoveStartup) {
         playerMoveStartupSender.notifyAll(playerMoveStartup);
     }
 
+    /**
+     * Converts the player's input into coordinates
+     *
+     * @param coordinates Player's input to convert
+     * @return Returns the coordinates created from the player's input
+     */
     private Position convertStringToPosition(String coordinates) {
         if (coordinates.length() != 2) {
             showErrorMessage(ViewMessage.wrongInputCoordinates);
@@ -210,6 +266,12 @@ public class View extends MessageForwarder {
         return null;
     }
 
+    /**
+     * Converts the player's input into a PlayerColor
+     *
+     * @param playerColor Player's input to convert
+     * @return Returns the PlayerColor chosen by the player
+     */
     private PlayerColor convertStringToPlayerColor(String playerColor) {
         switch (playerColor.toLowerCase()) {
             case "red":
@@ -229,6 +291,12 @@ public class View extends MessageForwarder {
         return null;
     }
 
+    /**
+     * Allows to know which PlayerColor are available to be chosen from the current player
+     *
+     * @param availableColor ArrayList of PlayerColor available to be chosen
+     * @return Returns a formatted string to be shown at the player containing all the available PlayerColor as text
+     */
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
         for (PlayerColor playerColor : availableColor) {
@@ -238,6 +306,12 @@ public class View extends MessageForwarder {
         return String.valueOf(stringBuilder);
     }
 
+    /**
+     * Allows to know which GodsCard are available to be chosen from the current player
+     *
+     * @param availableCards ArrayList of GodsCard available to be chosen
+     * @return Returns a formatted string to be shown at the player containing all the available GodsCard as text
+     */
     private String getAvailableCardsBuilder(ArrayList<GodsCard> availableCards) {
         StringBuilder stringBuilder = new StringBuilder();
         for (GodsCard godsCard : availableCards) {
@@ -252,6 +326,12 @@ public class View extends MessageForwarder {
         return playerColor != null;
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller based on player's input. Used when choosing the worker
+     *
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move
+     * @return Returns the PlayerMove ready to be forwarded to the controller
+     */
     protected PlayerMove createPlayerMove(Position targetSlotPosition) {
         return new PlayerMove(
                 currentMove.getCurrentWorker().getIdWorker(),
@@ -260,6 +340,13 @@ public class View extends MessageForwarder {
                 currentMove.getCurrentPlayer().getNickname());
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known
+     *
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move
+     * @param currentWorker The worker chose by the player to play with this turn
+     * @return Returns the PlayerMove ready to be forwarded to the controller
+     */
     protected PlayerMove createPlayerMove(Position targetSlotPosition, String currentWorker) {
         return new PlayerMove(
                 currentWorker,
@@ -268,6 +355,11 @@ public class View extends MessageForwarder {
                 currentMove.getCurrentPlayer().getNickname());
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller which describes the intention to use the UNDO function
+     *
+     * @return Returns the PlayerMove ready to be forwarded to the controller
+     */
     protected PlayerMove createPlayerMoveUndo() {
         return new PlayerMove(
                 currentMove.getCurrentWorker().getIdWorker(),
@@ -277,6 +369,11 @@ public class View extends MessageForwarder {
                 );
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller which describes the intention to use the SKIP function
+     *
+     * @return Returns the PlayerMove ready to be forwarded to the controller
+     */
     protected PlayerMove createPlayerMoveSkip() {
         return new PlayerMove(
                 currentMove.getCurrentWorker().getIdWorker(),
@@ -286,12 +383,20 @@ public class View extends MessageForwarder {
         );
     }
 
+    /**
+     * Create the PlayerMoveStartup to be send at the controller based on player's input in the startup phase of the game
+     *
+     * @return Returns the PlayerMoveStartup ready to be forwarded to the controller
+     */
     protected PlayerMoveStartup createPlayerMoveStartup() {
         return new PlayerMoveStartup(currentMove.getNextStartupMove());
-
-        //TODO: Logica set proprietà
     }
 
+    /**
+     * Handle the move received from server that are meant for me
+     *
+     * @param message The message received from the server to handle
+     */
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
@@ -324,7 +429,7 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.moveOpponentSlotFlip);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
                 showMessage(ViewMessage.moveOpponentSlotPush);
-            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP) //TODO: se ho atena questo messaggio non devve essere stampatp a me
+            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP) //TODO: se ho atena questo messaggio non devve essere stampato a me
                 showMessage(ViewMessage.moveDisableOpponentUp);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
                 showMessage(ViewMessage.buildStandard);
@@ -339,8 +444,13 @@ public class View extends MessageForwarder {
         }
     }
 
-    //TODO: Nel caso la lastMovePerformedBy non sia stata fatta dal playerOwner della view deve anche essere refreshata la board
     //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
+
+    /**
+     * Handle the move received from server that are meant for another player
+     *
+     * @param message The message received from the server to handle
+     */
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
@@ -385,6 +495,12 @@ public class View extends MessageForwarder {
         }
     }
 
+    /**
+     * Redraws the updated board to show to the player
+     *
+     * @param newBoard The updated board to be shown
+     * @param userInterface User chosen interface
+     */
     public void refreshView(Board newBoard, UserInterface userInterface) {
         if (userInterface == UserInterface.CLI && playerCli != null){
             clearConsole(); //funziona solo fuori da IntelliJ
@@ -394,6 +510,19 @@ public class View extends MessageForwarder {
             //TODO: Gui
             //playerGui.refreshBoard()
         }
+    }
+
+    /**
+     * Activate the response reader in the user interface to handle the player's response during the game
+     */
+    private void activateReadResponse() {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
+            playerCli.activateAsyncReadResponse();
+        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
+
+        activeReadResponse = true;
     }
 
     public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
@@ -420,16 +549,6 @@ public class View extends MessageForwarder {
             handleMessageForMe(message);
         else
             handleMessageForOthers(message);
-    }
-
-    private void activateReadResponse() {
-        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
-            playerCli.activateAsyncReadResponse();
-        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
-        }
-
-        activeReadResponse = true;
     }
 
     @Override

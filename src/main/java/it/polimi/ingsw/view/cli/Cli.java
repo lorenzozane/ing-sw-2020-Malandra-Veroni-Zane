@@ -194,7 +194,6 @@ public class Cli {
     }
 
     private void asyncReadResponse() {
-        //this.scanner = new Scanner(System.in);
         Thread asyncReadResponse = new Thread(() -> {
             while (true) { //TODO: Modificare con isActive()?
                 String input = scanner.nextLine();
@@ -212,7 +211,6 @@ public class Cli {
     }
 
     private void readResponse() {
-        //Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         viewOwner.handleResponse(input);
     }
