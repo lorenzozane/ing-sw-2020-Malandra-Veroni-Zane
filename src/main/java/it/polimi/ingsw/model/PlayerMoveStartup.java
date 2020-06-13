@@ -6,10 +6,12 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.io.Serializable;
 
+/**
+ * PlayerMoveStartup message, require to send the information regarding the move performed by the player during startup phase of the game.
+ */
 public class PlayerMoveStartup implements Serializable {
 
     private static final long serialVersionUID = -7581105397668977776L;
-    //private final Turn turn; //TODO: Da togliere (?)
     private RemoteView remoteView;
     private String playerOwnerNickname; //TODO: Volendo si può settare direttamente nella View (facendo un controllo successivo nella remoteView)
     private Player playerOwner;
@@ -18,8 +20,12 @@ public class PlayerMoveStartup implements Serializable {
     private String chosenCard;
     private Position workerPosition;
 
+    /**
+     * Constructor of the message PlayerMove, required to send the information regarding the move performed by the player during the startup phase of the game.
+     *
+     * @param action The StartupActions performed by the player.
+     */
     public PlayerMoveStartup(StartupActions action) {
-//        this.playerOwner = playerOwner;
         this.action = action;
     }
 

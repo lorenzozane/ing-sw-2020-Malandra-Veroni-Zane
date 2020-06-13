@@ -246,7 +246,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
     @Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
         asyncSend(message);
     }
 

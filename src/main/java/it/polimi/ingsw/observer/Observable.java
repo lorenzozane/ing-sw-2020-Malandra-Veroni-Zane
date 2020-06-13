@@ -3,6 +3,14 @@ package it.polimi.ingsw.observer;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class represents an observable object, an observable object can have one or more observers.
+ * An observer may be any object that implements interface Observer. After an observable instance changes,
+ * an application calling the Observable's notifyAll method causes all of its observers to be notified of the
+ * change by a call to their update method.
+ *
+ * @param <T>Type of the object to be observed.
+ */
 public class Observable<T> {
 
     private final List<Observer<T>> observers = new LinkedList<>();

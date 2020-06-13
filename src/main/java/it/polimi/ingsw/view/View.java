@@ -29,9 +29,9 @@ public class View extends MessageForwarder {
     private final StringReceiver stringReceiver = new StringReceiver();
 
     /**
-     * Constructor of the View that interact with the player's CLI or GUI
+     * Constructor of the View that interact with the player's CLI or GUI.
      *
-     * @param playerCli Is the instance of the CLI that the player has chosen to use
+     * @param playerCli Is the instance of the CLI that the player has chosen to use.
      */
     public View(Cli playerCli) {
         this.chosenUserInterface = UserInterface.CLI;
@@ -41,9 +41,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Constructor of the View that interact with the player's CLI or GUI
+     * Constructor of the View that interact with the player's CLI or GUI.
      *
-     * @param playerGui Is the instance of the GUI that the player has chosen to use
+     * @param playerGui Is the instance of the GUI that the player has chosen to use.
      */
     public View(Gui playerGui) {
         this.chosenUserInterface = UserInterface.GUI;
@@ -58,9 +58,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Allows to define the player owner of this view nickname
+     * Allows to define the player owner of this view nickname.
      *
-     * @param playerOwnerNickname The player nickname
+     * @param playerOwnerNickname The player nickname.
      */
     public void setPlayerOwnerNickname(String playerOwnerNickname) {
         if (this.playerOwnerNickname == null)
@@ -70,18 +70,18 @@ public class View extends MessageForwarder {
     //TODO: Agli errori che passano di qua viene aggiunto un a capo. Verificare
 
     /**
-     * Sends to the CLI or GUI an error message to be shown
+     * Sends to the CLI or GUI an error message to be shown.
      *
-     * @param errorToShow The error message to be shown
+     * @param errorToShow The error message to be shown.
      */
     public void showErrorMessage(String errorToShow) {
         showMessage(errorToShow);
     }
 
     /**
-     * Sends to the CLI or GUI a message to be shown
+     * Sends to the CLI or GUI a message to be shown.
      *
-     * @param messageToShow The message to be shown
+     * @param messageToShow The message to be shown.
      */
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
@@ -104,9 +104,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Sends to the CLI or GUI a message sent to all player to be shown
+     * Sends to the CLI or GUI a message sent to all player to be shown.
      *
-     * @param messageToShow The message to be shown
+     * @param messageToShow The message to be shown.
      */
     public void showSimultaneousMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
@@ -120,12 +120,12 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Causes the player to repeat the last move, usually after an error
+     * Causes the player to repeat the last move, usually after an error.
      *
-     * @param currentMove The move to repeat
+     * @param currentMove The move to repeat.
      */
     private void repeatCurrentMove(UpdateTurnMessage currentMove) {
-        handleUpdateTurnFromSocket(currentMove);
+        handleUpdateTurnMessage(currentMove);
 
 //        if (lastMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
 //            handleMessageForMe(currentMove);
@@ -134,9 +134,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Logic used to handle the player response to a move request (or more generally a response)
+     * Logic used to handle the player response to a move request (or more generally a response).
      *
-     * @param response The player response to handle
+     * @param response The player response to handle.
      */
     public void handleResponse(String response) {
         if (currentMove == null) {
@@ -226,28 +226,28 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Sends to the controller the move performed by the player during the game
+     * Sends to the controller the move performed by the player during the game.
      *
-     * @param playerMove PlayerMove performed by the player
+     * @param playerMove PlayerMove performed by the player.
      */
     private void sendPlayerMove(PlayerMove playerMove) {
         playerMoveSender.notifyAll(playerMove);
     }
 
     /**
-     * Sends to the controller the move performed by the player during the startup phase
+     * Sends to the controller the move performed by the player during the startup phase.
      *
-     * @param playerMoveStartup PlayerMoveStartup performed by the player
+     * @param playerMoveStartup PlayerMoveStartup performed by the player.
      */
     private void sendPlayerMoveStartup(PlayerMoveStartup playerMoveStartup) {
         playerMoveStartupSender.notifyAll(playerMoveStartup);
     }
 
     /**
-     * Converts the player's input into coordinates
+     * Converts the player's input into coordinates.
      *
-     * @param coordinates Player's input to convert
-     * @return Returns the coordinates created from the player's input
+     * @param coordinates Player's input to convert.
+     * @return Returns the coordinates created from the player's input.
      */
     private Position convertStringToPosition(String coordinates) {
         if (coordinates.length() != 2) {
@@ -267,10 +267,10 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Converts the player's input into a PlayerColor
+     * Converts the player's input into a PlayerColor.
      *
-     * @param playerColor Player's input to convert
-     * @return Returns the PlayerColor chosen by the player
+     * @param playerColor Player's input to convert.
+     * @return Returns the PlayerColor chosen by the player.
      */
     private PlayerColor convertStringToPlayerColor(String playerColor) {
         switch (playerColor.toLowerCase()) {
@@ -292,10 +292,10 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Allows to know which PlayerColor are available to be chosen from the current player
+     * Allows to know which PlayerColor are available to be chosen from the current player.
      *
-     * @param availableColor ArrayList of PlayerColor available to be chosen
-     * @return Returns a formatted string to be shown at the player containing all the available PlayerColor as text
+     * @param availableColor ArrayList of PlayerColor available to be chosen.
+     * @return Returns a formatted string to be shown at the player containing all the available PlayerColor as text.
      */
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -307,10 +307,10 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Allows to know which GodsCard are available to be chosen from the current player
+     * Allows to know which GodsCard are available to be chosen from the current player.
      *
-     * @param availableCards ArrayList of GodsCard available to be chosen
-     * @return Returns a formatted string to be shown at the player containing all the available GodsCard as text
+     * @param availableCards ArrayList of GodsCard available to be chosen.
+     * @return Returns a formatted string to be shown at the player containing all the available GodsCard as text.
      */
     private String getAvailableCardsBuilder(ArrayList<GodsCard> availableCards) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -327,10 +327,10 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller based on player's input. Used when choosing the worker
+     * Create the PlayerMove to be send at the controller based on player's input. Used when choosing the worker.
      *
-     * @param targetSlotPosition The position of the target slot chose by the player for the current move
-     * @return Returns the PlayerMove ready to be forwarded to the controller
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move.
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
     protected PlayerMove createPlayerMove(Position targetSlotPosition) {
         return new PlayerMove(
@@ -341,11 +341,11 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known
+     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
      *
-     * @param targetSlotPosition The position of the target slot chose by the player for the current move
-     * @param currentWorker The worker chose by the player to play with this turn
-     * @return Returns the PlayerMove ready to be forwarded to the controller
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move.
+     * @param currentWorker The worker chose by the player to play with this turn.
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
     protected PlayerMove createPlayerMove(Position targetSlotPosition, String currentWorker) {
         return new PlayerMove(
@@ -356,9 +356,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller which describes the intention to use the UNDO function
+     * Create the PlayerMove to be send at the controller which describes the intention to use the UNDO function.
      *
-     * @return Returns the PlayerMove ready to be forwarded to the controller
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
     protected PlayerMove createPlayerMoveUndo() {
         return new PlayerMove(
@@ -370,9 +370,9 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller which describes the intention to use the SKIP function
+     * Create the PlayerMove to be send at the controller which describes the intention to use the SKIP function.
      *
-     * @return Returns the PlayerMove ready to be forwarded to the controller
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
     protected PlayerMove createPlayerMoveSkip() {
         return new PlayerMove(
@@ -384,18 +384,18 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMoveStartup to be send at the controller based on player's input in the startup phase of the game
+     * Create the PlayerMoveStartup to be send at the controller based on player's input in the startup phase of the game.
      *
-     * @return Returns the PlayerMoveStartup ready to be forwarded to the controller
+     * @return Returns the PlayerMoveStartup ready to be forwarded to the controller.
      */
     protected PlayerMoveStartup createPlayerMoveStartup() {
         return new PlayerMoveStartup(currentMove.getNextStartupMove());
     }
 
     /**
-     * Handle the move received from server that are meant for me
+     * Handle the move received from server that are meant for me.
      *
-     * @param message The message received from the server to handle
+     * @param message The message received from the server to handle.
      */
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
@@ -447,9 +447,9 @@ public class View extends MessageForwarder {
     //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
 
     /**
-     * Handle the move received from server that are meant for another player
+     * Handle the move received from server that are meant for another player.
      *
-     * @param message The message received from the server to handle
+     * @param message The message received from the server to handle.
      */
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
@@ -496,10 +496,10 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Redraws the updated board to show to the player
+     * Redraws the updated board to show to the player.
      *
-     * @param newBoard The updated board to be shown
-     * @param userInterface User chosen interface
+     * @param newBoard The updated board to be shown.
+     * @param userInterface User chosen interface.
      */
     public void refreshView(Board newBoard, UserInterface userInterface) {
         if (userInterface == UserInterface.CLI && playerCli != null){
@@ -513,7 +513,7 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Activate the response reader in the user interface to handle the player's response during the game
+     * Activate the response reader in the user interface to handle the player's response during the game.
      */
     private void activateReadResponse() {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null)
@@ -525,21 +525,40 @@ public class View extends MessageForwarder {
         activeReadResponse = true;
     }
 
+    /**
+     * Adds an observer of PlayerMove to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
     public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
         playerMoveSender.addObserver(observer);
     }
 
+    /**
+     * Adds an observer of PlayerMoveStartup to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
     public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
         playerMoveStartupSender.addObserver(observer);
     }
 
+    /**
+     * Adds an observer of String to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
     public void addStringObserver(Observer<String> observer) {
         stringSender.addObserver(observer);
     }
 
-
+    /**
+     * Method to override to handle message received by the UpdateTurnMessageReceiver.
+     *
+     * @param message The message to handle.
+     */
     @Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) {
         if (!activeReadResponse)
             activateReadResponse();
 
@@ -551,6 +570,11 @@ public class View extends MessageForwarder {
             handleMessageForOthers(message);
     }
 
+    /**
+     * Method to override to handle message received by the StringReceiver.
+     *
+     * @param messageString The message to handle.
+     */
     @Override
     public void handleString(String messageString) {
         showSimultaneousMessage(messageString);
@@ -563,7 +587,6 @@ public class View extends MessageForwarder {
     public StringReceiver getStringReceiver() {
         return stringReceiver;
     }
-
 
     public static void clearConsole() {
         try {

@@ -4,9 +4,17 @@ import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 
+/**
+ * Encompasses all the Receiver and Sender for all the message type, necessary for the correct functioning
+ * of the game messages.
+ */
 public abstract class MessageForwarder {
 
     //UPDATE_TURN
+
+    /**
+     * Class deed to receive instance of UpdateTurnMessage.
+     */
     public class UpdateTurnMessageReceiver implements Observer<UpdateTurnMessage> {
 
         /**
@@ -16,14 +24,22 @@ public abstract class MessageForwarder {
          */
         @Override
         public void update(UpdateTurnMessage message) {
-            handleUpdateTurnFromSocket(message);
+            handleUpdateTurnMessage(message);
         }
     }
 
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+    /**
+     * Method to override to handle message received by the UpdateTurnMessageReceiver.
+     *
+     * @param message The message to handle.
+     */
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) {
 
     }
 
+    /**
+     * Class deed to send instance of UpdateTurnMessage.
+     */
     public class UpdateTurnMessageSender extends Observable<UpdateTurnMessage> {
 
         /**
@@ -59,6 +75,9 @@ public abstract class MessageForwarder {
 
 
     //PLAYER_MOVE
+    /**
+     * Class deed to receive instance of PlayerMove.
+     */
     public class PlayerMoveReceiver implements Observer<PlayerMove> {
 
         /**
@@ -72,10 +91,18 @@ public abstract class MessageForwarder {
         }
     }
 
+    /**
+     * Method to override to handle message received by the PlayerMoveReceiver.
+     *
+     * @param message The message to handle.
+     */
     protected void handlePlayerMove(PlayerMove message) {
 
     }
 
+    /**
+     * Class deed to send instance of PlayerMove.
+     */
     public class PlayerMoveSender extends Observable<PlayerMove> {
 
         /**
@@ -111,6 +138,9 @@ public abstract class MessageForwarder {
 
 
     //PLAYER_MOVE_STARTUP
+    /**
+     * Class deed to receive instance of PlayerMoveStartup.
+     */
     public class PlayerMoveStartupReceiver implements Observer<PlayerMoveStartup> {
 
         /**
@@ -124,10 +154,18 @@ public abstract class MessageForwarder {
         }
     }
 
+    /**
+     * Method to override to handle message received by the PlayerMoveStartupReceiver.
+     *
+     * @param message The message to handle.
+     */
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
 
     }
 
+    /**
+     * Class deed to send instance of PlayerMoveStartup.
+     */
     public class PlayerMoveStartupSender extends Observable<PlayerMoveStartup> {
 
         /**
@@ -163,6 +201,9 @@ public abstract class MessageForwarder {
 
 
     //STRING
+    /**
+     * Class deed to receive instance of String.
+     */
     public class StringReceiver implements Observer<String> {
 
         /**
@@ -176,10 +217,18 @@ public abstract class MessageForwarder {
         }
     }
 
+    /**
+     * Method to override to handle message received by the StringReceiver.
+     *
+     * @param message The message to handle.
+     */
     protected void handleString(String message) {
 
     }
 
+    /**
+     * Class deed to send instance of String.
+     */
     public class StringSender extends Observable<String> {
 
         /**

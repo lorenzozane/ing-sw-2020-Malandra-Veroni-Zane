@@ -36,7 +36,7 @@ public class RemoteView extends MessageForwarder {
     }
 
     @Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) {
         updateTurnMessageSender.notifyAll(message);
     }
 

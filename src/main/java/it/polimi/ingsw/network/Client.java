@@ -80,7 +80,7 @@ public class Client extends MessageForwarder {
                         }
 
                     } else if (inputObject instanceof UpdateTurnMessage) {
-                        handleUpdateTurnFromSocket((UpdateTurnMessage) inputObject);
+                        handleUpdateTurnMessageFromSocket((UpdateTurnMessage) inputObject);
                     }
 
 
@@ -181,14 +181,13 @@ public class Client extends MessageForwarder {
         asyncSend(message);
     }
 
-    //@Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
-        updateTurnMessageSender.notifyAll(message);
-    }
-
     @Override
     protected void handleString(String message) {
         asyncSend(message);
+    }
+
+    protected void handleUpdateTurnMessageFromSocket(UpdateTurnMessage message) {
+        updateTurnMessageSender.notifyAll(message);
     }
 
     protected void sendStringToClient(String message) {

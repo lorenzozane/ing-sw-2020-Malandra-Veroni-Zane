@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view;
 
+/**
+ * Class containing all the message to be shown through the View of the players.
+ */
 public class ViewMessage {
 
     //SetUpActions
