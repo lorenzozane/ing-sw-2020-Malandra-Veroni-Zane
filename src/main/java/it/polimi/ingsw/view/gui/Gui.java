@@ -14,11 +14,11 @@ public class Gui extends Application {
 
 
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("src/main/resources/GuiStyle.fxml"));
-        stage.setTitle("Test");
-        stage.setScene(new Scene(root, 300, 200));
-        stage.show();
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("GuiStyle.fxml"));
+        primaryStage.setTitle("Test");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
