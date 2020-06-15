@@ -13,7 +13,6 @@ public class GameManager extends MessageForwarder {
     private final Turn turn;
     private final MoveVerifier moveVerifier;
     private String errorMessage = "";
-    private boolean workerToSet = false;
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
 
     /**
@@ -45,58 +44,93 @@ public class GameManager extends MessageForwarder {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         }
-        if (move.getMove().getActionType() == Actions.ActionType.UNDO) {
-            turn.restoreToLastMovePerformed();
+        if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
+            if (move.getMove() == Actions.UNDO)
+                if (turn.areThereMovesToUndo())
+                    turn.restoreToLastMovePerformed();
+                else {
+                    move.getRemoteView().errorMessage(Message.cannotUndo);
+                    return;
+                }
+            else if (move.getMove() == Actions.SKIP)
+                if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
+                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
+                    turn.updateTurn();
+                }
+                else {
+                    move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
+                    return;
+                }
         }
-        if (turn.getCurrentWorker() == null)
-            workerToSet = true;
-        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
-            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
-            return;
+        else if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
+            if (move.getTargetSlot().getWorkerInSlot() != null) {
+                if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
+                    setCurrentWorker(move);
+                } else {
+                    move.getRemoteView().errorMessage(Message.choseNotYourWorker);
+                    return;
+                }
+            } else {
+                move.getRemoteView().errorMessage(Message.noWorkerInSlot);
+                return;
+            }
         }
-        if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+//        if (turn.getCurrentWorker() == null)
+//            workerToSet = true;
+//        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
+//            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
+//            return;
+//        }
+        else if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
             if (moveVerifier.moveValidator(move)) {
                 //Move in opponent slot handling
                 if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
                     if (move.getTargetSlot().getWorkerInSlot() != null) {
-                        PlayerMove opponentMove = null;
-                        if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
-                                    Actions.MOVE_STANDARD,
-                                    move.getStartingSlot().getSlotPosition(),
-                                    turn.getCurrentPlayer().getNickname());
-                            opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(opponentMove.getTargetPosition()));
-                        } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
-                            Position backwardsSlotPosition = gameInstance.getBoard().getBackwardsSlotPosition(move.getStartingPosition(), move.getTargetPosition());
-                            if (backwardsSlotPosition == null) {
-                                move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
+                        if (!move.getPlayerOwner().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
+                            PlayerMove opponentMove = null;
+                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
+                                opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),
+                                        Actions.MOVE_STANDARD,
+                                        move.getStartingSlot().getSlotPosition(),
+                                        turn.getCurrentPlayer().getNickname());
+                                opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(opponentMove.getTargetPosition()));
+                            } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {
+                                Position backwardsSlotPosition = gameInstance.getBoard().getBackwardsSlotPosition(move.getStartingPosition(), move.getTargetPosition());
+                                if (backwardsSlotPosition == null) {
+                                    move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);
+                                    return;
+                                }
+                                opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),
+                                        Actions.MOVE_STANDARD,
+                                        backwardsSlotPosition,
+                                        turn.getCurrentPlayer().getNickname());
+                                opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(backwardsSlotPosition));
+                            }
+
+                            assert opponentMove != null;
+                            opponentMove.setMovedWorker(gameInstance.getWorkerByName(opponentMove.getMovedWorkerId()));
+                            opponentMove.setForcedMove(move.getPlayerOwner());
+
+                            //Temporary movement of player's worker in a "TempSlot"
+                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
+                                PlayerMove tempMove = new PlayerMove(move.getMovedWorker().getIdWorker(),
+                                        Actions.MOVE_STANDARD,
+                                        new Position(-1, -1),
+                                        turn.getCurrentPlayer().getNickname());
+                                tempMove.setTargetSlot(new Slot(tempMove.getTargetPosition()));
+                                tempMove.setMovedWorker(gameInstance.getWorkerByName(tempMove.getMovedWorkerId()));
+                                tempMove.setForcedMove(move.getPlayerOwner());
+                                performMove(tempMove);
+                            }
+
+                            if (moveVerifier.moveValidator(opponentMove))
+                                performMove(opponentMove);
+                            else {
+                                move.getRemoteView().errorMessage(errorMessage);
                                 return;
                             }
-                            opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot(),
-                                    Actions.MOVE_STANDARD,
-                                    backwardsSlotPosition,
-                                    turn.getCurrentPlayer().getNickname());
-                            opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(backwardsSlotPosition));
-                        }
-
-                        assert opponentMove != null;
-                        opponentMove.setForcedMove(move.getPlayerOwner());
-
-                        //Temporary movement of player's worker in a "TempSlot"
-                        //TODO: Verificare che l'UNDO funzioni correttamente
-                        if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {
-                            PlayerMove tempMove = new PlayerMove(move.getMovedWorker(),
-                                    Actions.MOVE_STANDARD,
-                                    new Position(-1, -1),
-                                    turn.getCurrentPlayer().getNickname());
-                            tempMove.setTargetSlot(new Slot(new Position(-1, -1)));
-                            performMove(tempMove);
-                        }
-
-                        if (moveVerifier.moveValidator(opponentMove))
-                            performMove(opponentMove);
-                        else {
-                            move.getRemoteView().errorMessage(errorMessage);
+                        } else {
+                            move.getRemoteView().errorMessage(Message.mustBeOpponentWorker);
                             return;
                         }
                     }
@@ -120,6 +154,8 @@ public class GameManager extends MessageForwarder {
                 if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {
                     performBuildingDome(move);
                     return;
+                } else if (move.getMove() == Actions.BUILD_BEFORE) {
+                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(false);
                 }
 
                 performBuilding(move);
@@ -156,8 +192,6 @@ public class GameManager extends MessageForwarder {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
         if (!move.getForcedMove()) {
-            if (workerToSet)
-                setCurrentWorker(move);
             checkWinConditions(move);
             turn.updateTurn();
         }
@@ -171,8 +205,6 @@ public class GameManager extends MessageForwarder {
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
-        if (workerToSet)
-            setCurrentWorker(move);
         turn.updateTurn();
     }
 
@@ -184,19 +216,20 @@ public class GameManager extends MessageForwarder {
     protected void performBuildingDome(PlayerMove move) {
         move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
         turn.addLastMovePerformed(move);
-        if (workerToSet)
-            setCurrentWorker(move);
         turn.updateTurn();
     }
 
     /**
-     * Set the current worker for the current turn
+     * Set the current worker (the worker the player decided to play with) for the current turn
      *
      * @param move The player move containing the information about the worker to set as current worker
      */
     protected void setCurrentWorker(PlayerMove move) {
-        if (workerToSet && !move.getForcedMove() && turn.getCurrentWorker() == null)
-            turn.setCurrentWorker(move.getMovedWorker());
+//        if (!move.getForcedMove() && turn.getCurrentWorker() == null) {
+        turn.setCurrentWorker(move.getMovedWorker());
+        turn.addLastMovePerformed(move);
+        turn.updateTurn();
+//        }
     }
 
     /**
@@ -216,13 +249,14 @@ public class GameManager extends MessageForwarder {
     }
 
     protected void checkTurnIsOver() {
-
+        //TODO: Avere un "lastMove" nell'UpdateTurnMessage può servire per il countdown per UNDO (?)
     }
 
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
-        message.setStartingSlot(gameInstance.getBoard().getSlot(message.getStartingPosition()));
+        message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));
+        message.setMovedWorker(gameInstance.getWorkerByName(message.getMovedWorkerId()));
         message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));
         handleMove(message);
     }

@@ -13,14 +13,17 @@ public class TurnEvents implements Serializable {
         CHOOSE_CARD_REQUEST,
         PICK_UP_CARD_REQUEST,
         PICK_LAST_CARD,
-        PLACE_WORKER;
+        PLACE_WORKER_1,
+        PLACE_WORKER_2;
     }
 
     /**
      * Set of possible actions that the player can perform (depending on which God owns)
      */
     public enum Actions {
-        UNDO(ActionType.UNDO),
+        UNDO(ActionType.COMMAND),
+        SKIP(ActionType.COMMAND),
+        CHOSE_WORKER(ActionType.SETUP),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
         MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
@@ -35,7 +38,8 @@ public class TurnEvents implements Serializable {
         BUILD_DOME_ANY_LEVEL(ActionType.BUILDING);
 
         public enum ActionType {
-            UNDO,
+            COMMAND,
+            SETUP,
             MOVEMENT,
             BUILDING;
         }

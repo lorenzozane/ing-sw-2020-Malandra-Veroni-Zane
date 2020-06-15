@@ -66,7 +66,7 @@ public class GameManagerTest {
         //TEST MOVE_STANDARD
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
-        PlayerMove playerMove = new PlayerMove(workerPlayer1,
+        PlayerMove playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_STANDARD,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -74,7 +74,7 @@ public class GameManagerTest {
         assertEquals(targetSlot, workerPlayer1.getWorkerSlot());
 
         //TEST MOVE_NOT_INITIAL_POSITION
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_NOT_INITIAL_POSITION,
                 startingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -85,7 +85,7 @@ public class GameManagerTest {
         //TEST MOVE_OPPONENT_SLOT_FLIP
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_OPPONENT_SLOT_FLIP,
                 opponentSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -97,7 +97,7 @@ public class GameManagerTest {
         //TEST MOVE_OPPONENT_SLOT_PUSH
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_OPPONENT_SLOT_PUSH,
                 opponentSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -108,7 +108,7 @@ public class GameManagerTest {
         //TEST MOVE_DISABLE_OPPONENT_UP
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_DISABLE_OPPONENT_UP,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -118,7 +118,7 @@ public class GameManagerTest {
         //TEST BUILD_BEFORE
         workerPlayer1.move(targetSlot);
         workerPlayer2.move(opponentSlot);
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_BEFORE,
                 buildBeforeSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -127,7 +127,7 @@ public class GameManagerTest {
         ArrayList<BuildingLevel> expectedBuildings = new ArrayList<>(Arrays.asList(BuildingLevel.LEVEL1, null, null, null));
         assertEquals(expectedBuildings, buildBeforeSlot.getBuildingsStatus());
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.MOVE_STANDARD,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -177,7 +177,7 @@ public class GameManagerTest {
         //TEST BUILD_STANDARD
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
-        PlayerMove playerMove = new PlayerMove(workerPlayer1,
+        PlayerMove playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -191,20 +191,20 @@ public class GameManagerTest {
         workerPlayer1.move(startingSlot);
         workerPlayer2.move(opponentSlot);
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
         gameManager.handleMove(playerMove);
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_NOT_SAME_PLACE,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
         gameManager.handleMove(playerMove);
         assertEquals(Message.buildNotSamePlaceMessage, gameManager.getErrorMessage());
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_NOT_SAME_PLACE,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -215,7 +215,7 @@ public class GameManagerTest {
         //TEST BUILD_DOME_ANY_LEVEL
         targetSlot.destroyTopBuilding();
         buildingSlot.destroyTopBuilding();
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_DOME_ANY_LEVEL,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -223,7 +223,7 @@ public class GameManagerTest {
         expectedBuildings = new ArrayList<>(Arrays.asList(BuildingLevel.LEVEL1, null, null, BuildingLevel.DOME));
         assertEquals(expectedBuildings, buildingSlot.getBuildingsStatus());
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_DOME_ANY_LEVEL,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -232,20 +232,20 @@ public class GameManagerTest {
 
         //TEST BUILD_SAME_PLACE_NOT_DOME
         buildingSlot.destroyTopBuilding();
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
         gameManager.handleMove(playerMove);
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_SAME_PLACE_NOT_DOME,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
         gameManager.handleMove(playerMove);
         assertEquals(Message.mustBuildSamePlaceMessage, gameManager.getErrorMessage());
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_SAME_PLACE_NOT_DOME,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -254,13 +254,13 @@ public class GameManagerTest {
         assertEquals(expectedBuildings, buildingSlot.getBuildingsStatus());
 
         buildingSlot.destroyTopBuilding();
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
         gameManager.handleMove(playerMove);
 
-        playerMove = new PlayerMove(workerPlayer1,
+        playerMove = new PlayerMove(workerPlayer1.getIdWorker(),
                 Actions.BUILD_SAME_PLACE_NOT_DOME,
                 buildingSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -280,7 +280,7 @@ public class GameManagerTest {
         Slot targetSlot = gameInstance.getBoard().getSlot(new Position(0, 1));
         worker.move(workerSlot);
 
-        PlayerMove playerMove = new PlayerMove(worker,
+        PlayerMove playerMove = new PlayerMove(worker.getIdWorker(),
                 Actions.MOVE_STANDARD,
                 targetSlot.getSlotPosition(),
                 gameInstance.getTurn().getCurrentPlayer().getNickname());
@@ -298,7 +298,7 @@ public class GameManagerTest {
         Slot targetSlot = gameInstance.getBoard().getSlot(new Position(0, 1));
         worker.move(workerSlot);
 
-        PlayerMove playerMove = new PlayerMove(worker,
+        PlayerMove playerMove = new PlayerMove(worker.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 targetSlot.getSlotPosition(),
                 gameInstance.getTurn().getCurrentPlayer().getNickname());
@@ -322,7 +322,7 @@ public class GameManagerTest {
         Slot targetSlot = gameInstance.getBoard().getSlot(new Position(0, 1));
         worker.move(workerSlot);
 
-        PlayerMove playerMove = new PlayerMove(worker,
+        PlayerMove playerMove = new PlayerMove(worker.getIdWorker(),
                 Actions.BUILD_STANDARD,
                 targetSlot.getSlotPosition(),
                 gameInstance.getTurn().getCurrentPlayer().getNickname());

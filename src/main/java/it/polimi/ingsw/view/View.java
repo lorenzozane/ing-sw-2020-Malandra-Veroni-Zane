@@ -2,16 +2,16 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
-import it.polimi.ingsw.model.PlayerMoveStartup;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.network.Client.UserInterface;
-import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class View extends MessageForwarder {
 
@@ -28,8 +28,11 @@ public class View extends MessageForwarder {
     private final StringSender stringSender = new StringSender();
     private final StringReceiver stringReceiver = new StringReceiver();
 
-    //TODO: Mich completa tu i costruttori in base a quello che ti serve
-    //Ne ho fatti due in modo da averne uno in caso di creazione CLI e uno GUI (se non serve risistema tu)
+    /**
+     * Constructor of the View that interact with the player's CLI or GUI.
+     *
+     * @param playerCli Is the instance of the CLI that the player has chosen to use.
+     */
     public View(Cli playerCli) {
         this.chosenUserInterface = UserInterface.CLI;
         this.playerCli = playerCli;
@@ -37,6 +40,11 @@ public class View extends MessageForwarder {
         this.playerGui = null;
     }
 
+    /**
+     * Constructor of the View that interact with the player's CLI or GUI.
+     *
+     * @param playerGui Is the instance of the GUI that the player has chosen to use.
+     */
     public View(Gui playerGui) {
         this.chosenUserInterface = UserInterface.GUI;
         this.playerGui = playerGui;
@@ -49,26 +57,57 @@ public class View extends MessageForwarder {
             this.remoteView = remoteView;
     }
 
+    /**
+     * Allows to define the player owner of this view nickname.
+     *
+     * @param playerOwnerNickname The player nickname.
+     */
     public void setPlayerOwnerNickname(String playerOwnerNickname) {
         if (this.playerOwnerNickname == null)
             this.playerOwnerNickname = playerOwnerNickname;
     }
 
+    //TODO: Agli errori che passano di qua viene aggiunto un a capo. Verificare
+
+    /**
+     * Sends to the CLI or GUI an error message to be shown.
+     *
+     * @param errorToShow The error message to be shown.
+     */
     public void showErrorMessage(String errorToShow) {
         showMessage(errorToShow);
     }
 
+    /**
+     * Sends to the CLI or GUI a message to be shown.
+     *
+     * @param messageToShow The message to be shown.
+     */
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
-            playerCli.showMessage(messageToShow);
+            if(currentMove.isStartupPhase()){
+                playerCli.showMessage(messageToShow);
+            }
+            else if(!(currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))){
+                playerCli.showMessage(messageToShow);
+            }
+            else
+                playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
+
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
         }
 
+        //TODO: Spostare in showErrorMessage?
         if (messageToShow.contains("Error: "))
             repeatCurrentMove(currentMove);
     }
 
+    /**
+     * Sends to the CLI or GUI a message sent to all player to be shown.
+     *
+     * @param messageToShow The message to be shown.
+     */
     public void showSimultaneousMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             playerCli.showSimultaneousMessage(messageToShow);
@@ -80,8 +119,13 @@ public class View extends MessageForwarder {
             repeatCurrentMove(currentMove);
     }
 
+    /**
+     * Causes the player to repeat the last move, usually after an error.
+     *
+     * @param currentMove The move to repeat.
+     */
     private void repeatCurrentMove(UpdateTurnMessage currentMove) {
-        handleUpdateTurnFromSocket(currentMove);
+        handleUpdateTurnMessage(currentMove);
 
 //        if (lastMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
 //            handleMessageForMe(currentMove);
@@ -89,6 +133,11 @@ public class View extends MessageForwarder {
 //            handleMessageForOthers(currentMove);
     }
 
+    /**
+     * Logic used to handle the player response to a move request (or more generally a response).
+     *
+     * @param response The player response to handle.
+     */
     public void handleResponse(String response) {
         if (currentMove == null) {
             //TODO: Implementare gestione risposte pre partita (a posto così?)
@@ -98,131 +147,281 @@ public class View extends MessageForwarder {
             if (currentMove.isStartupPhase()) {
                 PlayerMoveStartup moveStartupToSend = createPlayerMoveStartup();
 
-                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST) {
+                if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
+                        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
                     PlayerColor chosenPlayerColor = convertStringToPlayerColor(response);
                     if (chosenPlayerColor == null) {
-                        showMessage(ViewMessage.wrongInput);
+                        showErrorMessage(ViewMessage.wrongColorChose);
                         return;
                     } else {
                         moveStartupToSend.setChosenColor(chosenPlayerColor);
                     }
                 } else if (currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST ||
-                        currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST) {
+                        currentMove.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST ||
+                        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
                     moveStartupToSend.setChosenCard(response);
-                } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER) {
-                    moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
+                } else if (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                        currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
+                    if (convertStringToPosition(response) != null)
+                        moveStartupToSend.setWorkerPosition(convertStringToPosition(response));
+                    else {
+                        showErrorMessage(ViewMessage.wrongInputCoordinates);
+                        return;
+                    }
                 }
 
                 sendPlayerMoveStartup(moveStartupToSend);
             } else {
-                PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
-                convertStringToPosition(response);
-                sendPlayerMove(playerMoveToSend);
+                if (response.equalsIgnoreCase("undo")) {
+                    if (currentMove.getNextMove() != Actions.CHOSE_WORKER) {
+                        PlayerMove playerMoveToSend = createPlayerMoveUndo();
+                        sendPlayerMove(playerMoveToSend);
+                    } else {
+                        showErrorMessage(ViewMessage.cannotUndo);
+                        return;
+                    }
+                } else if (response.equalsIgnoreCase("skip")) {
+                    if (currentMove.getNextMove() == Actions.BUILD_BEFORE) {
+                        PlayerMove playerMoveToSend = createPlayerMoveSkip();
+                        sendPlayerMove(playerMoveToSend);
+                    } else {
+                        showErrorMessage(ViewMessage.cannotSkipThisMove);
+                        return;
+                    }
+                } else {
+                    Worker workerInSlot;
+
+                    //TODO: Si può fare diversamente?
+                    if (convertStringToPosition(response) == null) {
+                        showErrorMessage(ViewMessage.wrongInputCoordinates);
+                    } else {
+                        if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
+                            workerInSlot = currentMove.getBoardCopy().getSlot(Objects.requireNonNull(convertStringToPosition(response))).getWorkerInSlot();
+                            if (workerInSlot != null) {
+                                if (currentMove.getCurrentPlayer().getWorkers().stream().map(Worker::getIdWorker).anyMatch(workerInSlot.getIdWorker()::equalsIgnoreCase)) {
+                                    Worker finalWorkerInSlot = workerInSlot;
+                                    workerInSlot = currentMove.getCurrentPlayer().getWorkers().stream().filter(worker -> worker.getIdWorker().equals(finalWorkerInSlot.getIdWorker())).findFirst().orElse(null);
+                                    assert workerInSlot != null;
+                                    PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response), workerInSlot.getIdWorker());
+                                    sendPlayerMove(playerMoveToSend);
+                                } else {
+                                    showErrorMessage(ViewMessage.choseNotYourWorker);
+                                    return;
+                                }
+                            } else {
+                                showErrorMessage(ViewMessage.noWorkerInSlot);
+                                return;
+                            }
+                        } else {
+                            PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
+                            sendPlayerMove(playerMoveToSend);
+                        }
+                    }
+                }
             }
-        } else
-            showMessage(Message.wrongTurnMessage);
+        } else {
+            showMessage(ViewMessage.wrongTurnMessage);
+            return;
+        }
     }
 
+    /**
+     * Sends to the controller the move performed by the player during the game.
+     *
+     * @param playerMove PlayerMove performed by the player.
+     */
     private void sendPlayerMove(PlayerMove playerMove) {
         playerMoveSender.notifyAll(playerMove);
     }
 
+    /**
+     * Sends to the controller the move performed by the player during the startup phase.
+     *
+     * @param playerMoveStartup PlayerMoveStartup performed by the player.
+     */
     private void sendPlayerMoveStartup(PlayerMoveStartup playerMoveStartup) {
         playerMoveStartupSender.notifyAll(playerMoveStartup);
     }
 
+    /**
+     * Converts the player's input into coordinates.
+     *
+     * @param coordinates Player's input to convert.
+     * @return Returns the coordinates created from the player's input.
+     */
     private Position convertStringToPosition(String coordinates) {
-        if (coordinates.length() > 2) {
+        if (coordinates.length() != 2) {
             showErrorMessage(ViewMessage.wrongInputCoordinates);
             return null;
         }
 
-        int coordinateX = coordinates.charAt(0);
-        int coordinateY = coordinates.charAt(1);
-        if (coordinateY >= 1 && coordinateY <= 5)
-            if (coordinateX >= 65 && coordinateX <= 69)
-                return new Position(coordinateX - 65, coordinateY - 1);
-            else if (coordinateX >= 97 && coordinateX <= 101)
-                return new Position(coordinateX - 97, coordinateY - 1);
+        int coordinateX = coordinates.charAt(1);
+        int coordinateY = coordinates.charAt(0);
+        if (coordinateX >= 49 && coordinateX <= 53)
+            if (coordinateY >= 65 && coordinateY <= 69)
+                return new Position(coordinateX - 49, coordinateY - 65);
+            else if (coordinateY >= 97 && coordinateY <= 101)
+                return new Position(coordinateX - 49, coordinateY - 97);
 
-        showErrorMessage(ViewMessage.wrongInputCoordinates);
         return null;
-
-//        int x = -1, y = -1;
-//        for (int i = 0; i < 5; i++) {
-//            if ((int) coordinates.charAt(0) == (i+65)) {
-//                x=i;
-//            }
-//            if ((int) coordinates.charAt(1) == (i+1)) {
-//                y=i;
-//            }
-//        }
-//        return new Slot(new Position(x, y));
     }
 
+    /**
+     * Converts the player's input into a PlayerColor.
+     *
+     * @param playerColor Player's input to convert.
+     * @return Returns the PlayerColor chosen by the player.
+     */
     private PlayerColor convertStringToPlayerColor(String playerColor) {
         switch (playerColor.toLowerCase()) {
             case "red":
-                return PlayerColor.RED;
-//                TODO: Queste cose le dovrà fare il GameInitializationManager
-//                turn.getCurrentPlayer().setPlayerColor(Color.PlayerColor.RED);
-//                gameInstance.removeColor(Color.PlayerColor.RED);
+                if (currentMove.getAvailableColor().contains(PlayerColor.RED))
+                    return PlayerColor.RED;
+                break;
             case "cyan":
-                return PlayerColor.CYAN;
+                if (currentMove.getAvailableColor().contains(PlayerColor.CYAN))
+                    return PlayerColor.CYAN;
+                break;
             case "yellow":
-                return PlayerColor.YELLOW;
-            default:
-                return null;
+                if (currentMove.getAvailableColor().contains(PlayerColor.YELLOW))
+                    return PlayerColor.YELLOW;
+                break;
         }
+
+        return null;
     }
 
+    /**
+     * Allows to know which PlayerColor are available to be chosen from the current player.
+     *
+     * @param availableColor ArrayList of PlayerColor available to be chosen.
+     * @return Returns a formatted string to be shown at the player containing all the available PlayerColor as text.
+     */
     private String getAvailableColorBuilder(ArrayList<PlayerColor> availableColor) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Color.PlayerColor playerColor : availableColor) {
-            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString(playerColor)).append(Color.RESET).append(" or");
+        for (PlayerColor playerColor : availableColor) {
+            stringBuilder.append(" ").append(playerColor.getEscape()).append(playerColor.getColorAsString()).append(Color.RESET).append(" or");
         }
         stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
         return String.valueOf(stringBuilder);
     }
 
+    /**
+     * Allows to know which GodsCard are available to be chosen from the current player.
+     *
+     * @param availableCards ArrayList of GodsCard available to be chosen.
+     * @return Returns a formatted string to be shown at the player containing all the available GodsCard as text.
+     */
+    private String getAvailableCardsBuilder(ArrayList<GodsCard> availableCards) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (GodsCard godsCard : availableCards) {
+            stringBuilder.append("\n").append(godsCard.getCardName().toUpperCase()).append(": ").append(godsCard.getCardDescription());
+        }
+
+        return String.valueOf(stringBuilder);
+    }
+
+    //TODO: ??
     protected boolean colorChecker(PlayerColor playerColor) {
         return playerColor != null;
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller based on player's input. Used when choosing the worker.
+     *
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move.
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
     protected PlayerMove createPlayerMove(Position targetSlotPosition) {
         return new PlayerMove(
-                        currentMove.getCurrentWorker(),
-                        currentMove.getNextMove(),
-                        targetSlotPosition,
-                        currentMove.getCurrentPlayer().getNickname());
+                currentMove.getCurrentWorker().getIdWorker(),
+                currentMove.getNextMove(),
+                targetSlotPosition,
+                currentMove.getCurrentPlayer().getNickname());
     }
 
+    /**
+     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
+     *
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move.
+     * @param currentWorker The worker chose by the player to play with this turn.
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
+    protected PlayerMove createPlayerMove(Position targetSlotPosition, String currentWorker) {
+        return new PlayerMove(
+                currentWorker,
+                currentMove.getNextMove(),
+                targetSlotPosition,
+                currentMove.getCurrentPlayer().getNickname());
+    }
+
+    /**
+     * Create the PlayerMove to be send at the controller which describes the intention to use the UNDO function.
+     *
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
+    protected PlayerMove createPlayerMoveUndo() {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.UNDO,
+                currentMove.getCurrentWorker().getWorkerPosition(),
+                currentMove.getCurrentPlayer().getNickname()
+                );
+    }
+
+    /**
+     * Create the PlayerMove to be send at the controller which describes the intention to use the SKIP function.
+     *
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
+    protected PlayerMove createPlayerMoveSkip() {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.SKIP,
+                currentMove.getCurrentWorker().getWorkerPosition(),
+                currentMove.getCurrentPlayer().getNickname()
+        );
+    }
+
+    /**
+     * Create the PlayerMoveStartup to be send at the controller based on player's input in the startup phase of the game.
+     *
+     * @return Returns the PlayerMoveStartup ready to be forwarded to the controller.
+     */
     protected PlayerMoveStartup createPlayerMoveStartup() {
-        return new PlayerMoveStartup(
-                        currentMove.getCurrentPlayer(),
-                        currentMove.getNextStartupMove());
-
-        //TODO: Logica set proprietà
+        return new PlayerMoveStartup(currentMove.getNextStartupMove());
     }
 
+    /**
+     * Handle the move received from server that are meant for me.
+     *
+     * @param message The message received from the server to handle.
+     */
     private void handleMessageForMe(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
-                showMessage(ViewMessage.pickLastColor);
-            else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
-                showMessage(ViewMessage.chooseCardRequest);
+            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
+                showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0).getColorAsString());
+                new Thread(() -> handleResponse(message.getAvailableColor().get(0).getColorAsString())).start();
+            } else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+                showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
             else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
-                showMessage(ViewMessage.pickUpCardRequest);
-            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
-                showMessage(ViewMessage.pickLastCard);
-            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER)
-                showMessage(ViewMessage.placeWorker);
-        } else {
-            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
+                showMessage(ViewMessage.pickUpCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
+            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD) {
+                showMessage(ViewMessage.pickLastCard + message.getAvailableCards().get(0).getCardName().toUpperCase());
+                new Thread(() -> handleResponse(message.getAvailableCards().get(0).getCardName())).start();
+            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                 refreshView(message.getBoardCopy(), chosenUserInterface);
-            if (message.getNextMove() == Actions.MOVE_STANDARD)
+                showMessage(ViewMessage.placeWorker);
+            }
+        } else {
+            refreshView(message.getBoardCopy(), chosenUserInterface);
+
+            if (message.getNextMove() == Actions.CHOSE_WORKER)
+                showMessage(ViewMessage.choseYourWorker);
+            else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
                 showMessage(ViewMessage.moveNotInitialPosition);
@@ -230,7 +429,7 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.moveOpponentSlotFlip);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
                 showMessage(ViewMessage.moveOpponentSlotPush);
-            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
+            else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP) //TODO: se ho atena questo messaggio non devve essere stampato a me
                 showMessage(ViewMessage.moveDisableOpponentUp);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
                 showMessage(ViewMessage.buildStandard);
@@ -245,68 +444,121 @@ public class View extends MessageForwarder {
         }
     }
 
-    //TODO: Nel caso la lastMovePerformedBy non sia stata fatta dal playerOwner della view deve anche essere refreshata la board
     //Bisogna anche gestire tutti gli aggiornamenti grafici oltre ai messaggi che possono funzionare da log
+
+    /**
+     * Handle the move received from server that are meant for another player.
+     *
+     * @param message The message received from the server to handle.
+     */
     private void handleMessageForOthers(UpdateTurnMessage message) {
         if (message.isStartupPhase()) {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
-                showMessage(message.getCurrentPlayer().getNickname() + " is choosing between these colors " + getAvailableColorBuilder(message.getAvailableColor()));
-
-        } else {
-            if (!message.getLastMovePerformedBy().equals(playerOwnerNickname))
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.colorRequestOthers + getAvailableColorBuilder(message.getAvailableColor()));
+//            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR)
+//                showMessage(ViewMessage.pickLastCard);
+            else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.chooseCardRequestOthers);
+            else if (message.getNextStartupMove() == StartupActions.PICK_UP_CARD_REQUEST)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.pickUpCardRequestOthers);
+//            else if (message.getNextStartupMove() == StartupActions.PICK_LAST_CARD)
+//                showMessage(ViewMessage.pickLastCard);
+            else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                    message.getNextStartupMove() == StartupActions.PLACE_WORKER_2) {
                 refreshView(message.getBoardCopy(), chosenUserInterface);
-            if (message.getNextMove() == Actions.MOVE_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
+            }
+        } else {
+            refreshView(message.getBoardCopy(), chosenUserInterface);
+            if (message.getNextMove() == Actions.CHOSE_WORKER)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.choseYourWorkerOthers);
+            else if (message.getNextMove() == Actions.MOVE_STANDARD)
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveNotInitialPositionOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveNotInitialPositionOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_FLIP)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotFlipOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotFlipOthers);
             else if (message.getNextMove() == Actions.MOVE_OPPONENT_SLOT_PUSH)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveOpponentSlotPushOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveOpponentSlotPushOthers);
             else if (message.getNextMove() == Actions.MOVE_DISABLE_OPPONENT_UP)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.moveDisableOpponentUpOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveDisableOpponentUpOthers);
             else if (message.getNextMove() == Actions.BUILD_STANDARD)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildStandardOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildStandardOthers);
             else if (message.getNextMove() == Actions.BUILD_BEFORE)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildBeforeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildBeforeOthers);
             else if (message.getNextMove() == Actions.BUILD_NOT_SAME_PLACE)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildNotSamePlaceOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildNotSamePlaceOthers);
             else if (message.getNextMove() == Actions.BUILD_SAME_PLACE_NOT_DOME)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildSamePlaceNotDomeOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildSamePlaceNotDomeOthers);
             else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
-                showMessage(message.getCurrentPlayer().getNickname() + " " + ViewMessage.buildDomeAnyLevelOthers);
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.buildDomeAnyLevelOthers);
         }
     }
 
-
+    /**
+     * Redraws the updated board to show to the player.
+     *
+     * @param newBoard The updated board to be shown.
+     * @param userInterface User chosen interface.
+     */
     public void refreshView(Board newBoard, UserInterface userInterface) {
-        if (userInterface == UserInterface.CLI && playerCli != null)
+        if (userInterface == UserInterface.CLI && playerCli != null){
+            clearConsole(); //funziona solo fuori da IntelliJ
             playerCli.refreshBoard(newBoard);
+        }
         else if (userInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
             //playerGui.refreshBoard()
         }
     }
 
+    /**
+     * Activate the response reader in the user interface to handle the player's response during the game.
+     */
+    private void activateReadResponse() {
+        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
+            playerCli.activateAsyncReadResponse();
+        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            //TODO: Gui
+        }
 
+        activeReadResponse = true;
+    }
 
-
-
+    /**
+     * Adds an observer of PlayerMove to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
     public void addPlayerMoveObserver(Observer<PlayerMove> observer) {
         playerMoveSender.addObserver(observer);
     }
 
+    /**
+     * Adds an observer of PlayerMoveStartup to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
     public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
         playerMoveStartupSender.addObserver(observer);
     }
 
-    public void addStringObserver(Observer<String> observer){
+    /**
+     * Adds an observer of String to the set of observers for this object, provided that it is not the same as some observer already in the set.
+     *
+     * @param observer An observer to be added (consistently with the generics type declaration).
+     */
+    public void addStringObserver(Observer<String> observer) {
         stringSender.addObserver(observer);
     }
 
-
+    /**
+     * Method to override to handle message received by the UpdateTurnMessageReceiver.
+     *
+     * @param message The message to handle.
+     */
     @Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) {
         if (!activeReadResponse)
             activateReadResponse();
 
@@ -318,18 +570,13 @@ public class View extends MessageForwarder {
             handleMessageForOthers(message);
     }
 
-    private void activateReadResponse() {
-        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
-            playerCli.activateAsyncReadResponse();
-        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
-        }
-
-        activeReadResponse = true;
-    }
-
+    /**
+     * Method to override to handle message received by the StringReceiver.
+     *
+     * @param messageString The message to handle.
+     */
     @Override
-    public void handleString(String messageString){
+    public void handleString(String messageString) {
         showSimultaneousMessage(messageString);
     }
 
@@ -337,18 +584,22 @@ public class View extends MessageForwarder {
         return updateTurnMessageReceiver;
     }
 
-    public StringReceiver getStringReceiver(){ return stringReceiver;}
+    public StringReceiver getStringReceiver() {
+        return stringReceiver;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    public static void clearConsole() {
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            }
+            else {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (final Exception ignored) {
+        }
+    }
 }
 

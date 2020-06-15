@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +20,8 @@ public class Deck {
 
     Game gameInstance;
     private final ArrayList<GodsCard> cardList = new ArrayList<>();
-    private final HashMap<String, GodsCard> chosenCards = new HashMap<>();
+    private final LinkedHashMap<String, GodsCard> chosenCards = new LinkedHashMap<>();
+    private ArrayList<GodsCard> availableCardsToChose = new ArrayList<>();
 
     /**
      * Constructor of the game deck
@@ -61,6 +63,8 @@ public class Deck {
                     cardList.add(card);
                 }
             }
+
+            availableCardsToChose = getCardListCopy();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -82,6 +86,7 @@ public class Deck {
                 addCardToChosen(cardName);
 
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.chooseCards");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -107,6 +112,7 @@ public class Deck {
                 }
             }
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.addCardToChosen");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -127,18 +133,22 @@ public class Deck {
                     GodsCard detectedCard = chosenCards.get(godCardName);
                     chosenCards.remove(godCardName);
                     return detectedCard;
-                }
-                else {
+                } else {
                     throw new IllegalArgumentException();
                 }
             }
             return null;
         } catch (IllegalArgumentException ex) {
+            System.out.println("Exception thrown from Deck.pickUpCard");
             throw ex;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+
+    public void removeAvailableCard(String godCardName) {
+        availableCardsToChose.removeIf(x -> x.getCardName().equals(godCardName.toLowerCase()));
     }
 
     public boolean isAGodName(String godCardName) {
@@ -203,21 +213,37 @@ public class Deck {
         return clonedCardList;
     }
 
+    public ArrayList<GodsCard> getAvailableCardsToChoseCopy() {
+        ArrayList<GodsCard> clonedCardList = new ArrayList<>(availableCardsToChose.size());
+        for (GodsCard card : availableCardsToChose)
+            clonedCardList.add(card.clone());
+
+        return clonedCardList;
+    }
+
     /**
-     * Return a copy of the HashMap containing the chosen cards
+     * Return a copy of the ArrayList containing the chosen cards
      *
-     * @return HashMap containing the chosen cards
+     * @return ArrayList of GodsCard containing the chosen cards
      */
-    public HashMap<String, GodsCard> getChosenCardsCopy() {
-        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
+    public ArrayList<GodsCard> getChosenCardsCopy() {
+        ArrayList<GodsCard> clonedChosenCards = new ArrayList<>(chosenCards.size());
         for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
-            clonedChosenCards.put(card.getKey(), card.getValue().clone());
+            clonedChosenCards.add(card.getValue().clone());
 
         return clonedChosenCards;
     }
 
+//    public HashMap<String, GodsCard> getChosenCardsCopy() {
+//        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
+//        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
+//            clonedChosenCards.put(card.getKey(), card.getValue().clone());
+//
+//        return clonedChosenCards;
+//    }
+
     //TODO: View
-    public void printAllDeck(){
+    public void printAllDeck() {
         for (GodsCard godsCard : cardList) {
             System.out.println(godsCard.toString());
         }

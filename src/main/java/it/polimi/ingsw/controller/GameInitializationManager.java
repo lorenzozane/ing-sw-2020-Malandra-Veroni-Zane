@@ -3,16 +3,13 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
-import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.view.ViewMessage;
 
-import java.util.*;
+import java.util.ArrayList;
 
 
-public class  GameInitializationManager extends MessageForwarder {
-
-    //TODO: Metodi inizializzazione deck e scelta carte (challenge)
+public class GameInitializationManager extends MessageForwarder {
 
     private final Game gameInstance;
     private final Turn turn;
@@ -33,21 +30,32 @@ public class  GameInitializationManager extends MessageForwarder {
         String godCardName = message.getChosenCard();
 
         if (deck.isAGodName(godCardName)) {
-            chosenCardList.add(godCardName);
-        } else {
-             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
-        }
+            if (!chosenCardList.contains(godCardName)) {
+                chosenCardList.add(godCardName);
+                deck.removeAvailableCard(godCardName);
 
-        if (chosenCardList.size() == gameInstance.getPlayerNumber())
-            deck.chooseCards(chosenCardList.toArray(new String[0]));
+                if (chosenCardList.size() == gameInstance.getPlayerNumber())
+                    deck.chooseCards(chosenCardList.toArray(new String[0]));
+
+                turn.updateTurn();
+            } else {
+                message.getRemoteView().errorMessage(ViewMessage.cardAlreadyChoose);
+            }
+        } else {
+            message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+        }
     }
 
     public void pickUpCard(PlayerMoveStartup message) {
         String godCardName = message.getChosenCard();
 
         if (deck.isAGodName(godCardName)) {
-            turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
-            turn.updateTurn();
+            try {
+                turn.getCurrentPlayer().setPlayerCard(deck.pickUpCard(godCardName));
+                turn.updateTurn();
+            } catch (IllegalArgumentException ex) {
+                message.getRemoteView().errorMessage(ViewMessage.wrongInput);
+            }
         } else {
             message.getRemoteView().errorMessage(ViewMessage.wrongInput);
         }
@@ -61,26 +69,35 @@ public class  GameInitializationManager extends MessageForwarder {
         turn.updateTurn();
     }
 
-    private void placeWorker(PlayerMoveStartup message) {
+    //TODO: Il worker che viene posizionato è un clone? Sistemare
+    private void placeWorker(PlayerMoveStartup message, int workerIndex) {
         Position workerPosition = message.getWorkerPosition();
-
         Board gameBoard = gameInstance.getBoard();
-
-
+        Slot targetSlot = gameBoard.getSlot(workerPosition);
+        if (targetSlot.getWorkerInSlot() == null) {
+            message.getPlayerOwner().getWorkers().get(workerIndex - 1).setWorkerSlot(targetSlot);
+            turn.updateTurn();
+        } else {
+            message.getRemoteView().errorMessage(ViewMessage.slotOccupied);
+        }
     }
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
-        if (message.getAction() == StartupActions.COLOR_REQUEST)
+        message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));
+
+        if (message.getAction() == StartupActions.COLOR_REQUEST ||
+                message.getAction() == StartupActions.PICK_LAST_COLOR)
             setPlayerColor(message);
         else if (message.getAction() == StartupActions.CHOOSE_CARD_REQUEST)
             buildChosenCard(message);
-        else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST)
+        else if (message.getAction() == StartupActions.PICK_UP_CARD_REQUEST ||
+                message.getAction() == StartupActions.PICK_LAST_CARD)
             pickUpCard(message);
-        else if (message.getAction() == StartupActions.PLACE_WORKER)
-            placeWorker(message);
-
-        //TODO: fare update del turno? per inviare un nuovo turn message?
+        else if (message.getAction() == StartupActions.PLACE_WORKER_1)
+            placeWorker(message, 1);
+        else if (message.getAction() == StartupActions.PLACE_WORKER_2)
+            placeWorker(message, 2);
     }
 
     public PlayerMoveStartupReceiver getPlayerMoveStartupReceiver() {

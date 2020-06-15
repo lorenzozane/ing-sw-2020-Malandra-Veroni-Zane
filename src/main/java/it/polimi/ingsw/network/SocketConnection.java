@@ -71,7 +71,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      * Close the socketConnection
      */
     public synchronized void closeConnection() {
-        send("Connection closed! by server");
+        send("Connection closed! socketConnection.closeconnection");
         try {
             socket.close();
         } catch (IOException e) {
@@ -86,12 +86,13 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      *
      * @param nickname The client unique name
      */
+    /*
     private void closeSocket(String nickname) throws IOException, IllegalAccessException, ParseException {
         closeConnection();
         System.out.println("Deregistering client...");
         server.deregisterConnection(nickname, this);
         System.out.println("Done!");
-    }
+    }*/
 
 
     /**
@@ -155,7 +156,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             asyncSend(Message.gameLoading);
 
             while(isActive()){
-                inputObject= in.readObject();
+                inputObject = in.readObject();
 
                 if(inputObject instanceof PlayerMoveStartup){
                     handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
@@ -165,17 +166,18 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                     handlePlayerMove((PlayerMove) inputObject);
                 }
                 else
-                    asyncSend(Message.error + " at 161");
+                    asyncSend(Message.error + " Exception thrown from SocketConnection.run");
 
             }
         } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
             e.printStackTrace();
-            System.err.println("Error!" + e.getMessage());
+            System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
         } finally {
             try {
                 server.deregisterConnection(nickname, this);
                 closeConnection();
             } catch (IOException | IllegalAccessException | ParseException e) {
+                System.out.println("Exception thrown from SocketConnection.run");
                 e.printStackTrace();
             }
         }
@@ -201,9 +203,10 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                         handlePlayerMove((PlayerMove) inputObject);
                     }
                     else
-                        asyncSend(Message.error + " at 197");
+                        asyncSend(Message.error + " at 205");
                 }
             } catch (Exception e) {
+                System.out.println("Exception thrown from SocketConnection.asyncReadFromSocket");
                 System.err.println("Error!" + e.getMessage());
                 this.active = false;
             }
@@ -241,15 +244,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     }
 
 
-    public Socket getSocket() {
-        return this.socket;
-    }
-
-
-
 
     @Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
+    protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
         asyncSend(message);
     }
 

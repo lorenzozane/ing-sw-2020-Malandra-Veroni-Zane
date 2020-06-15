@@ -13,6 +13,7 @@ public class Cli {
     protected Player playerOwner;
     protected View viewOwner = null;
     private static final int SLOT_HEIGHT = 6;
+    private Scanner scanner = new Scanner(System.in);
 
     public void setViewOwner(View viewOwner) {
         if (this.viewOwner == null)
@@ -75,9 +76,12 @@ public class Cli {
     public void refreshBoard(Board board) {
         currentGameBoard = deepCopyStringArray(emptyGameBoard);
 
-        for (int i = 0; i < board.getBoardDimension(); i++)
-            for (int j = 0; j < board.getBoardDimension(); j++)
+        for (int i = 0; i < board.getBoardDimension(); i++) {
+            for (int j = 0; j < board.getBoardDimension(); j++) {
                 refreshSlot(board.getSlot(new Position(i, j)));
+            }
+        }
+        printGameBoard();
     }
 
     public void refreshSlot(Slot slot) {
@@ -181,19 +185,19 @@ public class Cli {
 //            new Thread(this::readResponse).start();
     }
 
+    public void showMessage(String messageToShow, PlayerColor playerColor) {
+        System.out.println(playerColor.getEscape() + messageToShow + Color.RESET);
+    }
+
     public void activateAsyncReadResponse() {
         asyncReadResponse();
     }
 
     private void asyncReadResponse() {
-        Scanner scanner = new Scanner(System.in);
-        Thread asyncReadResponse = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) { //TODO: Modificare con isActive()?
-                    String input = scanner.nextLine();
-                    viewOwner.handleResponse(input);
-                }
+        Thread asyncReadResponse = new Thread(() -> {
+            while (true) { //TODO: Modificare con isActive()?
+                String input = scanner.nextLine();
+                new Thread(() -> viewOwner.handleResponse(input)).start();
             }
         });
 
@@ -207,7 +211,6 @@ public class Cli {
     }
 
     private void readResponse() {
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         viewOwner.handleResponse(input);
     }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Color.PlayerColor;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 
 public class Game {
 
@@ -12,15 +12,11 @@ public class Game {
     private int playerNumber/* = 1*/;
     private final Board board = new Board();
     private final Deck deck = new Deck(this);
+    private final ArrayList<PlayerColor> colorList = new ArrayList<>();
     private Player challengerPlayer;
-    private final ArrayList<PlayerColor> colorList = new ArrayList<PlayerColor>() {{
-        add(PlayerColor.CYAN);
-        add(PlayerColor.RED);
-        add(PlayerColor.YELLOW);
-    }};
 
     public Game() {
-
+        colorList.addAll(Arrays.asList(PlayerColor.values()));
     }
 
     public Turn getTurn() {
@@ -69,44 +65,30 @@ public class Game {
         return !playerList.contains(newPlayer);
     }
 
-    //TODO: Sfruttare il metodo in turn / Probabilmente si può togliere
-    private void setYoungestPlayer() {
-        this.playerList.sort(Comparator.comparing(Player::getBirthday).reversed());   //mette già in ordine di età
-        this.challengerPlayer = playerList.get(0);
-    }
-
 
 
     public void removePlayerByName(String nickname) throws IllegalAccessException {   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
         playerList.removeIf(p -> p.getNickname().equals(nickname));
-        stopGame();
     }
 
     public ArrayList<Player> getPlayerList() {
         return this.playerList;
     }
 
-    public void challenge() {
-        //mostrare alla view del challenger tutti gli dei
-
+    public Player getPlayerByName(String playerNickname) {
+        return playerList.stream().filter(player -> player.getNickname().equalsIgnoreCase(playerNickname)).findFirst().orElse(null);
     }
 
-    private void stopGame() throws IllegalAccessException { //quando si disconnette un player la partita finisce
-        if(playerNumber == 2){
-            //System.out.println("ramo di stopGame Hai vinto");// al playerList.get(0) (l'unico rimasto)  notificare che ha vinto
+    public Worker getWorkerByName(String workerId) {
+        Worker workerFounded = null;
+        for (Player player : playerList) {
+            workerFounded = player.getWorkers().stream().filter(worker -> worker.getIdWorker().equalsIgnoreCase(workerId)).findFirst().orElse(null);
+            if (workerFounded != null)
+                return workerFounded;
         }
-        else if(playerNumber == 3){
-            for (Player p : playerList) {
-                //notificare ai due player rimasti che la partita è finita in pareggio
-            }
-        }
-        else {
-            throw new IllegalAccessException();
-        }
-        
-        
-    }
 
+        return null;
+    }
 }
 
 

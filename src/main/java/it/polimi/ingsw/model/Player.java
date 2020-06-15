@@ -14,7 +14,7 @@ public class Player implements Serializable {
 
     private String nickname;
     private Date birthday;
-    private PlayerColor playerColor;
+    private PlayerColor playerColor = null;
     private final ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
     private boolean isPlaying;

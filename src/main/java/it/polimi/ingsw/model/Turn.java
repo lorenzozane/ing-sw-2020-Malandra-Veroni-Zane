@@ -47,6 +47,10 @@ public class Turn extends MessageForwarder {
         return player.equals(currentPlayer);
     }
 
+    public int getCurrentMoveIndex() {
+        return currentMoveIndex;
+    }
+
     public ArrayList<Worker> getCurrentPlayerWorkers() {
         return currentPlayer.getWorkers();
     }
@@ -96,13 +100,14 @@ public class Turn extends MessageForwarder {
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.COLOR_REQUEST));
             if (playerOrder.size() > 2)
                 startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));
-            startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
+            for (int i = 0; i < playerOrder.size(); i++)
+                startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));
             for (Player player : playerOrder.subList(1, playerOrder.size()))
                 startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PICK_UP_CARD_REQUEST));
             startupTurnSequence.add(new SimpleEntry<>(playerOrder.get(0), StartupActions.PICK_LAST_CARD));
             for (Player player : playerOrder) {
-                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
-                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER_1));
+                startupTurnSequence.add(new SimpleEntry<>(player, StartupActions.PLACE_WORKER_2));
             }
 
             updateTurn();
@@ -145,8 +150,6 @@ public class Turn extends MessageForwarder {
             updateTurnInGame();
     }
 
-    //TODO: Vogliamo mettere la lastMovePerformedBy anche nella fase di starup?
-
     /**
      * Update the turn to the next move to be performed in the startup phase of the game
      */
@@ -157,7 +160,15 @@ public class Turn extends MessageForwarder {
                 currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();
                 currentMoveIndex++;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());
-                updateTurnMessage.setChosenGodsCard(gameInstance.getDeck().getCardListCopy());
+                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST) {
+                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getAvailableCardsToChoseCopy());
+                } else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD) {
+                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());
+                } else if (nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2) {
+                    updateTurnMessage.setBoardCopy(gameInstance.getBoard());
+                }
+
+
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
             } else
                 setUpGameTurn();
@@ -179,7 +190,8 @@ public class Turn extends MessageForwarder {
             if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
                 Actions nextMove = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
                 currentMoveIndex++;
-                updateTurnMessageSender.notifyAll(new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker));
+                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker);
+                updateTurnMessageSender.notifyAll(updateTurnMessage);
             }
         }
     }
@@ -218,18 +230,27 @@ public class Turn extends MessageForwarder {
      */
     public void restoreToLastMovePerformed() {
         if (!movesPerformed.isEmpty()) {
-            PlayerMove moveToRestore = movesPerformed.getLast();
-            if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
-                //Invert the sequence of starting and target slot to make the reverse move
-                Slot targetSlot = moveToRestore.getStartingSlot();
-                moveToRestore.getMovedWorker().move(targetSlot);
-            } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
-                moveToRestore.getTargetSlot().destroyTopBuilding();
-            }
+            do {
+                PlayerMove moveToRestore = movesPerformed.getLast();
+                if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {
+                    //Invert the sequence of starting and target slot to make the reverse move
+                    Slot targetSlot = moveToRestore.getStartingSlot();
+                    moveToRestore.getMovedWorker().move(targetSlot);
+                } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {
+                    moveToRestore.getTargetSlot().destroyTopBuilding();
+                }
 
-            movesPerformed.removeLast();
+                if (moveToRestore.getMove() == Actions.BUILD_BEFORE) {
+                    turnSequenceMap.get(moveToRestore.getPlayerOwner()).setCanMoveUp(true);
+                } else if (moveToRestore.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {
+                    setOtherPlayerCanMoveUpTo(true);
+                }
+                movesPerformed.removeLast();
+            }
+            while (!movesPerformed.isEmpty() && movesPerformed.getLast().getForcedMove());
+
             if (currentMoveIndex > 0)
-                currentMoveIndex--;
+                currentMoveIndex = currentMoveIndex - 2;
 
             updateTurn();
         } else
@@ -305,7 +326,7 @@ public class Turn extends MessageForwarder {
                 turnSequenceMap.put(player, turnSequence);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.setUpTurnSequence");
         }
     }
 
@@ -324,7 +345,8 @@ public class Turn extends MessageForwarder {
             Element godElementMove = (Element) list.item(0);
             list = godElementMove.getChildNodes();
 
-            HashMap<Actions, Integer> moveSequence = new HashMap<>();
+            LinkedHashMap<Actions, Integer> moveSequence = new LinkedHashMap<>();
+            moveSequence.put(Actions.CHOSE_WORKER, 0);
             for (int i = 0; i < list.getLength(); i++) {
                 Node moveNode = list.item(i);
                 if (moveNode.getNodeType() != Node.ELEMENT_NODE && moveNode.getNextSibling() != null) {
@@ -341,7 +363,7 @@ public class Turn extends MessageForwarder {
 
             return new ArrayList<>(moveSequence.keySet());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.loadMoveSequence");
             return null;
         }
     }
@@ -372,7 +394,7 @@ public class Turn extends MessageForwarder {
 
             return winConditions;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "Exception thrown from Turn.loadWinCondition");
             return null;
         }
     }

@@ -7,7 +7,6 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.View;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -81,12 +80,13 @@ public class Client extends MessageForwarder {
                         }
 
                     } else if (inputObject instanceof UpdateTurnMessage) {
-                        handleUpdateTurnFromSocket((UpdateTurnMessage) inputObject);
+                        handleUpdateTurnMessageFromSocket((UpdateTurnMessage) inputObject);
                     }
 
 
                 }
             } catch (Exception e) {
+                System.out.println("Exception thrown from Client.asyncReadFromSocket");
                 setActive(false);
             }
         });
@@ -134,6 +134,7 @@ public class Client extends MessageForwarder {
             out.writeObject(message);
             out.flush();
         } catch (IOException e) {
+            System.out.println("Exception thrown from Client.send");
             System.err.println(e.getMessage());
         }
 
@@ -153,9 +154,9 @@ public class Client extends MessageForwarder {
 
             while (isActive()) ;
         } catch (Exception e) {
-            System.out.println("Connection closed by Exception");
+            System.out.println("Connection closed from Client.run: " + e.getMessage());
         } finally {
-            System.out.println("Connection closed from 159 Client");
+            System.out.println("Client.run: Connection closed");
             closeConnection();
         }
     }
@@ -164,7 +165,7 @@ public class Client extends MessageForwarder {
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error when closing socket!");
+            System.err.println("Client.closeConnection: Error during socket closure");
         }
         active = false;
     }
@@ -180,14 +181,13 @@ public class Client extends MessageForwarder {
         asyncSend(message);
     }
 
-    //@Override
-    protected void handleUpdateTurnFromSocket(UpdateTurnMessage message) {
-        updateTurnMessageSender.notifyAll(message);
-    }
-
     @Override
     protected void handleString(String message) {
         asyncSend(message);
+    }
+
+    protected void handleUpdateTurnMessageFromSocket(UpdateTurnMessage message) {
+        updateTurnMessageSender.notifyAll(message);
     }
 
     protected void sendStringToClient(String message) {

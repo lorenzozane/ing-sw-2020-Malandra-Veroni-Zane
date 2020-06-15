@@ -23,7 +23,7 @@ public class Server {
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
     private final Map<String, SocketConnection> waitingConnection = new LinkedHashMap<>();
-    // ci serve? private final Map<Connection, Connection> playingConnection = new HashMap<>();
+    private final Map<String, SocketConnection> playingConnection = new LinkedHashMap<>();
     private final ArrayList<String> nicknameDatabase = new ArrayList<>();
     private String currentCreator = "";
     private final ArrayList<Player> usersReady = new ArrayList<>();
@@ -47,11 +47,23 @@ public class Server {
             for (Player p : game.getPlayerList()){
                 if(p.getNickname().equals(nick)){
                     game.removePlayerByName(nick);
+                    for(Player otherPlayer: game.getPlayerList()){
+                        playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            System.out.println("Exception thrown from Server.deregisterConnection");
+                            e.printStackTrace();
+                        }
+                        playingConnection.get(otherPlayer.getNickname()).closeConnection();
+                        playingConnection.remove(otherPlayer.getNickname());
+                    }
+                    playingConnection.remove(nick);
                 }
             }
         }
 
-        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0); //caso in cui il game ha 0 player == finito == lo elimino
+        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0);
 
         nicknameDatabase.remove(nick);
 
@@ -80,16 +92,14 @@ public class Server {
                 SocketConnection socketConnection = new SocketConnection(newSocket, this);
                 executor.submit(socketConnection);
             } catch (IOException e) {
-                System.out.println("Connection Error!");
+                System.out.println("Connection Error! Exception thrown from Server.run");
             }
         }
     }
 
-
     public ArrayList<String> getNicknameDatabase() {
         return nicknameDatabase;
     }
-
 
     public void addNickname(String nickname) {
         this.nicknameDatabase.add(nickname);
@@ -99,10 +109,9 @@ public class Server {
         this.nPlayer = nPlayer;
     }
 
-    protected int getnPlayer(){
+    protected int getNPlayer(){
         return nPlayer;
     }
-
 
     public Map<String, SocketConnection> getWaitingConnection() {
         return waitingConnection;
@@ -111,7 +120,6 @@ public class Server {
     public String getCurrentCreator(){
         return currentCreator;
     }
-
 
     /**
      * Check if the input string about number of player is legal
@@ -122,7 +130,6 @@ public class Server {
     public boolean noPlayerChecker(String s) {
         return s.equals("2") || s.equals("3");
     }
-
 
     public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.put(nickname, c);
@@ -143,12 +150,12 @@ public class Server {
                     try {
                         gameLobby();
                     } catch (Exception e) {
+                        System.out.println("Exception thrown from Server.lobby");
                         e.printStackTrace();
                     }
                 }).start();
         }
     }
-
 
     public void gameLobby() throws IllegalAccessException, IOException, ParseException {
         Game gameInstance = new Game();
@@ -172,7 +179,6 @@ public class Server {
         checkNewCreator();
     }
 
-
     private synchronized void checkNewCreator() throws IOException, IllegalAccessException, ParseException {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
@@ -184,7 +190,6 @@ public class Server {
             creatorSetup(waitingConnection.get(currentCreator));
         }
     }
-
 
     private void creatorSetup(SocketConnection c) throws IOException, IllegalAccessException, ParseException {
         c.asyncSend(Message.chooseNoPlayer);
@@ -207,6 +212,7 @@ public class Server {
             }
         }
         catch (ClassNotFoundException e){
+            System.out.println("Exception thrown from Server.creatorSetup");
             e.printStackTrace();
         }
 
@@ -217,17 +223,12 @@ public class Server {
                 try {
                     gameLobby();
                 } catch (Exception e) {
+                    System.out.println("Exception thrown from Server.creatorSetup");
                     e.printStackTrace();
                 }
             }).start();
 
     }
-
-
-    public void gameThread(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
-        new Thread(() -> gameSettings(gameInstance, usersReadyCopy, waitingConnectionCopy)).start();
-    }
-
 
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
         GameManager gameManager = new GameManager(gameInstance);
@@ -235,6 +236,7 @@ public class Server {
 
         for (int i = 0; i < gameInstance.getPlayerNumber(); i++) {
             SocketConnection socketConnection = waitingConnectionCopy.get(usersReadyCopy.get(i).getNickname());
+            playingConnection.put(usersReadyCopy.get(i).getNickname(), socketConnection);
             RemoteView remoteView = new RemoteView(usersReadyCopy.get(i).getNickname(), socketConnection);
 
             gameInstance.getTurn().addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
@@ -247,12 +249,10 @@ public class Server {
             try {
                 gameInstance.addPlayer(usersReadyCopy.get(i));
             } catch (IllegalAccessException e) {
+                System.out.println("Exception thrown from Server.gameSettings");
                 e.printStackTrace();
             }
         }
-
-
-
     }
 
 }
