@@ -17,7 +17,7 @@ public class Gui extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("src/main/resources/GuiStyle.fxml"));
         stage.setTitle("Test");
-        stage.setScene(new Scene(root, 800, 600));
+        stage.setScene(new Scene(root, 300, 200));
         stage.show();
     }
 
