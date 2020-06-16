@@ -1,14 +1,32 @@
 package it.polimi.ingsw.network;
 
+/**
+ * Class containing all the message that can be send to a player.
+ */
 public final class Message {
     //TODO: Possibile migliorare la gestione dei messaggi di tipo "errore" utilizzando delle enum
     public static String santorini =
             "                                                \n" +
-            "                    __              __       __ \n" +
-            " .-----.---.-.-----|  |_.-----.----|__.-----|__|\n" +
-            " |__ --|  _  |     |   _|  _  |   _|  |     |  |\n" +
-            " |_____|___._|__|__|____|_____|__| |__|__|__|__|\n" +
-            "                                                \n";
+                    "                    __              __       __ \n" +
+                    " .-----.---.-.-----|  |_.-----.----|__.-----|__|\n" +
+                    " |__ --|  _  |     |   _|  _  |   _|  |     |  |\n" +
+                    " |_____|___._|__|__|____|_____|__| |__|__|__|__|\n" +
+                    "                                                \n";
+
+    public static String gameOver =
+            " _______                            _______                   \n" +
+                    "|     __|.---.-.--------.-----.    |       |.--.--.-----.----.\n" +
+                    "|    |  ||  _  |        |  -__|    |   -   ||  |  |  -__|   _|\n" +
+                    "|_______||___._|__|__|__|_____|    |_______| \\___/|_____|__|  \n" +
+                    "                                                              \n";
+
+    public static String winner =
+            " ___ ___                   ________ __         __ \n" +
+                    "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
+                    " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
+                    "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
+                    "                                                  \n";
+
     public static String chooseNickname = "What is your nickname?";
     public static String chooseNicknameAgain = "Nickname already chosen, try again";
     public static String lobby = "Adding to lobby... it may take few seconds";
@@ -21,7 +39,9 @@ public final class Message {
     public static String chooseColorAgain = "Color not available, choose another one between";
     public static String wait = "Waiting for the other players";
     public static String gameLoading = "All players are ready, the game will start soon...";
-    public static String gameOver = "Game Over";
+//    public static String gameOver = "Game Over";
+    public static String undoFiveSeconds = "You have five seconds to UNDO before your turn ends.";
+
     //Message about not allowed movement
     public static String error = "Error: Error network";
     public static String wrongTurnMessage = "Error: It's not your turn. Wait your turn to make a move!";

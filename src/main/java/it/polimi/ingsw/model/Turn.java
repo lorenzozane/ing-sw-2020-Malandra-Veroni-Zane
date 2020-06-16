@@ -266,6 +266,10 @@ public class Turn extends MessageForwarder {
         return !movesPerformed.isEmpty();
     }
 
+    public void win(Player winner) {
+        //TODO: Gestire la vittoria
+    }
+
     /**
      * Returns the list of moves performed so far during the turn
      *
@@ -346,15 +350,17 @@ public class Turn extends MessageForwarder {
             list = godElementMove.getChildNodes();
 
             LinkedHashMap<Actions, Integer> moveSequence = new LinkedHashMap<>();
+            int priority = 0;
             moveSequence.put(Actions.CHOSE_WORKER, 0);
             for (int i = 0; i < list.getLength(); i++) {
                 Node moveNode = list.item(i);
                 if (moveNode.getNodeType() != Node.ELEMENT_NODE && moveNode.getNextSibling() != null) {
                     Node sibling = moveNode.getNextSibling();
-                    Integer priority = Integer.parseInt(sibling.getAttributes().getNamedItem("priority").getTextContent());
+                    priority = Integer.parseInt(sibling.getAttributes().getNamedItem("priority").getTextContent());
                     moveSequence.put(Actions.valueOf(sibling.getTextContent()), priority);
                 }
             }
+            moveSequence.put(Actions.WAIT_FOR_UNDO, ++priority);
             List<Map.Entry<Actions, Integer>> listToSort = new LinkedList<>(moveSequence.entrySet());
             listToSort.sort(Map.Entry.comparingByValue());
             moveSequence.clear();

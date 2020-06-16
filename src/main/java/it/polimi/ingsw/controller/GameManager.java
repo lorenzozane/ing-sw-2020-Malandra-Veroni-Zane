@@ -6,6 +6,8 @@ import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameManager extends MessageForwarder {
 
@@ -13,6 +15,8 @@ public class GameManager extends MessageForwarder {
     private final Turn turn;
     private final MoveVerifier moveVerifier;
     private String errorMessage = "";
+    private Timer timer = new Timer();
+    boolean undoDone = false;
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
 
     /**
@@ -46,33 +50,38 @@ public class GameManager extends MessageForwarder {
         }
         if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
             if (move.getMove() == Actions.UNDO)
-                if (turn.areThereMovesToUndo())
+                if (turn.areThereMovesToUndo()) {
+                    undoDone = true;
                     turn.restoreToLastMovePerformed();
-                else {
+                } else {
                     move.getRemoteView().errorMessage(Message.cannotUndo);
                     return;
                 }
             else if (move.getMove() == Actions.SKIP)
                 if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
                     turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
-                    turn.updateTurn();
+                    updateTurn();
                 }
                 else {
                     move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
                     return;
                 }
         }
-        else if (move.getMove().getActionType() == Actions.ActionType.SETUP && move.getMove() == Actions.CHOSE_WORKER) {
-            if (move.getTargetSlot().getWorkerInSlot() != null) {
-                if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
-                    setCurrentWorker(move);
+        else if (move.getMove().getActionType() == Actions.ActionType.SETUP) {
+            if (move.getMove() == Actions.CHOSE_WORKER) {
+                if (move.getTargetSlot().getWorkerInSlot() != null) {
+                    if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
+                        setCurrentWorker(move);
+                    } else {
+                        move.getRemoteView().errorMessage(Message.choseNotYourWorker);
+                        return;
+                    }
                 } else {
-                    move.getRemoteView().errorMessage(Message.choseNotYourWorker);
+                    move.getRemoteView().errorMessage(Message.noWorkerInSlot);
                     return;
                 }
-            } else {
-                move.getRemoteView().errorMessage(Message.noWorkerInSlot);
-                return;
+            } else if (move.getMove() == Actions.WAIT_FOR_UNDO) {
+                updateTurn();
             }
         }
 //        if (turn.getCurrentWorker() == null)
@@ -193,7 +202,7 @@ public class GameManager extends MessageForwarder {
         turn.addLastMovePerformed(move);
         if (!move.getForcedMove()) {
             checkWinConditions(move);
-            turn.updateTurn();
+            updateTurn();
         }
     }
 
@@ -205,7 +214,7 @@ public class GameManager extends MessageForwarder {
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
         turn.addLastMovePerformed(move);
-        turn.updateTurn();
+        updateTurn();
     }
 
     /**
@@ -216,7 +225,7 @@ public class GameManager extends MessageForwarder {
     protected void performBuildingDome(PlayerMove move) {
         move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
         turn.addLastMovePerformed(move);
-        turn.updateTurn();
+        updateTurn();
     }
 
     /**
@@ -228,7 +237,7 @@ public class GameManager extends MessageForwarder {
 //        if (!move.getForcedMove() && turn.getCurrentWorker() == null) {
         turn.setCurrentWorker(move.getMovedWorker());
         turn.addLastMovePerformed(move);
-        turn.updateTurn();
+        updateTurn();
 //        }
     }
 
@@ -240,16 +249,50 @@ public class GameManager extends MessageForwarder {
     protected void checkWinConditions(PlayerMove move) {
         boolean winner = false;
 
+        if (move.getPlayerOwner() == turn.getCurrentPlayer() &&
+                turn.getCurrentPlayerTurnSequence().getWinConditions().contains(TurnEvents.WinConditions.WIN_DOUBLE_MOVE_DOWN))
+        {
+            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) <= -2)
+                winner = true;
+        }
+
         if (move.getTargetSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL3 &&
                 move.getStartingSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL2)
             winner = true;
 
         if (winner)
-            return; //TODO: Notifica vittoria
+            turn.win(move.getPlayerOwner());
     }
 
-    protected void checkTurnIsOver() {
-        //TODO: Avere un "lastMove" nell'UpdateTurnMessage può servire per il countdown per UNDO (?)
+    /**
+     * Update the turn and, in case it's the last move of the turn, wait five seconds to allow the player to undo.
+     */
+    protected void updateTurn() {
+        try {
+            boolean isLastMove = false;
+            undoDone = false;
+            timer.cancel();
+            timer = new Timer();
+
+            if (turn.getCurrentMoveIndex() == turn.getCurrentPlayerTurnSequence().getMoveSequence().size())
+                isLastMove = true;
+
+            if (isLastMove) {
+                timer.schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (!undoDone)
+                                    turn.updateTurn();
+                            }
+                        },
+                        5000
+                );
+            } else
+            turn.updateTurn();
+        } catch (Exception ex) {
+            System.out.println("Exception thrown from GameManager.updateTurn. " + ex.getMessage());
+        }
     }
 
     @Override

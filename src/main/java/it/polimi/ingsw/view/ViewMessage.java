@@ -12,6 +12,7 @@ public class ViewMessage {
     public static String pickUpCardRequest = "Pick up your card from these card: ";
     public static String pickLastCard = "You have been assigned the following card: ";
     public static String placeWorker = "Choose worker's position.\n";
+    public static String undoInFiveSeconds = "You have five seconds to UNDO before your turn ends.\n";
 
     //SetUpActions-ForOthers
     public static String colorRequestOthers = " is choosing between these colors:";
@@ -65,4 +66,5 @@ public class ViewMessage {
     public static String cannotSkipThisMove = "Error: You can't skip this move!\n";
     public static String noWorkerInSlot = "Error: In this slot there are no workers!\n";
     public static String choseNotYourWorker = "Error: You must chose one of your's workers!\n";
+    public static String canOnlyUndo = "Error: You can only UNDO now!\n";
 }

@@ -85,13 +85,11 @@ public class View extends MessageForwarder {
      */
     public void showMessage(String messageToShow) {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
-            if(currentMove.isStartupPhase()){
+            if (currentMove.isStartupPhase()) {
                 playerCli.showMessage(messageToShow);
-            }
-            else if(!(currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))){
+            } else if (!(currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname))) {
                 playerCli.showMessage(messageToShow);
-            }
-            else
+            } else
                 playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
 
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
@@ -188,6 +186,8 @@ public class View extends MessageForwarder {
                         showErrorMessage(ViewMessage.cannotSkipThisMove);
                         return;
                     }
+                } else if (currentMove.getNextMove() == Actions.WAIT_FOR_UNDO) {
+                    showErrorMessage(ViewMessage.canOnlyUndo);
                 } else {
                     Worker workerInSlot;
 
@@ -344,7 +344,7 @@ public class View extends MessageForwarder {
      * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
      *
      * @param targetSlotPosition The position of the target slot chose by the player for the current move.
-     * @param currentWorker The worker chose by the player to play with this turn.
+     * @param currentWorker      The worker chose by the player to play with this turn.
      * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
     protected PlayerMove createPlayerMove(Position targetSlotPosition, String currentWorker) {
@@ -366,7 +366,7 @@ public class View extends MessageForwarder {
                 Actions.UNDO,
                 currentMove.getCurrentWorker().getWorkerPosition(),
                 currentMove.getCurrentPlayer().getNickname()
-                );
+        );
     }
 
     /**
@@ -378,6 +378,20 @@ public class View extends MessageForwarder {
         return new PlayerMove(
                 currentMove.getCurrentWorker().getIdWorker(),
                 Actions.SKIP,
+                currentMove.getCurrentWorker().getWorkerPosition(),
+                currentMove.getCurrentPlayer().getNickname()
+        );
+    }
+
+    /**
+     * Create the PlayerMove to be send at the controller which describes that the player can undo within 5 seconds before turn end.
+     *
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
+    protected PlayerMove createPlayerMoveLastMove() {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.WAIT_FOR_UNDO,
                 currentMove.getCurrentWorker().getWorkerPosition(),
                 currentMove.getCurrentPlayer().getNickname()
         );
@@ -441,6 +455,11 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.buildSamePlaceNotDome);
             else if (message.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)
                 showMessage(ViewMessage.buildDomeAnyLevel);
+            else if (message.getNextMove() == Actions.WAIT_FOR_UNDO) {
+                showMessage(ViewMessage.undoInFiveSeconds);
+                PlayerMove playerMoveToSend = createPlayerMoveLastMove();
+                sendPlayerMove(playerMoveToSend);
+            }
         }
     }
 
@@ -469,7 +488,8 @@ public class View extends MessageForwarder {
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
             }
         } else {
-            refreshView(message.getBoardCopy(), chosenUserInterface);
+            if (message.getNextMove() != Actions.WAIT_FOR_UNDO)
+                refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.CHOSE_WORKER)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.choseYourWorkerOthers);
             else if (message.getNextMove() == Actions.MOVE_STANDARD)
@@ -498,15 +518,14 @@ public class View extends MessageForwarder {
     /**
      * Redraws the updated board to show to the player.
      *
-     * @param newBoard The updated board to be shown.
+     * @param newBoard      The updated board to be shown.
      * @param userInterface User chosen interface.
      */
     public void refreshView(Board newBoard, UserInterface userInterface) {
-        if (userInterface == UserInterface.CLI && playerCli != null){
+        if (userInterface == UserInterface.CLI && playerCli != null) {
             clearConsole(); //funziona solo fuori da IntelliJ
             playerCli.refreshBoard(newBoard);
-        }
-        else if (userInterface == UserInterface.GUI && playerGui != null) {
+        } else if (userInterface == UserInterface.GUI && playerGui != null) {
             //TODO: Gui
             //playerGui.refreshBoard()
         }
@@ -593,12 +612,10 @@ public class View extends MessageForwarder {
             final String os = System.getProperty("os.name");
             if (os.contains("Windows")) {
                 Runtime.getRuntime().exec("cls");
-            }
-            else {
+            } else {
                 Runtime.getRuntime().exec("clear");
             }
-        }
-        catch (final Exception ignored) {
+        } catch (final Exception ignored) {
         }
     }
 }
