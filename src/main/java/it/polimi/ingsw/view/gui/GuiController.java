@@ -6,6 +6,6 @@ public class GuiController {
 
     public void bottonPress(Event event){
 
-        System.out.println("botton pressed");
+        System.out.println("Botton pressed");
     }
 }
