@@ -63,7 +63,6 @@ public class Worker implements Serializable {
         setWorkerSlot(moveHere);
     }
 
-    //TODO: Test
     /**
      * Creation of a new building
      *

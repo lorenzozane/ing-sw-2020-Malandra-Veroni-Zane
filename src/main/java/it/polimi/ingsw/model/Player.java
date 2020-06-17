@@ -9,9 +9,6 @@ import java.util.Date;
 
 public class Player implements Serializable {
 
-    //TODO: Non mi fa impazzire che Player abbia bisogno di un'istanza di game. Si può gestire il colore in modo che non serva?
-
-
     private String nickname;
     private Date birthday;
     private PlayerColor playerColor = null;

@@ -91,7 +91,7 @@ public final class MoveVerifier {
                 return false;
             }
         } else {
-            if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION) { //TODO: Test
+            if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION) {
                 PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -> x.getMove()
                         .getActionType() == ActionType.MOVEMENT).reduce((first, second) -> second).orElse(null);
                 if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot()) {
@@ -100,7 +100,7 @@ public final class MoveVerifier {
                 }
             }
 //            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase("prometheus") &&
-//                    move.getMove() == Actions.MOVE_STANDARD) { TODO: Test
+//                    move.getMove() == Actions.MOVE_STANDARD) {
 //
 //            } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &&
 //                    move.getMove() == Actions.MOVE_STANDARD) {

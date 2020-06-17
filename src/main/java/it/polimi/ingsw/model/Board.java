@@ -72,7 +72,7 @@ public class Board implements Cloneable, Serializable {
     protected final Board clone() {
         final Board result = new Board();
         for (int i = 0; i < BOARD_DIMENSION; i++)
-            result.gameBoardSlots[i] = gameBoardSlots[i].clone();   //TODO: Check
+            result.gameBoardSlots[i] = gameBoardSlots[i].clone();
 
         return result;
     }

@@ -253,8 +253,7 @@ public class Turn extends MessageForwarder {
                 currentMoveIndex = currentMoveIndex - 2;
 
             updateTurn();
-        } else
-            return; //TODO: Gestire
+        }
     }
 
     /**

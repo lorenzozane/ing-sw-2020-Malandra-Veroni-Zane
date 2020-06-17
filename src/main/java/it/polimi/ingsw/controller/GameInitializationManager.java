@@ -69,7 +69,6 @@ public class GameInitializationManager extends MessageForwarder {
         turn.updateTurn();
     }
 
-    //TODO: Il worker che viene posizionato è un clone? Sistemare
     private void placeWorker(PlayerMoveStartup message, int workerIndex) {
         Position workerPosition = message.getWorkerPosition();
         Board gameBoard = gameInstance.getBoard();

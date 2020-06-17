@@ -11,11 +11,10 @@ import java.util.ArrayList;
 public class UpdateTurnMessage implements Serializable {
 
     private static final long serialVersionUID = 4116568860427433236L;
-    private Board boardCopy; //TODO: private final Board boardCopy = new Board() se si vuole mettere final
+    private Board boardCopy;
     private final String lastMovePerformedBy;
     private final TurnEvents.StartupActions nextStartupMove;
     private final TurnEvents.Actions nextMove;
-    //TODO: Mosse precedenti (?)
     private final boolean startupPhase;
     private final Player currentPlayer;
     private final Worker currentWorker;
