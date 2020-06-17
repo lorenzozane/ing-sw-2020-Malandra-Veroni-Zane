@@ -24,6 +24,7 @@ public class TurnEvents implements Serializable {
         UNDO(ActionType.COMMAND),
         SKIP(ActionType.COMMAND),
         CHOSE_WORKER(ActionType.SETUP),
+        WAIT_FOR_UNDO(ActionType.SETUP),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
         MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
