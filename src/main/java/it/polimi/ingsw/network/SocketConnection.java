@@ -71,7 +71,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      * Close the socketConnection
      */
     public synchronized void closeConnection() {
-        send("Connection closed! socketConnection.closeconnection");
+        //send("Connection closed! socketConnection.closeconnection");
         try {
             socket.close();
         } catch (IOException e) {
@@ -79,20 +79,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
         active = false;
     }
-
-
-    /**
-     * Close the nickname's socketConnection
-     *
-     * @param nickname The client unique name
-     */
-    /*
-    private void closeSocket(String nickname) throws IOException, IllegalAccessException, ParseException {
-        closeConnection();
-        System.out.println("Deregistering client...");
-        server.deregisterConnection(nickname, this);
-        System.out.println("Done!");
-    }*/
 
 
     /**
@@ -118,9 +104,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
             asyncSend(Message.chooseNickname);
             Object inputObject = in.readObject();
-            while(true) {
+            while (true) {
                 if (inputObject instanceof String) {
-                    if(!(illegalNicknameChecker(((String) inputObject)))){
+                    if (!(illegalNicknameChecker(((String) inputObject)))) {
                         nickname = (String) inputObject;
                         break;
                     }
@@ -135,7 +121,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             inputObject = in.readObject();
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
             Date playerBirthday;
-            while(true) {
+            while (true) {
                 if (inputObject instanceof String) {
                     if (dateChecker((String) inputObject)) {
                         playerBirthday = dateFormat.parse((String) inputObject);
@@ -150,69 +136,33 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             server.lobby(nickname, playerBirthday, this);
 
 
-//            asyncReadFromSocket(in);
-            while (server.getWaitingConnection().containsKey(nickname));
+            while (server.getWaitingConnection().containsKey(nickname)) ;
 
             asyncSend(Message.gameLoading);
 
-            while(isActive()){
+            while (isActive()) {
                 inputObject = in.readObject();
 
-                if(inputObject instanceof PlayerMoveStartup){
+                if (inputObject instanceof PlayerMoveStartup) {
                     handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
 
-                }
-                else if(inputObject instanceof PlayerMove){
+                } else if (inputObject instanceof PlayerMove) {
                     handlePlayerMove((PlayerMove) inputObject);
-                }
-                else
+                } else
                     asyncSend(Message.error + " Exception thrown from SocketConnection.run");
 
             }
-        } catch (IOException | NoSuchElementException | IllegalAccessException | ParseException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | NoSuchElementException | ParseException | ClassNotFoundException e) {
+            //e.printStackTrace();
             System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
+            try {
+                server.deregisterConnection(nickname);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         } finally {
-            try {
-                server.deregisterConnection(nickname, this);
-                closeConnection();
-            } catch (IOException | IllegalAccessException | ParseException e) {
-                System.out.println("Exception thrown from SocketConnection.run");
-                e.printStackTrace();
-            }
+            closeConnection();
         }
-    }
-
-    /**
-     * Creation of thread that handle the read from socket
-     *
-     * @param socketIn Server socket where the client receives information
-     * @return The that thread
-     */
-    public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
-        Thread t = new Thread(() -> {
-            try {
-                while (isActive()) {
-                    Object inputObject = socketIn.readObject();
-
-                    if(inputObject instanceof PlayerMoveStartup){
-                        handlePlayerMoveStartup((PlayerMoveStartup) inputObject);
-
-                    }
-                    else if(inputObject instanceof PlayerMove){
-                        handlePlayerMove((PlayerMove) inputObject);
-                    }
-                    else
-                        asyncSend(Message.error + " at 205");
-                }
-            } catch (Exception e) {
-                System.out.println("Exception thrown from SocketConnection.asyncReadFromSocket");
-                System.err.println("Error!" + e.getMessage());
-                this.active = false;
-            }
-        });
-        t.start();
-        return t;
     }
 
 
@@ -242,7 +192,6 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
 
     }
-
 
 
     @Override

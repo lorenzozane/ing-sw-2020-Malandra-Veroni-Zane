@@ -67,7 +67,7 @@ public class Game {
 
 
 
-    public void removePlayerByName(String nickname) throws IllegalAccessException {   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
+    public void removePlayerByName(String nickname) {   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
         playerList.removeIf(p -> p.getNickname().equals(nickname));
     }
 

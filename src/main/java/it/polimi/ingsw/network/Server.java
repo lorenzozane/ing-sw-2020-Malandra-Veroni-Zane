@@ -11,12 +11,10 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Server {
     private static final int PORT = 12345;
@@ -37,34 +35,42 @@ public class Server {
      * Deregister a client when is no longer reachable
      *
      * @param nick Client unique name
-     * @param c    Client socket connection
      */
-    public synchronized void deregisterConnection(String nick, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
+    public synchronized void deregisterConnection(String nick) throws IOException, IllegalAccessException, ParseException {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
 
-        for (Game game : gamesStarted){          //caso in cui il giocatore sia dentro una partita
-            for (Player p : game.getPlayerList()){
-                if(p.getNickname().equals(nick)){
-                    game.removePlayerByName(nick);
-                    for(Player otherPlayer: game.getPlayerList()){
-                        playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
-                        try {
-                            Thread.sleep(250);
-                        } catch (InterruptedException e) {
-                            System.out.println("Exception thrown from Server.deregisterConnection");
-                            e.printStackTrace();
-                        }
-                        playingConnection.get(otherPlayer.getNickname()).closeConnection();
-                        playingConnection.remove(otherPlayer.getNickname());
-                    }
-                    playingConnection.remove(nick);
+        AtomicBoolean deregisterOther = new AtomicBoolean(false);
+
+        for (Game game : gamesStarted) {          //caso in cui il giocatore sia dentro una partita
+            game.getPlayerList().forEach(player -> {
+                if (player.getNickname().equals(nick)) {
+                    deregisterOther.set(true);
                 }
+            });
+            if (deregisterOther.get()) {
+                game.removePlayerByName(nick);
+                for (Player otherPlayer : game.getPlayerList()) {
+                    playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
+                    try {
+                        Thread.sleep(250);
+                    } catch (InterruptedException e) {
+                        System.out.println("Exception thrown from Server.deregisterConnection");
+                        e.printStackTrace();
+                    }
+                    playingConnection.get(otherPlayer.getNickname()).closeConnection(); //da fare?
+                    playingConnection.remove(otherPlayer.getNickname());
+                    nicknameDatabase.remove(otherPlayer.getNickname());
+                }
+                game.getPlayerList().clear();
+                deregisterOther.set(false);
             }
+
         }
 
         gamesStarted.removeIf(game -> game.getPlayerList().size() == 0);
 
+        playingConnection.remove(nick);
         nicknameDatabase.remove(nick);
 
         if (nick.equals(currentCreator)) {
@@ -105,21 +111,11 @@ public class Server {
         this.nicknameDatabase.add(nickname);
     }
 
-    protected synchronized void setnPlayer(int nPlayer){
-        this.nPlayer = nPlayer;
-    }
-
-    protected int getNPlayer(){
-        return nPlayer;
-    }
 
     public Map<String, SocketConnection> getWaitingConnection() {
         return waitingConnection;
     }
 
-    public String getCurrentCreator(){
-        return currentCreator;
-    }
 
     /**
      * Check if the input string about number of player is legal
@@ -131,7 +127,7 @@ public class Server {
         return s.equals("2") || s.equals("3");
     }
 
-    public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException, IllegalAccessException, ParseException {
+    public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException {
         waitingConnection.put(nickname, c);
 
         Player p = new Player(nickname);
@@ -157,7 +153,7 @@ public class Server {
         }
     }
 
-    public void gameLobby() throws IllegalAccessException, IOException, ParseException {
+    public void gameLobby() throws IOException {
         Game gameInstance = new Game();
         gamesStarted.add(gameInstance);
 
@@ -179,7 +175,7 @@ public class Server {
         checkNewCreator();
     }
 
-    private synchronized void checkNewCreator() throws IOException, IllegalAccessException, ParseException {
+    private synchronized void checkNewCreator() throws IOException {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
             currentCreator = "";
@@ -191,7 +187,7 @@ public class Server {
         }
     }
 
-    private void creatorSetup(SocketConnection c) throws IOException, IllegalAccessException, ParseException {
+    private void creatorSetup(SocketConnection c) throws IOException {
         c.asyncSend(Message.chooseNoPlayer);
         ObjectInputStream in;
 
@@ -253,6 +249,21 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    //da chiamare dal turno dopo che ha inviato updateturn con messaggio di vittoria
+    public void deregisterOnWin(Game game) {
+        try {
+            Thread.sleep(1000); //non vorrei che chiudesse le socket prima dell'invio dell'update della vittoria
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (Player p : game.getPlayerList()) {
+            playingConnection.get(p.getNickname()).closeConnection();
+            playingConnection.remove(p.getNickname());
+            nicknameDatabase.remove(p.getNickname());
+        }
+        gamesStarted.remove(game);
     }
 
 }
