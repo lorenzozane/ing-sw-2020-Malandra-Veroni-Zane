@@ -20,13 +20,6 @@ public final class Message {
                     "|_______||___._|__|__|__|_____|    |_______| \\___/|_____|__|  \n" +
                     "                                                              \n";
 
-    public static String winner =
-            " ___ ___                   ________ __         __ \n" +
-                    "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
-                    " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
-                    "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
-                    "                                                  \n";
-
     public static String chooseNickname = "What is your nickname?";
     public static String chooseNicknameAgain = "Nickname already chosen, try again";
     public static String lobby = "Adding to lobby... it may take few seconds";

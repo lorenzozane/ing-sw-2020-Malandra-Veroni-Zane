@@ -14,6 +14,7 @@ public class Cli {
     protected View viewOwner = null;
     private static final int SLOT_HEIGHT = 6;
     private Scanner scanner = new Scanner(System.in);
+    private boolean isActiveAsyncReadResponse = false;
 
     public void setViewOwner(View viewOwner) {
         if (this.viewOwner == null)
@@ -181,27 +182,37 @@ public class Cli {
     //TODO: printMessage
     public void showMessage(String messageToShow) {
         System.out.println(messageToShow);
-//        if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.lobby) && !messageToShow.equals(Message.wait) && !messageToShow.equals(Message.gameLoading))
-//            new Thread(this::readResponse).start();
     }
 
     public void showMessage(String messageToShow, PlayerColor playerColor) {
         System.out.println(playerColor.getEscape() + messageToShow + Color.RESET);
     }
 
+    private boolean isActiveAsyncReadResponse() {
+        return isActiveAsyncReadResponse;
+    }
+
     public void activateAsyncReadResponse() {
+        isActiveAsyncReadResponse = true;
         asyncReadResponse();
     }
 
+//    public void deactivateAsyncReadResponse() {
+//        isActiveAsyncReadResponse = false;
+//        if (asyncReaderResponse != null) {
+//            asyncReaderResponse.interrupt();
+//        }
+//    }
+
     private void asyncReadResponse() {
-        Thread asyncReadResponse = new Thread(() -> {
-            while (true) { //TODO: Modificare con isActive()?
+        Thread asyncReaderResponse = new Thread(() -> {
+            while (isActiveAsyncReadResponse()) {
                 String input = scanner.nextLine();
                 new Thread(() -> viewOwner.handleResponse(input)).start();
             }
         });
 
-        asyncReadResponse.start();
+        asyncReaderResponse.start();
     }
 
     public void showSimultaneousMessage(String messageToShow) {
@@ -214,4 +225,10 @@ public class Cli {
         String input = scanner.nextLine();
         viewOwner.handleResponse(input);
     }
+
+//    public String showMessageImmediateResponse(String messageToShow) {
+//        System.out.println(messageToShow);
+//        Scanner scanner = new Scanner(System.in);
+//        return scanner.nextLine();
+//    }
 }

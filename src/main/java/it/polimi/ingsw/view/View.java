@@ -117,6 +117,15 @@ public class View extends MessageForwarder {
             repeatCurrentMove(currentMove);
     }
 
+//    public String showMessageImmediateResponse(String messageToShow) {
+//        if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
+//            return playerCli.showMessageImmediateResponse(messageToShow);
+//        } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+//            //TODO: Gui
+//        }
+//        return null;
+//    }
+
     /**
      * Causes the player to repeat the last move, usually after an error.
      *
@@ -172,7 +181,7 @@ public class View extends MessageForwarder {
             } else {
                 if (response.equalsIgnoreCase("undo")) {
                     if (currentMove.getNextMove() != Actions.CHOSE_WORKER) {
-                        PlayerMove playerMoveToSend = createPlayerMoveUndo();
+                        PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.UNDO);
                         sendPlayerMove(playerMoveToSend);
                     } else {
                         showErrorMessage(ViewMessage.cannotUndo);
@@ -180,18 +189,62 @@ public class View extends MessageForwarder {
                     }
                 } else if (response.equalsIgnoreCase("skip")) {
                     if (currentMove.getNextMove() == Actions.BUILD_BEFORE) {
-                        PlayerMove playerMoveToSend = createPlayerMoveSkip();
+                        PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.SKIP);
                         sendPlayerMove(playerMoveToSend);
                     } else {
                         showErrorMessage(ViewMessage.cannotSkipThisMove);
                         return;
                     }
+                } else if (response.equalsIgnoreCase("quit")) {
+//                    deactivateReadResponse();
+
+//                    if (currentMove.getNextMove() == Actions.WIN) {
+                    PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.QUIT);
+                    sendPlayerMove(playerMoveToSend);
+//                        String playerResponse;
+//                        do {
+//                            playerResponse = showMessageImmediateResponse(ViewMessage.wantToPlayAnotherGame);
+//                            if (!playerResponse.equalsIgnoreCase("y" ) && !playerResponse.equalsIgnoreCase("n"))
+//                                showErrorMessage(ViewMessage.canOnlyRespondYN);
+//                        } while (!playerResponse.equalsIgnoreCase("y" ) && !playerResponse.equalsIgnoreCase("n"));
+//
+//                        if (playerResponse.equalsIgnoreCase("y")) {
+//                            PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.GAME);
+//                            sendPlayerMove(playerMoveToSend);
+//                        } else if (playerResponse.equalsIgnoreCase("n")) {
+//                            PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.QUIT);
+//                            sendPlayerMove(playerMoveToSend);
+//                        }
+//                    } else {
+//                        String playerResponse;
+//                        do {
+//                            playerResponse = showMessageImmediateResponse(ViewMessage.sureToQuit);
+//                            if (!playerResponse.equalsIgnoreCase("y" ) && !playerResponse.equalsIgnoreCase("n"))
+//                                showErrorMessage(ViewMessage.canOnlyRespondYN);
+//                        } while (!playerResponse.equalsIgnoreCase("y" ) && !playerResponse.equalsIgnoreCase("n"));
+//
+//                        if (playerResponse.equalsIgnoreCase("y")) {
+//                            PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.QUIT);
+//                            sendPlayerMove(playerMoveToSend);
+//                        } else {
+////                            activateReadResponse();
+//                            repeatCurrentMove(currentMove);
+//                        }
+//                    }
+                } else if (response.equalsIgnoreCase("game")) {
+                    if (currentMove.getNextMove() == Actions.WIN){
+                        PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.GAME);
+                        sendPlayerMove(playerMoveToSend);
+                    } else {
+                        showErrorMessage(ViewMessage.cannotGameDuringGame);
+                    }
                 } else if (currentMove.getNextMove() == Actions.WAIT_FOR_UNDO) {
                     showErrorMessage(ViewMessage.canOnlyUndo);
+                } else if (currentMove.getNextMove() == Actions.WIN) {
+                    showErrorMessage(ViewMessage.canOnlyQuitOrGame);
                 } else {
                     Worker workerInSlot;
 
-                    //TODO: Si può fare diversamente?
                     if (convertStringToPosition(response) == null) {
                         showErrorMessage(ViewMessage.wrongInputCoordinates);
                     } else {
@@ -356,45 +409,27 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller which describes the intention to use the UNDO function.
+     * Create the PlayerMove to be send at the controller with a specific Actions command.
      *
+     * @param command Actions command to send to the controller.
      * @return Returns the PlayerMove ready to be forwarded to the controller.
      */
-    protected PlayerMove createPlayerMoveUndo() {
-        return new PlayerMove(
-                currentMove.getCurrentWorker().getIdWorker(),
-                Actions.UNDO,
-                currentMove.getCurrentWorker().getWorkerPosition(),
-                currentMove.getCurrentPlayer().getNickname()
-        );
-    }
-
-    /**
-     * Create the PlayerMove to be send at the controller which describes the intention to use the SKIP function.
-     *
-     * @return Returns the PlayerMove ready to be forwarded to the controller.
-     */
-    protected PlayerMove createPlayerMoveSkip() {
-        return new PlayerMove(
-                currentMove.getCurrentWorker().getIdWorker(),
-                Actions.SKIP,
-                currentMove.getCurrentWorker().getWorkerPosition(),
-                currentMove.getCurrentPlayer().getNickname()
-        );
-    }
-
-    /**
-     * Create the PlayerMove to be send at the controller which describes that the player can undo within 5 seconds before turn end.
-     *
-     * @return Returns the PlayerMove ready to be forwarded to the controller.
-     */
-    protected PlayerMove createPlayerMoveLastMove() {
-        return new PlayerMove(
-                currentMove.getCurrentWorker().getIdWorker(),
-                Actions.WAIT_FOR_UNDO,
-                currentMove.getCurrentWorker().getWorkerPosition(),
-                currentMove.getCurrentPlayer().getNickname()
-        );
+    protected PlayerMove createPlayerMoveCommand(Actions command) {
+        if (currentMove.getCurrentWorker() != null) {
+            return new PlayerMove(
+                    currentMove.getCurrentWorker().getIdWorker(),
+                    command,
+                    currentMove.getCurrentWorker().getWorkerPosition(),
+                    currentMove.getCurrentPlayer().getNickname()
+            );
+        } else {
+            return new PlayerMove(
+                    null,
+                    command,
+                    null,
+                    currentMove.getCurrentPlayer().getNickname()
+            );
+        }
     }
 
     /**
@@ -433,9 +468,15 @@ public class View extends MessageForwarder {
         } else {
             refreshView(message.getBoardCopy(), chosenUserInterface);
 
+            if (message.getStuck())
+                showErrorMessage(ViewMessage.stuck);
+
             if (message.getNextMove() == Actions.CHOSE_WORKER)
                 showMessage(ViewMessage.choseYourWorker);
-            else if (message.getNextMove() == Actions.MOVE_STANDARD)
+            else if (message.getNextMove() == Actions.WIN) {
+                showMessage(ViewMessage.winner);
+                showMessage(ViewMessage.quitOrNewGame);
+            } else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
                 showMessage(ViewMessage.moveNotInitialPosition);
@@ -457,7 +498,7 @@ public class View extends MessageForwarder {
                 showMessage(ViewMessage.buildDomeAnyLevel);
             else if (message.getNextMove() == Actions.WAIT_FOR_UNDO) {
                 showMessage(ViewMessage.undoInFiveSeconds);
-                PlayerMove playerMoveToSend = createPlayerMoveLastMove();
+                PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.WAIT_FOR_UNDO);
                 sendPlayerMove(playerMoveToSend);
             }
         }
@@ -492,6 +533,10 @@ public class View extends MessageForwarder {
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.CHOSE_WORKER)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.choseYourWorkerOthers);
+            else if (message.getNextMove() == Actions.WIN) {
+                showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.winOthers);
+                showMessage(ViewMessage.quitOrNewGame);
+            }
             else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -543,6 +588,15 @@ public class View extends MessageForwarder {
 
         activeReadResponse = true;
     }
+
+//    private void deactivateReadResponse() {
+//        if (chosenUserInterface == UserInterface.CLI && playerCli != null)
+//            playerCli.deactivateAsyncReadResponse();
+//        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+//        }
+//
+//        activeReadResponse = false;
+//    }
 
     /**
      * Adds an observer of PlayerMove to the set of observers for this object, provided that it is not the same as some observer already in the set.

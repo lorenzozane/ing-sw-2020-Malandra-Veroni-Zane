@@ -11,13 +11,14 @@ import java.util.ArrayList;
 public class UpdateTurnMessage implements Serializable {
 
     private static final long serialVersionUID = 4116568860427433236L;
-    private Board boardCopy;
     private final String lastMovePerformedBy;
     private final TurnEvents.StartupActions nextStartupMove;
     private final TurnEvents.Actions nextMove;
     private final boolean startupPhase;
     private final Player currentPlayer;
     private final Worker currentWorker;
+    private Board boardCopy;
+    private boolean isStuck = false;
     private final ArrayList<PlayerColor> availableColor = new ArrayList<>();
     private final ArrayList<GodsCard> availableCards = new ArrayList<>();
 
@@ -66,6 +67,14 @@ public class UpdateTurnMessage implements Serializable {
      */
     public boolean isStartupPhase() {
         return startupPhase;
+    }
+
+    public void setStuck(boolean isStuck) {
+        this.isStuck = isStuck;
+    }
+
+    public boolean getStuck() {
+        return isStuck;
     }
 
     public TurnEvents.StartupActions getNextStartupMove() {

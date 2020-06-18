@@ -32,31 +32,6 @@ public final class MoveVerifier {
     //instance directly to the methods (and not having game and turn instances belonging to the class)
 
     /**
-     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to move on
-     *
-     * @param worker The worker whose ability to move is to be checked
-     * @return Returns a boolean who approves or refuses the possibility to move of the worker
-     */
-    public boolean checkIfStuck(Worker worker) {
-        boolean canMove = false;
-        Slot workerSlot = worker.getWorkerSlot();
-        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
-
-        int i = 0;
-        while (!canMove && i < slotsToVerify.size()) {
-            Slot slotToVerify = slotsToVerify.get(i);
-            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
-                if (!slotToVerify.getBuildingsStatus().contains(BuildingLevel.DOME))
-                    if (slotToVerify.getWorkerInSlot() == null ||
-                            turn.getCurrentPlayerTurnSequence().getMoveSequence().containsAll(Arrays.asList(Actions.MOVE_OPPONENT_SLOT_FLIP, Actions.MOVE_OPPONENT_SLOT_PUSH)))
-                        canMove = true;
-            i++;
-        }
-
-        return canMove;
-    }
-
-    /**
      * Valid the request to move a worker in a specific slot
      *
      * @param move The move that contains all the information related to the movement and the target slot
@@ -115,32 +90,6 @@ public final class MoveVerifier {
         }
 
         return true;
-    }
-
-    /**
-     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to build
-     *
-     * @param worker The worker whose ability to build is to be checked
-     * @return Returns a boolean who approves or refuses the possibility to build of the worker
-     */
-    public boolean checkIfCanBuild(Worker worker) {
-        boolean canBuild = false;
-        Slot workerSlot = worker.getWorkerSlot();
-        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
-
-        int i = 0;
-        while (!canBuild && i < slotsToVerify.size()) {
-            Slot slotToVerify = slotsToVerify.get(i);
-            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
-                if (slotToVerify.getWorkerInSlot() == null)
-                    if (slotToVerify.getConstructionTopLevel().hasProperty(BuildingProperty.CAN_BUILD_ON_IT) ||
-                            slotToVerify.getConstructionTopLevel() == null)
-                        canBuild = true;
-
-            i++;
-        }
-
-        return canBuild;
     }
 
     /**

@@ -180,17 +180,36 @@ public class Turn extends MessageForwarder {
      */
     protected void updateTurnInGame() {
         if (!startupPhase) {
-            TurnSequence currentTurnSequence = turnSequenceMap.get(currentPlayer);
+            boolean setStuck = false;
+            TurnSequence currentTurnSequence = getCurrentPlayerTurnSequence();
             if (currentPlayer == null || !(currentMoveIndex < currentTurnSequence.getMoveSequence().size()))
                 updateToNextPlayerTurn();
             else
                 lastMovePerformedBy = currentPlayer.getNickname();
 
-            currentTurnSequence = turnSequenceMap.get(currentPlayer);
+            currentTurnSequence = getCurrentPlayerTurnSequence();
             if (currentMoveIndex < currentTurnSequence.getMoveSequence().size()) {
                 Actions nextMove = currentTurnSequence.getMoveSequence().get(currentMoveIndex);
+
+                if (nextMove == Actions.CHOSE_WORKER) {
+                    int movableWorker = initialCheckMovableWorker();
+                    if (movableWorker < 1) {
+                        lose(currentPlayer);
+                        return;
+                    }
+                } else if (nextMove.getActionType() == Actions.ActionType.MOVEMENT &&
+                        currentWorker != null) {
+                    if (!checkIfNotStuck(currentWorker))
+                        setStuck = true;
+                } else if (nextMove.getActionType() == Actions.ActionType.BUILDING) {
+                    if (!checkIfCanBuild(currentWorker))
+                        setStuck = true;
+                }
+
                 currentMoveIndex++;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker);
+                if (setStuck)
+                    updateTurnMessage.setStuck(true);
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
             }
         }
@@ -265,8 +284,84 @@ public class Turn extends MessageForwarder {
         return !movesPerformed.isEmpty();
     }
 
+    /**
+     * Check if, at the beginning of a turn, the player's workers have a slot adjacent them available to move on
+     *
+     * @return Returns an ArrayList of worker who can move in an adjacent slot
+     */
+    protected int initialCheckMovableWorker() {
+        ArrayList<Worker> movableWorkers = new ArrayList<>(2);
+        for (Worker worker : getCurrentPlayerWorkers()) {
+            boolean canMove = checkIfNotStuck(worker);
+
+            if (canMove)
+                movableWorkers.add(worker);
+        }
+
+        return movableWorkers.size();
+    }
+
+    /**
+     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to move on
+     *
+     * @param worker The worker whose ability to move is to be checked
+     * @return Returns a boolean who approves or refuses the possibility to move of the worker
+     */
+    public boolean checkIfNotStuck(Worker worker) {
+        boolean canMove = false;
+        Slot workerSlot = worker.getWorkerSlot();
+        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
+
+        int i = 0;
+        while (!canMove && i < slotsToVerify.size()) {
+            Slot slotToVerify = slotsToVerify.get(i);
+            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
+                if (!slotToVerify.getBuildingsStatus().contains(Building.BuildingLevel.DOME))
+                    if (slotToVerify.getWorkerInSlot() == null ||
+                            (!Collections.disjoint(getCurrentPlayerTurnSequence().getMoveSequence(), Arrays.asList(Actions.MOVE_OPPONENT_SLOT_FLIP, Actions.MOVE_OPPONENT_SLOT_PUSH)) &&
+                                    !slotToVerify.getWorkerInSlot().getPlayerOwner().getNickname().equals(worker.getPlayerOwner().getNickname())))
+                        canMove = true;
+            i++;
+        }
+
+        return canMove;
+    }
+
+    /**
+     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to build
+     *
+     * @param worker The worker whose ability to build is to be checked
+     * @return Returns a boolean who approves or refuses the possibility to build of the worker
+     */
+    public boolean checkIfCanBuild(Worker worker) {
+        boolean canBuild = false;
+        Slot workerSlot = worker.getWorkerSlot();
+        ArrayList<Slot> slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);
+
+        int i = 0;
+        while (!canBuild && i < slotsToVerify.size()) {
+            Slot slotToVerify = slotsToVerify.get(i);
+            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
+                if (slotToVerify.getWorkerInSlot() == null)
+                    if (slotToVerify.getConstructionTopLevel() == null ||
+                            slotToVerify.getConstructionTopLevel().hasProperty(Building.BuildingProperty.CAN_BUILD_ON_IT))
+                        canBuild = true;
+
+            i++;
+        }
+
+        return canBuild;
+    }
+
     public void win(Player winner) {
-        //TODO: Gestire la vittoria
+        if (!startupPhase && winner == currentPlayer) {
+            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), winner.getNickname(), Actions.WIN, currentPlayer, currentWorker);
+            updateTurnMessageSender.notifyAll(updateTurnMessage);
+        }
+    }
+
+    private void lose(Player loser) {
+        //TODO: Gestire loser
     }
 
     /**

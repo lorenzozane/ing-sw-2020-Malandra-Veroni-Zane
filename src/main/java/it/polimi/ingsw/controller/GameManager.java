@@ -44,9 +44,16 @@ public class GameManager extends MessageForwarder {
      * @param move The player move containing the information about the worker and the target slot of the move
      */
     protected synchronized void handleMove(PlayerMove move) {
-        if (!turn.isPlayerTurn(move.getPlayerOwner())) {
+        if (!turn.isPlayerTurn(move.getPlayerOwner()) &&
+                (move.getMove() != Actions.QUIT || move.getMove() == Actions.GAME)) {
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
+        } else {
+            if (move.getMove() == Actions.QUIT) {
+                return;
+            } else if (move.getMove() == Actions.GAME) {
+                return;
+            }
         }
         if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
             if (move.getMove() == Actions.UNDO)
@@ -61,13 +68,11 @@ public class GameManager extends MessageForwarder {
                 if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
                     turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
                     updateTurn();
-                }
-                else {
+                } else {
                     move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
                     return;
                 }
-        }
-        else if (move.getMove().getActionType() == Actions.ActionType.SETUP) {
+        } else if (move.getMove().getActionType() == Actions.ActionType.SETUP) {
             if (move.getMove() == Actions.CHOSE_WORKER) {
                 if (move.getTargetSlot().getWorkerInSlot() != null) {
                     if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {
@@ -176,23 +181,6 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Check if, at the beginning of a turn, the player's workers have a slot adjacent them available to move on
-     *
-     * @return Returns an ArrayList of worker who can move in an adjacent slot
-     */
-    protected ArrayList<Worker> initialCheckMovableWorker() {
-        ArrayList<Worker> movableWorkers = new ArrayList<>(2);
-        for (Worker worker : turn.getCurrentPlayerWorkers()) {
-            boolean canMove = moveVerifier.checkIfStuck(worker);
-
-            if (canMove)
-                movableWorkers.add(worker);
-        }
-
-        return movableWorkers;
-    }
-
-    /**
      * Makes the worker perform a move
      *
      * @param move The player move containing the information about the worker and the target slot of the move
@@ -201,8 +189,10 @@ public class GameManager extends MessageForwarder {
         move.getMovedWorker().move(move.getTargetSlot());
         turn.addLastMovePerformed(move);
         if (!move.getForcedMove()) {
-            checkWinConditions(move);
-            updateTurn();
+            if (!checkWinConditions(move))
+                updateTurn();
+            else
+                turn.win(move.getPlayerOwner());
         }
     }
 
@@ -246,12 +236,11 @@ public class GameManager extends MessageForwarder {
      *
      * @param move The player move containing the information about the worker and the target slot of the move
      */
-    protected void checkWinConditions(PlayerMove move) {
+    protected boolean checkWinConditions(PlayerMove move) {
         boolean winner = false;
 
         if (move.getPlayerOwner() == turn.getCurrentPlayer() &&
-                turn.getCurrentPlayerTurnSequence().getWinConditions().contains(TurnEvents.WinConditions.WIN_DOUBLE_MOVE_DOWN))
-        {
+                turn.getCurrentPlayerTurnSequence().getWinConditions().contains(TurnEvents.WinConditions.WIN_DOUBLE_MOVE_DOWN)) {
             if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) <= -2)
                 winner = true;
         }
@@ -260,8 +249,7 @@ public class GameManager extends MessageForwarder {
                 move.getStartingSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL2)
             winner = true;
 
-        if (winner)
-            turn.win(move.getPlayerOwner());
+        return winner;
     }
 
     /**
@@ -289,7 +277,7 @@ public class GameManager extends MessageForwarder {
                         5000
                 );
             } else
-            turn.updateTurn();
+                turn.updateTurn();
         } catch (Exception ex) {
             System.out.println("Exception thrown from GameManager.updateTurn. " + ex.getMessage());
         }

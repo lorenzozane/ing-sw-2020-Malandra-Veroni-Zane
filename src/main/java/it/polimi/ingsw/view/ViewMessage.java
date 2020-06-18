@@ -3,7 +3,16 @@ package it.polimi.ingsw.view;
 /**
  * Class containing all the message to be shown through the View of the players.
  */
-public class ViewMessage {
+public final class ViewMessage {
+
+    //WinActions
+    public static String winner =
+            " ___ ___                   ________ __         __ \n" +
+                    "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
+                    " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
+                    "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
+                    "                                                  \n";
+    public static String winOthers = " wins the game!";
 
     //SetUpActions
     public static String colorRequest = "Choose worker's color from these colors:";
@@ -54,6 +63,13 @@ public class ViewMessage {
     public static String buildSamePlaceNotDomeOthers = " is building one additional block (not dome) on top of his first block.\n" ;
     public static String buildDomeAnyLevelOthers = " is building a dome.\n" ;
 
+    //OtherMessage
+    public static String stuck = "Your worker is stuck or can't build. Try to UNDO and maybe chose the other worker!";
+    public static String quitOrNewGame = "Write QUIT to exit the game or GAME to start a new match: ";
+    public static String wantToPlayAnotherGame = "Want you to start another game? (y/n)\n";
+    public static String sureToQuit = "Are you sure to quit the game? (y/n)\n";
+    public static String canOnlyRespondYN = "You can only respond y (for yes) or n (for no)\n";
+
     //Error-Message
     public static String wrongTurnMessage = "Error: It's not your turn. Wait your turn to make a move!\n";
     public static String wrongInput = "Error: The input entered is not an accepted command.\n";
@@ -67,4 +83,6 @@ public class ViewMessage {
     public static String noWorkerInSlot = "Error: In this slot there are no workers!\n";
     public static String choseNotYourWorker = "Error: You must chose one of your's workers!\n";
     public static String canOnlyUndo = "Error: You can only UNDO now!\n";
+    public static String canOnlyQuitOrGame = "Error: You can only QUIT or GAME now!\n";
+    public static String cannotGameDuringGame = "Error: you can not start a new game until this game is over!\n";
 }
