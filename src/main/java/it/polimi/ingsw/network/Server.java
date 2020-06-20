@@ -36,7 +36,7 @@ public class Server {
      *
      * @param nick Client unique name
      */
-    public synchronized void deregisterConnection(String nick) throws IOException, IllegalAccessException, ParseException {
+    public synchronized void deregisterConnection(String nick) throws IOException {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
 
@@ -251,19 +251,18 @@ public class Server {
         }
     }
 
-    //da chiamare dal turno dopo che ha inviato updateturn con messaggio di vittoria
-    public void deregisterOnWin(Game game) {
-        try {
-            Thread.sleep(1000); //non vorrei che chiudesse le socket prima dell'invio dell'update della vittoria
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void deregisterOnePlayer(String nickname) {
+        AtomicBoolean toDelete = new AtomicBoolean(false);
+        for (Game game : gamesStarted) {
+            game.getPlayerList().forEach(player -> {
+                if (player.getNickname().equals(nickname)) {
+                    toDelete.set(true);
+                }
+            });
+            if(toDelete.get()){
+                game.removePlayerByName(nickname);
+            }
         }
-        for (Player p : game.getPlayerList()) {
-            playingConnection.get(p.getNickname()).closeConnection();
-            playingConnection.remove(p.getNickname());
-            nicknameDatabase.remove(p.getNickname());
-        }
-        gamesStarted.remove(game);
     }
 
 }

@@ -200,7 +200,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
         if (message.getNextMove() == TurnEvents.Actions.QUIT &&
             message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) {
-            //TODO: Deregister player
+            server.deregisterOnePlayer(this.playerOwnerNickname);
         } else {
             asyncSend(message);
         }
