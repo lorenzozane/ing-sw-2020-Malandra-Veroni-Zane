@@ -53,7 +53,7 @@ public class Server {
                 for (Player otherPlayer : game.getPlayerList()) {
                     playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
                     try {
-                        Thread.sleep(250);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         System.out.println("Exception thrown from Server.deregisterConnection");
                         e.printStackTrace();
@@ -263,6 +263,10 @@ public class Server {
                 game.removePlayerByName(nickname);
             }
         }
+        nicknameDatabase.removeIf(nick -> nick.equals(nickname));
+        waitingConnection.remove(nickname);
+        playingConnection.remove(nickname);
+        gamesStarted.removeIf(game -> game.getPlayerList().size() == 0);
     }
 
 }

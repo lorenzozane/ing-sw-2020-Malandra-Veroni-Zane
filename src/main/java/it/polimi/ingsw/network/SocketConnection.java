@@ -201,6 +201,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         if (message.getNextMove() == TurnEvents.Actions.QUIT &&
             message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) {
             server.deregisterOnePlayer(this.playerOwnerNickname);
+            this.closeConnection();
         } else {
             asyncSend(message);
         }
