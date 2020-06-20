@@ -292,8 +292,10 @@ public class GameManager extends MessageForwarder {
     protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
         message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));
-        message.setMovedWorker(gameInstance.getWorkerByName(message.getMovedWorkerId())); //qui l'errore
-        message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));
+        if (message.getMove() != Actions.QUIT) {
+            message.setMovedWorker(gameInstance.getWorkerByName(message.getMovedWorkerId()));
+            message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));
+        }
         handleMove(message);
     }
 
