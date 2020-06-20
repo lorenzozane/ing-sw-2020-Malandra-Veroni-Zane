@@ -13,6 +13,8 @@ public final class ViewMessage {
                     "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
                     "                                                  \n";
     public static String winOthers = " wins the game!";
+    public static String lose = "You lose!";
+    public static String loseOther = " lose!";
 
     //SetUpActions
     public static String colorRequest = "Choose worker's color from these colors:";
@@ -66,6 +68,7 @@ public final class ViewMessage {
     //OtherMessage
     public static String stuck = "Your worker is stuck or can't build. Try to UNDO and maybe chose the other worker!";
     public static String quitOrNewGame = "Write QUIT to exit the game or GAME to start a new match: ";
+    public static String justQuit = " just quit the game!";
     public static String wantToPlayAnotherGame = "Want you to start another game? (y/n)\n";
     public static String sureToQuit = "Are you sure to quit the game? (y/n)\n";
     public static String canOnlyRespondYN = "You can only respond y (for yes) or n (for no)\n";

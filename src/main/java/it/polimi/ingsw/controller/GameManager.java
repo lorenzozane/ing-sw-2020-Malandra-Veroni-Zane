@@ -50,10 +50,15 @@ public class GameManager extends MessageForwarder {
             return;
         } else {
             if (move.getMove() == Actions.QUIT) {
+                turn.quit(move.getPlayerOwner());
                 return;
             } else if (move.getMove() == Actions.GAME) {
                 return;
             }
+        }
+        if (turn.isGameIsFinish()) {
+            move.getRemoteView().errorMessage(Message.canOnlyQuitOrGame);
+            return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {
             if (move.getMove() == Actions.UNDO)

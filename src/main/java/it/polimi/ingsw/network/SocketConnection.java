@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
+import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 public class SocketConnection extends MessageForwarder implements Runnable {
 
     //private final Game gameInstance;
+    private String playerOwnerNickname;
     private final Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -116,6 +118,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             }
             asyncSend("Nickname: " + nickname);
             server.addNickname(nickname);
+            playerOwnerNickname = nickname;
 
             asyncSend(Message.birthday);
             inputObject = in.readObject();
@@ -193,10 +196,14 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     }
 
-
     @Override
     protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
-        asyncSend(message);
+        if (message.getNextMove() == TurnEvents.Actions.QUIT &&
+            message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) {
+            //TODO: Deregister player
+        } else {
+            asyncSend(message);
+        }
     }
 
     protected void handlePlayerMove(PlayerMove message) {  // arriva dal socket del client e va mandato alla remoteview
@@ -218,7 +225,4 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     public void addPlayerMoveStartupObserver(Observer<PlayerMoveStartup> observer) {
         playerMoveStartupSender.addObserver(observer);
     }
-
-
-
 }

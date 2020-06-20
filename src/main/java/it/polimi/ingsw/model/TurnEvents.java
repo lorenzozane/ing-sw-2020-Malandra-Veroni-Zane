@@ -27,7 +27,9 @@ public class TurnEvents implements Serializable {
         QUIT(ActionType.COMMAND),
         CHOSE_WORKER(ActionType.SETUP),
         WAIT_FOR_UNDO(ActionType.SETUP),
-        WIN(ActionType.WIN),
+        WIN(ActionType.END),
+        LOSE(ActionType.END),
+        GAME_END(ActionType.END),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
         MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
@@ -44,7 +46,7 @@ public class TurnEvents implements Serializable {
         public enum ActionType {
             COMMAND,
             SETUP,
-            WIN,
+            END,
             MOVEMENT,
             BUILDING;
         }

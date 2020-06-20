@@ -18,7 +18,8 @@ public class UpdateTurnMessage implements Serializable {
     private final Player currentPlayer;
     private final Worker currentWorker;
     private Board boardCopy;
-    private boolean isStuck = false;
+    private boolean stuck = false;
+    private boolean gameFinish = false;
     private final ArrayList<PlayerColor> availableColor = new ArrayList<>();
     private final ArrayList<GodsCard> availableCards = new ArrayList<>();
 
@@ -70,11 +71,19 @@ public class UpdateTurnMessage implements Serializable {
     }
 
     public void setStuck(boolean isStuck) {
-        this.isStuck = isStuck;
+        this.stuck = isStuck;
     }
 
-    public boolean getStuck() {
-        return isStuck;
+    public boolean isStuck() {
+        return stuck;
+    }
+
+    public void setGameFinish(boolean gameFinish) {
+        this.gameFinish = gameFinish;
+    }
+
+    public boolean isGameFinish() {
+        return gameFinish;
     }
 
     public TurnEvents.StartupActions getNextStartupMove() {

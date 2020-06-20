@@ -45,7 +45,8 @@ public class Observable<T> {
     protected void notifyAll(T message) {
         synchronized (observers) {
             for (Observer<T> observer : observers)
-                observer.update(message);
+                if (observer != null)
+                    observer.update(message);
         }
     }
 }

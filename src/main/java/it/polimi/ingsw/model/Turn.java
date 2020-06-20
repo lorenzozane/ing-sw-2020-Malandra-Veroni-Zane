@@ -29,6 +29,7 @@ public class Turn extends MessageForwarder {
     protected int currentMoveIndex = 0;
     protected boolean startupPhase = true;
     protected String lastMovePerformedBy = null;
+    protected boolean gameIsFinish = false;
     private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();
 
     protected Turn(Game gameInstance) {
@@ -355,13 +356,55 @@ public class Turn extends MessageForwarder {
 
     public void win(Player winner) {
         if (!startupPhase && winner == currentPlayer) {
+            gameIsFinish = true;
             UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), winner.getNickname(), Actions.WIN, currentPlayer, currentWorker);
             updateTurnMessageSender.notifyAll(updateTurnMessage);
         }
     }
 
     private void lose(Player loser) {
-        //TODO: Gestire loser
+        if (gameInstance.getPlayerNumber() <= 2) {
+            gameIsFinish = true;
+            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);
+            updateTurnMessage.setGameFinish(true);
+            updateTurnMessageSender.notifyAll(updateTurnMessage);
+        } else {
+            gameInstance.setPlayerNumber(gameInstance.getPlayerNumber() - 1);
+            playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(loser.getNickname()));
+            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);
+            updateTurnMessageSender.notifyAll(updateTurnMessage);
+        }
+    }
+
+    public void quit(Player playerWhoQuit) {
+        for (Worker workerToDelete : playerWhoQuit.getWorkers()) {
+            workerToDelete.move(new Slot(new Position(-1, -1)));
+            workerToDelete = null;
+        }
+        if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()))
+            updateToNextPlayerTurn();
+        playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()));
+
+        if (!gameIsFinish) {
+            if (playerOrder.contains(playerWhoQuit)) {
+                gameIsFinish = true;
+                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.GAME_END, playerWhoQuit, null);
+                updateTurnMessage.setGameFinish(true);
+                updateTurnMessageSender.notifyAll(updateTurnMessage);
+            } else {
+                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);
+                updateTurnMessageSender.notifyAll(updateTurnMessage);
+                updateTurn();
+            }
+        } else {
+            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);
+            updateTurnMessage.setGameFinish(true);
+            updateTurnMessageSender.notifyAll(updateTurnMessage);
+        }
+    }
+
+    public boolean isGameIsFinish() {
+        return gameIsFinish;
     }
 
     /**
