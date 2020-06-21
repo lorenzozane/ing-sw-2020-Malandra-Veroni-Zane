@@ -49,7 +49,7 @@ public final class ViewMessage {
     public static String buildBefore = "Build a block or dome on an unoccupied space neighboring the moved Worker before moving (type \"skip\" to skip the move).\n";
     public static String buildNotSamePlace = "Build one additional time, but not on the same space (type \"skip\" to skip the move).\n";
     public static String buildSamePlaceNotDome = "Build one additional block (not dome) on top of your first block. If it's not possible, you must skip (type \"skip\" to skip the move).\n" ;
-    public static String buildDomeAnyLevel = "Build a block or dome on an unoccupied space neighboring the moved Worker. You can build a dome at any level (typing \"dome *coordinates*\").\n";
+    public static String buildDomeAnyLevel = "Build a block or dome on an unoccupied space neighboring the moved Worker. You can build a dome at any level (typing \"*coordinates* dome\").\n";
 
     //Actions-MOVE-ForOthers
     public static String moveStandardOthers = " is making a single move.\n";

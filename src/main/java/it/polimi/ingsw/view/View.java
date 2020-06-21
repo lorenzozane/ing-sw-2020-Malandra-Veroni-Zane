@@ -218,7 +218,8 @@ public class View extends MessageForwarder {
                 } else {
                     Worker workerInSlot;
 
-                    if (convertStringToPosition(response) == null) {
+                    if (convertStringToPosition(response) == null &&
+                            currentMove.getNextMove() != Actions.BUILD_DOME_ANY_LEVEL) {
                         showErrorMessage(ViewMessage.wrongInputCoordinates);
                     } else {
                         if (currentMove.getNextMove() == Actions.CHOSE_WORKER) {
@@ -239,6 +240,16 @@ public class View extends MessageForwarder {
                                 return;
                             }
                         } else {
+                            if (currentMove.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL) {
+                                String[] splittedResponse = response.split(" ");
+                                if (!(splittedResponse.length == 2 && splittedResponse[1].equalsIgnoreCase("dome"))) {
+                                    PlayerMove playerMoveToSend = createPlayerMoveStandardBuild(convertStringToPosition(response));
+                                    sendPlayerMove(playerMoveToSend);
+                                    return;
+                                } else {
+                                    response = splittedResponse[0];
+                                }
+                            }
                             PlayerMove playerMoveToSend = createPlayerMove(convertStringToPosition(response));
                             sendPlayerMove(playerMoveToSend);
                         }
@@ -356,7 +367,7 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller based on player's input. Used when choosing the worker.
+     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
      *
      * @param targetSlotPosition The position of the target slot chose by the player for the current move.
      * @return Returns the PlayerMove ready to be forwarded to the controller.
@@ -370,7 +381,7 @@ public class View extends MessageForwarder {
     }
 
     /**
-     * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
+     * Create the PlayerMove to be send at the controller based on player's input. Used while choosing the worker.
      *
      * @param targetSlotPosition The position of the target slot chose by the player for the current move.
      * @param currentWorker      The worker chose by the player to play with this turn.
@@ -380,6 +391,21 @@ public class View extends MessageForwarder {
         return new PlayerMove(
                 currentWorker,
                 currentMove.getNextMove(),
+                targetSlotPosition,
+                currentMove.getCurrentPlayer().getNickname());
+    }
+
+    /**
+     * Create the PlayerMove to be send at the controller based on player's input. Used when the Actions is
+     * BUILD_DOME_ANY_LEVEL and the player chose not to build a dome.
+     *
+     * @param targetSlotPosition The position of the target slot chose by the player for the current move.
+     * @return Returns the PlayerMove ready to be forwarded to the controller.
+     */
+    protected PlayerMove createPlayerMoveStandardBuild(Position targetSlotPosition) {
+        return new PlayerMove(
+                currentMove.getCurrentWorker().getIdWorker(),
+                Actions.BUILD_STANDARD,
                 targetSlotPosition,
                 currentMove.getCurrentPlayer().getNickname());
     }
