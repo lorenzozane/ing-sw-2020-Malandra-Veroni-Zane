@@ -86,7 +86,7 @@ public class Client extends MessageForwarder {
 
                 }
             } catch (Exception e) {
-                System.out.println("Exception thrown from Client.asyncReadFromSocket");
+                System.out.println("Client close from Client.asyncReadFromSocket");
                 setActive(false);
             }
         });

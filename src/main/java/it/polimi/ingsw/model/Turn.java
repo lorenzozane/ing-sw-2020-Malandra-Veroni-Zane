@@ -180,7 +180,7 @@ public class Turn extends MessageForwarder {
      * Update the turn to the next move to be performed, or to the next player
      */
     protected void updateTurnInGame() {
-        if (!startupPhase) {
+        if (!startupPhase && !gameIsFinish) {
             boolean setStuck = false;
             TurnSequence currentTurnSequence = getCurrentPlayerTurnSequence();
             if (currentPlayer == null || !(currentMoveIndex < currentTurnSequence.getMoveSequence().size()))
@@ -316,7 +316,8 @@ public class Turn extends MessageForwarder {
         int i = 0;
         while (!canMove && i < slotsToVerify.size()) {
             Slot slotToVerify = slotsToVerify.get(i);
-            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2)
+            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) < 2 &&
+                    (getCurrentPlayerTurnSequence().isCanMoveUp() || Slot.calculateHeightDifference(workerSlot, slotToVerify) < 1))
                 if (!slotToVerify.getBuildingsStatus().contains(Building.BuildingLevel.DOME))
                     if (slotToVerify.getWorkerInSlot() == null ||
                             (!Collections.disjoint(getCurrentPlayerTurnSequence().getMoveSequence(), Arrays.asList(Actions.MOVE_OPPONENT_SLOT_FLIP, Actions.MOVE_OPPONENT_SLOT_PUSH)) &&
@@ -369,10 +370,12 @@ public class Turn extends MessageForwarder {
             updateTurnMessage.setGameFinish(true);
             updateTurnMessageSender.notifyAll(updateTurnMessage);
         } else {
-            gameInstance.setPlayerNumber(gameInstance.getPlayerNumber() - 1);
-            playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(loser.getNickname()));
             UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);
             updateTurnMessageSender.notifyAll(updateTurnMessage);
+            gameInstance.setPlayerNumber(gameInstance.getPlayerNumber() - 1);
+            currentPlayer = null;
+            updateTurn();
+            playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(loser.getNickname()));
         }
     }
 
@@ -381,26 +384,32 @@ public class Turn extends MessageForwarder {
             workerToDelete.move(new Slot(new Position(-1, -1)));
             workerToDelete = null;
         }
-        if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()))
-            updateToNextPlayerTurn();
-        playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()));
 
         if (!gameIsFinish) {
+            //Player quit during the active game
             if (playerOrder.contains(playerWhoQuit)) {
                 gameIsFinish = true;
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.GAME_END, playerWhoQuit, null);
                 updateTurnMessage.setGameFinish(true);
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
+                return;
             } else {
+                //Player quit while other player continue to player (he lose)
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
-                updateTurn();
+                if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname())) {
+                    updateToNextPlayerTurn();
+                    updateTurn();
+                }
             }
         } else {
+            //Player quit because the game is ended
             UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);
             updateTurnMessage.setGameFinish(true);
             updateTurnMessageSender.notifyAll(updateTurnMessage);
         }
+
+        playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()));
     }
 
     public boolean isGameIsFinish() {

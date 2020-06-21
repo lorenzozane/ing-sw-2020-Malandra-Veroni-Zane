@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class ClientApp {
     public static void main(String[] args) throws IOException {
         Client client;
-        if(args == null || args.length == 0 )
+        if(args.length < 2)
             client = new Client("127.0.0.1", 12345);
         else
             client = new Client(args[0], Integer.parseInt(args[1]));
@@ -29,7 +29,6 @@ public class ClientApp {
         view.addPlayerMoveObserver(client.getPlayerMoveReceiver());
         view.addPlayerMoveStartupObserver(client.getPlayerMoveStartupReceiver());
         view.addStringObserver(client.getStringReceiver());
-
 
         client.run();
     }

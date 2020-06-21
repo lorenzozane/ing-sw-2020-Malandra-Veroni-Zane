@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.EnumSet;
+
+import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
 
 /**
  * Enums useful to describe the possible actions and win conditions available to players
@@ -32,15 +36,15 @@ public class TurnEvents implements Serializable {
         GAME_END(ActionType.END),
 
         MOVE_STANDARD(ActionType.MOVEMENT),
-        MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT),
+        MOVE_NOT_INITIAL_POSITION(ActionType.MOVEMENT, SKIPPABLE),
         MOVE_OPPONENT_SLOT_FLIP(ActionType.MOVEMENT),
         MOVE_OPPONENT_SLOT_PUSH(ActionType.MOVEMENT),
         MOVE_DISABLE_OPPONENT_UP(ActionType.MOVEMENT),
 
         BUILD_STANDARD(ActionType.BUILDING),
-        BUILD_BEFORE(ActionType.BUILDING),
-        BUILD_NOT_SAME_PLACE(ActionType.BUILDING),
-        BUILD_SAME_PLACE_NOT_DOME(ActionType.BUILDING),
+        BUILD_BEFORE(ActionType.BUILDING, SKIPPABLE),
+        BUILD_NOT_SAME_PLACE(ActionType.BUILDING, SKIPPABLE),
+        BUILD_SAME_PLACE_NOT_DOME(ActionType.BUILDING, SKIPPABLE),
         BUILD_DOME_ANY_LEVEL(ActionType.BUILDING);
 
         public enum ActionType {
@@ -50,11 +54,27 @@ public class TurnEvents implements Serializable {
             MOVEMENT,
             BUILDING;
         }
+        
+        public enum ActionProperty {
+            SKIPPABLE;
+        }
 
         private final ActionType type;
+        private final EnumSet<ActionProperty> actionsProperties;
 
-        Actions(ActionType type) {
+        Actions(ActionType type, ActionProperty... actionsProperties) {
             this.type = type;
+            this.actionsProperties = actionsProperties.length == 0 ? EnumSet.noneOf(ActionProperty.class) : EnumSet.copyOf(Arrays.asList(actionsProperties));
+        }
+
+        /**
+         * Check if the action owns the property
+         *
+         * @param property Property assignable to actions
+         * @return True if the action owns the property, False otherwise
+         */
+        public boolean hasProperty(ActionProperty property) {
+            return actionsProperties.contains(property);
         }
 
         public ActionType getActionType() {

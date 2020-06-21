@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
+
 public class GameManager extends MessageForwarder {
 
     private final Game gameInstance;
@@ -46,6 +48,10 @@ public class GameManager extends MessageForwarder {
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayerOwner()) &&
                 (move.getMove() != Actions.QUIT || move.getMove() == Actions.GAME)) {
+            if (turn.isGameIsFinish()) {
+                move.getRemoteView().errorMessage(Message.canOnlyQuitOrGame);
+                return;
+            }
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
             return;
         } else {
@@ -70,8 +76,10 @@ public class GameManager extends MessageForwarder {
                     return;
                 }
             else if (move.getMove() == Actions.SKIP)
-                if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE) {
-                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
+                if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1).hasProperty(SKIPPABLE)) {
+                    if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE)
+                        turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);
+                    turn.addLastMovePerformed(move);
                     updateTurn();
                 } else {
                     move.getRemoteView().errorMessage(Message.cannotSkipThisMove);
