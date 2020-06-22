@@ -59,6 +59,7 @@ public class GameManager extends MessageForwarder {
                 turn.quit(move.getPlayerOwner());
                 return;
             } else if (move.getMove() == Actions.GAME) {
+                //TODO: Sistemare se avremo tempo altrimenti togliere
                 return;
             }
         }

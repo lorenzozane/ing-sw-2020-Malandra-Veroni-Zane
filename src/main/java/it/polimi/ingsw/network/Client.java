@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.PlayerMove;
 import it.polimi.ingsw.model.PlayerMoveStartup;
+import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
@@ -23,6 +24,7 @@ public class Client extends MessageForwarder {
     private final int port;
     private final Socket socket;
     protected ObjectOutputStream out;
+    private String playerOwnerNickname;
     private View clientView;
     private volatile boolean active = true;
     private UserInterface chosenUserInterface = null;
@@ -71,8 +73,10 @@ public class Client extends MessageForwarder {
                     Object inputObject = socketIn.readObject();
 
                     if (inputObject instanceof String) {
-                        if (((String) inputObject).contains("Nickname: "))
+                        if (((String) inputObject).contains("Nickname: ")) {
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
+                            playerOwnerNickname = ((String) inputObject).replace("Nickname: ", "");
+                        }
                         else {
 //                            clientView.showMessage((String) inputObject);
 //                            handleString((String) inputObject);
@@ -187,7 +191,14 @@ public class Client extends MessageForwarder {
     }
 
     protected void handleUpdateTurnMessageFromSocket(UpdateTurnMessage message) {
-        updateTurnMessageSender.notifyAll(message);
+        if ((message.getNextMove() == TurnEvents.Actions.QUIT &&
+                message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) ||
+                (message.getNextMove() == TurnEvents.Actions.GAME_END &&
+                        message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname))) {
+            System.exit(0);
+        } else {
+            updateTurnMessageSender.notifyAll(message);
+        }
     }
 
     protected void sendStringToClient(String message) {

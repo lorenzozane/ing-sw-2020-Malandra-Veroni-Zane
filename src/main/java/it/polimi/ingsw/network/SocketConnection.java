@@ -198,14 +198,20 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     @Override
     protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
-        if ((message.getNextMove() == TurnEvents.Actions.QUIT &&
-                message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) ||
-                (message.getNextMove() == TurnEvents.Actions.GAME_END &&
-                        message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname))) {
-            server.deregisterOnePlayer(this.playerOwnerNickname);
-            this.closeConnection();
-        } else {
-            asyncSend(message);
+        try {
+            if ((message.getNextMove() == TurnEvents.Actions.QUIT &&
+                    message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) ||
+                    (message.getNextMove() == TurnEvents.Actions.GAME_END &&
+                            message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname))) {
+                asyncSend(message);
+                Thread.sleep(100);
+                server.deregisterOnePlayer(this.playerOwnerNickname);
+                this.closeConnection();
+            } else {
+                asyncSend(message);
+            }
+        } catch (InterruptedException ex) {
+            System.out.println("Exception thrown from SocketConnection.handleUpdateTurnMessage: " + ex.getMessage());
         }
     }
 

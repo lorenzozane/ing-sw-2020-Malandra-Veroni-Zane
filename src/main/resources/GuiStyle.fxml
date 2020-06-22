@@ -16,7 +16,7 @@
                                 <Image url="@images/SantoriniBoardSquare.png" />
                             </image>
                         </ImageView>
-                        <GridPane layoutX="29.0" layoutY="94.0" prefHeight="398.0" prefWidth="416.0" style="-fx-background-image: url('images/SantoriniBoardSquare.png');                                   -fx-background-size: contain;                                   -fx-background-repeat: no-repeat;                                   -fx-background-position: center;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <GridPane layoutX="29.0" layoutY="94.0" prefHeight="398.0" prefWidth="416.0" style="-fx-background-image: url('images/SantoriniBoardSquare.png'); -fx-background-size: stretch; -fx-background-repeat: no-repeat; -fx-background-position: center;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,7 +36,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                             </children>
                         </GridPane>
                     </children>
@@ -47,9 +48,9 @@
                     </children>
                 </AnchorPane>
             </items>
-         <cursor>
-            <Cursor fx:constant="DISAPPEAR" />
-         </cursor>
+            <cursor>
+                <Cursor fx:constant="DISAPPEAR" />
+            </cursor>
         </SplitPane>
     </children>
 </AnchorPane>
