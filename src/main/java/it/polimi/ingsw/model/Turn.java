@@ -373,17 +373,24 @@ public class Turn extends MessageForwarder {
             UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);
             updateTurnMessageSender.notifyAll(updateTurnMessage);
             gameInstance.setPlayerNumber(gameInstance.getPlayerNumber() - 1);
-            currentPlayer = null;
+
+            for (Worker workerToDelete : loser.getWorkers()) {
+                workerToDelete.move(new Slot(new Position(-1, -1)));
+                workerToDelete = null;
+            }
+
+            updateToNextPlayerTurn();
             updateTurn();
             playerOrder.removeIf(x -> x.getNickname().equalsIgnoreCase(loser.getNickname()));
         }
     }
 
     public void quit(Player playerWhoQuit) {
-        for (Worker workerToDelete : playerWhoQuit.getWorkers()) {
-            workerToDelete.move(new Slot(new Position(-1, -1)));
-            workerToDelete = null;
-        }
+        if (playerWhoQuit.getWorkers().get(0) != null)
+            for (Worker workerToDelete : playerWhoQuit.getWorkers()) {
+                workerToDelete.move(new Slot(new Position(-1, -1)));
+                workerToDelete = null;
+            }
 
         if (!gameIsFinish) {
             //Player quit during the active game
@@ -397,7 +404,7 @@ public class Turn extends MessageForwarder {
                 //Player quit while other player continue to player (he lose)
                 UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);
                 updateTurnMessageSender.notifyAll(updateTurnMessage);
-                if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname())) {
+                if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname())) { //Non dovrebbe mai verificarsi
                     updateToNextPlayerTurn();
                     updateTurn();
                 }

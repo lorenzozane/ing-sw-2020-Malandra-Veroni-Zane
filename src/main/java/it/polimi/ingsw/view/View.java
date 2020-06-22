@@ -539,7 +539,8 @@ public class View extends MessageForwarder {
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.placeWorkerOthers);
             }
         } else {
-            if (message.getNextMove() != Actions.WAIT_FOR_UNDO)
+            if (message.getNextMove() != Actions.WAIT_FOR_UNDO &&
+                    message.getNextMove() != Actions.QUIT)
                 refreshView(message.getBoardCopy(), chosenUserInterface);
             if (message.getNextMove() == Actions.CHOSE_WORKER)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.choseYourWorkerOthers);
@@ -658,7 +659,8 @@ public class View extends MessageForwarder {
         if (!activeReadResponse)
             activateReadResponse();
 
-        this.currentMove = message;
+        if (!(message.getNextMove() == Actions.QUIT && !message.getCurrentPlayer().getNickname().equals(playerOwnerNickname)))
+            this.currentMove = message;
 
         if (message.getCurrentPlayer().getNickname().equals(playerOwnerNickname))
             handleMessageForMe(message);
