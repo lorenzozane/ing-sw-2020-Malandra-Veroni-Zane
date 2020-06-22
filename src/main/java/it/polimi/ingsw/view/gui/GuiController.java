@@ -4,22 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 
 public class GuiController {
 
     @FXML
-    Button level100;
+    ImageView level100;
 
-    @FXML
-    Button level200;
-
-    @FXML
-    Button level300;
-
-    @FXML
-    Button dome00;
 
     @FXML
     Button level101;
@@ -34,9 +27,7 @@ public class GuiController {
    @FXML
    private void setVisible00(ActionEvent event) {
        level100.setVisible(true);
-       level200.setVisible(true);
-       level300.setVisible(true);
-       dome00.setVisible(true);
+
    }
 
    @FXML

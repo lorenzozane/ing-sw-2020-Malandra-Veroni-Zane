@@ -4,8 +4,9 @@
 }
 
 .level1{
- -fx-background-color: navajowhite;
+ -fx-image: url("/images/SantoriniBoard.jpg");
  -fx-border-color: black;
+
 }
 
 .level2{
