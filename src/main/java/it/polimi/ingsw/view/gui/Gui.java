@@ -25,7 +25,7 @@ public class Gui extends Application {
         primaryStage.minHeightProperty().bind(scene.widthProperty().multiply(0.7));
 
         SplitPane mainSplitPane = (SplitPane) scene.lookup("#mainSplitPane");
-        SplitPane.Divider divider = mainSplitPane.getDividers().get(0);
+//        SplitPane.Divider divider = mainSplitPane.getDividers().get(0);
 //        AnchorPane leftMainAnchor = (AnchorPane) mainSplitPane.lookup("#leftMainAnchor");
         AnchorPane leftMainAnchor = (AnchorPane) mainSplitPane.getItems().get(0);
         leftMainAnchor.maxWidthProperty().bind(mainSplitPane.widthProperty().multiply(0.7));

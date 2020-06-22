@@ -1,0 +1,38 @@
+.board{
+-fx-background-image : url("/images/SantoriniBoard.jpg");
+ -fx-background-size: 100% 100%;
+}
+
+.level1{
+ -fx-background-color: navajowhite;
+ -fx-border-color: black;
+}
+
+.level2{
+ -fx-background-color: antiquewhite;
+ -fx-border-color: black;
+}
+
+.level3{
+ -fx-background-color: white;
+ -fx-border-color: black;
+}
+
+.dome{
+ -fx-background-color: darkblue;
+}
+
+.workerRed{
+ -fx-background-color: red;
+ -fx-background-radius: 100px;
+}
+
+.workerCyan{
+ -fx-background-color: cyan;
+ -fx-background-radius: 100px;
+}
+
+.workerYellow{
+ -fx-background-color: yellow;
+ -fx-background-radius: 100px;
+}
