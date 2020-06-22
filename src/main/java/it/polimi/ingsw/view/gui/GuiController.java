@@ -43,7 +43,6 @@ public class GuiController {
    private void setVisible01(ActionEvent event){
        level101.setVisible(true);
        level201.setVisible(true);
-       workerRed01.setVisible(true);
    }
 
     public void bottonPress(Event event){
