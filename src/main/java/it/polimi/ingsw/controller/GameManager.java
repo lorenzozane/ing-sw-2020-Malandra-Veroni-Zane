@@ -22,9 +22,9 @@ public class GameManager extends MessageForwarder {
     private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();
 
     /**
-     * Constructor of the GameManager that deals with managing the game logic (movement and construction)
+     * Constructor of the GameManager that deals with managing the game logic (movement and construction).
      *
-     * @param gameInstance Is the current game instance
+     * @param gameInstance Is the current game instance.
      */
     public GameManager(Game gameInstance) {
         this.gameInstance = gameInstance;
@@ -41,9 +41,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Logic of game moves
+     * Logic of game moves.
      *
-     * @param move The player move containing the information about the worker and the target slot of the move
+     * @param move The player move containing the information about the worker and the target slot of the move.
      */
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayerOwner()) &&
@@ -195,9 +195,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Makes the worker perform a move
+     * Makes the worker perform a move.
      *
-     * @param move The player move containing the information about the worker and the target slot of the move
+     * @param move The player move containing the information about the worker and the target slot of the move.
      */
     protected void performMove(PlayerMove move) {
         move.getMovedWorker().move(move.getTargetSlot());
@@ -211,9 +211,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Makes the worker perform a build
+     * Makes the worker perform a build.
      *
-     * @param move The player move containing the information about the worker and the target slot of the move
+     * @param move The player move containing the information about the worker and the target slot of the move.
      */
     protected void performBuilding(PlayerMove move) {
         move.getMovedWorker().build(move.getTargetSlot());
@@ -222,9 +222,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Makes the worker perform a build forcing it to be a dome
+     * Makes the worker perform a build forcing it to be a dome.
      *
-     * @param move The player move containing the information about the worker and the target slot of the move
+     * @param move The player move containing the information about the worker and the target slot of the move.
      */
     protected void performBuildingDome(PlayerMove move) {
         move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);
@@ -233,9 +233,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Set the current worker (the worker the player decided to play with) for the current turn
+     * Set the current worker (the worker the player decided to play with) for the current turn.
      *
-     * @param move The player move containing the information about the worker to set as current worker
+     * @param move The player move containing the information about the worker to set as current worker.
      */
     protected void setCurrentWorker(PlayerMove move) {
 //        if (!move.getForcedMove() && turn.getCurrentWorker() == null) {
@@ -246,9 +246,9 @@ public class GameManager extends MessageForwarder {
     }
 
     /**
-     * Check if the current player has made a move that leads to victory
+     * Check if the current player has made a move that leads to victory.
      *
-     * @param move The player move containing the information about the worker and the target slot of the move
+     * @param move The player move containing the information about the worker and the target slot of the move.
      */
     protected boolean checkWinConditions(PlayerMove move) {
         boolean winner = false;
@@ -297,6 +297,11 @@ public class GameManager extends MessageForwarder {
         }
     }
 
+    /**
+     * Method to handle message received by the PlayerMoveReceiver.
+     *
+     * @param message The message to handle.
+     */
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         errorMessage = "";
