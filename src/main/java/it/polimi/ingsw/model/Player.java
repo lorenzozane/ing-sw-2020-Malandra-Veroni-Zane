@@ -14,11 +14,11 @@ public class Player implements Serializable {
     private PlayerColor playerColor = null;
     private final ArrayList<Worker> workers = new ArrayList<>();
     private GodsCard playerCard;
-    private boolean isPlaying;
+//    private boolean isPlaying;
 
     public Player(String nickname) {
         this.nickname = nickname;
-        this.isPlaying = true;
+//        this.isPlaying = true;
 
         for (int i = 0; i < 2; i++) {
             workers.add(new Worker(this, (i + 1)));
@@ -29,13 +29,13 @@ public class Player implements Serializable {
         return nickname;
     }
 
-    public boolean isPlaying() {
-        return isPlaying;
-    }
+//    public boolean isPlaying() {
+//        return isPlaying;
+//    }
 
-    protected void setPlaying(boolean playing) {
-        isPlaying = playing;
-    }
+//    protected void setPlaying(boolean playing) {
+//        isPlaying = playing;
+//    }
 
     public Date getBirthday() {
         return birthday;
