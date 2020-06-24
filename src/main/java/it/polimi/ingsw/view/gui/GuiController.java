@@ -27,9 +27,6 @@ public class GuiController {
     @FXML
     Button level201;
 
-    @FXML
-    Button workerRed01;
-
 
    @FXML
    private void setVisible00(ActionEvent event) {

@@ -34,3 +34,28 @@
 .workerYellow{
  -fx-background-color: yellow;
 }
+
+.background{
+ -fx-background-image : url("/images/bg_panelEdgeRight.jpg");
+ -fx-background-size: 100% 100%;
+}
+
+.toggle{
+ -fx-background-image : url("/images/cm_btn_blue.jpg");
+ -fx-background-size: 100% 100%;
+}
+
+.quit{
+ -fx-background-image : url("/images/button_quit.jpg");
+ -fx-background-size: 100% 100%;
+}
+
+.undo{
+ -fx-background-image : url("/images/button_undo.jpg");
+ -fx-background-size: 100% 100%;
+}
+
+.skip{
+ -fx-background-image : url("/images/button_skip.jpg");
+ -fx-background-size: 100% 100%;
+}
