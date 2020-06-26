@@ -85,6 +85,7 @@ public class GuiGodsController {
             stage.setScene(mainScene);
             stage.minWidthProperty().bind(mainScene.heightProperty().divide(0.7));
             stage.minHeightProperty().bind(mainScene.widthProperty().multiply(0.7));
+            stage.setResizable(true);
         }
     }
 }
