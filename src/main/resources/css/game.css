@@ -24,15 +24,18 @@
 }
 
 .workerRed{
- -fx-background-color: red;
+ -fx-background-image : url("/images/worker_red.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .workerCyan{
- -fx-background-color: cyan;
+ -fx-background-image : url("/images/worker_cyan.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .workerYellow{
- -fx-background-color: yellow;
+ -fx-background-image : url("/images/worker_yellow.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .background{
