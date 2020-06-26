@@ -128,4 +128,19 @@ public class Slot implements Serializable {
     public static int calculateHeightDifference(Slot startingPosition, Slot targetPosition) {
         return targetPosition.getConstructionHeight() - startingPosition.getConstructionHeight();
     }
+
+//    @Override
+//    protected final Slot clone() {
+//        final Slot result = new Slot(this.slotPosition);
+//        for (Building building : buildingsStatus) {
+//            if (building != null) {
+//                Building newBuilding = new Building(building.getLevel());
+//                result.setBuilding(newBuilding);
+//            }
+//        }
+//        if (this.workerInSlot != null)
+//            result.setWorkerInSlot(new Worker(this.getWorkerInSlot().getPlayerOwner(), this.getWorkerInSlot().getIdWorker().charAt(this.getWorkerInSlot().getIdWorker().length() - 1)));
+//
+//        return result;
+//    }
 }

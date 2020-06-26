@@ -102,9 +102,9 @@ public class UpdateTurnMessage implements Serializable {
         return currentWorker;
     }
 
-    public String getLastMovePerformedBy() {
-        return lastMovePerformedBy;
-    }
+//    public String getLastMovePerformedBy() {
+//        return lastMovePerformedBy;
+//    }
 
     public Board getBoardCopy() {
         return boardCopy;

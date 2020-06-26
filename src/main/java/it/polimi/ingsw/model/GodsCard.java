@@ -33,7 +33,7 @@ public class GodsCard implements Cloneable, Serializable {
 
     @Override
     public String toString() {
-        return "God " + cardName + ": " + cardDescription;
+        return "God " + cardName.toUpperCase() + ": " + cardDescription;
     }
 
 

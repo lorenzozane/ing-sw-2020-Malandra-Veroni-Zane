@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
 import static org.junit.Assert.*;
 
 public class GameManagerTest {
@@ -70,10 +72,22 @@ public class GameManagerTest {
         buildingSlot.setBuilding(new Building(BuildingLevel.LEVEL1));
 
 
+        //TEST_CHOSE_WORKER
+        PlayerMove playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.CHOSE_WORKER,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+        assertEquals(turn.getCurrentWorker(), worker1Player1);
+
+
         //TEST MOVE_STANDARD
         worker1Player1.move(startingSlot);
         worker1Player2.move(opponentSlot);
-        PlayerMove playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
                 Actions.MOVE_STANDARD,
                 targetSlot.getSlotPosition(),
                 turn.getCurrentPlayer().getNickname());
@@ -320,6 +334,106 @@ public class GameManagerTest {
         playerMove.setRemoteView(remoteView);
         gameManager.handlePlayerMove(playerMove);
         assertEquals(Message.cantBuildADomeMessage, gameManager.getErrorMessage());
+    }
+
+    @Test
+    public void handleMoveCommandTest() throws ParseException, IllegalAccessException {
+        Turn turn = gameInstance.getTurn();
+        Player player1 = new Player("player1");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = dateFormat.parse("23/5/1998");
+        player1.setBirthday(date);
+        Player player2 = new Player("player2");
+        date = dateFormat.parse("23/5/1996");
+        player2.setBirthday(date);
+        gameInstance.setPlayerNumber(2);
+        gameInstance.addPlayer(player1);
+        gameInstance.addPlayer(player2);
+
+        SocketConnection socketConnection = Mockito.mock(SocketConnection.class);
+        RemoteView remoteView = new RemoteView(player1.getNickname(), socketConnection);
+
+        turn.addUpdateTurnMessageObserver(remoteView.getUpdateTurnMessageReceiver());
+
+        Deck deck = gameInstance.getDeck();
+        deck.chooseCards("prometheus", "artemis");
+        player1.setPlayerCard(deck.pickUpCard("prometheus"));
+        player2.setPlayerCard(deck.pickUpCard("artemis"));
+
+        Worker worker1Player1 = player1.getWorkers().get(0);
+        Worker worker2Player1 = player1.getWorkers().get(1);
+        Worker worker1Player2 = player2.getWorkers().get(0);
+        Worker worker2Player2 = player2.getWorkers().get(1);
+        worker1Player1.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(0, 0)));
+        worker2Player1.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(4, 4)));
+        worker1Player2.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(1, 0)));
+        worker2Player2.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(4, 3)));
+
+        turn.setUpGameTurn();
+
+        Slot startingSlot = gameInstance.getBoard().getSlot(new Position(0, 0));
+        Slot targetSlot = gameInstance.getBoard().getSlot(new Position(0, 1));
+        Slot opponentSlot = gameInstance.getBoard().getSlot(new Position(1, 0));
+        Slot buildingSlot = gameInstance.getBoard().getSlot(new Position(1, 1));
+        buildingSlot.setBuilding(new Building(BuildingLevel.LEVEL1));
+
+
+        PlayerMove playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.CHOSE_WORKER,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+
+
+        worker1Player1.move(startingSlot);
+        worker1Player2.move(opponentSlot);
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.MOVE_STANDARD,
+                targetSlot.getSlotPosition(),
+                turn.getCurrentPlayer().getNickname());
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+
+        //TEST UNDO
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.UNDO,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+        assertEquals(startingSlot.getSlotPosition(), worker1Player1.getWorkerSlot().getSlotPosition());
+
+        while (!turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1).hasProperty(SKIPPABLE)) {
+            turn.updateTurn();
+        }
+
+        //TEST SKIP
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.SKIP,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+        assertEquals(startingSlot.getSlotPosition(), worker1Player1.getWorkerSlot().getSlotPosition());
+
+
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.UNDO,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteView);
+        gameManager.handlePlayerMove(playerMove);
+        //TODO: Come testare errori?
     }
 
     @Test

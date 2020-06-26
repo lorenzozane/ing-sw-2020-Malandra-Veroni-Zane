@@ -118,4 +118,17 @@ public class DeckTest {
 
         assertEquals(godsCardExpected.getCardName(), godsCard.getCardName());
     }
+
+    @Test
+    public void getCardDescriptionTest() {
+        gameInstance.setPlayerNumber(3);
+        Deck deck = gameInstance.getDeck();
+        deck.chooseCards("apollo", "artemis", "athena");
+        GodsCard godsCard = deck.pickUpCard("apollo");
+
+        assertEquals("Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",
+                godsCard.getCardDescription());
+        assertEquals("God APOLLO: Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",
+                godsCard.toString());
+    }
 }
