@@ -1,0 +1,47 @@
+.apollo{
+    -fx-background-image : url("/images/apollo.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.artemis{
+    -fx-background-image : url("/images/artemis.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.athena{
+    -fx-background-image : url("/images/athena.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.atlas{
+    -fx-background-image : url("/images/atlas.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.demeter{
+    -fx-background-image : url("/images/demeter.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.hephaestus{
+    -fx-background-image : url("/images/hephaestus.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.minotaur{
+    -fx-background-image : url("/images/minotaur.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.pan{
+    -fx-background-image : url("/images/pan.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+.prometheus{
+    -fx-background-image : url("/images/prometheus.jpg");
+    -fx-background-size: 100% 100%;
+}
+
+
+

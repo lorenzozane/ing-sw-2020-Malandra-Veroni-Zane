@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="512.0" prefWidth="250.5" styleClass="settingBackground" stylesheets="@css/setting.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GuiSettingController">
+   <children>
+      <GridPane layoutY="-14.0" prefHeight="512.0" prefWidth="250.5" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="20.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="10.0" prefWidth="161.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="8.0" prefWidth="12.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.0" minWidth="10.0" prefWidth="40.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.0" minWidth="10.0" prefWidth="22.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="70.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="132.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="95.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="11.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="70.0" minHeight="7.0" prefHeight="7.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="147.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="161.0" minHeight="7.0" prefHeight="9.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="161.0" minHeight="0.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="221.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="262.0" minHeight="5.0" prefHeight="8.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="262.0" minHeight="0.0" prefHeight="14.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="282.0" minHeight="6.0" prefHeight="26.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="225.0" minHeight="10.0" prefHeight="198.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="186.0" text="Nickname:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Inserisci la data di nascita:" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <DatePicker maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></DatePicker>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Numero di player:" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <GridPane prefHeight="41.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="white" text="3" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets right="40.0" />
+                     </GridPane.margin></Button>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="white" text="2">
+                     <GridPane.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </GridPane.margin></Button>
+               </children>
+            </GridPane>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Scegli il colore dei worker" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="12">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="red">
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin></Button>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="yellow" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin></Button>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="cyan" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </GridPane.margin></Button>
+               </children>
+            </GridPane>
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="9">
+               <GridPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="nextSceneSetting" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNextSceneSetting" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="12">
+               <GridPane.margin>
+                  <Insets bottom="15.0" top="15.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
