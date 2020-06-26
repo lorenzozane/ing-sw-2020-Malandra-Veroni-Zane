@@ -155,7 +155,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
             }
         } catch (IOException | NoSuchElementException | ParseException | ClassNotFoundException | InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
             server.deregisterConnection(nickname);
 

@@ -454,7 +454,7 @@ public class View extends MessageForwarder {
             if (message.getNextStartupMove() == StartupActions.COLOR_REQUEST)
                 showMessage(ViewMessage.colorRequest + getAvailableColorBuilder(message.getAvailableColor()));
             else if (message.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
-                showMessage(ViewMessage.pickLastColor + message.getAvailableColor().get(0).getColorAsString());
+                showMessage(ViewMessage.pickLastColor + getAvailableColorBuilder(message.getAvailableColor()));
                 new Thread(() -> handleResponse(message.getAvailableColor().get(0).getColorAsString())).start();
             } else if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST)
                 showMessage(ViewMessage.chooseCardRequest + getAvailableCardsBuilder(message.getAvailableCards()));
