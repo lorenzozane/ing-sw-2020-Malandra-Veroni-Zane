@@ -19,10 +19,11 @@ public class Gui extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/GuiSetting.fxml"));
         Parent root = fxmlLoader.load();
-        Scene settingScene = new Scene(root, 400, 750);
+        Scene settingScene = new Scene(root, 400, 700);
 
         primaryStage.setTitle("SANTORINI");
         primaryStage.setScene(settingScene);
+        primaryStage.setResizable(false);
 
         primaryStage.show();
     }

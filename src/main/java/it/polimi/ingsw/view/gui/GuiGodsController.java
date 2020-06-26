@@ -44,9 +44,9 @@ public class GuiGodsController {
 
     @FXML
     private void godsClick(ActionEvent event) {
-        godsCounterPlus(event);
         ((Button) event.getSource()).setDisable(true);
         ((Button) event.getSource()).setOpacity(0.4);
+        godsCounterPlus(event);
     }
 
     private int godsCounter;

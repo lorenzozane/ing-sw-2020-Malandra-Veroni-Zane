@@ -28,8 +28,9 @@ public class GuiSettingController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene godsScene = new Scene(root, 550, 750);
+        Scene godsScene = new Scene(root, 500, 700);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setResizable(false);
         stage.setScene(godsScene);
     }
 
