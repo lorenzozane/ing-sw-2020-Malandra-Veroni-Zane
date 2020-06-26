@@ -19,7 +19,7 @@ public class Board implements Cloneable, Serializable {
     }
 
     /**
-     * Initialize the game board instantiating all the slots
+     * Initialize the game board instantiating all the slots.
      */
     private void initializeBoard(){
         for (int i = 0; i < BOARD_DIMENSION; i++)
@@ -27,15 +27,21 @@ public class Board implements Cloneable, Serializable {
                 gameBoardSlots[i][j] = new Slot(new Position(i, j));
     }
 
+    /**
+     * Provides the board slot knowing its position.
+     *
+     * @param position The position of the slot you want to receive.
+     * @return Returns the slot with the specified position.
+     */
     public Slot getSlot(Position position) {
         return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];
     }
 
     /**
-     * Allows to obtain all the slots adjacent to the central one
+     * Allows to obtain all the slots adjacent to the central one.
      *
-     * @param centerSlot The central slot
-     * @return An ArrayList of Slot containing all the adjacent slots
+     * @param centerSlot The central slot.
+     * @return An ArrayList of Slot containing all the adjacent slots.
      */
     public ArrayList<Slot> getAdjacentSlots(Slot centerSlot){
         ArrayList<Slot> adjacentSlots = new ArrayList<>(8);
@@ -51,11 +57,11 @@ public class Board implements Cloneable, Serializable {
     }
 
     /**
-     * Allows to obtain the next slot along the movement direction
+     * Allows to obtain the next slot along the movement direction.
      *
-     * @param startingSlot The starting slot of the movement
-     * @param targetSlot The target slot of the movement
-     * @return The next slot along the movement direction
+     * @param startingSlot The starting slot of the movement.
+     * @param targetSlot The target slot of the movement.
+     * @return The next slot along the movement direction.
      */
     public Position getBackwardsSlotPosition(Position startingSlot, Position targetSlot) {
         int nextSlotX = targetSlot.getCoordinateX() + (targetSlot.getCoordinateX() - startingSlot.getCoordinateX());

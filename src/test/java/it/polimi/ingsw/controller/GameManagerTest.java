@@ -27,6 +27,10 @@ public class GameManagerTest {
     Game gameInstance = new Game();
     GameManager gameManager = new GameManager(gameInstance);
 
+    private class ClientTest {
+        
+    }
+
     @Test
     public void handleMoveMovementTest() throws ParseException, IllegalAccessException, IOException {
         Turn turn = gameInstance.getTurn();

@@ -686,6 +686,9 @@ public class View extends MessageForwarder {
         return stringReceiver;
     }
 
+    /**
+     * Clear completely the console.
+     */
     public static void clearConsole() {
         try {
             final String os = System.getProperty("os.name");
