@@ -28,7 +28,7 @@ public class Server {
     private boolean isSomeoneCreatingAGame = false;
     private int nPlayer = 0;
     protected final Object lock = new Object();
-    private final ArrayList<Game> gamesStarted = new ArrayList<>();
+    protected final ArrayList<Game> gamesStarted = new ArrayList<>();
 
 
     /**
@@ -36,7 +36,7 @@ public class Server {
      *
      * @param nick Client unique name
      */
-    public synchronized void deregisterConnection(String nick) throws IOException {
+    public synchronized void deregisterConnection(String nick) {
         waitingConnection.remove(nick);
         usersReady.removeIf(x -> x.getNickname().equals(nick));
 
@@ -87,7 +87,6 @@ public class Server {
         this.serverSocket = new ServerSocket(PORT);
     }
 
-
     /**
      * It keeps the server listening on PORT and it accepts new client
      */
@@ -127,7 +126,7 @@ public class Server {
         return s.equals("2") || s.equals("3");
     }
 
-    public void lobby(String nickname, Date playerBirthday, SocketConnection c) throws IOException {
+    public void lobby(String nickname, Date playerBirthday, SocketConnection c) {
         waitingConnection.put(nickname, c);
 
         Player p = new Player(nickname);
@@ -141,19 +140,12 @@ public class Server {
             creatorSetup(c);
         }
         else {
-            if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-                new Thread(() -> {
-                    try {
-                        gameLobby();
-                    } catch (Exception e) {
-                        System.out.println("Exception thrown from Server.lobby");
-                        e.printStackTrace();
-                    }
-                }).start();
+            if (nPlayer <= usersReady.size() && nPlayer > 0)
+                new Thread(this::gameLobby).start();
         }
     }
 
-    public void gameLobby() throws IOException {
+    public void gameLobby() {
         Game gameInstance = new Game();
         gamesStarted.add(gameInstance);
 
@@ -170,16 +162,14 @@ public class Server {
         usersReady.subList(0, nPlayer).clear();
         this.nPlayer = 0;
 
-
-
         checkNewCreator();
     }
 
-    private synchronized void checkNewCreator() throws IOException {
+    private synchronized void checkNewCreator() {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
             currentCreator = "";
-            nPlayer = 0;;
+            nPlayer = 0;
         } else {
             nPlayer = 0;
             currentCreator = usersReady.get(0).getNickname();
@@ -187,7 +177,7 @@ public class Server {
         }
     }
 
-    private void creatorSetup(SocketConnection c) throws IOException {
+    private void creatorSetup(SocketConnection c) {
         c.asyncSend(Message.chooseNoPlayer);
         ObjectInputStream in;
 
@@ -207,7 +197,7 @@ public class Server {
                 inputObject = in.readObject();
             }
         }
-        catch (ClassNotFoundException e){
+        catch (ClassNotFoundException | IOException e){
             System.out.println("Exception thrown from Server.creatorSetup");
             e.printStackTrace();
         }
@@ -215,14 +205,7 @@ public class Server {
         c.asyncSend(Message.wait);
 
         if (nPlayer <= waitingConnection.size() && nPlayer > 0)
-            new Thread(() -> {
-                try {
-                    gameLobby();
-                } catch (Exception e) {
-                    System.out.println("Exception thrown from Server.creatorSetup");
-                    e.printStackTrace();
-                }
-            }).start();
+            new Thread(this::gameLobby).start();
 
     }
 

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.model.PlayerMove;
-import it.polimi.ingsw.model.PlayerMoveStartup;
-import it.polimi.ingsw.model.TurnEvents;
-import it.polimi.ingsw.model.UpdateTurnMessage;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 
@@ -143,6 +140,8 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
             asyncSend(Message.gameLoading);
 
+            Thread.sleep(1000);
+
             while (isActive()) {
                 inputObject = in.readObject();
 
@@ -155,14 +154,11 @@ public class SocketConnection extends MessageForwarder implements Runnable {
                     asyncSend(Message.error + " Exception thrown from SocketConnection.run");
 
             }
-        } catch (IOException | NoSuchElementException | ParseException | ClassNotFoundException e) {
-            //e.printStackTrace();
+        } catch (IOException | NoSuchElementException | ParseException | ClassNotFoundException | InterruptedException e) {
+            e.printStackTrace();
             System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
-            try {
-                server.deregisterConnection(nickname);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            server.deregisterConnection(nickname);
+
         } finally {
             closeConnection();
         }

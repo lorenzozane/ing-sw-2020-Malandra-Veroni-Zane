@@ -172,6 +172,7 @@ public class Client extends MessageForwarder {
             System.err.println("Client.closeConnection: Error during socket closure");
         }
         active = false;
+        System.exit(0);
     }
 
 
