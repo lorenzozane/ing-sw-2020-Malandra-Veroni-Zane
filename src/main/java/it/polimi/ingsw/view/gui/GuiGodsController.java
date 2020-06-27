@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,26 +66,19 @@ public class GuiGodsController {
             }
             Scene mainScene = new Scene(root, 800, 600);
             SplitPane mainSplitPane = (SplitPane) mainScene.lookup("#mainSplitPane");
-//        SplitPane.Divider divider = mainSplitPane.getDividers().get(0);
-//        AnchorPane leftMainAnchor = (AnchorPane) mainSplitPane.lookup("#leftMainAnchor");
+
             AnchorPane leftMainAnchor = (AnchorPane) mainSplitPane.getItems().get(0);
             leftMainAnchor.maxWidthProperty().bind(mainSplitPane.widthProperty().multiply(0.7));
             leftMainAnchor.minWidthProperty().bind(mainSplitPane.widthProperty().multiply(0.7));
-//        leftMainAnchor.setMinWidth(scene.getHeight());
-//        leftMainAnchor.setMaxWidth(scene.getHeight());
-//        double leftComponentSize = 100.0;
-//        mainSplitPane.getItems().filtered().forEach(div ->  div.setMouseTransparent(true) );
-//        leftComponent.setMinWidth(leftComponentSize);
-//        leftComponent.setMaxWidth(leftComponentSize);
-//        VBox rightComponent = new VBox();
-//        rightComponent.setMinWidth(leftComponentSize);
-//        rightComponent.setMaxWidth(leftComponentSize);
-//        mainSplitPane.getItems().addAll(leftComponent, rightComponent);
-//        mainSplitPane.setDividerPositions(leftComponentSize / scene.getWidth());
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(mainScene);
-            stage.minWidthProperty().bind(mainScene.heightProperty().divide(0.7));
-            stage.minHeightProperty().bind(mainScene.widthProperty().multiply(0.7));
+
+            stage.setMinHeight(600);
+            DoubleBinding binding = stage.heightProperty().divide(0.7);
+            stage.minWidthProperty().bind(binding);
+            stage.maxWidthProperty().bind(binding);
+
             stage.setResizable(true);
         }
     }
