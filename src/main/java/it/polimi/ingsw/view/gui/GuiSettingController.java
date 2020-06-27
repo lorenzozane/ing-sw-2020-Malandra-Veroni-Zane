@@ -27,6 +27,9 @@ public class GuiSettingController {
     TextField nickname;
 
     @FXML
+    Label errorNickname;
+
+    @FXML
     Label labelBirthday;
 
     @FXML
@@ -64,12 +67,17 @@ public class GuiSettingController {
 
     @FXML
     private void setNickname(ActionEvent event){
-        buttonNickname.setVisible(false);
-        labelNickname.setVisible(false);
-        nickname.setVisible(false);
-        labelBirthday.setVisible(true);
-        dateBirthday.setVisible(true);
-        buttonBirthday.setVisible(true);
+      //  if (nickname già inserito){
+        //    errorNickname.setVisible(true);
+      //  }
+      //  else{
+            buttonNickname.setVisible(false);
+            labelNickname.setVisible(false);
+            nickname.setVisible(false);
+            labelBirthday.setVisible(true);
+            dateBirthday.setVisible(true);
+            buttonBirthday.setVisible(true);
+      //  }
     }
 
     @FXML
