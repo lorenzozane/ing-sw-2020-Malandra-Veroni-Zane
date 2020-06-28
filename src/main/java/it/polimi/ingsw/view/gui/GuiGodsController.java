@@ -58,7 +58,7 @@ public class GuiGodsController {
         if(this.godsCounter == 2) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/GuiStyle.fxml"));
-            GuiController guiController = (GuiController) fxmlLoader.getController();
+            GuiGameController guiGameController = (GuiGameController) fxmlLoader.getController();
 
             Parent root = null;
             try {
@@ -68,7 +68,7 @@ public class GuiGodsController {
             }
 
             Scene mainScene = new Scene(root, 800, 600);
-            guiController.setScene(mainScene);
+            guiGameController.setScene(mainScene);
 
             SplitPane mainSplitPane = (SplitPane) mainScene.lookup("#mainSplitPane");
 
