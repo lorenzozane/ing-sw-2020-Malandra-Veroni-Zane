@@ -38,16 +38,16 @@ public class Gui extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/GuiSetting.fxml"));
-        GuiSettingController guiSettingController = (GuiSettingController) fxmlLoader.getController();
         Parent root = fxmlLoader.load();
+        GuiSettingController guiSettingController = (GuiSettingController) fxmlLoader.getController();
         Scene settingScene = new Scene(root, 400, 700);
-        guiSettingController.setScene(settingScene);
 
         primaryStage.setTitle("SANTORINI");
         primaryStage.setScene(settingScene);
         primaryStage.setResizable(false);
 
 
+        guiSettingController.setScene(settingScene);
         guiController.setCurrentScene(settingScene);
 
         primaryStage.show();

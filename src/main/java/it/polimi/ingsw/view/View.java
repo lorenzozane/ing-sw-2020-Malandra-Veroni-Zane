@@ -117,7 +117,7 @@ public class View extends MessageForwarder {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
             playerCli.showSimultaneousMessage(messageToShow);
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
+            playerGui.showStringMessage(messageToShow);
         }
 
         if (messageToShow.contains("Error: "))

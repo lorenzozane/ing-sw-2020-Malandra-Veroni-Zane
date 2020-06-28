@@ -19,7 +19,7 @@
           <RowConstraints maxHeight="331.0" minHeight="10.0" prefHeight="331.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="errorNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="165.0" text="Nickname already chosen, try again!" textFill="#f20c0c" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="errorNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="165.0" text="Nickname already chosen, try again!" textFill="#f20c0c" visible="false" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane fx:id="gridSettings" layoutY="-14.0" prefHeight="512.0" prefWidth="250.5" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.TurnEvents;
+import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Message;
 import javafx.event.ActionEvent;
@@ -30,8 +32,13 @@ public class GuiSettingController {
     }
 
     protected void setScene(Scene settingScene) {
-        if (this.settingScene == null)
+        if (this.settingScene == null) {
             this.settingScene = settingScene;
+
+            GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
+            for (Node node : gridSettings.getChildren())
+                node.setDisable(true);
+        }
     }
 
     @FXML
@@ -83,59 +90,71 @@ public class GuiSettingController {
     Button nextSceneSetting;
 
     protected void handleStringMessage(String message) {
-        if (message.equalsIgnoreCase(Message.chooseNickname)) {
-            GridPane gridSettings = (GridPane)settingScene.lookup("#gridSettings");
-            for (Node node : gridSettings.getChildren()) {
+        GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
 
+        if (message.equalsIgnoreCase(Message.chooseNickname) ||
+                message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("nickname"))) {
+                    node.setOpacity(1.00);
+                    node.setVisible(true);
+                    node.setDisable(false);
+                } else {
+                    node.setOpacity(0.50);
+                    node.setDisable(true);
+                }
+            }
+        } else if (message.equalsIgnoreCase(Message.birthday) ||
+                message.equalsIgnoreCase(Message.birthdayAgain)) {
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("birthday"))) {
+                    node.setOpacity(1.00);
+                    node.setVisible(true);
+                    node.setDisable(false);
+                } else {
+                    node.setOpacity(0.50);
+                    node.setDisable(true);
+                }
             }
         }
     }
 
     protected void showMessage(UpdateTurnMessage currentMove) {
         this.currentMove = currentMove;
+        GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
+
+        if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
+        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("color"))) {
+                    node.setOpacity(1.00);
+                    node.setVisible(true);
+                    node.setDisable(false);
+                } else {
+                    node.setOpacity(0.50);
+                    node.setDisable(true);
+                }
+            }
+        }
     }
 
     @FXML
-    private void setNickname(ActionEvent event){
-      //  if (nickname già inserito){
-        //    errorNickname.setVisible(true);
-      //  }
-      //  else{
-            buttonNickname.setVisible(false);
-            labelNickname.setVisible(false);
-            nickname.setVisible(false);
-            labelBirthday.setVisible(true);
-            dateBirthday.setVisible(true);
-            buttonBirthday.setVisible(true);
-      //  }
+    private void setNickname(ActionEvent event) {
+
     }
 
     @FXML
-    private void setBirthday(ActionEvent event){
-        labelBirthday.setVisible(false);
-        dateBirthday.setVisible(false);
-        buttonBirthday.setVisible(false);
-        labelPlayers.setVisible(true);
-        buttonPlayer2.setVisible(true);
-        buttonPlayer3.setVisible(true);
-        buttonPlayer.setVisible(true);
+    private void setBirthday(ActionEvent event) {
+
     }
 
     @FXML
-    private void setColor(ActionEvent event){
-        labelPlayers.setVisible(false);
-        buttonPlayer2.setVisible(false);
-        buttonPlayer3.setVisible(false);
-        buttonPlayer.setVisible(false);
-        labelColor.setVisible(true);
-        buttonColorCyan.setVisible(true);
-        buttonColorRed.setVisible(true);
-        buttonColorYellow.setVisible(true);
-        nextSceneSetting.setVisible(true);
+    private void setColor(ActionEvent event) {
+
     }
 
     @FXML
-    private void setNextSceneSetting(ActionEvent event){
+    private void setNextSceneSetting(ActionEvent event) {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/GuiGods.fxml"));
