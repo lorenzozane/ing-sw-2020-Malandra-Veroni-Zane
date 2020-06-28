@@ -10,6 +10,7 @@ import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
+import it.polimi.ingsw.view.gui.GuiController;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class View extends MessageForwarder {
     private final UserInterface chosenUserInterface;
     private RemoteView remoteView;
     private final Cli playerCli;
-    private final Gui playerGui;
+    private final GuiController playerGui;
     private UpdateTurnMessage currentMove = null;
     private boolean activeReadResponse = false;
     protected boolean gameIsFinish = false;
@@ -47,9 +48,10 @@ public class View extends MessageForwarder {
      *
      * @param playerGui Is the instance of the GUI that the player has chosen to use.
      */
-    public View(Gui playerGui) {
+    public View(GuiController playerGui) {
         this.chosenUserInterface = UserInterface.GUI;
         this.playerGui = playerGui;
+        this.playerGui.setViewOwner(this);
         this.playerCli = null;
     }
 

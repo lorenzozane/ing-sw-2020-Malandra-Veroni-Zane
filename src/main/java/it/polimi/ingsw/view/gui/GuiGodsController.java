@@ -58,13 +58,18 @@ public class GuiGodsController {
         if(this.godsCounter == 2) {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("/GuiStyle.fxml"));
+            GuiController guiController = (GuiController) fxmlLoader.getController();
+
             Parent root = null;
             try {
                 root = fxmlLoader.load();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             Scene mainScene = new Scene(root, 800, 600);
+            guiController.setScene(mainScene);
+
             SplitPane mainSplitPane = (SplitPane) mainScene.lookup("#mainSplitPane");
 
             AnchorPane leftMainAnchor = (AnchorPane) mainSplitPane.getItems().get(0);

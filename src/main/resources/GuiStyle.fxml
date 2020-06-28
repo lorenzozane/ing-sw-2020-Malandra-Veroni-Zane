@@ -10,576 +10,676 @@
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="234.0" styleClass="board" stylesheets="@css/game.css">
                     <children>
-                  <GridPane prefHeight="400.0" prefWidth="438.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
+                        <GridPane fx:id="gridBoard" prefHeight="400.0" prefWidth="438.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
 
-                        <Button fx:id="level100" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </GridPane.margin></Button>
-                         <Button fx:id="level200" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false">
-                           <GridPane.margin>
-                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                           </GridPane.margin></Button>
-                         <Button fx:id="level300" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false">
-                           <GridPane.margin>
-                              <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                           </GridPane.margin></Button>
-                        <Button fx:id="dome00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false">
-                           <GridPane.margin>
-                              <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                           </GridPane.margin>
-                        </Button>
-                         <Button fx:id="worker00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false">
-                         <GridPane.margin>
-                             <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                         </GridPane.margin></Button>
+                                <Button fx:id="level100" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level200" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level300" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
 
-                         <Button fx:id="level101" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level201" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level301" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level101" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level201" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level301" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level102" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level202" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level302" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level102" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level202" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level302" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level103" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level203" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level303" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level103" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level203" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level303" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level104" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level204" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level304" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level104" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level204" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level304" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level110" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level210" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level310" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level110" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level210" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level310" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level111" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level211" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level311" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level111" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level211" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level311" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level112" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level212" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level312" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level112" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level212" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level312" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level113" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level213" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level313" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level113" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level213" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level313" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level114" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level214" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level314" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level114" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level214" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level314" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level220" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level320" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level120" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level220" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level320" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level121" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level221" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level321" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level121" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level221" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level321" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level122" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level222" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level322" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level122" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level222" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level322" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level123" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level223" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level323" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level123" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level223" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level323" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level124" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level224" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level324" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level124" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level224" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level324" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level130" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level230" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level330" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level130" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level230" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level330" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level131" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level231" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level331" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level131" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level231" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level331" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level132" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level232" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level332" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level132" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level232" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level332" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level133" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level233" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level333" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level133" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level233" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level333" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level134" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level234" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level334" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level134" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level234" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level334" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level140" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level240" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level340" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level140" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level240" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level340" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level141" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level241" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level341" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level141" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level241" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level341" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level142" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level242" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level342" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level142" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level242" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level342" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level143" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level243" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level343" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level143" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level243" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level343" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                         <Button fx:id="level144" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level244" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="level344" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
-                             </GridPane.margin></Button>
-                         <Button fx:id="dome44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin>
-                         </Button>
-                         <Button fx:id="worker44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                             <GridPane.margin>
-                                 <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
-                             </GridPane.margin></Button>
+                                <Button fx:id="level144" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level244" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level2" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="level344" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level3" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="19.0" left="19.0" right="19.0" top="19.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="dome44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="dome" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="worker44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="worker" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                    <GridPane.margin>
+                                        <Insets bottom="26.0" left="26.0" right="26.0" top="26.0" />
+                                    </GridPane.margin>
+                                </Button>
 
-                     </children>
-                  </GridPane>
+                            </children>
+                        </GridPane>
                         <GridPane prefHeight="400.0" prefWidth="438.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -628,94 +728,98 @@
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@css/game.css">
-               <children>
-                  <GridPane prefHeight="400.0" prefWidth="186.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="187.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets></TextField>
-                        <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </GridPane.margin></TextField>
-                        <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" top="5.0" />
-                           </GridPane.margin></TextField>
-                     </children>
-                  </GridPane>
-                  <GridPane alignment="CENTER" layoutY="324.0" prefHeight="283.0" prefWidth="186.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="95.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="91.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="skip" GridPane.rowIndex="14">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="15.0" right="15.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="undo" GridPane.columnIndex="1" GridPane.rowIndex="14">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="15.0" right="15.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="quit" GridPane.rowIndex="16">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="15.0" right="15.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <CheckBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="toggle" text="Dome" GridPane.rowIndex="15">
-                           <GridPane.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                     </children>
-                  </GridPane>
-                  <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                    <buttons>
-                      <Button mnemonicParsing="false" text="Button" />
-                    </buttons>
-                  </ButtonBar>
-               </children></AnchorPane>
+                    <children>
+                        <GridPane prefHeight="400.0" prefWidth="186.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="187.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                </TextField>
+                                <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                    </GridPane.margin>
+                                </TextField>
+                                <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                    </GridPane.margin>
+                                </TextField>
+                                <TextField maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="3">
+                                    <GridPane.margin>
+                                        <Insets left="10.0" right="10.0" top="5.0" />
+                                    </GridPane.margin>
+                                </TextField>
+                            </children>
+                        </GridPane>
+                        <GridPane alignment="CENTER" layoutY="324.0" prefHeight="283.0" prefWidth="186.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="95.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="91.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Button fx:id="buttonSkip" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#commandButton" styleClass="skip" GridPane.rowIndex="14">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="15.0" right="15.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="buttonUndo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="undo" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="15.0" right="15.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <Button fx:id="buttonQuit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="quit" GridPane.rowIndex="16">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="15.0" right="15.0" />
+                                    </GridPane.margin>
+                                </Button>
+                                <CheckBox fx:id="buttonDome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="toggle" text="Dome" GridPane.rowIndex="15">
+                                    <GridPane.margin>
+                                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                                    </GridPane.margin>
+                                </CheckBox>
+                            </children>
+                        </GridPane>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                            <buttons>
+                                <Button mnemonicParsing="false" text="Button" />
+                            </buttons>
+                        </ButtonBar>
+                    </children>
+                </AnchorPane>
             </items>
         </SplitPane>
 
