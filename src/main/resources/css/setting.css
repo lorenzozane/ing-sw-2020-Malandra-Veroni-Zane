@@ -18,3 +18,19 @@
 .yellow{
     -fx-background-color: yellow;
 }
+
+.nickname{
+    -fx-opacity: 0.50;
+}
+
+.birthday{
+    -fx-opacity: 0.50;
+}
+
+.number{
+    -fx-opacity: 0.50;
+}
+
+.color{
+    -fx-opacity: 0.50;
+}

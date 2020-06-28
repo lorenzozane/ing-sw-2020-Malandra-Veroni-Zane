@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.Client.UserInterface;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
+import it.polimi.ingsw.view.gui.GuiController;
 import it.polimi.ingsw.view.gui.GuiGameController;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class View extends MessageForwarder {
     private final UserInterface chosenUserInterface;
     private RemoteView remoteView;
     private final Cli playerCli;
-    private final GuiGameController playerGui;
+    private final GuiController playerGui;
     private UpdateTurnMessage currentMove = null;
     private boolean activeReadResponse = false;
     protected boolean gameIsFinish = false;
@@ -47,7 +48,7 @@ public class View extends MessageForwarder {
      *
      * @param playerGui Is the instance of the GUI that the player has chosen to use.
      */
-    public View(GuiGameController playerGui) {
+    public View(GuiController playerGui) {
         this.chosenUserInterface = UserInterface.GUI;
         this.playerGui = playerGui;
         this.playerGui.setViewOwner(this);
@@ -78,7 +79,10 @@ public class View extends MessageForwarder {
      * @param errorToShow The error message to be shown.
      */
     public void showErrorMessage(String errorToShow) {
-        showMessage(errorToShow);
+        if (chosenUserInterface == UserInterface.CLI)
+            showMessage(errorToShow);
+//        else
+//
     }
 
     /**
@@ -96,7 +100,7 @@ public class View extends MessageForwarder {
                 playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
 
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
+            playerGui.showMessage(currentMove);
         }
 
         //TODO: Spostare in showErrorMessage?

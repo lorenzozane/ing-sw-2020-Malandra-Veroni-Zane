@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.UpdateTurnMessage;
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,21 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GuiGodsController {
+
+    private GuiController guiController;
+    private Scene godsScene;
+    private UpdateTurnMessage currentMove;
+
+    @FXML
+    private void initialize() {
+        guiController = GuiController.getInstance();
+        guiController.setGuiGodsController(this);
+    }
+
+    protected void setScene(Scene godsScene) {
+        if (this.godsScene == null)
+            this.godsScene = godsScene;
+    }
 
     @FXML
     Button apollo;
@@ -43,6 +59,10 @@ public class GuiGodsController {
     @FXML
     Button prometheus;
 
+    protected void showMessage(UpdateTurnMessage currentMove) {
+        this.currentMove = currentMove;
+    }
+
     @FXML
     private void godsClick(ActionEvent event) {
         ((Button) event.getSource()).setDisable(true);
@@ -69,6 +89,7 @@ public class GuiGodsController {
 
             Scene mainScene = new Scene(root, 800, 600);
             guiGameController.setScene(mainScene);
+            GuiController.getInstance().setCurrentScene(mainScene);
 
             SplitPane mainSplitPane = (SplitPane) mainScene.lookup("#mainSplitPane");
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.view.View;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -20,18 +21,19 @@ import java.util.ArrayList;
 
 public class GuiGameController {
 
-    Scene mainScene;
-    View viewOwner = null;
-    UpdateTurnMessage currentMove;
+    private GuiController guiController;
+    private Scene mainScene;
+    private UpdateTurnMessage currentMove;
 
     protected void setScene(Scene mainScene) {
         if (this.mainScene == null)
             this.mainScene = mainScene;
     }
 
-    public void setViewOwner(View viewOwner) {
-        if (this.viewOwner == null)
-            this.viewOwner = viewOwner;
+    @FXML
+    private void initialize() {
+        guiController = GuiController.getInstance();
+        guiController.setGuiGameController(this);
     }
 
     @FXML
@@ -65,6 +67,10 @@ public class GuiGameController {
     private void setVisible01(ActionEvent event) {
         level101.setVisible(true);
         level201.setVisible(true);
+    }
+
+    protected void showMessage(UpdateTurnMessage currentMove) {
+        this.currentMove = currentMove;
     }
 
     @FXML
@@ -131,6 +137,7 @@ public class GuiGameController {
                     if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
                             slot.getBuildingsStatus().get(0) != null && !button.isVisible())
                         return true;
+//                      TODO: Platform.runLater(() -> refreshSlot(slot));
                 } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("level2"))) {
                     if ((slot.getBuildingsStatus().get(1) == null && button.isVisible()) ||
                             slot.getBuildingsStatus().get(1) != null && !button.isVisible())
@@ -196,15 +203,16 @@ public class GuiGameController {
                 } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
                     if (slot.getWorkerInSlot() == null)
                         button.setVisible(false);
-                    else
+                    else {
                         button.setVisible(true);
 
-                    if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED)
-                        button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
-                    else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW)
-                        button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
-                    else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN)
-                        button.setStyle("-fx-background-image: url('/images/worker_cyan.jpg')");
+                        if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED)
+                            button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
+                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW)
+                            button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
+                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN)
+                            button.setStyle("-fx-background-image: url('/images/worker_cyan.jpg')");
+                    }
                 }
             }
         }
