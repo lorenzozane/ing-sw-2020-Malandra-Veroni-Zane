@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.GodsCard;
 import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.UpdateTurnMessage;
@@ -135,20 +137,33 @@ public class GuiSettingController {
 
     protected void showMessage(UpdateTurnMessage currentMove) {
         this.currentMove = currentMove;
-        GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
+        GridPane gridColor = (GridPane) settingScene.lookup("#gridColor");
 
-        if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
-                currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
-            for (Node node : gridSettings.getChildren()) {
-                if (node.getStyleClass().stream().anyMatch(x -> x.contains("color"))) {
+        if ((currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
+                currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) &&
+                currentMove.getCurrentPlayer().getNickname().equalsIgnoreCase(guiController.getPlayerOwnerNickname())) {
+
+            gridColor.setOpacity(1.00);
+            gridColor.setVisible(true);
+            gridColor.setDisable(false);
+
+            for (Node node : gridColor.getChildren()) {
+                if (node instanceof Button &&
+                        node.getStyleClass().stream().anyMatch(x -> x.contains("color")) &&
+                        currentMove.getAvailableColor().stream().map(Color.PlayerColor::getColorAsString)
+                                .anyMatch(x -> x.equalsIgnoreCase(node.getId().replace("buttonColor", "").toLowerCase())) &&
+                        currentMove.getNextStartupMove() != StartupActions.PICK_LAST_COLOR) {
                     node.setOpacity(1.00);
                     node.setVisible(true);
                     node.setDisable(false);
                 } else {
-                    node.setOpacity(0.50);
+                    node.setOpacity(0.25);
                     node.setDisable(true);
                 }
             }
+        } else {
+            gridColor.setOpacity(0.50);
+            gridColor.setDisable(true);
         }
     }
 

@@ -30,6 +30,10 @@ public class GuiGameController {
             this.mainScene = mainScene;
     }
 
+    protected Scene getMainScene() {
+        return mainScene;
+    }
+
     @FXML
     private void initialize() {
         guiController = GuiController.getInstance();

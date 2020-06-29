@@ -99,7 +99,7 @@
                </children>
             </GridPane>
             <Label fx:id="labelColor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="color" text="Choose worker's color:" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <GridPane styleClass="color" GridPane.columnIndex="1" GridPane.rowIndex="13">
+            <GridPane fx:id="gridColor" styleClass="color" GridPane.columnIndex="1" GridPane.rowIndex="13">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

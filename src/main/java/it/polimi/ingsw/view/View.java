@@ -71,6 +71,15 @@ public class View extends MessageForwarder {
             this.playerOwnerNickname = playerOwnerNickname;
     }
 
+    /**
+     * Allows to know the player owner nickname of this view nickname.
+     *
+     * @return The player owner nickname of this view.
+     */
+    public String getPlayerOwnerNickname() {
+        return playerOwnerNickname;
+    }
+
     //TODO: Agli errori che passano di qua viene aggiunto un a capo. Verificare
 
     /**

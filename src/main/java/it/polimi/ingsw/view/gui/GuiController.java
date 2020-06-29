@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.UpdateTurnMessage;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.view.View;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -13,9 +14,9 @@ public class GuiController {
     private GuiGameController guiGameController;
     private GuiGodsController guiGodsController;
     private GuiSettingController guiSettingController;
-
     private Scene currentScene = null;
     private View viewOwner = null;
+    private String playerOwnerNickname = null;
     private UpdateTurnMessage currentMove;
 
     public static GuiController getInstance() {
@@ -30,12 +31,19 @@ public class GuiController {
             this.viewOwner = viewOwner;
     }
 
+    protected String getPlayerOwnerNickname() {
+        return playerOwnerNickname;
+    }
+
     protected void setCurrentScene(Scene currentScene) {
         this.currentScene = currentScene;
     }
 
     public void showStringMessage(String message) {
         guiSettingController.handleStringMessage(message);
+
+        if (message.equalsIgnoreCase(Message.birthday))
+            playerOwnerNickname = viewOwner.getPlayerOwnerNickname();
     }
 
     public void showMessage(UpdateTurnMessage currentMove) {
@@ -75,9 +83,15 @@ public class GuiController {
 
     private void changeToNextScene(UpdateTurnMessage message) {
         try {
-            if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
+            if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST &&
+                    (guiGodsController == null ||
+                            guiGodsController.getGodsScene() == null ||
+                            currentScene != guiGodsController.getGodsScene())) {
                 guiSettingController.goToNextScene();
-            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1) {
+            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1 &&
+                    (guiGameController == null ||
+                            guiGameController.getMainScene() == null ||
+                            currentScene != guiGameController.getMainScene())) {
                 guiGodsController.goToNextScene();
             }
         } catch (Exception ex) {
