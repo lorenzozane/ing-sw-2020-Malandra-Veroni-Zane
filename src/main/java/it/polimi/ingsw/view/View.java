@@ -109,7 +109,7 @@ public class View extends MessageForwarder {
                 playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
 
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            playerGui.showMessage(currentMove);
+            playerGui.showMessage(currentMove, messageToShow);
         }
 
         //TODO: Spostare in showErrorMessage?

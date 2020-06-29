@@ -30,6 +30,9 @@ public class GuiGameController {
     GridPane gridClickable;
 
     @FXML
+    GridPane gridBoard;
+
+    @FXML
     TextField txtNickname;
 
     @FXML
@@ -65,8 +68,10 @@ public class GuiGameController {
         guiController.setGuiGameController(this);
     }
 
-    protected void showMessage(UpdateTurnMessage currentMove) {
+    protected void showMessage(UpdateTurnMessage currentMove, String messageToShow) {
         this.currentMove = currentMove;
+
+        Platform.runLater(() -> refreshBoard(currentMove.getBoardCopy()));
 
         if (currentMove.getCurrentPlayer().getNickname().equalsIgnoreCase(guiController.getPlayerOwnerNickname())) {
             gridClickable.setDisable(false);
@@ -77,7 +82,7 @@ public class GuiGameController {
         Platform.runLater(() -> {
             txtNickname.setText(currentMove.getCurrentPlayer().getNickname());
             txtGod.setText(currentMove.getCurrentPlayer().getPlayerCard().toString());
-//            txtMove.setText(currentMove.getNextMove().toString());
+            txtMove.setText(messageToShow);
         });
     }
 
@@ -94,6 +99,8 @@ public class GuiGameController {
     @FXML
     private void chooseCell(Event event) {
         if (event.getSource() instanceof Button) {
+            gridClickable.setDisable(true);
+
             Button buttonPress = (Button) event.getSource();
             Integer colIndex = GridPane.getColumnIndex(buttonPress);
             Integer rowIndex = GridPane.getRowIndex(buttonPress);
@@ -183,8 +190,6 @@ public class GuiGameController {
     }
 
     private void refreshSlot(Slot slot) {
-        GridPane gridBoard = (GridPane) mainScene.lookup("#gridBoard");
-
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;

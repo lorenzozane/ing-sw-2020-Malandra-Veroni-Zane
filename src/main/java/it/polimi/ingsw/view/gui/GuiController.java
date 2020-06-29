@@ -46,7 +46,7 @@ public class GuiController {
             playerOwnerNickname = viewOwner.getPlayerOwnerNickname();
     }
 
-    public void showMessage(UpdateTurnMessage currentMove) {
+    public void showMessage(UpdateTurnMessage currentMove, String messageToShow) {
         this.currentMove = currentMove;
 
         if ((currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) ||
@@ -69,7 +69,7 @@ public class GuiController {
                 guiGodsController.showMessage(currentMove);
             }
         } else {
-            guiGameController.showMessage(currentMove);
+            guiGameController.showMessage(currentMove, messageToShow);
         }
     }
 
