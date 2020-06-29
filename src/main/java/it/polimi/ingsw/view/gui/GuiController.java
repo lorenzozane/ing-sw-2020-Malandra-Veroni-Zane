@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.view.View;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 
 public class GuiController {
@@ -42,7 +43,13 @@ public class GuiController {
 
         if ((currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) ||
                 (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_1))
-            changeToNextScene(currentMove);
+            try {
+//                new Thread(() -> Platform.runLater(() -> changeToNextScene(currentMove))).start();
+//                Platform.runLater(() -> changeToNextScene(currentMove));
+                changeToNextScene(currentMove);
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
+            }
 
         if (currentMove.isStartupPhase() &&
                 (currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_1 ||
@@ -67,10 +74,14 @@ public class GuiController {
     }
 
     private void changeToNextScene(UpdateTurnMessage message) {
-        if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
-            guiSettingController.goToNextScene();
-        } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1) {
-            guiGodsController.goToNextScene();
+        try {
+            if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
+                guiSettingController.goToNextScene();
+            } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1) {
+                guiGodsController.goToNextScene();
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
     }
 

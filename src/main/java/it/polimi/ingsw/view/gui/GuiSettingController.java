@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.TurnEvents;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.model.UpdateTurnMessage;
 import it.polimi.ingsw.network.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -198,13 +199,16 @@ public class GuiSettingController {
         GuiGodsController guiGodsController = (GuiGodsController) fxmlLoader.getController();
 
         Scene godsScene = new Scene(root, 500, 700);
-        Stage stage = (Stage) settingScene.getWindow();
-        stage.setResizable(false);
-        stage.setScene(godsScene);
 
         guiGodsController.setScene(godsScene);
         guiController.setCurrentScene(godsScene);
         guiController.setGuiGodsController(guiGodsController);
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) settingScene.getWindow();
+            stage.setResizable(false);
+            stage.setScene(godsScene);
+        });
     }
 
 }
