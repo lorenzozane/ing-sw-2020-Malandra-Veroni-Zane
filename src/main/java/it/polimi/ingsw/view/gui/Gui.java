@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.cli.Cli;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,7 +35,12 @@ public class Gui extends Application {
         view.addPlayerMoveStartupObserver(client.getPlayerMoveStartupReceiver());
         view.addStringObserver(client.getStringReceiver());
 
-        Thread thread = new Thread(() -> client.run());
+//        Thread thread = new Thread(() -> client.run());
+//        try {
+//            client.run();
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/GuiSetting.fxml"));
@@ -50,8 +56,15 @@ public class Gui extends Application {
         guiSettingController.setScene(settingScene);
         guiController.setCurrentScene(settingScene);
 
-        primaryStage.show();
+        guiController.setGuiSettingController(guiSettingController);
+//        new Thread(primaryStage::show).start();
+//        Platform.setImplicitExit(false);
+//        new Thread(() -> Platform.runLater(primaryStage::show)).start();
 
+//        client.run();
+        new Thread(client::run).start();
+
+        primaryStage.show();
     }
 
     public static void main(String[] args) throws IOException {

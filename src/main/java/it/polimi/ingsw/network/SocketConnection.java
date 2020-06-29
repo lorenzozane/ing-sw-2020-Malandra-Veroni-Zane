@@ -119,7 +119,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
             asyncSend(Message.birthday);
             inputObject = in.readObject();
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date playerBirthday;
             while (true) {
                 if (inputObject instanceof String) {
@@ -183,7 +183,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
      */
     public static boolean dateChecker(String s) {
         try {
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date date = dateFormat.parse(s);
             return s.equals(dateFormat.format(date));
         } catch (ParseException e) {

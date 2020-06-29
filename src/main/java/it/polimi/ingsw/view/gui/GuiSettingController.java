@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 public class GuiSettingController {
 
@@ -96,7 +97,7 @@ public class GuiSettingController {
                 message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
             for (Node node : gridSettings.getChildren()) {
                 if (node.getStyleClass().stream().anyMatch(x -> x.contains("nickname"))) {
-                    node.setOpacity(1.00);
+                    node.setOpacity(1);
                     node.setVisible(true);
                     node.setDisable(false);
                 } else {
@@ -108,7 +109,19 @@ public class GuiSettingController {
                 message.equalsIgnoreCase(Message.birthdayAgain)) {
             for (Node node : gridSettings.getChildren()) {
                 if (node.getStyleClass().stream().anyMatch(x -> x.contains("birthday"))) {
-                    node.setOpacity(1.00);
+                    node.setOpacity(1);
+                    node.setVisible(true);
+                    node.setDisable(false);
+                } else {
+                    node.setOpacity(0.50);
+                    node.setDisable(true);
+                }
+            }
+        } else if (message.equalsIgnoreCase(Message.chooseNoPlayer) ||
+                message.equalsIgnoreCase(Message.chooseNoPlayerAgain)) {
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("number"))) {
+                    node.setOpacity(1);
                     node.setVisible(true);
                     node.setDisable(false);
                 } else {
@@ -124,7 +137,7 @@ public class GuiSettingController {
         GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
 
         if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
-        currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
+                currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {
             for (Node node : gridSettings.getChildren()) {
                 if (node.getStyleClass().stream().anyMatch(x -> x.contains("color"))) {
                     node.setOpacity(1.00);
@@ -140,37 +153,58 @@ public class GuiSettingController {
 
     @FXML
     private void setNickname(ActionEvent event) {
+        TextField textNickname = (TextField) settingScene.lookup("#nickname");
 
+        guiController.handleResponse(textNickname.getText());
     }
 
     @FXML
     private void setBirthday(ActionEvent event) {
+        DatePicker pickerBirthday = (DatePicker) settingScene.lookup("#dateBirthday");
 
+        guiController.handleResponse(pickerBirthday.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+    @FXML
+    private void setNumber(ActionEvent event) {
+        if (event.getSource() instanceof Button) {
+            Button buttonClicked = (Button) event.getSource();
+
+            guiController.handleResponse(buttonClicked.getText());
+        }
     }
 
     @FXML
     private void setColor(ActionEvent event) {
+        if (event.getSource() instanceof Button) {
+            Button buttonClicked = (Button) event.getSource();
 
+            String color = buttonClicked.getId().replace("buttonColor", "").toLowerCase();
+            guiController.handleResponse(color);
+        }
     }
 
-    @FXML
-    private void setNextSceneSetting(ActionEvent event) {
-
+    protected void goToNextScene() {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/GuiGods.fxml"));
-        GuiGodsController guiGodsController = (GuiGodsController) fxmlLoader.getController();
         Parent root = null;
+
         try {
             root = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        GuiGodsController guiGodsController = (GuiGodsController) fxmlLoader.getController();
+
         Scene godsScene = new Scene(root, 500, 700);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) settingScene.getWindow();
         stage.setResizable(false);
         stage.setScene(godsScene);
+
         guiGodsController.setScene(godsScene);
-        GuiController.getInstance().setCurrentScene(godsScene);
+        guiController.setCurrentScene(godsScene);
+        guiController.setGuiGodsController(guiGodsController);
     }
 
 }

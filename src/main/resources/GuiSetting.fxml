@@ -48,30 +48,30 @@
           <RowConstraints maxHeight="225.0" minHeight="10.0" prefHeight="198.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="nickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" styleClass="nickname" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="nickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="nickname" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </TextField>
-            <Label fx:id="labelNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" prefHeight="0.0" prefWidth="186.0" styleClass="nickname" text="Nickname:" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label fx:id="labelNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="186.0" styleClass="nickname" text="Nickname:" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Label>
-            <Label fx:id="labelBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" text="When is your birthday?" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label fx:id="labelBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="birthday" text="When is your birthday?" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Label>
-            <DatePicker fx:id="dateBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <DatePicker fx:id="dateBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="birthday" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></DatePicker>
-            <Label fx:id="labelPlayers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" text="Number of players:" GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <Label fx:id="labelPlayers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="number" text="Number of players:" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Label>
-            <GridPane prefHeight="41.0" prefWidth="86.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <GridPane prefHeight="41.0" prefWidth="86.0" styleClass="number" GridPane.columnIndex="1" GridPane.rowIndex="10">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -80,18 +80,26 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="buttonPlayer3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" styleClass="white" text="3" GridPane.columnIndex="1">
+                  <Button fx:id="buttonPlayer3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNumber" text="3" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets right="40.0" />
-                     </GridPane.margin></Button>
-                  <Button fx:id="buttonPlayer2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" styleClass="white" text="2">
+                     </GridPane.margin>
+                     <styleClass>
+                        <String fx:value="white" />
+                        <String fx:value="number" />
+                     </styleClass></Button>
+                  <Button fx:id="buttonPlayer2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNumber" text="2">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
-                     </GridPane.margin></Button>
+                     </GridPane.margin>
+                     <styleClass>
+                        <String fx:value="white" />
+                        <String fx:value="number" />
+                     </styleClass></Button>
                </children>
             </GridPane>
-            <Label fx:id="labelColor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.5" text="Choose worker's color:" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="13">
+            <Label fx:id="labelColor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="color" text="Choose worker's color:" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            <GridPane styleClass="color" GridPane.columnIndex="1" GridPane.rowIndex="13">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -101,41 +109,65 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="buttonColorRed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" styleClass="red">
+                  <Button fx:id="buttonColorRed" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor">
                      <GridPane.margin>
                         <Insets right="10.0" />
-                     </GridPane.margin></Button>
-                  <Button fx:id="buttonColorYellow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" styleClass="yellow" GridPane.columnIndex="2">
+                     </GridPane.margin>
+                     <styleClass>
+                        <String fx:value="red" />
+                        <String fx:value="color" />
+                     </styleClass></Button>
+                  <Button fx:id="buttonColorYellow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" />
-                     </GridPane.margin></Button>
-                  <Button fx:id="buttonColorCyan" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" opacity="0.5" styleClass="cyan" GridPane.columnIndex="1">
+                     </GridPane.margin>
+                     <styleClass>
+                        <String fx:value="yellow" />
+                        <String fx:value="color" />
+                     </styleClass></Button>
+                  <Button fx:id="buttonColorCyan" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" />
-                     </GridPane.margin></Button>
+                     </GridPane.margin>
+                     <styleClass>
+                        <String fx:value="cyan" />
+                        <String fx:value="color" />
+                     </styleClass></Button>
                </children>
             </GridPane>
-            <Button fx:id="buttonNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNickname" opacity="0.5" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <Button fx:id="buttonNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNickname" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <styleClass>
                   <String fx:value="white" />
                   <String fx:value="nickname" />
                </styleClass></Button>
-            <Button fx:id="buttonBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setBirthday" opacity="0.5" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="7">
+            <Button fx:id="buttonBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setBirthday" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets bottom="10.0" top="10.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="white" />
+                  <String fx:value="birthday" />
+               </styleClass>
             </Button>
-            <Button fx:id="buttonPlayer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor" opacity="0.5" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="10">
+            <Button fx:id="buttonPlayer" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNumber" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="10">
                <GridPane.margin>
                   <Insets bottom="10.0" top="10.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="white" />
+                  <String fx:value="number" />
+               </styleClass>
             </Button>
-            <Button fx:id="nextSceneSetting" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNextSceneSetting" opacity="0.5" styleClass="white" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="13">
+            <Button fx:id="nextSceneSetting" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="13">
                <GridPane.margin>
                   <Insets bottom="15.0" top="15.0" />
                </GridPane.margin>
+               <styleClass>
+                  <String fx:value="white" />
+                  <String fx:value="color" />
+               </styleClass>
             </Button>
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="ciaociaociaio" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="60.0" />
                </GridPane.margin>

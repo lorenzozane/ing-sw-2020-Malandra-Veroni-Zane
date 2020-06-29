@@ -40,6 +40,10 @@ public class GuiController {
     public void showMessage(UpdateTurnMessage currentMove) {
         this.currentMove = currentMove;
 
+        if ((currentMove.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) ||
+                (currentMove.getNextStartupMove() == StartupActions.PLACE_WORKER_1))
+            changeToNextScene(currentMove);
+
         if (currentMove.isStartupPhase() &&
                 (currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_1 ||
                         currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_2)) {
@@ -56,6 +60,18 @@ public class GuiController {
 
     public void showErrorMessage(UpdateTurnMessage currentMoveError) {
 
+    }
+
+    protected void handleResponse(String response) {
+        viewOwner.handleResponse(response);
+    }
+
+    private void changeToNextScene(UpdateTurnMessage message) {
+        if (message.getNextStartupMove() == StartupActions.CHOOSE_CARD_REQUEST) {
+            guiSettingController.goToNextScene();
+        } else if (message.getNextStartupMove() == StartupActions.PLACE_WORKER_1) {
+            guiGodsController.goToNextScene();
+        }
     }
 
     protected void setGuiGameController(GuiGameController guiGameController) {
