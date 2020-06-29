@@ -45,54 +45,6 @@ public class GuiSettingController {
         }
     }
 
-    @FXML
-    Button buttonNickname;
-
-    @FXML
-    Label labelNickname;
-
-    @FXML
-    TextField nickname;
-
-    @FXML
-    Label errorNickname;
-
-    @FXML
-    Label labelBirthday;
-
-    @FXML
-    DatePicker dateBirthday;
-
-    @FXML
-    Button buttonBirthday;
-
-    @FXML
-    Label labelPlayers;
-
-    @FXML
-    Button buttonPlayer2;
-
-    @FXML
-    Button buttonPlayer3;
-
-    @FXML
-    Button buttonPlayer;
-
-    @FXML
-    Label labelColor;
-
-    @FXML
-    Button buttonColorRed;
-
-    @FXML
-    Button buttonColorCyan;
-
-    @FXML
-    Button buttonColorYellow;
-
-    @FXML
-    Button nextSceneSetting;
-
     protected void handleStringMessage(String message) {
         GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
 

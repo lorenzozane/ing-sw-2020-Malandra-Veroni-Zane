@@ -47,33 +47,6 @@ public class GuiGodsController {
         return godsScene;
     }
 
-    @FXML
-    Button apollo;
-
-    @FXML
-    Button artemis;
-
-    @FXML
-    Button athena;
-
-    @FXML
-    Button atlas;
-
-    @FXML
-    Button demeter;
-
-    @FXML
-    Button hephaestus;
-
-    @FXML
-    Button minotaur;
-
-    @FXML
-    Button pan;
-
-    @FXML
-    Button prometheus;
-
     protected void showMessage(UpdateTurnMessage currentMove) {
         this.currentMove = currentMove;
         GridPane gridGods = (GridPane) godsScene.lookup("#gridGods");

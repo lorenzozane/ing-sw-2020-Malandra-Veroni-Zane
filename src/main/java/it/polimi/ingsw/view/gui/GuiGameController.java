@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -25,9 +26,33 @@ public class GuiGameController {
     private Scene mainScene;
     private UpdateTurnMessage currentMove;
 
+    @FXML
+    GridPane gridClickable;
+
+    @FXML
+    TextField txtNickname;
+
+    @FXML
+    TextField txtGod;
+
+    @FXML
+    TextField txtMove;
+
+    @FXML
+    TextField txtError;
+
+
+
     protected void setScene(Scene mainScene) {
-        if (this.mainScene == null)
+        if (this.mainScene == null) {
             this.mainScene = mainScene;
+
+            gridClickable.setDisable(true);
+            for (Node node : gridClickable.getChildren()) {
+                if (node instanceof Button)
+                    node.setDisable(false);
+            }
+        }
     }
 
     protected Scene getMainScene() {
@@ -40,41 +65,20 @@ public class GuiGameController {
         guiController.setGuiGameController(this);
     }
 
-    @FXML
-    Button level100;
-
-    @FXML
-    Button level200;
-
-    @FXML
-    Button level300;
-
-    @FXML
-    Button dome00;
-
-    @FXML
-    Button level101;
-
-    @FXML
-    Button level201;
-
-
-    @FXML
-    private void setVisible00(ActionEvent event) {
-        level100.setVisible(true);
-        level200.setVisible(true);
-        level300.setVisible(true);
-        dome00.setVisible(true);
-    }
-
-    @FXML
-    private void setVisible01(ActionEvent event) {
-        level101.setVisible(true);
-        level201.setVisible(true);
-    }
-
     protected void showMessage(UpdateTurnMessage currentMove) {
         this.currentMove = currentMove;
+
+        if (currentMove.getCurrentPlayer().getNickname().equalsIgnoreCase(guiController.getPlayerOwnerNickname())) {
+            gridClickable.setDisable(false);
+        } else {
+            gridClickable.setDisable(true);
+        }
+
+        Platform.runLater(() -> {
+            txtNickname.setText(currentMove.getCurrentPlayer().getNickname());
+            txtGod.setText(currentMove.getCurrentPlayer().getPlayerCard().toString());
+//            txtMove.setText(currentMove.getNextMove().toString());
+        });
     }
 
     @FXML
@@ -82,7 +86,8 @@ public class GuiGameController {
         if (event.getSource() instanceof Button) {
             Button buttonPress = (Button) event.getSource();
             String command = buttonPress.getId().replace("button", "").toLowerCase();
-            //TODO: Passare comando alla view
+
+            guiController.handleResponse(command);
         }
     }
 
@@ -102,8 +107,8 @@ public class GuiGameController {
                     (currentMove != null && currentMove.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)) {
                 coordinate = coordinate.concat(" dome");
             }
-            System.out.println(coordinate);
-            //TODO: Passare a View la risposta
+
+            guiController.handleResponse(coordinate);
         }
     }
 

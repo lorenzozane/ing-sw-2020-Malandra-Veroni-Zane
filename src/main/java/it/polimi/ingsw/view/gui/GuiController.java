@@ -60,7 +60,7 @@ public class GuiController {
             }
 
         if (currentMove.isStartupPhase() &&
-                (currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_1 ||
+                (currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_1 &&
                         currentMove.getNextStartupMove() != StartupActions.PLACE_WORKER_2)) {
             if (currentMove.getNextStartupMove() == StartupActions.COLOR_REQUEST ||
                     currentMove.getNextStartupMove() == StartupActions.PICK_LAST_COLOR) {

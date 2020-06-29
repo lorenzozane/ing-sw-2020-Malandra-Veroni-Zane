@@ -680,7 +680,7 @@
 
                             </children>
                         </GridPane>
-                        <GridPane prefHeight="400.0" prefWidth="438.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <GridPane fx:id="gridClickable" prefHeight="400.0" prefWidth="438.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -729,7 +729,7 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@css/game.css">
                     <children>
-                        <GridPane prefHeight="400.0" prefWidth="186.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                        <GridPane fx:id="gridMessage" prefHeight="400.0" prefWidth="186.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             </columnConstraints>
@@ -741,7 +741,7 @@
                                 <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="txtNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer">
+                                <TextField fx:id="txtNickname" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                                     </GridPane.margin>
@@ -749,24 +749,24 @@
                                         <Insets />
                                     </opaqueInsets>
                                 </TextField>
-                                <TextField fx:id="txtGod" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="1">
+                                <TextField fx:id="txtGod" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                     </GridPane.margin>
                                 </TextField>
-                                <TextField fx:id="txtMove" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="2">
+                                <TextField fx:id="txtMove" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                                     </GridPane.margin>
                                 </TextField>
-                                <TextField fx:id="txtError" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="3">
+                                <TextField fx:id="txtError" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets left="10.0" right="10.0" top="5.0" />
                                     </GridPane.margin>
                                 </TextField>
                             </children>
                         </GridPane>
-                        <GridPane alignment="CENTER" layoutY="324.0" prefHeight="283.0" prefWidth="186.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <GridPane fx:id="gridCommand" alignment="CENTER" layoutY="324.0" prefHeight="283.0" prefWidth="186.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="95.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="91.0" />
