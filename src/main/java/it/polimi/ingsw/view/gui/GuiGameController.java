@@ -144,11 +144,17 @@ public class GuiGameController {
     private boolean needRefreshSlot(Slot slot) {
         GridPane gridBoard = (GridPane) mainScene.lookup("#gridBoard");
 
+        int coordinateX = slot.getSlotPosition().getCoordinateX();
+        int coordinateY = slot.getSlotPosition().getCoordinateY();
+
+
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
-                if (GridPane.getColumnIndex(button) == slot.getSlotPosition().getCoordinateX() &&
-                        GridPane.getRowIndex(button) == slot.getSlotPosition().getCoordinateY()) {
+                if (GridPane.getColumnIndex(button) != null &&
+                        GridPane.getRowIndex(button) != null &&
+                        (int) GridPane.getColumnIndex(button) == coordinateX &&
+                        (int) GridPane.getRowIndex(button) == coordinateY) {
 
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
@@ -187,7 +193,9 @@ public class GuiGameController {
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
-                if (GridPane.getColumnIndex(button) == slot.getSlotPosition().getCoordinateX() &&
+                if (GridPane.getColumnIndex(button) != null &&
+                        GridPane.getRowIndex(button) != null &&
+                        GridPane.getColumnIndex(button) == slot.getSlotPosition().getCoordinateX() &&
                         GridPane.getRowIndex(button) == slot.getSlotPosition().getCoordinateY()) {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
