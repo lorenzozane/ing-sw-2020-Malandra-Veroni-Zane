@@ -8,15 +8,36 @@ import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClientApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Client client;
-        if(args.length < 2)
-            client = new Client("127.0.0.1", 12345);
-        else
-            client = new Client(args[0], Integer.parseInt(args[1]));
+        try {
+            if (args.length < 2)
+                client = new Client("127.0.0.1", 12345);
+            else
+                client = new Client(args[0], Integer.parseInt(args[1]));
+        }
+        catch (Exception e){
+            while(true){
+                System.out.println("Server not reachable or IP:PORT not valid");
+                System.out.println("Please enter a valid IP (xxx.xxx.xxx.xxx format)");
+                Scanner in = new Scanner(System.in);
+                String ip = in.nextLine();
+                System.out.println("Please enter a valid PORT");
+                String port = in.nextLine();
+                if(checkIp(ip) && checkPort(port)){
+                    String[] arrayString = new String[2];
+                    arrayString[0] = ip;
+                    arrayString[1] = port;
+                    main(arrayString);
+                }
+            }
+        }
 
         System.out.println(Message.santorini);
 
@@ -35,7 +56,22 @@ public class ClientApp {
 
 
 
-    private static boolean checkInterface(String input){
-        return input.equalsIgnoreCase("GUI") || input.equalsIgnoreCase("CLI");
+    private static boolean checkIp(String ip){
+        Pattern pattern;
+        Matcher matcher;
+        String IPADDRESS_PATTERN
+                = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
+                + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+        pattern = Pattern.compile(IPADDRESS_PATTERN);
+        matcher = pattern.matcher(ip);
+        return matcher.matches();
     }
+
+    private static boolean checkPort(String port){
+        return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);
+    }
+
+
 }
