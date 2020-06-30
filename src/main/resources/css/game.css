@@ -4,22 +4,23 @@
 }
 
 .level1{
- -fx-background-color: navajowhite;
- -fx-border-color: black;
+ -fx-background-image : url("/images/image-block1.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .level2{
- -fx-background-color: antiquewhite;
- -fx-border-color: black;
+ -fx-background-image : url("/images/image-block1-2.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .level3{
- -fx-background-color: white;
- -fx-border-color: black;
+ -fx-background-image : url("/images/image-block1-2-3.jpg");
+ -fx-background-size: 100% 100%;
 }
 
 .dome{
- -fx-background-color: darkblue;
+ -fx-background-image : url("/images/image-blockD.jpg");
+ -fx-background-size: 100% 100%;
  -fx-background-radius: 100px;
 }
 
