@@ -45,7 +45,6 @@ public class GuiGameController {
     TextField txtError;
 
 
-
     protected void setScene(Scene mainScene) {
         if (this.mainScene == null) {
             this.mainScene = mainScene;
@@ -149,19 +148,11 @@ public class GuiGameController {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
 
-                if (button.getStyleClass().stream().anyMatch(x -> x.contains("level1"))) {
+                if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                     if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
                             slot.getBuildingsStatus().get(0) != null && !button.isVisible())
                         return true;
 //                      TODO: Platform.runLater(() -> refreshSlot(slot));
-                } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("level2"))) {
-                    if ((slot.getBuildingsStatus().get(1) == null && button.isVisible()) ||
-                            slot.getBuildingsStatus().get(1) != null && !button.isVisible())
-                        return true;
-                } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("level3"))) {
-                    if ((slot.getBuildingsStatus().get(2) == null && button.isVisible()) ||
-                            slot.getBuildingsStatus().get(2) != null && !button.isVisible())
-                        return true;
                 } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
                     if ((slot.getBuildingsStatus().get(3) == null && button.isVisible()) ||
                             slot.getBuildingsStatus().get(3) != null && !button.isVisible())
@@ -194,21 +185,23 @@ public class GuiGameController {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
 
-                if (button.getStyleClass().stream().anyMatch(x -> x.contains("level1"))) {
-                    if (slot.getBuildingsStatus().get(0) == null)
-                        button.setVisible(false);
-                    else
+                if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
+                    if (slot.getBuildingsStatus().get(2) != null) {
                         button.setVisible(true);
-                } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("level2"))) {
-                    if (slot.getBuildingsStatus().get(1) == null)
-                        button.setVisible(false);
-                    else
+                        button.setStyle("-fx-background-image: url('/images/image-block1-2-3.jpg')");
+                    } else if (slot.getBuildingsStatus().get(1) != null) {
                         button.setVisible(true);
-                } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("level3"))) {
-                    if (slot.getBuildingsStatus().get(2) == null)
-                        button.setVisible(false);
-                    else
+                        button.setStyle("-fx-background-image: url('/images/image-block1-2.jpg')");
+                    } else if (slot.getBuildingsStatus().get(0) != null) {
                         button.setVisible(true);
+                        button.setStyle("-fx-background-image: url('/images/image-block1.jpg')");
+                    } else {
+                        button.setVisible(false);
+                    }
+//                    if (slot.getBuildingsStatus().get(0) == null)
+//                        button.setVisible(false);
+//                    else
+//                        button.setVisible(true);
                 } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
                     if (slot.getBuildingsStatus().get(3) == null)
                         button.setVisible(false);
@@ -220,12 +213,18 @@ public class GuiGameController {
                     else {
                         button.setVisible(true);
 
-                        if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED)
+                        if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED) {
                             button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
-                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW)
+                            button.setStyle("-fx-background-size: 100% 100%");
+                        }
+                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW) {
                             button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
-                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN)
+                            button.setStyle("-fx-background-size: 100% 100%");
+                        }
+                        else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN) {
                             button.setStyle("-fx-background-image: url('/images/worker_cyan.jpg')");
+                            button.setStyle("-fx-background-size: 100% 100%");
+                        }
                     }
                 }
             }

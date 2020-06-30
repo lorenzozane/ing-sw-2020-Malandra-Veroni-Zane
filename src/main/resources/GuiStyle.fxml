@@ -27,7 +27,7 @@
                             </rowConstraints>
                             <children>
 
-                                <Button fx:id="level00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false">
+                                <Button fx:id="level00" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -44,7 +44,7 @@
                                 </Button>
 
 
-                                <Button fx:id="level01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1">
+                                <Button fx:id="level01" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -60,7 +60,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2">
+                                <Button fx:id="level02" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -76,7 +76,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3">
+                                <Button fx:id="level03" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -92,7 +92,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4">
+                                <Button fx:id="level04" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -108,7 +108,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="1">
+                                <Button fx:id="level10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -124,7 +124,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Button fx:id="level11" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -140,7 +140,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <Button fx:id="level12" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -156,7 +156,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                <Button fx:id="level13" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -172,7 +172,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                <Button fx:id="level14" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -188,7 +188,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="2">
+                                <Button fx:id="level20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -204,7 +204,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <Button fx:id="level21" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -220,7 +220,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                <Button fx:id="level22" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -236,7 +236,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                <Button fx:id="level23" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -252,7 +252,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                <Button fx:id="level24" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -268,7 +268,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="3">
+                                <Button fx:id="level30" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -284,7 +284,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <Button fx:id="level31" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -300,7 +300,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                <Button fx:id="level32" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -316,7 +316,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                <Button fx:id="level33" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -332,7 +332,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                                <Button fx:id="level34" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -348,7 +348,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.rowIndex="4">
+                                <Button fx:id="level40" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -364,7 +364,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <Button fx:id="level41" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -380,7 +380,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                <Button fx:id="level42" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -396,7 +396,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                <Button fx:id="level43" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>
@@ -412,7 +412,7 @@
                                     </GridPane.margin>
                                 </Button>
 
-                                <Button fx:id="level44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level1" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                <Button fx:id="level44" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="level" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </GridPane.margin>

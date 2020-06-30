@@ -21,7 +21,13 @@ public class GuiNetworkController {
         //guiController.setNetworkController(this);
     }
 
-    @FXML
+    protected void setScene(Scene settingScene) {
+        if (this.networkScene == null) {
+            this.networkScene = settingScene;
+        }
+    }
+
+            @FXML
     Button sendButton;
 
     @FXML
@@ -34,7 +40,7 @@ public class GuiNetworkController {
         if(!(textIP.getText().isEmpty() || textPORT.getText().isEmpty())) {
             if(checkIp(textIP.getText())) {
                 try {
-                    Gui.client = new Client(textIP.getText(), Integer.parseInt(textPORT.getText()));
+                     Gui.setClient(networkScene, new Client(textIP.getText(), Integer.parseInt(textPORT.getText())));
                 } catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error ");
