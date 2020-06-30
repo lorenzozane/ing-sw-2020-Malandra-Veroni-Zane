@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
@@ -83,8 +84,12 @@ public class Server {
      *
      * @throws IOException Is thrown if an I/O error occurs when opening the socket
      */
+    public Server(InetAddress ip, int port) throws IOException {
+        this.serverSocket = new ServerSocket(port, 50, ip);
+    }
+
     public Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
+        this.serverSocket = new ServerSocket(12345);
     }
 
     /**
