@@ -11,9 +11,11 @@ public class GuiController {
 
     private static GuiController instance = null;
 
+    protected Gui gui;
     private GuiGameController guiGameController;
     private GuiGodsController guiGodsController;
     private GuiSettingController guiSettingController;
+    private GuiNetworkController guiNetworkController;
     private Scene currentScene = null;
     private View viewOwner = null;
     private String playerOwnerNickname = null;

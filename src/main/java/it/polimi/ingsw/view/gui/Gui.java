@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class Gui extends Application {
 
-    private static Client client;
+    protected static Client client;
     private static Stage primaryStage;
 
     public static Stage getPrimaryStage() {
@@ -67,12 +67,7 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) throws IOException {
-        if(args.length < 2)
-            client = new Client("127.0.0.1", 12345);
-        else
-            client = new Client(args[0], Integer.parseInt(args[1]));
-
+    public static void main(String[] args) {
         launch(args);
     }
 }
