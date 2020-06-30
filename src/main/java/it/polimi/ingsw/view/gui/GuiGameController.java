@@ -142,11 +142,8 @@ public class GuiGameController {
     }
 
     private boolean needRefreshSlot(Slot slot) {
-        GridPane gridBoard = (GridPane) mainScene.lookup("#gridBoard");
-
         int coordinateX = slot.getSlotPosition().getCoordinateX();
         int coordinateY = slot.getSlotPosition().getCoordinateY();
-
 
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
@@ -170,7 +167,9 @@ public class GuiGameController {
                                 slot.getWorkerInSlot() != null && !button.isVisible())
                             return true;
                         if (slot.getWorkerInSlot() != null) {
-                            if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED) {
+                            if (button.getBackground().getImages().isEmpty()) {
+                                return true;
+                            } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED) {
                                 if (!button.getBackground().getImages().get(0).getImage().getUrl().contains("red"))
                                     return true;
                             } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW) {
