@@ -165,7 +165,7 @@ public class GuiSettingController {
 
         GuiGodsController guiGodsController = (GuiGodsController) fxmlLoader.getController();
 
-        Scene godsScene = new Scene(root, 500, 700);
+        Scene godsScene = new Scene(root, 550, 750);
 
         guiGodsController.setScene(godsScene);
         guiController.setCurrentScene(godsScene);

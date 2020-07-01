@@ -484,36 +484,33 @@
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="39.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="187.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="83.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="200.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="187.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="66.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="112.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <TextField fx:id="txtNickname" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer">
-                                    <GridPane.margin>
-                                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                                    </GridPane.margin>
-                                    <opaqueInsets>
-                                        <Insets />
-                                    </opaqueInsets>
-                                </TextField>
-                                <TextField fx:id="txtGod" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="1">
-                                    <GridPane.margin>
-                                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                    </GridPane.margin>
-                                </TextField>
-                                <TextField fx:id="txtMove" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="2">
-                                    <GridPane.margin>
-                                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                    </GridPane.margin>
-                                </TextField>
-                                <TextField fx:id="txtError" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" GridPane.rowIndex="3">
-                                    <GridPane.margin>
-                                        <Insets left="10.0" right="10.0" top="5.0" />
-                                    </GridPane.margin>
-                                </TextField>
+                        <Label fx:id="txtNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" textAlignment="JUSTIFY" wrapText="true">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="70.0" right="10.0" top="95.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="txtGod" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" textAlignment="JUSTIFY" wrapText="true" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="txtMove" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" textAlignment="JUSTIFY" wrapText="true" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="txtError" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="textContainer" textAlignment="JUSTIFY" wrapText="true" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
+                           </GridPane.margin>
+                        </Label>
                             </children>
                         </GridPane>
                         <GridPane fx:id="gridCommand" alignment="CENTER" layoutY="324.0" prefHeight="283.0" prefWidth="186.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -556,18 +553,13 @@
                                         <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>
                                 </Button>
-                                <CheckBox fx:id="buttonDome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="toggle" text="Dome" GridPane.rowIndex="15">
+                                <CheckBox fx:id="buttonDome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="toggle" GridPane.rowIndex="15">
                                     <GridPane.margin>
-                                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                                        <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>
                                 </CheckBox>
                             </children>
                         </GridPane>
-                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                            <buttons>
-                                <Button mnemonicParsing="false" text="Button" />
-                            </buttons>
-                        </ButtonBar>
                     </children>
                 </AnchorPane>
             </items>

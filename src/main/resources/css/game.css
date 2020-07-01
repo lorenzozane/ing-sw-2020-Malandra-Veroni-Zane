@@ -35,14 +35,15 @@
 
 .textContainer{
  -fx-background-color: transparent;
- -fx-border-color: #000000;
+
+ /*-fx-border-color: #000000;
  -fx-padding: 30px;
  -fx-border-insets: 30px;
- -fx-background-insets: 30px;
+ -fx-background-insets: 30px;*/
 }
 
 .toggle{
- -fx-background-image : url("/images/cm_btn_blue.jpg");
+ -fx-background-image : url("/images/button_dome.png");
  -fx-background-size: 100% 100%;
 }
 

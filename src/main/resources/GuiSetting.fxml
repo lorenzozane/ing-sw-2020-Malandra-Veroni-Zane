@@ -82,7 +82,7 @@
                <children>
                   <Button fx:id="buttonPlayer3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNumber" text="3" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets right="40.0" />
+                        <Insets left="20.0" right="20.0" />
                      </GridPane.margin>
                      <styleClass>
                         <String fx:value="white" />
@@ -135,36 +135,18 @@
                      </styleClass></Button>
                </children>
             </GridPane>
-            <Button fx:id="buttonNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNickname" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <Button fx:id="buttonNickname" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNickname" GridPane.columnIndex="3" GridPane.rowIndex="4">
                <styleClass>
-                  <String fx:value="white" />
+                  <String fx:value="send" />
                   <String fx:value="nickname" />
                </styleClass></Button>
-            <Button fx:id="buttonBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setBirthday" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="7">
+            <Button fx:id="buttonBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setBirthday" GridPane.columnIndex="3" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets bottom="10.0" top="10.0" />
                </GridPane.margin>
                <styleClass>
-                  <String fx:value="white" />
+                  <String fx:value="send" />
                   <String fx:value="birthday" />
-               </styleClass>
-            </Button>
-            <Button fx:id="buttonPlayer" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setNumber" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="10">
-               <GridPane.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </GridPane.margin>
-               <styleClass>
-                  <String fx:value="white" />
-                  <String fx:value="number" />
-               </styleClass>
-            </Button>
-            <Button fx:id="nextSceneSetting" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#setColor" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="13">
-               <GridPane.margin>
-                  <Insets bottom="15.0" top="15.0" />
-               </GridPane.margin>
-               <styleClass>
-                  <String fx:value="white" />
-                  <String fx:value="color" />
                </styleClass>
             </Button>
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">

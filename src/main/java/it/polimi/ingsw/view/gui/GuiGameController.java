@@ -9,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
@@ -32,16 +30,16 @@ public class GuiGameController {
     GridPane gridBoard;
 
     @FXML
-    TextField txtNickname;
+    Label txtNickname;
 
     @FXML
-    TextField txtGod;
+    Label txtGod;
 
     @FXML
-    TextField txtMove;
+    Label txtMove;
 
     @FXML
-    TextField txtError;
+    Label txtError;
 
 
     protected void setScene(Scene mainScene) {

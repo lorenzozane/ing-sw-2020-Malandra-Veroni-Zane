@@ -4,5 +4,6 @@
 }
 
 .white{
-    -fx-background-color: white;
+    -fx-background-image : url("/images/button_send.png");
+    -fx-background-size: 100% 100%;
 }
