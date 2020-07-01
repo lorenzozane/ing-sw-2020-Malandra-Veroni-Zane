@@ -1,5 +1,5 @@
 .board{
--fx-background-image : url("/images/SantoriniBoard.jpg");
+ -fx-background-image : url("/images/SantoriniBoard.jpg");
  -fx-background-size: 100% 100%;
 }
 
@@ -8,23 +8,23 @@
 }
 
 .dome{
- -fx-background-image : url("/images/image-blockD.jpg");
- -fx-background-size: 100% 100%;
+ -fx-background-image : url("/images/image-blockD.png");
+ /*-fx-background-size: 100% 100%;*/
  /*-fx-background-radius: 100px;*/
 }
 
 .workerRed{
- -fx-background-image : url("/images/worker_red.jpg");
+ -fx-background-image : url("/images/worker_red.png");
  /*-fx-background-size: 100% 100%;*/
 }
 
 .workerCyan{
- -fx-background-image : url("/images/worker_cyan.jpg");
+ -fx-background-image : url("/images/worker_cyan.png");
  /*-fx-background-size: 100% 100%;*/
 }
 
 .workerYellow{
- -fx-background-image : url("/images/worker_yellow.jpg");
+ -fx-background-image : url("/images/worker_yellow.png");
  /*-fx-background-size: 100% 100%;*/
 }
 
@@ -47,16 +47,16 @@
 }
 
 .quit{
- -fx-background-image : url("/images/button_quit.jpg");
+ -fx-background-image : url("/images/button_quit.png");
  -fx-background-size: 100% 100%;
 }
 
 .undo{
- -fx-background-image : url("/images/button_undo.jpg");
+ -fx-background-image : url("/images/button_undo.png");
  -fx-background-size: 100% 100%;
 }
 
 .skip{
- -fx-background-image : url("/images/button_skip.jpg");
+ -fx-background-image : url("/images/button_skip.png");
  -fx-background-size: 100% 100%;
 }

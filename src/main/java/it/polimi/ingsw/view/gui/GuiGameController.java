@@ -16,12 +16,12 @@ import javafx.scene.layout.*;
 import java.util.ArrayList;
 
 
-
 public class GuiGameController {
 
     private GuiController guiController;
     private Scene mainScene;
     private UpdateTurnMessage currentMove;
+    private boolean keepShowingError = false;
 
     @FXML
     GridPane gridClickable;
@@ -79,7 +79,31 @@ public class GuiGameController {
             txtNickname.setText(currentMove.getCurrentPlayer().getNickname());
             txtGod.setText(currentMove.getCurrentPlayer().getPlayerCard().toString());
             txtMove.setText(messageToShow);
+            if (keepShowingError)
+                keepShowingError = false;
+            else
+                txtError.setText("");
         });
+    }
+
+    protected void showErrorMessage(UpdateTurnMessage currentMove, String errorToShow) {
+        this.currentMove = currentMove;
+
+        Platform.runLater(() -> refreshBoard(currentMove.getBoardCopy()));
+
+        if (currentMove.getCurrentPlayer().getNickname().equalsIgnoreCase(guiController.getPlayerOwnerNickname())) {
+            gridClickable.setDisable(false);
+        } else {
+            gridClickable.setDisable(true);
+        }
+
+        Platform.runLater(() -> {
+            txtNickname.setText(currentMove.getCurrentPlayer().getNickname());
+            txtGod.setText(currentMove.getCurrentPlayer().getPlayerCard().toString());
+            txtError.setText(errorToShow);
+        });
+
+        keepShowingError = true;
     }
 
     @FXML
@@ -148,7 +172,7 @@ public class GuiGameController {
                 String str = button.getId();
                 str = str.replaceAll("[^\\d.]", "");
                 if (coordinateX.equals(Integer.parseInt(String.valueOf(str.charAt(1)))) &&
-                            coordinateY.equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
+                        coordinateY.equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
 
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
@@ -166,15 +190,15 @@ public class GuiGameController {
 
                         if (slot.getBuildingsStatus().get(0) == null &&
                                 !button.getBackground().getImages().isEmpty() &&
-                                button.getBackground().getImages().get(0).getImage().getUrl().contains("1"))
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("block1"))
                             return true;
                         else if (slot.getBuildingsStatus().get(1) == null &&
                                 !button.getBackground().getImages().isEmpty() &&
-                                button.getBackground().getImages().get(0).getImage().getUrl().contains("2"))
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2"))
                             return true;
                         else if (slot.getBuildingsStatus().get(2) == null &&
                                 !button.getBackground().getImages().isEmpty() &&
-                                button.getBackground().getImages().get(0).getImage().getUrl().contains("3"))
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3"))
                             return true;
 //                      TODO: Platform.runLater(() -> refreshSlot(slot));
                     } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
@@ -213,8 +237,8 @@ public class GuiGameController {
                 Button button = (Button) buttonNode;
                 String str = button.getId();
                 str = str.replaceAll("[^\\d.]", "");
-                if (((Integer )slot.getSlotPosition().getCoordinateX()).equals(Integer.parseInt(String.valueOf(str.charAt(1)))) &&
-                        ((Integer)slot.getSlotPosition().getCoordinateY()).equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
+                if (((Integer) slot.getSlotPosition().getCoordinateX()).equals(Integer.parseInt(String.valueOf(str.charAt(1)))) &&
+                        ((Integer) slot.getSlotPosition().getCoordinateY()).equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
                             button.setVisible(true);
@@ -248,10 +272,17 @@ public class GuiGameController {
 //                    else
 //                        button.setVisible(true);
                     } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
-                        if (slot.getBuildingsStatus().get(3) == null)
-                            button.setVisible(false);
-                        else
+                        if (slot.getBuildingsStatus().get(3) != null) {
                             button.setVisible(true);
+                            Image image = new Image("/images/image-blockD.png", button.getWidth(), button.getHeight(), false, true, true);
+                            BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                            Background backGround = new Background(bImage);
+                            button.setBackground(backGround);
+//                            button.setStyle("-fx-background-image: url('/images/image-block1.jpg')");
+//                            button.setStyle("-fx-background-size: 100% 100%");
+                        } else {
+                            button.setVisible(false);
+                        }
                     } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
                         if (slot.getWorkerInSlot() == null)
                             button.setVisible(false);
@@ -259,21 +290,21 @@ public class GuiGameController {
                             button.setVisible(true);
 
                             if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED) {
-                                Image image = new Image("/images/worker_red.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                Image image = new Image("/images/worker_red.png", button.getWidth(), button.getHeight(), false, true, true);
                                 BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                                 Background backGround = new Background(bImage);
                                 button.setBackground(backGround);
 //                                button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
 //                                button.setStyle("-fx-background-size: 100% 100%");
                             } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW) {
-                                Image image = new Image("/images/worker_cyan.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                Image image = new Image("/images/worker_cyan.png", button.getWidth(), button.getHeight(), false, true, true);
                                 BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                                 Background backGround = new Background(bImage);
                                 button.setBackground(backGround);
 //                                button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
 //                                button.setStyle("-fx-background-size: 100% 100%");
                             } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN) {
-                                Image image = new Image("/images/worker_yellow.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                Image image = new Image("/images/worker_yellow.png", button.getWidth(), button.getHeight(), false, true, true);
                                 BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                                 Background backGround = new Background(bImage);
                                 button.setBackground(backGround);

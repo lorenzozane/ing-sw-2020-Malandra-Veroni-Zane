@@ -90,8 +90,10 @@ public class View extends MessageForwarder {
     public void showErrorMessage(String errorToShow) {
         if (chosenUserInterface == UserInterface.CLI)
             showMessage(errorToShow);
-//        else
-//
+        else if (chosenUserInterface == UserInterface.GUI) {
+            playerGui.showErrorMessage(currentMove, errorToShow);
+            repeatCurrentMove(currentMove);
+        }
     }
 
     /**

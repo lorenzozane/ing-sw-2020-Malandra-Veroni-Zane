@@ -75,8 +75,12 @@ public class GuiController {
         }
     }
 
-    public void showErrorMessage(UpdateTurnMessage currentMoveError) {
-
+    public void showErrorMessage(UpdateTurnMessage currentMoveError, String errorToShow) {
+        if (!currentMoveError.isStartupPhase() ||
+                (currentMoveError.getNextStartupMove() == StartupActions.PLACE_WORKER_1 ||
+                        currentMoveError.getNextStartupMove() == StartupActions.PLACE_WORKER_2)) {
+            guiGameController.showErrorMessage(currentMoveError, errorToShow);
+        }
     }
 
     protected void handleResponse(String response) {
