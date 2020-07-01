@@ -6,12 +6,12 @@ package it.polimi.ingsw.view;
 public final class ViewMessage {
 
     //WinActions
-    public static String winner =
+    public static String winner ="You win"/*
             " ___ ___                   ________ __         __ \n" +
                     "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
                     " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
                     "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
-                    "                                                  \n";
+                    "                                                  \n"*/;
     public static String winOthers = " wins the game!";
     public static String lose = "You lose!";
     public static String loseOther = " lose!";
@@ -22,8 +22,8 @@ public final class ViewMessage {
     public static String chooseCardRequest = "Choose cards from these cards: ";
     public static String pickUpCardRequest = "Pick up your card from these card: ";
     public static String pickLastCard = "You have been assigned the following card: ";
-    public static String placeWorker = "Choose worker's position.\n";
-    public static String undoInFiveSeconds = "You have five seconds to UNDO before your turn ends.\n";
+    public static String placeWorker = "Choose worker's position.";
+    public static String undoInFiveSeconds = "You have five seconds to UNDO before your turn ends.";
 
     //SetUpActions-ForOthers
     public static String colorRequestOthers = " is choosing between these colors:";

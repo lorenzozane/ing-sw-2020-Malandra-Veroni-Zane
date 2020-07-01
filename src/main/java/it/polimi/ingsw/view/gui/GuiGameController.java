@@ -79,7 +79,7 @@ public class GuiGameController {
                     alert.setHeaderText("YOU WIN");
                     alert.setContentText("Congratulation for your game!\n" + "Try a new GAME or QUIT");
 
-                    Platform.runLater(alert::showAndWait);
+                    alert.showAndWait();
                 });
             }
             catch (Exception e){
@@ -90,12 +90,11 @@ public class GuiGameController {
 
         if(messageToShow.equals(ViewMessage.lose) || messageToShow.contains(ViewMessage.loseOther) || messageToShow.contains(ViewMessage.winOthers)){
             try {
-
                 Platform.runLater(() ->{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Game Over");
                     alert.setHeaderText("YOU LOSE");
-                    alert.setContentText(currentMove.getCurrentPlayer().getNickname() + "win\n" + "Try a new GAME or QUIT" );
+                    alert.setContentText(messageToShow + "\nTry a new GAME or QUIT");
 
                     alert.showAndWait();
                 });
