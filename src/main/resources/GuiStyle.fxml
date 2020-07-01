@@ -546,7 +546,7 @@
                                         <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>
                                 </Button>
-                                <Button fx:id="buttonUndo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="undo" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                <Button fx:id="buttonUndo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#commandButton" styleClass="undo" GridPane.columnIndex="1" GridPane.rowIndex="14">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>
