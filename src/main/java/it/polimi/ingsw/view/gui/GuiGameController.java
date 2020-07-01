@@ -242,7 +242,7 @@ public class GuiGameController {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1-2-3.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = new Image("/images/image-block1-2-3.png", button.getWidth(), button.getHeight(), false, true, true);
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
@@ -250,7 +250,7 @@ public class GuiGameController {
 //                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(1) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1-2.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = new Image("/images/image-block1-2.png", button.getWidth(), button.getHeight(), false, true, true);
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
@@ -258,7 +258,7 @@ public class GuiGameController {
 //                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(0) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = new Image("/images/image-block1.png", button.getWidth(), button.getHeight(), false, true, true);
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
