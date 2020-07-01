@@ -74,6 +74,11 @@ public class Cli {
 
     protected String[][] currentGameBoard = deepCopyStringArray(emptyGameBoard);
 
+    /**
+     * Refresh the board after a change.
+     *
+     * @param board The instance of the board from which to get information.
+     */
     public void refreshBoard(Board board) {
         currentGameBoard = deepCopyStringArray(emptyGameBoard);
 
@@ -85,6 +90,11 @@ public class Cli {
         printGameBoard();
     }
 
+    /**
+     * Refresh a specific slot during the board refreshing.
+     *
+     * @param slot The slot to be refreshed.
+     */
     public void refreshSlot(Slot slot) {
         String[][] refreshedSlot;
 
@@ -100,6 +110,12 @@ public class Cli {
         }
     }
 
+    /**
+     * Draw the new state of the specified slot.
+     *
+     * @param slot Slot to be redesigned.
+     * @return Returns the new draw of the slot.
+     */
     private String[][] drawSlot(Slot slot) {
         String[][] refreshedSlot = deepCopyStringArray(emptySlot);
         int[] slotStatusValue = analyzeSlotStatus(slot);
@@ -119,6 +135,12 @@ public class Cli {
         return refreshedSlot;
     }
 
+    /**
+     * Draw the levels in the specified slot.
+     *
+     * @param refreshedSlot Slot to be redesigned.
+     * @param levels Levels to be added ad the slot draw.
+     */
     private void drawLevel(String[][] refreshedSlot, int... levels) {
         for (int level : levels) {
             if (level == 1)
@@ -130,6 +152,12 @@ public class Cli {
         }
     }
 
+    /**
+     * Draw the dome in the specified slot.
+     *
+     * @param refreshedSlot Slot to be redesigned.
+     * @param startingFrom Height on which to draw the dome.
+     */
     private void drawDome(String[][] refreshedSlot, int startingFrom) {
         if (startingFrom >= 0 && startingFrom <= SLOT_HEIGHT - 3) {
             refreshedSlot[startingFrom][0] = Color.ANSI_BRIGHT_BLUE + "       ▄▄▄▄▄▄       " + Color.RESET;
@@ -138,6 +166,13 @@ public class Cli {
         }
     }
 
+    /**
+     * Draw the worker in the specified slot.
+     *
+     * @param refreshedSlot Slot to be redesigned.
+     * @param startingFrom Height on which to draw the worker.
+     * @param playerColor The color to draw the worker.
+     */
     private void drawWorker(String[][] refreshedSlot, int startingFrom, PlayerColor playerColor) {
         if (startingFrom >= 0 && startingFrom <= SLOT_HEIGHT - 3) {
             refreshedSlot[startingFrom][0] = playerColor.getEscape() + "         o          " + Color.RESET;
@@ -146,6 +181,12 @@ public class Cli {
         }
     }
 
+    /**
+     * Make a deep copy of the old board to redraw on that the modified part.
+     *
+     * @param original The old board.
+     * @return The updated board.
+     */
     private static String[][] deepCopyStringArray(String[][] original) {
         if (original == null) {
             return null;
@@ -158,6 +199,12 @@ public class Cli {
         return result;
     }
 
+    /**
+     * Analyze the building status of the specified slot to know what to draw.
+     *
+     * @param slot The slot to analyze.
+     * @return The slot level status as sequence of int. Return 0 if the level is empty, an int specified the level otherwise.
+     */
     private int[] analyzeSlotStatus(Slot slot) {
         int[] slotStatusValue = new int[slot.getBuildingsStatus().size()];
         for (int i = 0; i < slot.getBuildingsStatus().size(); i++) {
@@ -170,6 +217,9 @@ public class Cli {
         return slotStatusValue;
     }
 
+    /**
+     * Print the board on the command line interface.
+     */
     public void printGameBoard() {
         for (String[] strings : this.currentGameBoard) {
             for (String string : strings)
@@ -179,7 +229,11 @@ public class Cli {
         }
     }
 
-    //TODO: printMessage
+    /**
+     * Print on the command line interface the specified message.
+     *
+     * @param messageToShow The message to be shown.
+     */
     public void showMessage(String messageToShow) {
         if(messageToShow.contains(Message.gameOver))
             System.out.println(Message.gameOverCli);
@@ -187,6 +241,12 @@ public class Cli {
             System.out.println(messageToShow);
     }
 
+    /**
+     * Print on the command line interface the specified message with a specific color.
+     *
+     * @param messageToShow The message to be shown.
+     * @param playerColor The color to write the message with.
+     */
     public void showMessage(String messageToShow, PlayerColor playerColor) {
         System.out.println(playerColor.getEscape() + messageToShow + Color.RESET);
     }
@@ -195,6 +255,9 @@ public class Cli {
         return isActiveAsyncReadResponse;
     }
 
+    /**
+     * Activate a thread that listen asynchronously for the player input.
+     */
     public void activateAsyncReadResponse() {
         isActiveAsyncReadResponse = true;
         asyncReadResponse();
@@ -207,6 +270,9 @@ public class Cli {
 //        }
 //    }
 
+    /**
+     * Listen asynchronously for the player input.
+     */
     private void asyncReadResponse() {
         Thread asyncReaderResponse = new Thread(() -> {
             while (isActiveAsyncReadResponse()) {
@@ -218,15 +284,27 @@ public class Cli {
         asyncReaderResponse.start();
     }
 
+    /**
+     * Show to the player a specific message which is shown to all players simultaneously.
+     *
+     * @param messageToShow The message to be shown.
+     */
     public void showSimultaneousMessage(String messageToShow) {
         System.out.println(messageToShow);
         if (!messageToShow.contains("Error: ") && !messageToShow.equals(Message.lobby) && !messageToShow.equals(Message.wait) && !messageToShow.equals(Message.gameLoading))
             new Thread(this::readResponse).start();
     }
 
+    /**
+     * Listen for the player input not asynchronously.
+     */
     private void readResponse() {
-        String input = scanner.nextLine();
-        viewOwner.handleResponse(input);
+        try {
+            String input = scanner.nextLine();
+            viewOwner.handleResponse(input);
+        } catch (Exception ex) {
+            System.out.println("Scanner closed.");
+        }
     }
 
 //    public String showMessageImmediateResponse(String messageToShow) {

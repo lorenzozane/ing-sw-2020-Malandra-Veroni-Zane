@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Server {
-    private static final int PORT = 12345;
+    private static final int DEFAULT_PORT = 12345;
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(128);
     private final Map<String, SocketConnection> waitingConnection = new LinkedHashMap<>();
@@ -33,9 +33,9 @@ public class Server {
 
 
     /**
-     * Deregister a client when is no longer reachable. If is one game, other players will be disconnected too
+     * Deregister a client when is no longer reachable. If is one game, other players will be disconnected too.
      *
-     * @param nick Client unique name
+     * @param nick Client unique name.
      */
     public synchronized void deregisterConnection(String nick) {
         waitingConnection.remove(nick);
@@ -52,7 +52,7 @@ public class Server {
             if (deregisterOther.get()) {
                 game.removePlayerByName(nick);
                 for (Player otherPlayer : game.getPlayerList()) {
-                    playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + "left the game\n" + Message.gameOver);
+                    playingConnection.get(otherPlayer.getNickname()).asyncSend(nick + " left the game.\n" + Message.gameOver);
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -80,25 +80,25 @@ public class Server {
     }
 
     /**
-     * Constructor of Server
+     * Constructor of Server.
      *
-     * @throws IOException Is thrown if an I/O error occurs when opening the socket
+     * @throws IOException Is thrown if an I/O error occurs when opening the socket.
      */
     public Server(InetAddress ip, int port) throws IOException {
         this.serverSocket = new ServerSocket(port, 50, ip);
     }
 
     /**
-     * Constructor of Server on localhost and default port
+     * Constructor of Server on localhost and default port.
      *
-     * @throws IOException Is thrown if an I/O error occurs when opening the socket
+     * @throws IOException Is thrown if an I/O error occurs when opening the socket.
      */
     public Server() throws IOException {
-        this.serverSocket = new ServerSocket(12345);
+        this.serverSocket = new ServerSocket(DEFAULT_PORT);
     }
 
     /**
-     * It keeps the server listening on PORT and it accepts new client
+     * It keeps the server listening on PORT and it accepts new client.
      */
     public void run() {
         while (true) {
@@ -127,21 +127,21 @@ public class Server {
 
 
     /**
-     * Check if the input string about number of player is legal
+     * Check if the input string about number of player is legal.
      *
-     * @param s String from user input that must be checked
-     * @return true if it is 2 or 3 otherwise false
+     * @param s String from user input that must be checked.
+     * @return true if it is 2 or 3 otherwise false.
      */
     public boolean noPlayerChecker(String s) {
         return s.equals("2") || s.equals("3");
     }
 
     /**
-     * Waiting room for new client
+     * Waiting room for new client.
      *
-     * @param nickname is the player's nickname
-     * @param playerBirthday is the player's birthday
-     * @param c is the player's socket connection
+     * @param nickname is the player's nickname.
+     * @param playerBirthday is the player's birthday.
+     * @param c is the player's socket connection.
      */
     public void lobby(String nickname, Date playerBirthday, SocketConnection c) {
         waitingConnection.put(nickname, c);
@@ -163,7 +163,7 @@ public class Server {
     }
 
     /**
-     * Called when all player for a game are ready and check for a new game creator
+     * Called when all player for a game are ready and check for a new game creator.
      */
     public void gameLobby() {
         Game gameInstance = new Game();
@@ -186,7 +186,7 @@ public class Server {
     }
 
     /**
-     * Check for a new game creator in the waiting list
+     * Check for a new game creator in the waiting list.
      */
     private synchronized void checkNewCreator() {
         if (waitingConnection.isEmpty()) {
@@ -201,7 +201,7 @@ public class Server {
     }
 
     /**
-     * Handle the input to receive the number of player
+     * Handle the input to receive the number of player.
      */
     private void creatorSetup(SocketConnection c) {
         c.asyncSend(Message.chooseNoPlayer);
@@ -236,7 +236,7 @@ public class Server {
     }
 
     /**
-     * Setting game observer/observable and start the game
+     * Setting game observer/observable and start the game.
      *
      */
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
@@ -265,8 +265,7 @@ public class Server {
     }
 
     /**
-     * Deregister a client when he sent a QUIT and alert the other player that the game is ended
-     *
+     * Deregister a client when he sent a QUIT and alert the other player that the game is ended.
      */
     public void deregisterOnePlayer(String nickname) {
         AtomicBoolean toDelete = new AtomicBoolean(false);

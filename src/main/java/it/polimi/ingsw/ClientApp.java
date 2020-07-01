@@ -57,27 +57,27 @@ public class ClientApp {
 
 
     /**
-     * Method to check the IPv4 format
+     * Method to check the IPv4 format.
      *
-     * @param ip choose from client
+     * @param ip choose from client.
      */
     private static boolean checkIp(String ip){
         Pattern pattern;
         Matcher matcher;
-        String IPADDRESS_PATTERN
+        String IP_ADDRESS_PATTERN
                 = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
                 + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
                 + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
                 + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-        pattern = Pattern.compile(IPADDRESS_PATTERN);
+        pattern = Pattern.compile(IP_ADDRESS_PATTERN);
         matcher = pattern.matcher(ip);
         return matcher.matches();
     }
 
     /**
-     * Method to check the port numeber.
+     * Method to check the port number.
      *
-     * @param port choose from client
+     * @param port choose from client.
      */
     private static boolean checkPort(String port){
         return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);

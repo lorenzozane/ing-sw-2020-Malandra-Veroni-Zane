@@ -58,7 +58,7 @@
                   <Insets />
                </GridPane.margin>
             </Label>
-            <Label fx:id="labelBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="birthday" text="When is your birthday?" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label fx:id="labelBirthday" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="birthday" text="When were you born?" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -71,7 +71,7 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Label>
-            <GridPane prefHeight="41.0" prefWidth="86.0" styleClass="number" GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <GridPane fx:id="gridNumber" prefHeight="41.0" prefWidth="86.0" styleClass="number" GridPane.columnIndex="1" GridPane.rowIndex="10">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
