@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +55,18 @@ public class GuiNetworkController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error ");
                 alert.setHeaderText("IP format not valid");
+                alert.setContentText("Please try again with another IP or PORT");
+
+                alert.showAndWait();
+            }
+        }
+        else{
+            try {
+                Gui.setClient(networkScene, new Client("127.0.0.1", 12345));
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error ");
+                alert.setHeaderText("Server not reachable");
                 alert.setContentText("Please try again with another IP or PORT");
 
                 alert.showAndWait();
