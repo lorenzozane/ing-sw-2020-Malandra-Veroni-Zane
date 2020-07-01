@@ -112,13 +112,18 @@ public class View extends MessageForwarder {
                 playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
 
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            if(messageToShow.equals(ViewMessage.choseYourWorker))
-                messageToShow = ViewMessage.choseYourWorkerGui;
-            if(messageToShow.equals(ViewMessage.quitOrNewGame))
-                messageToShow = ViewMessage.quitOrNewGameGui;
-            if(messageToShow.equals(ViewMessage.buildDomeAnyLevel))
-                messageToShow = ViewMessage.buildDomeAnyLevelGui;
-            playerGui.showMessage(currentMove, messageToShow);
+            if (messageToShow.contains("Error: "))
+                showErrorMessage(messageToShow);
+            else{
+                if(messageToShow.equals(ViewMessage.choseYourWorker))
+                    messageToShow = ViewMessage.choseYourWorkerGui;
+                if(messageToShow.equals(ViewMessage.quitOrNewGame))
+                    messageToShow = ViewMessage.quitOrNewGameGui;
+                if(messageToShow.equals(ViewMessage.buildDomeAnyLevel))
+                    messageToShow = ViewMessage.buildDomeAnyLevelGui;
+                playerGui.showMessage(currentMove, messageToShow);
+            }
+            return;
         }
 
         //TODO: Spostare in showErrorMessage?
@@ -382,6 +387,11 @@ public class View extends MessageForwarder {
         }
 
         return String.valueOf(stringBuilder);
+    }
+
+    //TODO: ??
+    protected boolean colorChecker(PlayerColor playerColor) {
+        return playerColor != null;
     }
 
     /**

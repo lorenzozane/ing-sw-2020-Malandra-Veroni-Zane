@@ -42,7 +42,10 @@ public class GuiController {
     }
 
     public void showStringMessage(String message) {
-        guiSettingController.handleStringMessage(message);
+        if (guiGameController != null)
+            guiGameController.showErrorMessage(currentMove, message);
+        else if (guiSettingController != null)
+            guiSettingController.handleStringMessage(message);
 
         if (message.equalsIgnoreCase(Message.birthday))
             playerOwnerNickname = viewOwner.getPlayerOwnerNickname();
