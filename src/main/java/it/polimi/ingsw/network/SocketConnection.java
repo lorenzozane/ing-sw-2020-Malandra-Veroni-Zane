@@ -31,6 +31,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     /**
      * Constructor of SocketConnection
+     *
+     * @param socket is the socket accepted by the server
+     * @param server is the server that accept the connection
      */
     public SocketConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -60,7 +63,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             out.flush();
             out.reset();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.out.println("Error during " + this.playerOwnerNickname + " connection on sending Object");
         }
 
     }
@@ -73,8 +76,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         //send("Connection closed! socketConnection.closeconnection");
         try {
             socket.close();
+            System.out.println("Closing " + this.playerOwnerNickname + " onnection");
         } catch (IOException e) {
-            System.err.println("Error when closing socket!");
+            System.out.println("Error during close " + this.playerOwnerNickname + " connection");
         }
         active = false;
     }
@@ -93,7 +97,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
     /**
-     * It set the unique name for the client and keeps alive the socket
+     * It set the unique name, birthday for the client on register phase. Than wait until the game is started and keeps alive the socket
      */
     @Override
     public void run() {
@@ -156,7 +160,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
             }
         } catch (IOException | NoSuchElementException | ParseException | ClassNotFoundException | InterruptedException e) {
             //e.printStackTrace();
-            System.err.println("Exception thrown from SocketConnection.run " + e.getMessage());
+            System.out.println("Error: client " + this.playerOwnerNickname + " is not longer reachable");
             server.deregisterConnection(nickname);
 
         } finally {
@@ -192,6 +196,12 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     }
 
+
+    /**
+     * Method to override to handle message received by the UpdateTurnMessageReceiver.
+     * Handle QUIT and GAME_END action
+     * @param message The message to handle.
+     */
     @Override
     protected void handleUpdateTurnMessage(UpdateTurnMessage message) { // arriva dalla remoteview e va mandato al client
         try {
@@ -211,10 +221,20 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
     }
 
+    /**
+     * Method to override to handle message received by the PlayerMoveReceiver.
+     *
+     * @param message The message to handle.
+     */
     protected void handlePlayerMove(PlayerMove message) {  // arriva dal socket del client e va mandato alla remoteview
         playerMoveSender.notifyAll(message);
     }
 
+    /**
+     * Method to override to handle message received by the PlayerMoveStartupReceiver.
+     *
+     * @param message The message to handle.
+     */
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         playerMoveStartupSender.notifyAll(message);
     }

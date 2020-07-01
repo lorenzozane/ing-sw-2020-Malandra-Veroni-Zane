@@ -181,7 +181,10 @@ public class Cli {
 
     //TODO: printMessage
     public void showMessage(String messageToShow) {
-        System.out.println(messageToShow);
+        if(messageToShow.contains(Message.gameOver))
+            System.out.println(Message.gameOverCli);
+        else
+            System.out.println(messageToShow);
     }
 
     public void showMessage(String messageToShow, PlayerColor playerColor) {

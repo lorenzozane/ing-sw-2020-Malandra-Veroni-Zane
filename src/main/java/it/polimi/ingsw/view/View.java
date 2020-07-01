@@ -389,11 +389,6 @@ public class View extends MessageForwarder {
         return String.valueOf(stringBuilder);
     }
 
-    //TODO: ??
-    protected boolean colorChecker(PlayerColor playerColor) {
-        return playerColor != null;
-    }
-
     /**
      * Create the PlayerMove to be send at the controller based on player's input. Used when the worker is known.
      *

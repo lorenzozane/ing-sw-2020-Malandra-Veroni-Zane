@@ -33,7 +33,7 @@ public class Server {
 
 
     /**
-     * Deregister a client when is no longer reachable
+     * Deregister a client when is no longer reachable. If is one game, other players will be disconnected too
      *
      * @param nick Client unique name
      */
@@ -88,6 +88,11 @@ public class Server {
         this.serverSocket = new ServerSocket(port, 50, ip);
     }
 
+    /**
+     * Constructor of Server on localhost and default port
+     *
+     * @throws IOException Is thrown if an I/O error occurs when opening the socket
+     */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(12345);
     }
@@ -131,6 +136,13 @@ public class Server {
         return s.equals("2") || s.equals("3");
     }
 
+    /**
+     * Waiting room for new client
+     *
+     * @param nickname is the player's nickname
+     * @param playerBirthday is the player's birthday
+     * @param c is the player's socket connection
+     */
     public void lobby(String nickname, Date playerBirthday, SocketConnection c) {
         waitingConnection.put(nickname, c);
 
@@ -150,6 +162,9 @@ public class Server {
         }
     }
 
+    /**
+     * Called when all player for a game are ready and check for a new game creator
+     */
     public void gameLobby() {
         Game gameInstance = new Game();
         gamesStarted.add(gameInstance);
@@ -170,6 +185,9 @@ public class Server {
         checkNewCreator();
     }
 
+    /**
+     * Check for a new game creator in the waiting list
+     */
     private synchronized void checkNewCreator() {
         if (waitingConnection.isEmpty()) {
             isSomeoneCreatingAGame = false;
@@ -182,6 +200,9 @@ public class Server {
         }
     }
 
+    /**
+     * Handle the input to receive the number of player
+     */
     private void creatorSetup(SocketConnection c) {
         c.asyncSend(Message.chooseNoPlayer);
         ObjectInputStream in;
@@ -204,7 +225,7 @@ public class Server {
         }
         catch (ClassNotFoundException | IOException e){
             System.out.println("Exception thrown from Server.creatorSetup");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         c.asyncSend(Message.wait);
@@ -214,6 +235,10 @@ public class Server {
 
     }
 
+    /**
+     * Setting game observer/observable and start the game
+     *
+     */
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
         GameManager gameManager = new GameManager(gameInstance);
         GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
@@ -234,11 +259,15 @@ public class Server {
                 gameInstance.addPlayer(usersReadyCopy.get(i));
             } catch (IllegalAccessException e) {
                 System.out.println("Exception thrown from Server.gameSettings");
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Deregister a client when he sent a QUIT and alert the other player that the game is ended
+     *
+     */
     public void deregisterOnePlayer(String nickname) {
         AtomicBoolean toDelete = new AtomicBoolean(false);
         for (Game game : gamesStarted) {

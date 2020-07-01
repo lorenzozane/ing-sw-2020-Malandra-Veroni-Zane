@@ -6,24 +6,23 @@ package it.polimi.ingsw.network;
 public final class Message {
     //TODO: Possibile migliorare la gestione dei messaggi di tipo "errore" utilizzando delle enum
     public static String santorini =
-            "                                                \n" +
+                    "                                                \n" +
                     "                    __              __       __ \n" +
                     " .-----.---.-.-----|  |_.-----.----|__.-----|__|\n" +
                     " |__ --|  _  |     |   _|  _  |   _|  |     |  |\n" +
                     " |_____|___._|__|__|____|_____|__| |__|__|__|__|\n" +
                     "                                                \n";
 
-    public static String gameOver =
-            " _______                            _______                   \n" +
+    public static String gameOverCli =
+                    " _______                            _______                   \n" +
                     "|     __|.---.-.--------.-----.    |       |.--.--.-----.----.\n" +
                     "|    |  ||  _  |        |  -__|    |   -   ||  |  |  -__|   _|\n" +
-                    "|_______||___._|__|__|__|_____|    |_______| \\___/|_____|__|  \n" +
+                    "|_______||___._|__|__|__|_____|    |_______| \\___/|_____|__| \n" +
                     "                                                              \n";
 
     public static String chooseNickname = "What is your nickname?";
     public static String chooseNicknameAgain = "Nickname already chosen, try again";
     public static String lobby = "Adding to lobby... it may take few seconds";
-    public static String lobbyFull = "Sorry, the lobby is full... Try again later";
     public static String chooseNoPlayer = "Choose number of player, 2 or 3:";
     public static String chooseNoPlayerAgain = "Number of player could be only 2 or 3, choose again";
     public static String birthday = "When is your birthday (dd/MM/yyyy)";
@@ -32,7 +31,7 @@ public final class Message {
     public static String chooseColorAgain = "Color not available, choose another one between";
     public static String wait = "Waiting for the other players";
     public static String gameLoading = "All players are ready, the game will start soon...";
-//    public static String gameOver = "Game Over";
+    public static String gameOver = "Game Over";
     public static String undoFiveSeconds = "You have five seconds to UNDO before your turn ends.";
 
     //Message about not allowed movement

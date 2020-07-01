@@ -98,28 +98,6 @@ public class Client extends MessageForwarder {
         return t;
     }
 
-/*
-    public Thread asyncSend(Object message) {
-        Thread t = new Thread(() -> {
-            try {
-                while (isActive()) {
-                    socketOut = new ObjectOutputStream()
-                    if(((String) message).equalsIgnoreCase("quit")) { // si potrebbe spostare anche un po piu a monte
-                        System.out.println("Closing connection...");
-                        throw new Exception();
-                    }
-                    socketOut.writeObject(message);
-                    socketOut.flush();
-                }
-            } catch (Exception e) {
-                setActive(false);
-            }
-        });
-        t.start();
-        return t;
-    }
-    */
-
     /**
      * Send an object by socket with thread
      */
@@ -146,8 +124,7 @@ public class Client extends MessageForwarder {
 
     /**
      * Connection to the server and creation of threads to handle input/output
-     * <p>
-     * //@throws IOException Is thrown if an I/O error occurs while reading stream header
+     *
      */
     public void run() {
         ObjectInputStream socketIn;
@@ -165,6 +142,9 @@ public class Client extends MessageForwarder {
         }
     }
 
+    /**
+     * Close the socket connection
+     */
     public synchronized void closeConnection() {
         try {
             socket.close();
@@ -176,21 +156,37 @@ public class Client extends MessageForwarder {
     }
 
 
+    /**
+     * Method to override to handle message received by the PlayerMoveReciver.
+     *
+     * @param message The message to handle.
+     */
     @Override
     protected void handlePlayerMove(PlayerMove message) {
         asyncSend(message);
     }
+
 
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         asyncSend(message);
     }
 
+    /**
+     * Method to override to handle message received by the StringReceiver.
+     *
+     * @param message The message to handle.
+     */
     @Override
     protected void handleString(String message) {
         asyncSend(message);
     }
 
+    /**
+     * Method to override to handle message received by the UpdateTurnMessageReceiver.
+     * Handle quit action
+     * @param message The message to handle.
+     */
     protected void handleUpdateTurnMessageFromSocket(UpdateTurnMessage message) {
         if ((message.getNextMove() == TurnEvents.Actions.QUIT &&
                 message.getCurrentPlayer().getNickname().equalsIgnoreCase(playerOwnerNickname)) ||
@@ -206,7 +202,6 @@ public class Client extends MessageForwarder {
         stringSender.notifyAll(message);
     }
 
-
     public PlayerMoveReceiver getPlayerMoveReceiver() {
         return playerMoveReceiver;
     }
@@ -218,7 +213,6 @@ public class Client extends MessageForwarder {
     public StringReceiver getStringReceiver() {
         return stringReceiver;
     }
-
 
     public void addUpdateTurnMessageObserver(Observer<UpdateTurnMessage> observer) {
         updateTurnMessageSender.addObserver(observer);

@@ -56,6 +56,11 @@ public class ClientApp {
 
 
 
+    /**
+     * Method to check the IPv4 format
+     *
+     * @param ip choose from client
+     */
     private static boolean checkIp(String ip){
         Pattern pattern;
         Matcher matcher;
@@ -69,6 +74,11 @@ public class ClientApp {
         return matcher.matches();
     }
 
+    /**
+     * Method to check the port numeber.
+     *
+     * @param port choose from client
+     */
     private static boolean checkPort(String port){
         return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);
     }
