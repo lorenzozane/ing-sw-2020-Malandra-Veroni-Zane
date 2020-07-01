@@ -18,6 +18,9 @@ import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
+import static javafx.scene.layout.GridPane.getColumnIndex;
+import static javafx.scene.layout.GridPane.getRowIndex;
+
 
 public class GuiGameController {
 
@@ -141,16 +144,16 @@ public class GuiGameController {
     }
 
     private boolean needRefreshSlot(Slot slot) {
-        int coordinateX = slot.getSlotPosition().getCoordinateX();
-        int coordinateY = slot.getSlotPosition().getCoordinateY();
+        Integer coordinateX = slot.getSlotPosition().getCoordinateX();
+        Integer coordinateY = slot.getSlotPosition().getCoordinateY();
 
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
-                if (GridPane.getColumnIndex(button) != null &&
-                        GridPane.getRowIndex(button) != null &&
-                        (int) GridPane.getColumnIndex(button) == coordinateX &&
-                        (int) GridPane.getRowIndex(button) == coordinateY) {
+                String str = button.getId();
+                str = str.replaceAll("[^\\d.]", "");
+                if (coordinateX.equals(Integer.parseInt(String.valueOf(str.charAt(1)))) &&
+                            coordinateY.equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
 
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
@@ -214,10 +217,10 @@ public class GuiGameController {
         for (Node buttonNode : gridBoard.getChildren()) {
             if (buttonNode instanceof Button) {
                 Button button = (Button) buttonNode;
-                if (GridPane.getColumnIndex(button) != null &&
-                        GridPane.getRowIndex(button) != null &&
-                        GridPane.getColumnIndex(button) == slot.getSlotPosition().getCoordinateX() &&
-                        GridPane.getRowIndex(button) == slot.getSlotPosition().getCoordinateY()) {
+                String str = button.getId();
+                str = str.replaceAll("[^\\d.]", "");
+                if (((Integer )slot.getSlotPosition().getCoordinateX()).equals(Integer.parseInt(String.valueOf(str.charAt(1)))) &&
+                        ((Integer)slot.getSlotPosition().getCoordinateY()).equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
                             button.setVisible(true);
