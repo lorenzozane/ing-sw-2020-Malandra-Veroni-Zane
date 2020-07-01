@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.Actions;
-import it.polimi.ingsw.view.View;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,13 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
-import static javafx.scene.layout.GridPane.getColumnIndex;
-import static javafx.scene.layout.GridPane.getRowIndex;
 
 
 public class GuiGameController {
@@ -159,15 +154,14 @@ public class GuiGameController {
                         if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
                                 slot.getBuildingsStatus().get(0) != null && !button.isVisible())
                             return true;
-
                         if (slot.getBuildingsStatus().get(0) != null &&
-                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("1"))
+                                !(button.getBackground().getImages().get(0).getImage().getUrl()).contains("block1"))
                             return true;
                         else if (slot.getBuildingsStatus().get(1) != null &&
-                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("2"))
+                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2"))
                             return true;
                         else if (slot.getBuildingsStatus().get(2) != null &&
-                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("3"))
+                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3"))
                             return true;
 
                         if (slot.getBuildingsStatus().get(0) == null &&
