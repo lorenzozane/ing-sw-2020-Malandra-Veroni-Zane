@@ -551,7 +551,7 @@
                                         <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>
                                 </Button>
-                                <Button fx:id="buttonQuit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="quit" GridPane.rowIndex="16">
+                                <Button fx:id="buttonQuit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#commandButton" styleClass="quit" GridPane.rowIndex="16">
                                     <GridPane.margin>
                                         <Insets bottom="5.0" left="15.0" right="15.0" />
                                     </GridPane.margin>

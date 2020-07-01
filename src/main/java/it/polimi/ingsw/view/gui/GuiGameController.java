@@ -12,10 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
@@ -157,6 +156,29 @@ public class GuiGameController {
                         if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
                                 slot.getBuildingsStatus().get(0) != null && !button.isVisible())
                             return true;
+
+                        if (slot.getBuildingsStatus().get(0) != null &&
+                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("1"))
+                            return true;
+                        else if (slot.getBuildingsStatus().get(1) != null &&
+                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("2"))
+                            return true;
+                        else if (slot.getBuildingsStatus().get(2) != null &&
+                                !button.getBackground().getImages().get(0).getImage().getUrl().contains("3"))
+                            return true;
+
+                        if (slot.getBuildingsStatus().get(0) == null &&
+                                !button.getBackground().getImages().isEmpty() &&
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("1"))
+                            return true;
+                        else if (slot.getBuildingsStatus().get(1) == null &&
+                                !button.getBackground().getImages().isEmpty() &&
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("2"))
+                            return true;
+                        else if (slot.getBuildingsStatus().get(2) == null &&
+                                !button.getBackground().getImages().isEmpty() &&
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("3"))
+                            return true;
 //                      TODO: Platform.runLater(() -> refreshSlot(slot));
                     } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
                         if ((slot.getBuildingsStatus().get(3) == null && button.isVisible()) ||
@@ -199,13 +221,28 @@ public class GuiGameController {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
                             button.setVisible(true);
-                            button.setStyle("-fx-background-image: url('/images/image-block1-2-3.jpg')");
+                            Image image = new Image("/images/image-block1-2-3.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                            Background backGround = new Background(bImage);
+                            button.setBackground(backGround);
+//                            button.setStyle("-fx-background-image: url('/images/image-block1-2-3.jpg')");
+//                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(1) != null) {
                             button.setVisible(true);
-                            button.setStyle("-fx-background-image: url('/images/image-block1-2.jpg')");
+                            Image image = new Image("/images/image-block1-2.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                            Background backGround = new Background(bImage);
+                            button.setBackground(backGround);
+//                            button.setStyle("-fx-background-image: url('/images/image-block1-2.jpg')");
+//                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(0) != null) {
                             button.setVisible(true);
-                            button.setStyle("-fx-background-image: url('/images/image-block1.jpg')");
+                            Image image = new Image("/images/image-block1.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                            BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                            Background backGround = new Background(bImage);
+                            button.setBackground(backGround);
+//                            button.setStyle("-fx-background-image: url('/images/image-block1.jpg')");
+//                            button.setStyle("-fx-background-size: 100% 100%");
                         } else {
                             button.setVisible(false);
                         }
@@ -225,14 +262,26 @@ public class GuiGameController {
                             button.setVisible(true);
 
                             if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.RED) {
-                                button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
-                                button.setStyle("-fx-background-size: 100% 100%");
+                                Image image = new Image("/images/worker_red.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                                Background backGround = new Background(bImage);
+                                button.setBackground(backGround);
+//                                button.setStyle("-fx-background-image: url('/images/worker_red.jpg')");
+//                                button.setStyle("-fx-background-size: 100% 100%");
                             } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.YELLOW) {
-                                button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
-                                button.setStyle("-fx-background-size: 100% 100%");
+                                Image image = new Image("/images/worker_cyan.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                                Background backGround = new Background(bImage);
+                                button.setBackground(backGround);
+//                                button.setStyle("-fx-background-image: url('/images/worker_yellow.jpg')");
+//                                button.setStyle("-fx-background-size: 100% 100%");
                             } else if (slot.getWorkerInSlot().getColor() == Color.PlayerColor.CYAN) {
-                                button.setStyle("-fx-background-image: url('/images/worker_cyan.jpg')");
-                                button.setStyle("-fx-background-size: 100% 100%");
+                                Image image = new Image("/images/worker_yellow.jpg", button.getWidth(), button.getHeight(), false, true, true);
+                                BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                                Background backGround = new Background(bImage);
+                                button.setBackground(backGround);
+//                                button.setStyle("-fx-background-image: url('/images/worker_cyan.jpg')");
+//                                button.setStyle("-fx-background-size: 100% 100%");
                             }
                         }
                     }
