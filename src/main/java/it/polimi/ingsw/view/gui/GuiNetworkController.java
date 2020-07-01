@@ -28,7 +28,7 @@ public class GuiNetworkController {
         }
     }
 
-            @FXML
+    @FXML
     Button sendButton;
 
     @FXML

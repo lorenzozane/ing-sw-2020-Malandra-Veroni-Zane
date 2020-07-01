@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.network.Client.UserInterface;
+import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
@@ -111,6 +112,12 @@ public class View extends MessageForwarder {
                 playerCli.showMessage(messageToShow, currentMove.getCurrentPlayer().getPlayerColor());
 
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
+            if(messageToShow.equals(ViewMessage.choseYourWorker))
+                messageToShow = ViewMessage.choseYourWorkerGui;
+            if(messageToShow.equals(ViewMessage.quitOrNewGame))
+                messageToShow = ViewMessage.quitOrNewGameGui;
+            if(messageToShow.equals(ViewMessage.buildDomeAnyLevel))
+                messageToShow = ViewMessage.buildDomeAnyLevelGui;
             playerGui.showMessage(currentMove, messageToShow);
         }
 
@@ -375,11 +382,6 @@ public class View extends MessageForwarder {
         }
 
         return String.valueOf(stringBuilder);
-    }
-
-    //TODO: ??
-    protected boolean colorChecker(PlayerColor playerColor) {
-        return playerColor != null;
     }
 
     /**

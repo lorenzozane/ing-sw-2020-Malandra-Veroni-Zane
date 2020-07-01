@@ -2,11 +2,13 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.TurnEvents.Actions;
+import it.polimi.ingsw.view.ViewMessage;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -68,6 +70,42 @@ public class GuiGameController {
         this.currentMove = currentMove;
 
         Platform.runLater(() -> refreshBoard(currentMove.getBoardCopy()));
+
+        if(messageToShow.equals(ViewMessage.winner)){
+            try {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Game Over");
+                    alert.setHeaderText("YOU WIN");
+                    alert.setContentText("Congratulation for your game!\n" + "Try a new GAME or QUIT");
+
+                    Platform.runLater(alert::showAndWait);
+                });
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        if(messageToShow.equals(ViewMessage.lose) || messageToShow.contains(ViewMessage.loseOther) || messageToShow.contains(ViewMessage.winOthers)){
+            try {
+
+                Platform.runLater(() ->{
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Game Over");
+                    alert.setHeaderText("YOU LOSE");
+                    alert.setContentText(currentMove.getCurrentPlayer().getNickname() + "win\n" + "Try a new GAME or QUIT" );
+
+                    alert.showAndWait();
+                });
+
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
 
         if (currentMove.getCurrentPlayer().getNickname().equalsIgnoreCase(guiController.getPlayerOwnerNickname())) {
             gridClickable.setDisable(false);
