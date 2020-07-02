@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
@@ -356,7 +357,8 @@ public class Turn extends MessageForwarder {
 
     /**
      * Method that handle when a player win a game.
-     * @param winner
+     *
+     * @param winner The player who win the game.
      */
     public void win(Player winner) {
         if (!startupPhase && winner == currentPlayer) {
@@ -368,7 +370,8 @@ public class Turn extends MessageForwarder {
 
     /**
      * Method that handle when a player lose  a game.
-     * @param loser
+     *
+     * @param loser The player who lose the game.
      */
     private void lose(Player loser) {
         if (gameInstance.getPlayerNumber() <= 2) {
@@ -394,7 +397,8 @@ public class Turn extends MessageForwarder {
 
     /**
      * Method that handle when a player quit a game.
-     * @param playerWhoQuit
+     *
+     * @param playerWhoQuit The player who quit the game.
      */
     public void quit(Player playerWhoQuit) {
         if (playerWhoQuit.getWorkers().get(0) != null)
@@ -479,14 +483,15 @@ public class Turn extends MessageForwarder {
      * @param fileName The specified file name.
      * @return Returns the file founded.
      */
-    private File getFileFromResources(String fileName) {
+    private InputStream getInputStreamFromResources(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
 
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+//        URL resource = classLoader.getResource(fileName);
+        if (inputStream == null) {
             throw new IllegalArgumentException("File \"" + fileName + "\" is not found!");
         } else {
-            return new File(resource.getFile());
+            return inputStream;
         }
     }
 
@@ -496,9 +501,8 @@ public class Turn extends MessageForwarder {
      */
     protected void setUpTurnSequence() {
         try {
-            File xmlChosenCards = getFileFromResources("GodsParameters.xml");
+            InputStream xmlChosenCards = getInputStreamFromResources("GodsParameters.xml");
 
-//            File xmlChosenCards = new File("src/main/resources/GodsParameters.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
