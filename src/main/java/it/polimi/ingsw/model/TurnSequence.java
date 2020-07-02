@@ -14,8 +14,8 @@ public class TurnSequence {
     /**
      * Constructor of the Turn Sequence
      *
-     * @param playerOwner Player owner of the Turn Sequence
-     * @param moveSequence Sequence of actions that describe the player's standard turn
+     * @param playerOwner   Player owner of the Turn Sequence
+     * @param moveSequence  Sequence of actions that describe the player's standard turn
      * @param winConditions Win conditions of the player
      */
     public TurnSequence(Player playerOwner, ArrayList<Actions> moveSequence, ArrayList<WinConditions> winConditions) {

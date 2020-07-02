@@ -10,7 +10,7 @@ public class Board implements Cloneable, Serializable {
 
     private final Slot[][] gameBoardSlots = new Slot[BOARD_DIMENSION][BOARD_DIMENSION];
 
-    public Board(){
+    public Board() {
         initializeBoard();
     }
 
@@ -21,7 +21,7 @@ public class Board implements Cloneable, Serializable {
     /**
      * Initialize the game board instantiating all the slots.
      */
-    private void initializeBoard(){
+    private void initializeBoard() {
         for (int i = 0; i < BOARD_DIMENSION; i++)
             for (int j = 0; j < BOARD_DIMENSION; j++)
                 gameBoardSlots[i][j] = new Slot(new Position(i, j));
@@ -43,7 +43,7 @@ public class Board implements Cloneable, Serializable {
      * @param centerSlot The central slot.
      * @return An ArrayList of Slot containing all the adjacent slots.
      */
-    public ArrayList<Slot> getAdjacentSlots(Slot centerSlot){
+    public ArrayList<Slot> getAdjacentSlots(Slot centerSlot) {
         ArrayList<Slot> adjacentSlots = new ArrayList<>(8);
         int centerSlotX = centerSlot.getSlotPosition().getCoordinateX();
         int centerSlotY = centerSlot.getSlotPosition().getCoordinateY();
@@ -60,7 +60,7 @@ public class Board implements Cloneable, Serializable {
      * Allows to obtain the next slot along the movement direction.
      *
      * @param startingSlot The starting slot of the movement.
-     * @param targetSlot The target slot of the movement.
+     * @param targetSlot   The target slot of the movement.
      * @return The next slot along the movement direction.
      */
     public Position getBackwardsSlotPosition(Position startingSlot, Position targetSlot) {

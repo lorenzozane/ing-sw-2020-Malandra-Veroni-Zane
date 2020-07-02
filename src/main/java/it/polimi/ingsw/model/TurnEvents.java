@@ -53,7 +53,7 @@ public class TurnEvents implements Serializable {
             MOVEMENT,
             BUILDING;
         }
-        
+
         public enum ActionProperty {
             SKIPPABLE;
         }

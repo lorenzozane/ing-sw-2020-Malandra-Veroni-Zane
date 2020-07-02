@@ -59,7 +59,7 @@ public class GuiController {
     /**
      * Sort the message to be shown in the graphic user interface.
      *
-     * @param currentMove The current move from which to take information to show.
+     * @param currentMove   The current move from which to take information to show.
      * @param messageToShow The message to be shown.
      */
     public void showMessage(UpdateTurnMessage currentMove, String messageToShow) {
@@ -93,7 +93,7 @@ public class GuiController {
      * Show the error messages to the player.
      *
      * @param currentMoveError The current move from which to take information to show.
-     * @param errorToShow The error message to be shown.
+     * @param errorToShow      The error message to be shown.
      */
     public void showErrorMessage(UpdateTurnMessage currentMoveError, String errorToShow) {
         if (!currentMoveError.isStartupPhase() ||

@@ -15,6 +15,7 @@ public enum Color implements Serializable {
         CYAN("\u001b[36;1m");
 
         public String escape;
+
         PlayerColor(String escape) {
             this.escape = escape;
         }
@@ -23,12 +24,12 @@ public enum Color implements Serializable {
             return escape;
         }
 
-        public String getColorAsString(){
-            if(this.getEscape().equals(RED.getEscape()))
+        public String getColorAsString() {
+            if (this.getEscape().equals(RED.getEscape()))
                 return "RED";
             else if (this.getEscape().equals(CYAN.getEscape()))
                 return "CYAN";
-            else if(this.getEscape().equals(YELLOW.getEscape()))
+            else if (this.getEscape().equals(YELLOW.getEscape()))
                 return "YELLOW";
             else
                 throw new IllegalArgumentException();
@@ -36,12 +37,10 @@ public enum Color implements Serializable {
     }
 
 
-
     public static final String RESET = "\u001B[0m";
     public String escape;
 
-    Color(String escape)
-    {
+    Color(String escape) {
         this.escape = escape;
     }
 
@@ -50,8 +49,7 @@ public enum Color implements Serializable {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return escape;
     }
 }

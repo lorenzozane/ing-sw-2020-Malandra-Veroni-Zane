@@ -27,9 +27,9 @@ public class PlayerMove implements Serializable {
     /**
      * Constructor of the message PlayerMove, required to send the information regarding the move performed by the player during the game.
      *
-     * @param workerId The ID of the worker chosen by the player to play with this turn.
-     * @param move The Actions performed by the player.
-     * @param targetPosition The position of the target slot chose by the player for the current move.
+     * @param workerId              The ID of the worker chosen by the player to play with this turn.
+     * @param move                  The Actions performed by the player.
+     * @param targetPosition        The position of the target slot chose by the player for the current move.
      * @param currentPlayerNickname The nickname of the current player.
      */
     public PlayerMove(String workerId, Actions move, Position targetPosition, String currentPlayerNickname) {

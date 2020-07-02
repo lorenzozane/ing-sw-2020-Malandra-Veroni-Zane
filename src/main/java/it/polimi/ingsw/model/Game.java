@@ -67,7 +67,7 @@ public class Game {
      *
      * @param newPlayer The player to be added to the game.
      * @throws IllegalAccessException Exception thrown if the player already exists or the number of player is greater
-     * than the playerNumber.
+     *                                than the playerNumber.
      */
     public void addPlayer(Player newPlayer) throws IllegalAccessException {
         if (checkPlayer(newPlayer) && playerList.size() < playerNumber) {

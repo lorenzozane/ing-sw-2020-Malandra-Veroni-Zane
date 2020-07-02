@@ -12,13 +12,13 @@ public class Worker implements Serializable {
     private PlayerColor color;
     private Slot workerSlot;
 
-    public Worker(Player playerOwner, int idWorkerInt){
+    public Worker(Player playerOwner, int idWorkerInt) {
         this.playerOwner = playerOwner;
         this.idWorker = playerOwner.getNickname() + "_" + idWorkerInt;
     }
 
 
-    public Player getPlayerOwner(){
+    public Player getPlayerOwner() {
         return playerOwner;
     }
 
@@ -59,7 +59,7 @@ public class Worker implements Serializable {
      *
      * @param moveHere New position
      */
-    public void move(Slot moveHere){
+    public void move(Slot moveHere) {
         setWorkerSlot(moveHere);
     }
 
@@ -68,7 +68,7 @@ public class Worker implements Serializable {
      *
      * @param buildHere New construction position
      */
-    public void build(Slot buildHere){
+    public void build(Slot buildHere) {
         BuildingLevel slotTopBuilding = buildHere.getConstructionTopLevel();
         Building newBuilding = new Building(BuildingLevel.getNextLevel(slotTopBuilding));
         buildHere.setBuilding(newBuilding);
@@ -80,8 +80,8 @@ public class Worker implements Serializable {
      * @param buildHere New construction position
      * @param buildDome Boolean describing the choice to build forcibly a dome
      */
-    public void forcedDomeBuild(Slot buildHere, boolean buildDome){
-        if (buildDome){
+    public void forcedDomeBuild(Slot buildHere, boolean buildDome) {
+        if (buildDome) {
             Building newBuilding = new Building(BuildingLevel.DOME);
             buildHere.setBuilding(newBuilding);
         } else

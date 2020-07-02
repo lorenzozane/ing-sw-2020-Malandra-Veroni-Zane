@@ -27,8 +27,8 @@ public class UpdateTurnMessage implements Serializable {
      * Constructor of the message UpdateTurnMessage, require to communicate the information regarding the next move to be performed by the player.
      *
      * @param nextStartupMove The next StartupActions to be performed by the player during the startup phase of the game.
-     * @param currentPlayer The current player who must perform the specified move.
-     * @param playerColor ArrayList of PlayerColor available to be chosen.
+     * @param currentPlayer   The current player who must perform the specified move.
+     * @param playerColor     ArrayList of PlayerColor available to be chosen.
      */
     public UpdateTurnMessage(TurnEvents.StartupActions nextStartupMove, Player currentPlayer, ArrayList<PlayerColor> playerColor) {
         this.startupPhase = true;
@@ -45,11 +45,11 @@ public class UpdateTurnMessage implements Serializable {
     /**
      * Constructor of the message UpdateTurnMessage, require to communicate the information regarding the next move to be performed by the player.
      *
-     * @param boardCopy A copy of the board to be shown at the players every turn.
+     * @param boardCopy           A copy of the board to be shown at the players every turn.
      * @param lastMovePerformedBy Nickname of the player who performed the last move.
-     * @param nextMove The next Actions to be performed by the player during the game.
-     * @param currentPlayer The current player who must perform the specified move.
-     * @param currentWorker The worker chose by the player to play with this turn.
+     * @param nextMove            The next Actions to be performed by the player during the game.
+     * @param currentPlayer       The current player who must perform the specified move.
+     * @param currentWorker       The worker chose by the player to play with this turn.
      */
     public UpdateTurnMessage(Board boardCopy, String lastMovePerformedBy, TurnEvents.Actions nextMove, Player currentPlayer, Worker currentWorker) {
         this.startupPhase = false;
@@ -118,7 +118,7 @@ public class UpdateTurnMessage implements Serializable {
         this.availableCards.addAll(godsCard);
     }
 
-    public void setBoardCopy(Board boardCopy){
+    public void setBoardCopy(Board boardCopy) {
         this.boardCopy = boardCopy;
     }
 

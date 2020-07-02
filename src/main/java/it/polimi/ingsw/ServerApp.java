@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class ServerApp {
     /**
      * Main of Server.
+     *
      * @param args IP and PORT to create a socket.
      */
     public static void main(String[] args) {
@@ -35,8 +36,7 @@ public class ServerApp {
                     }
                 }
             }
-        }
-        else{
+        } else {
             try {
                 server = new Server();
                 server.run();
@@ -64,7 +64,7 @@ public class ServerApp {
      *
      * @param ip choose from client
      */
-    private static boolean checkIp(String ip){
+    private static boolean checkIp(String ip) {
         Pattern pattern;
         Matcher matcher;
         String IPADDRESS_PATTERN
@@ -82,7 +82,7 @@ public class ServerApp {
      *
      * @param port choose from client
      */
-    private static boolean checkPort(String port){
+    private static boolean checkPort(String port) {
         return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);
     }
 

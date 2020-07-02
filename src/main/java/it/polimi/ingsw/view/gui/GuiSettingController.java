@@ -70,11 +70,9 @@ public class GuiSettingController {
                     node.setDisable(true);
                 }
             }
-        }
-        else if(message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
+        } else if (message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
             errorNickname.setVisible(true);
-        }
-        else if (message.equalsIgnoreCase(Message.birthday) ||
+        } else if (message.equalsIgnoreCase(Message.birthday) ||
                 message.equalsIgnoreCase(Message.birthdayAgain)) {
             errorNickname.setVisible(false);
             for (Node node : gridSettings.getChildren()) {

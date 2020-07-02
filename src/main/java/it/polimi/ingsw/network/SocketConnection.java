@@ -45,11 +45,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
     }
 
-
     private synchronized boolean isActive() {
         return active;
     }
-
 
     /**
      * Send an object by socket.
@@ -194,6 +192,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     /**
      * Method to override to handle message received by the UpdateTurnMessageReceiver.
      * Handle QUIT and GAME_END action.
+     *
      * @param message The message to handle.
      */
     @Override

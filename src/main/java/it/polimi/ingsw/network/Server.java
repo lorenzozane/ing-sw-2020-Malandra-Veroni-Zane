@@ -137,9 +137,9 @@ public class Server {
     /**
      * Waiting room for new client.
      *
-     * @param nickname is the player's nickname.
+     * @param nickname       is the player's nickname.
      * @param playerBirthday is the player's birthday.
-     * @param c is the player's socket connection.
+     * @param c              is the player's socket connection.
      */
     public void lobby(String nickname, Date playerBirthday, SocketConnection c) {
         waitingConnection.put(nickname, c);
@@ -153,8 +153,7 @@ public class Server {
             currentCreator = nickname;
 
             creatorSetup(c);
-        }
-        else {
+        } else {
             if (nPlayer <= usersReady.size() && nPlayer > 0)
                 new Thread(this::gameLobby).start();
         }
@@ -220,8 +219,7 @@ public class Server {
                 c.asyncSend(Message.chooseNoPlayerAgain);
                 inputObject = in.readObject();
             }
-        }
-        catch (ClassNotFoundException | IOException e){
+        } catch (ClassNotFoundException | IOException e) {
             System.out.println("Exception thrown from Server.creatorSetup");
             //e.printStackTrace();
         }
@@ -235,9 +233,8 @@ public class Server {
 
     /**
      * Setting game observer/observable and start the game.
-     *
      */
-    private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy){
+    private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy) {
         GameManager gameManager = new GameManager(gameInstance);
         GameInitializationManager gameInitializationManager = new GameInitializationManager(gameInstance);
 
@@ -273,7 +270,7 @@ public class Server {
                     toDelete.set(true);
                 }
             });
-            if(toDelete.get()){
+            if (toDelete.get()) {
                 game.removePlayerByName(nickname);
             }
         }

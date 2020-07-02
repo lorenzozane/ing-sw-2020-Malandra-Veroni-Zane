@@ -140,7 +140,7 @@ public class Cli {
      * Draw the levels in the specified slot.
      *
      * @param refreshedSlot Slot to be redesigned.
-     * @param levels Levels to be added ad the slot draw.
+     * @param levels        Levels to be added ad the slot draw.
      */
     private void drawLevel(String[][] refreshedSlot, int... levels) {
         for (int level : levels) {
@@ -157,7 +157,7 @@ public class Cli {
      * Draw the dome in the specified slot.
      *
      * @param refreshedSlot Slot to be redesigned.
-     * @param startingFrom Height on which to draw the dome.
+     * @param startingFrom  Height on which to draw the dome.
      */
     private void drawDome(String[][] refreshedSlot, int startingFrom) {
         if (startingFrom >= 0 && startingFrom <= SLOT_HEIGHT - 3) {
@@ -171,8 +171,8 @@ public class Cli {
      * Draw the worker in the specified slot.
      *
      * @param refreshedSlot Slot to be redesigned.
-     * @param startingFrom Height on which to draw the worker.
-     * @param playerColor The color to draw the worker.
+     * @param startingFrom  Height on which to draw the worker.
+     * @param playerColor   The color to draw the worker.
      */
     private void drawWorker(String[][] refreshedSlot, int startingFrom, PlayerColor playerColor) {
         if (startingFrom >= 0 && startingFrom <= SLOT_HEIGHT - 3) {
@@ -236,9 +236,9 @@ public class Cli {
      * @param messageToShow The message to be shown.
      */
     public void showMessage(String messageToShow) {
-        if(messageToShow.contains(Message.gameOver))
+        if (messageToShow.contains(Message.gameOver))
             System.out.println(Message.gameOverCli);
-        if(messageToShow.contains(ViewMessage.winner))
+        if (messageToShow.contains(ViewMessage.winner))
             System.out.println(Message.winCli);
         else
             System.out.println(messageToShow);
@@ -248,7 +248,7 @@ public class Cli {
      * Print on the command line interface the specified message with a specific color.
      *
      * @param messageToShow The message to be shown.
-     * @param playerColor The color to write the message with.
+     * @param playerColor   The color to write the message with.
      */
     public void showMessage(String messageToShow, PlayerColor playerColor) {
         System.out.println(playerColor.getEscape() + messageToShow + Color.RESET);

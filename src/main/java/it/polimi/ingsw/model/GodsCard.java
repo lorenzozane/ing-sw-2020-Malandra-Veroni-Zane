@@ -7,7 +7,7 @@ public class GodsCard implements Cloneable, Serializable {
     private final String cardName;
     private String cardDescription;
 
-    public GodsCard(String cardName){
+    public GodsCard(String cardName) {
         this.cardName = cardName;
     }
 
@@ -24,7 +24,7 @@ public class GodsCard implements Cloneable, Serializable {
     }
 
     @Override
-    protected final GodsCard clone(){
+    protected final GodsCard clone() {
         GodsCard clonedCard = new GodsCard(this.cardName);
         clonedCard.setCardDescription(this.cardDescription);
 

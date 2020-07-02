@@ -5,7 +5,7 @@ package it.polimi.ingsw.network;
  */
 public final class Message {
     public static String santorini =
-                    "                                                \n" +
+            "                                                \n" +
                     "                    __              __       __ \n" +
                     " .-----.---.-.-----|  |_.-----.----|__.-----|__|\n" +
                     " |__ --|  _  |     |   _|  _  |   _|  |     |  |\n" +
@@ -13,7 +13,7 @@ public final class Message {
                     "                                                \n";
 
     public static String gameOverCli =
-                    " _______                            _______                   \n" +
+            " _______                            _______                   \n" +
                     "|     __|.---.-.--------.-----.    |       |.--.--.-----.----.\n" +
                     "|    |  ||  _  |        |  -__|    |   -   ||  |  |  -__|   _|\n" +
                     "|_______||___._|__|__|__|_____|    |_______| \\___/|_____|__| \n" +
@@ -21,10 +21,10 @@ public final class Message {
 
     public static String winCli =
             " ___ ___                   ________ __         __ \n" +
-            "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
-            " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
-            "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
-            "                                                  \n";
+                    "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
+                    " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
+                    "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
+                    "                                                  \n";
     public static String chooseNickname = "What is your nickname?";
     public static String chooseNicknameAgain = "Nickname already chosen, try again";
     public static String lobby = "Adding to lobby... it may take few seconds";

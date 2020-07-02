@@ -76,8 +76,7 @@ public class Client extends MessageForwarder {
                         if (((String) inputObject).contains("Nickname: ")) {
                             clientView.setPlayerOwnerNickname(((String) inputObject).replace("Nickname: ", ""));
                             playerOwnerNickname = ((String) inputObject).replace("Nickname: ", "");
-                        }
-                        else {
+                        } else {
 //                            clientView.showMessage((String) inputObject);
 //                            handleString((String) inputObject);
                             new Thread(() -> sendStringToClient((String) inputObject)).start();
@@ -124,7 +123,6 @@ public class Client extends MessageForwarder {
 
     /**
      * Connection to the server and creation of threads to handle input/output
-     *
      */
     public void run() {
         ObjectInputStream socketIn;
@@ -155,9 +153,8 @@ public class Client extends MessageForwarder {
         System.exit(0);
     }
 
-
     /**
-     * Method to override to handle message received by the PlayerMoveReciver.
+     * Method to override to handle message received by the PlayerMoveReceiver.
      *
      * @param message The message to handle.
      */
@@ -166,7 +163,11 @@ public class Client extends MessageForwarder {
         asyncSend(message);
     }
 
-
+    /**
+     * Method to override to handle message received by the PlayerMoveStartupReceiver.
+     *
+     * @param message The message to handle.
+     */
     @Override
     protected void handlePlayerMoveStartup(PlayerMoveStartup message) {
         asyncSend(message);
@@ -185,6 +186,7 @@ public class Client extends MessageForwarder {
     /**
      * Method to override to handle message received by the UpdateTurnMessageReceiver.
      * Handle quit action
+     *
      * @param message The message to handle.
      */
     protected void handleUpdateTurnMessageFromSocket(UpdateTurnMessage message) {

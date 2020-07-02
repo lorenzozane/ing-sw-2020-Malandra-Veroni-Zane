@@ -90,7 +90,7 @@ public class GameInitializationManager extends MessageForwarder {
     /**
      * Place the worker in the chosen slot at the beginning of the game.
      *
-     * @param message The message from which to extract the chosen position.
+     * @param message     The message from which to extract the chosen position.
      * @param workerIndex Index necessary to identify the current worker whose position to set.
      */
     private void placeWorker(PlayerMoveStartup message, int workerIndex) {

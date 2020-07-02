@@ -91,7 +91,8 @@ public class View extends MessageForwarder {
             showMessage(errorToShow);
         else if (chosenUserInterface == UserInterface.GUI) {
             playerGui.showErrorMessage(currentMove, errorToShow);
-            repeatCurrentMove(currentMove);
+            if (errorToShow.contains("Error: "))
+                repeatCurrentMove(currentMove);
         }
     }
 
@@ -112,12 +113,12 @@ public class View extends MessageForwarder {
         } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
             if (messageToShow.contains("Error: "))
                 showErrorMessage(messageToShow);
-            else{
-                if(messageToShow.equals(ViewMessage.choseYourWorker))
+            else {
+                if (messageToShow.equals(ViewMessage.choseYourWorker))
                     messageToShow = ViewMessage.choseYourWorkerGui;
-                if(messageToShow.equals(ViewMessage.quit))
+                if (messageToShow.equals(ViewMessage.quit))
                     messageToShow = ViewMessage.quitGui;
-                if(messageToShow.equals(ViewMessage.buildDomeAnyLevel))
+                if (messageToShow.equals(ViewMessage.buildDomeAnyLevel))
                     messageToShow = ViewMessage.buildDomeAnyLevelGui;
                 playerGui.showMessage(currentMove, messageToShow);
             }
