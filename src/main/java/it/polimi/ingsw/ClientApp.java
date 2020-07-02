@@ -59,7 +59,6 @@ public class ClientApp {
         client.run();
     }
 
-
     /**
      * Method to check the IPv4 format.
      *
@@ -88,6 +87,4 @@ public class ClientApp {
     private static boolean checkPort(String port) {
         return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);
     }
-
-
 }
