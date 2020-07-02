@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TurnSequence</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TurnSequence (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TurnSequence</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.TurnEvents.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public class TurnSequence {
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    private final Player playerOwner;
+<i>10</i>&nbsp;    private final ArrayList&lt;Actions&gt; moveSequence;
+<i>11</i>&nbsp;    private final ArrayList&lt;WinConditions&gt; winConditions;
+<b class="fc"><i>12</i>&nbsp;    private boolean canMoveUp = true;</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * Constructor of the Turn Sequence
+<i>16</i>&nbsp;     *
+<i>17</i>&nbsp;     * @param playerOwner   Player owner of the Turn Sequence
+<i>18</i>&nbsp;     * @param moveSequence  Sequence of actions that describe the player&#39;s standard turn
+<i>19</i>&nbsp;     * @param winConditions Win conditions of the player
+<i>20</i>&nbsp;     */
+<b class="fc"><i>21</i>&nbsp;    public TurnSequence(Player playerOwner, ArrayList&lt;Actions&gt; moveSequence, ArrayList&lt;WinConditions&gt; winConditions) {</b>
+<b class="fc"><i>22</i>&nbsp;        this.playerOwner = playerOwner;</b>
+<b class="fc"><i>23</i>&nbsp;        this.moveSequence = moveSequence;</b>
+<b class="fc"><i>24</i>&nbsp;        this.winConditions = winConditions;</b>
+<b class="fc"><i>25</i>&nbsp;        setCanMoveUp(true);</b>
+<b class="fc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public Player getPlayerOwner() {
+<b class="nc"><i>29</i>&nbsp;        return playerOwner;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    public ArrayList&lt;Actions&gt; getMoveSequence() {
+<b class="fc"><i>33</i>&nbsp;        return moveSequence; //Essendo &quot;final&quot; non serve crearne una copia</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public ArrayList&lt;WinConditions&gt; getWinConditions() {
+<b class="fc"><i>37</i>&nbsp;        return winConditions;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * Enables or Disables the ability to move up to the player during his turn.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @param canMoveUpValue The boolean describing if set the ability to move up or not.
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public void setCanMoveUp(Boolean canMoveUpValue) {
+<b class="fc"><i>46</i>&nbsp;        canMoveUp = canMoveUpValue;</b>
+<b class="fc"><i>47</i>&nbsp;    }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    /**
+<i>50</i>&nbsp;     * Allows to know if a player has the permission to move up in this turn
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @return The boolean describing if the player has the permission to move up in this turn
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public boolean isCanMoveUp() {
+<b class="fc"><i>55</i>&nbsp;        return canMoveUp;</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

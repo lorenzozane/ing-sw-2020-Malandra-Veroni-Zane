@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Building</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Building (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Building</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Building$BuildingLevel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/ 15)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">Building$BuildingProperty</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/ 23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;import java.util.Arrays;
+<i>5</i>&nbsp;import java.util.EnumSet;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Building implements Serializable {
+<i>9</i>&nbsp;
+<b class="fc"><i>10</i>&nbsp;    public enum BuildingProperty {</b>
+<b class="fc"><i>11</i>&nbsp;        CAN_BUILD_ON_IT,</b>
+<b class="fc"><i>12</i>&nbsp;        IS_SCALABLE;</b>
+<i>13</i>&nbsp;    }
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;    public enum BuildingLevel {</b>
+<b class="fc"><i>16</i>&nbsp;        LEVEL1(1, BuildingProperty.CAN_BUILD_ON_IT, BuildingProperty.IS_SCALABLE),</b>
+<b class="fc"><i>17</i>&nbsp;        LEVEL2(2, BuildingProperty.CAN_BUILD_ON_IT, BuildingProperty.IS_SCALABLE),</b>
+<b class="fc"><i>18</i>&nbsp;        LEVEL3(3, BuildingProperty.CAN_BUILD_ON_IT, BuildingProperty.IS_SCALABLE),</b>
+<b class="fc"><i>19</i>&nbsp;        DOME(4);</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;        private final int levelValue;
+<i>22</i>&nbsp;        private final EnumSet&lt;BuildingProperty&gt; buildingsProperties;
+<b class="fc"><i>23</i>&nbsp;        private static final BuildingLevel[] buildingLevelValues = values();</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;        /**
+<i>26</i>&nbsp;         * Constructor of the enum BuildingsLevel
+<i>27</i>&nbsp;         *
+<i>28</i>&nbsp;         * @param levelValue          Height level related to the building
+<i>29</i>&nbsp;         * @param buildingsProperties Properties assignable to buildings
+<i>30</i>&nbsp;         */
+<b class="fc"><i>31</i>&nbsp;        BuildingLevel(int levelValue, BuildingProperty... buildingsProperties) {</b>
+<b class="fc"><i>32</i>&nbsp;            this.levelValue = levelValue;</b>
+<b class="fc"><i>33</i>&nbsp;            this.buildingsProperties = buildingsProperties.length == 0 ? EnumSet.noneOf(BuildingProperty.class) : EnumSet.copyOf(Arrays.asList(buildingsProperties));</b>
+<b class="fc"><i>34</i>&nbsp;        }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;        /**
+<i>37</i>&nbsp;         * Check if the building owns the property
+<i>38</i>&nbsp;         *
+<i>39</i>&nbsp;         * @param property Property assignable to buildings
+<i>40</i>&nbsp;         * @return True if the building owns the property, False otherwise
+<i>41</i>&nbsp;         */
+<i>42</i>&nbsp;        public boolean hasProperty(BuildingProperty property) {
+<b class="fc"><i>43</i>&nbsp;            return buildingsProperties.contains(property);</b>
+<i>44</i>&nbsp;        }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;        public int getLevelAsInt() {
+<b class="fc"><i>47</i>&nbsp;            return levelValue;</b>
+<i>48</i>&nbsp;        }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;        /**
+<i>51</i>&nbsp;         * Gets the next building level of the building level passed to the function
+<i>52</i>&nbsp;         *
+<i>53</i>&nbsp;         * @param buildingLevel Building level of which you want to know the next
+<i>54</i>&nbsp;         * @return The next building level in order of height
+<i>55</i>&nbsp;         */
+<i>56</i>&nbsp;        public static BuildingLevel getNextLevel(BuildingLevel buildingLevel) {
+<b class="fc"><i>57</i>&nbsp;            if (buildingLevel == null)</b>
+<b class="fc"><i>58</i>&nbsp;                return BuildingLevel.LEVEL1;</b>
+<b class="fc"><i>59</i>&nbsp;            return buildingLevel.ordinal() &lt; buildingLevelValues.length - 1 ? buildingLevelValues[(buildingLevel.ordinal() + 1)] : null;</b>
+<i>60</i>&nbsp;        }
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    private final BuildingLevel level;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Creates a new Building with the related height level
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @param level Height level related to the building
+<i>69</i>&nbsp;     */
+<b class="fc"><i>70</i>&nbsp;    public Building(BuildingLevel level) {</b>
+<b class="fc"><i>71</i>&nbsp;        this.level = level;</b>
+<b class="fc"><i>72</i>&nbsp;    }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    public BuildingLevel getLevel() {
+<b class="fc"><i>75</i>&nbsp;        return level;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public int getLevelAsInt() {
+<b class="fc"><i>79</i>&nbsp;        return level.levelValue;</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

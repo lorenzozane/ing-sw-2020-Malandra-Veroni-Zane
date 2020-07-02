@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Slot</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Slot (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Slot</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,5%
+  </span>
+  <span class="absValue">
+    (37/ 40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;import java.util.ArrayList;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import static it.polimi.ingsw.model.Building.*;
+<i>7</i>&nbsp;import static it.polimi.ingsw.model.Building.BuildingProperty.*;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class Slot implements Serializable {
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;    private final Building[] buildingsStatus = new Building[4];</b>
+<i>12</i>&nbsp;    private Worker workerInSlot;
+<i>13</i>&nbsp;    private Position slotPosition;
+<b class="fc"><i>14</i>&nbsp;    private int constructionHeight = 0;</b>
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;    public Slot(Position slotPosition) {</b>
+<b class="fc"><i>17</i>&nbsp;        this.slotPosition = slotPosition;</b>
+<b class="fc"><i>18</i>&nbsp;    }</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public Worker getWorkerInSlot() {
+<b class="fc"><i>21</i>&nbsp;        return this.workerInSlot;</b>
+<i>22</i>&nbsp;    }
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * Returns as an integer the height value of the buildings in the slot
+<i>26</i>&nbsp;     *
+<i>27</i>&nbsp;     * @return the integer value of the highest building
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    public int getConstructionHeight() {
+<b class="fc"><i>30</i>&nbsp;        return constructionHeight;</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * Returns the BuildingLevel of the highest building in slot
+<i>35</i>&nbsp;     *
+<i>36</i>&nbsp;     * @return the BuildingLevel value of the highest construction in slot
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    public BuildingLevel getConstructionTopLevel() {
+<b class="fc"><i>39</i>&nbsp;        BuildingLevel topLevel = null;</b>
+<b class="fc"><i>40</i>&nbsp;        for (Building building : buildingsStatus)</b>
+<b class="fc"><i>41</i>&nbsp;            if (building != null)</b>
+<b class="fc"><i>42</i>&nbsp;                topLevel = building.getLevel();</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;        return topLevel;</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public void setWorkerInSlot(Worker workerInSlot) {
+<b class="fc"><i>48</i>&nbsp;        this.workerInSlot = workerInSlot;</b>
+<b class="fc"><i>49</i>&nbsp;    }</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    public Position getSlotPosition() {
+<b class="fc"><i>52</i>&nbsp;        return slotPosition;</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * Allows the construction of a new building
+<i>57</i>&nbsp;     *
+<i>58</i>&nbsp;     * @param building Building element to be added above the highest construction
+<i>59</i>&nbsp;     */
+<i>60</i>&nbsp;    public void setBuilding(Building building) {
+<i>61</i>&nbsp;        try {
+<b class="fc"><i>62</i>&nbsp;            if (constructionHeight == 0 || buildingsStatus[constructionHeight - 1].getLevel().hasProperty(CAN_BUILD_ON_IT)) {</b>
+<b class="fc"><i>63</i>&nbsp;                int level = building.getLevelAsInt();</b>
+<b class="fc"><i>64</i>&nbsp;                buildingsStatus[level - 1] = building;</b>
+<b class="fc"><i>65</i>&nbsp;                if (level &gt; constructionHeight)</b>
+<b class="fc"><i>66</i>&nbsp;                    constructionHeight = level;</b>
+<i>67</i>&nbsp;            }
+<b class="nc"><i>68</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="nc"><i>69</i>&nbsp;            System.out.println(ex.getMessage());</b>
+<b class="fc"><i>70</i>&nbsp;        }</b>
+<b class="fc"><i>71</i>&nbsp;    }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /**
+<i>74</i>&nbsp;     * Allows to destroy the top building currently in the slot
+<i>75</i>&nbsp;     */
+<i>76</i>&nbsp;    public void destroyTopBuilding() {
+<b class="fc"><i>77</i>&nbsp;        if (this.getConstructionTopLevel() == null)</b>
+<b class="nc"><i>78</i>&nbsp;            return;</b>
+<i>79</i>&nbsp;        else {
+<b class="fc"><i>80</i>&nbsp;            int index = this.getConstructionTopLevel().getLevelAsInt() - 1;</b>
+<b class="fc"><i>81</i>&nbsp;            buildingsStatus[index] = null;</b>
+<i>82</i>&nbsp;        }
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        if (this.getConstructionTopLevel() == null)</b>
+<b class="fc"><i>85</i>&nbsp;            constructionHeight = 0;</b>
+<i>86</i>&nbsp;        else
+<b class="fc"><i>87</i>&nbsp;            constructionHeight = this.getConstructionTopLevel().getLevelAsInt();</b>
+<b class="fc"><i>88</i>&nbsp;    }</b>
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    /**
+<i>91</i>&nbsp;     * Returns a copy of the buildingStatus as an ArrayList of BuildingLevel
+<i>92</i>&nbsp;     *
+<i>93</i>&nbsp;     * @return ArrayList of BuildingLevel containing the BuildingLevel value at the construction index, or null
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    public ArrayList&lt;BuildingLevel&gt; getBuildingsStatus() {
+<b class="fc"><i>96</i>&nbsp;        ArrayList&lt;BuildingLevel&gt; buildingLevelsCopy = new ArrayList&lt;&gt;(buildingsStatus.length);</b>
+<b class="fc"><i>97</i>&nbsp;        for (int i = 0; i &lt; buildingsStatus.length; i++)</b>
+<b class="fc"><i>98</i>&nbsp;            buildingLevelsCopy.add(buildingsStatus[i] != null ? buildingsStatus[i].getLevel() : null);</b>
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;        return buildingLevelsCopy;</b>
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * Calculate the distance (minimum number of moves required to reach the target slot) between two slots
+<i>105</i>&nbsp;     *
+<i>106</i>&nbsp;     * @param startingPosition Starting slot
+<i>107</i>&nbsp;     * @param targetPosition   Target slot
+<i>108</i>&nbsp;     * @return Return the distance between two slots (as the minimum number of moves required to reach the target slot)
+<i>109</i>&nbsp;     */
+<i>110</i>&nbsp;    public static int calculateDistance(Slot startingPosition, Slot targetPosition) {
+<b class="fc"><i>111</i>&nbsp;        int distanceX = Math.abs(startingPosition.slotPosition.getCoordinateX() - targetPosition.getSlotPosition().getCoordinateX());</b>
+<b class="fc"><i>112</i>&nbsp;        int distanceY = Math.abs(startingPosition.slotPosition.getCoordinateY() - targetPosition.getSlotPosition().getCoordinateY());</b>
+<i>113</i>&nbsp;
+<b class="fc"><i>114</i>&nbsp;        return Math.max(distanceX, distanceY);</b>
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    /**
+<i>118</i>&nbsp;     * Calculate the height difference between two slots
+<i>119</i>&nbsp;     *
+<i>120</i>&nbsp;     * @param startingPosition Starting slot
+<i>121</i>&nbsp;     * @param targetPosition   Target slot
+<i>122</i>&nbsp;     * @return Return the height difference (not in absolute value) between tho slots
+<i>123</i>&nbsp;     */
+<i>124</i>&nbsp;    public static int calculateHeightDifference(Slot startingPosition, Slot targetPosition) {
+<b class="fc"><i>125</i>&nbsp;        return targetPosition.getConstructionHeight() - startingPosition.getConstructionHeight();</b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;//    @Override
+<i>129</i>&nbsp;//    protected final Slot clone() {
+<i>130</i>&nbsp;//        final Slot result = new Slot(this.slotPosition);
+<i>131</i>&nbsp;//        for (Building building : buildingsStatus) {
+<i>132</i>&nbsp;//            if (building != null) {
+<i>133</i>&nbsp;//                Building newBuilding = new Building(building.getLevel());
+<i>134</i>&nbsp;//                result.setBuilding(newBuilding);
+<i>135</i>&nbsp;//            }
+<i>136</i>&nbsp;//        }
+<i>137</i>&nbsp;//        if (this.workerInSlot != null)
+<i>138</i>&nbsp;//            result.setWorkerInSlot(new Worker(this.getWorkerInSlot().getPlayerOwner(), this.getWorkerInSlot().getIdWorker().charAt(this.getWorkerInSlot().getIdWorker().length() - 1)));
+<i>139</i>&nbsp;//
+<i>140</i>&nbsp;//        return result;
+<i>141</i>&nbsp;//    }
+<i>142</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Board</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Board (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Board</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,6%
+  </span>
+  <span class="absValue">
+    (25/ 27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;import java.util.ArrayList;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public class Board implements Cloneable, Serializable {
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;    private static final long serialVersionUID = 4116564860427433236L;
+<i>9</i>&nbsp;    private static final int BOARD_DIMENSION = 5;
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;    private final Slot[][] gameBoardSlots = new Slot[BOARD_DIMENSION][BOARD_DIMENSION];</b>
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;    public Board() {</b>
+<b class="fc"><i>14</i>&nbsp;        initializeBoard();</b>
+<b class="fc"><i>15</i>&nbsp;    }</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public int getBoardDimension() {
+<b class="nc"><i>18</i>&nbsp;        return BOARD_DIMENSION;</b>
+<i>19</i>&nbsp;    }
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Initialize the game board instantiating all the slots.
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private void initializeBoard() {
+<b class="fc"><i>25</i>&nbsp;        for (int i = 0; i &lt; BOARD_DIMENSION; i++)</b>
+<b class="fc"><i>26</i>&nbsp;            for (int j = 0; j &lt; BOARD_DIMENSION; j++)</b>
+<b class="fc"><i>27</i>&nbsp;                gameBoardSlots[i][j] = new Slot(new Position(i, j));</b>
+<b class="fc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * Provides the board slot knowing its position.
+<i>32</i>&nbsp;     *
+<i>33</i>&nbsp;     * @param position The position of the slot you want to receive.
+<i>34</i>&nbsp;     * @return Returns the slot with the specified position.
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    public Slot getSlot(Position position) {
+<b class="fc"><i>37</i>&nbsp;        return gameBoardSlots[position.getCoordinateX()][position.getCoordinateY()];</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * Allows to obtain all the slots adjacent to the central one.
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @param centerSlot The central slot.
+<i>44</i>&nbsp;     * @return An ArrayList of Slot containing all the adjacent slots.
+<i>45</i>&nbsp;     */
+<i>46</i>&nbsp;    public ArrayList&lt;Slot&gt; getAdjacentSlots(Slot centerSlot) {
+<b class="fc"><i>47</i>&nbsp;        ArrayList&lt;Slot&gt; adjacentSlots = new ArrayList&lt;&gt;(8);</b>
+<b class="fc"><i>48</i>&nbsp;        int centerSlotX = centerSlot.getSlotPosition().getCoordinateX();</b>
+<b class="fc"><i>49</i>&nbsp;        int centerSlotY = centerSlot.getSlotPosition().getCoordinateY();</b>
+<i>50</i>&nbsp;
+<b class="fc"><i>51</i>&nbsp;        for (int x = (centerSlotX &gt; 0 ? -1 : 0); x &lt;= (centerSlotX &lt; BOARD_DIMENSION - 1 ? 1 : 0); x++)</b>
+<b class="fc"><i>52</i>&nbsp;            for (int y = (centerSlotY &gt; 0 ? -1 : 0); y &lt;= (centerSlotY &lt; BOARD_DIMENSION - 1 ? 1 : 0); y++)</b>
+<b class="fc"><i>53</i>&nbsp;                if (x != 0 || y != 0)</b>
+<b class="fc"><i>54</i>&nbsp;                    adjacentSlots.add(gameBoardSlots[centerSlotX + x][centerSlotY + y]);</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;        return adjacentSlots;</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * Allows to obtain the next slot along the movement direction.
+<i>61</i>&nbsp;     *
+<i>62</i>&nbsp;     * @param startingSlot The starting slot of the movement.
+<i>63</i>&nbsp;     * @param targetSlot   The target slot of the movement.
+<i>64</i>&nbsp;     * @return The next slot along the movement direction.
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public Position getBackwardsSlotPosition(Position startingSlot, Position targetSlot) {
+<b class="fc"><i>67</i>&nbsp;        int nextSlotX = targetSlot.getCoordinateX() + (targetSlot.getCoordinateX() - startingSlot.getCoordinateX());</b>
+<b class="fc"><i>68</i>&nbsp;        int nextSlotY = targetSlot.getCoordinateY() + (targetSlot.getCoordinateY() - startingSlot.getCoordinateY());</b>
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;        if (nextSlotX &lt; 0 || nextSlotX &gt; BOARD_DIMENSION - 1 || nextSlotY &lt; 0 || nextSlotY &gt; BOARD_DIMENSION - 1)</b>
+<b class="nc"><i>71</i>&nbsp;            return null;</b>
+<i>72</i>&nbsp;
+<b class="fc"><i>73</i>&nbsp;        return new Position(nextSlotX, nextSlotY);</b>
+<i>74</i>&nbsp;//        return gameBoardSlots[nextSlotX][nextSlotY];
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    @Override
+<i>78</i>&nbsp;    protected final Board clone() {
+<b class="fc"><i>79</i>&nbsp;        final Board result = new Board();</b>
+<b class="fc"><i>80</i>&nbsp;        for (int i = 0; i &lt; BOARD_DIMENSION; i++)</b>
+<b class="fc"><i>81</i>&nbsp;            result.gameBoardSlots[i] = gameBoardSlots[i].clone();</b>
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;        return result;</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>
