@@ -67,7 +67,7 @@ public class GuiGameController {
     /**
      * Handle the message to be shown in the graphic user interface.
      *
-     * @param currentMove The current move from which to take information to show.
+     * @param currentMove   The current move from which to take information to show.
      * @param messageToShow The message to be shown.
      */
     protected void showMessage(UpdateTurnMessage currentMove, String messageToShow) {
@@ -75,7 +75,7 @@ public class GuiGameController {
 
         Platform.runLater(() -> refreshBoard(currentMove.getBoardCopy()));
 
-        if(messageToShow.equals(ViewMessage.winner)){
+        if (messageToShow.equals(ViewMessage.winner)) {
             try {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -85,16 +85,15 @@ public class GuiGameController {
 
                     alert.showAndWait();
                 });
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
 
-        if(messageToShow.equals(ViewMessage.lose) || messageToShow.contains(ViewMessage.loseOther) || messageToShow.contains(ViewMessage.winOthers)){
+        if (messageToShow.equals(ViewMessage.lose) || messageToShow.contains(ViewMessage.loseOther) || messageToShow.contains(ViewMessage.winOthers)) {
             try {
-                Platform.runLater(() ->{
+                Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Game Over");
                     alert.setHeaderText("YOU LOSE");
@@ -103,8 +102,7 @@ public class GuiGameController {
                     alert.showAndWait();
                 });
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -186,7 +184,7 @@ public class GuiGameController {
 //            System.out.println("Cella cliccata: " + coordinate);
 
             Scene mainScene = buttonPress.getScene();
-            CheckBox checkBoxDome = (CheckBox) mainScene.lookup("#buttonDome");
+            CheckBox checkBoxDome = (CheckBox) mainScene.lookup("#buttonDome"); //TODO: da togliere?
             if (checkBoxDome.isSelected() &&
                     (currentMove != null && currentMove.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)) {
                 coordinate = coordinate.concat(" dome");
@@ -250,8 +248,10 @@ public class GuiGameController {
                         coordinateY.equals(Integer.parseInt(String.valueOf(str.charAt(0))))) {
 
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
-                        if ((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
-                                slot.getBuildingsStatus().get(0) != null && !button.isVisible())
+                        if (((slot.getBuildingsStatus().get(0) == null && button.isVisible()) ||
+                                slot.getBuildingsStatus().get(0) != null && !button.isVisible())/* &&
+                                ((slot.getBuildingsStatus().get(3) == null && button.isVisible()) ||
+                                        slot.getBuildingsStatus().get(3) != null && !button.isVisible())*/)
                             return true;
                         if (slot.getBuildingsStatus().get(0) != null &&
                                 !(button.getBackground().getImages().get(0).getImage().getUrl()).contains("block1"))
@@ -262,6 +262,17 @@ public class GuiGameController {
                         else if (slot.getBuildingsStatus().get(2) != null &&
                                 !button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3"))
                             return true;
+                        else if (slot.getBuildingsStatus().get(3) != null) {
+                            if (!button.getBackground().getImages().isEmpty()) {
+                                if (!(button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-D")) ||
+                                        !(button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-D")) ||
+                                        !(button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3-D")) ||
+                                        !(button.getBackground().getImages().get(0).getImage().getUrl().contains("blockD"))) {
+                                    return true;
+                                }
+                            } else
+                                return true;
+                        }
 
                         if (slot.getBuildingsStatus().get(0) == null &&
                                 !button.getBackground().getImages().isEmpty() &&
@@ -275,12 +286,18 @@ public class GuiGameController {
                                 !button.getBackground().getImages().isEmpty() &&
                                 button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3"))
                             return true;
+                        else if (slot.getBuildingsStatus().get(3) == null && !button.getBackground().getImages().isEmpty() && (
+                                button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-D") ||
+                                        button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-D") ||
+                                        button.getBackground().getImages().get(0).getImage().getUrl().contains("block1-2-3-D") ||
+                                        button.getBackground().getImages().get(0).getImage().getUrl().contains("blockD")))
+                            return true;
 //                      TODO: Platform.runLater(() -> refreshSlot(slot));
-                    } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
+                    }/* else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
                         if ((slot.getBuildingsStatus().get(3) == null && button.isVisible()) ||
                                 slot.getBuildingsStatus().get(3) != null && !button.isVisible())
                             return true;
-                    } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
+                    } */ else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
                         if ((slot.getWorkerInSlot() == null && button.isVisible()) ||
                                 slot.getWorkerInSlot() != null && !button.isVisible())
                             return true;
@@ -322,7 +339,12 @@ public class GuiGameController {
                     if (button.getStyleClass().stream().anyMatch(x -> x.contains("level"))) {
                         if (slot.getBuildingsStatus().get(2) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1-2-3.png", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = null;
+                            if (slot.getBuildingsStatus().get(3) == null) {
+                                image = new Image("/images/image-block1-2-3.png", button.getWidth(), button.getHeight(), false, true, true);
+                            } else {
+                                image = new Image("/images/image-block1-2-3-D.png", button.getWidth(), button.getHeight(), false, true, true);
+                            }
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
@@ -330,7 +352,12 @@ public class GuiGameController {
 //                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(1) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1-2.png", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = null;
+                            if (slot.getBuildingsStatus().get(3) == null) {
+                                image = new Image("/images/image-block1-2.png", button.getWidth(), button.getHeight(), false, true, true);
+                            } else {
+                                image = new Image("/images/image-block1-2-D.png", button.getWidth(), button.getHeight(), false, true, true);
+                            }
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
@@ -338,12 +365,23 @@ public class GuiGameController {
 //                            button.setStyle("-fx-background-size: 100% 100%");
                         } else if (slot.getBuildingsStatus().get(0) != null) {
                             button.setVisible(true);
-                            Image image = new Image("/images/image-block1.png", button.getWidth(), button.getHeight(), false, true, true);
+                            Image image = null;
+                            if (slot.getBuildingsStatus().get(3) == null) {
+                                image = new Image("/images/image-block1.png", button.getWidth(), button.getHeight(), false, true, true);
+                            } else {
+                                image = new Image("/images/image-block1-D.png", button.getWidth(), button.getHeight(), false, true, true);
+                            }
                             BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
                             Background backGround = new Background(bImage);
                             button.setBackground(backGround);
 //                            button.setStyle("-fx-background-image: url('/images/image-block1.jpg')");
 //                            button.setStyle("-fx-background-size: 100% 100%");
+                        } else if (slot.getBuildingsStatus().get(0) == null && slot.getBuildingsStatus().get(3) != null) {
+                            button.setVisible(true);
+                            Image image = new Image("/images/image-blockD.png", button.getWidth(), button.getHeight(), false, true, true);
+                            BackgroundImage bImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
+                            Background backGround = new Background(bImage);
+                            button.setBackground(backGround);
                         } else {
                             button.setVisible(false);
                         }
@@ -351,7 +389,7 @@ public class GuiGameController {
 //                        button.setVisible(false);
 //                    else
 //                        button.setVisible(true);
-                    } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
+                    } /*else if (button.getStyleClass().stream().anyMatch(x -> x.contains("dome"))) {
                         if (slot.getBuildingsStatus().get(3) != null) {
                             button.setVisible(true);
                             Image image = new Image("/images/image-blockD.png", button.getWidth(), button.getHeight(), false, true, true);
@@ -363,7 +401,7 @@ public class GuiGameController {
                         } else {
                             button.setVisible(false);
                         }
-                    } else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
+                    } */ else if (button.getStyleClass().stream().anyMatch(x -> x.contains("worker"))) {
                         if (slot.getWorkerInSlot() == null)
                             button.setVisible(false);
                         else {
