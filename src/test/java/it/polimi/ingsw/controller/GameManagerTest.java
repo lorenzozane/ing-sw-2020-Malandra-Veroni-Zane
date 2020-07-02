@@ -10,6 +10,8 @@ import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -21,6 +23,11 @@ import java.util.Date;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
 import static org.junit.Assert.*;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 public class GameManagerTest {
 
@@ -438,7 +445,169 @@ public class GameManagerTest {
     }
 
     @Test
-    public void initialCheckMovableWorkerTest() {
+    public void handleMoveErrorTest() throws ParseException, IllegalAccessException, IOException {
+        Turn turn = gameInstance.getTurn();
+
+        Player player1 = new Player("player1");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = dateFormat.parse("23/5/1998");
+        player1.setBirthday(date);
+        Player player2 = new Player("player2");
+        date = dateFormat.parse("23/5/1996");
+        player2.setBirthday(date);
+        gameInstance.setPlayerNumber(2);
+        gameInstance.addPlayer(player1);
+        gameInstance.addPlayer(player2);
+
+//        RemoteView remoteView = Mockito.mock(RemoteView.class);
+        SocketConnection socketConnection = Mockito.mock(SocketConnection.class);
+        RemoteView remoteViewMock = Mockito.mock(RemoteView.class);
+        String errorMessage = "";
+
+//        when(remoteView.errorMessage(anyString())).thenAnswer(i -> i.getArguments()[0]);
+//        doAnswer(returnsFirstArg()).when(remoteViewMock).errorMessage(anyString());
+
+        turn.addUpdateTurnMessageObserver(remoteViewMock.getUpdateTurnMessageReceiver());
+
+        Deck deck = gameInstance.getDeck();
+        deck.chooseCards("prometheus", "artemis");
+        player1.setPlayerCard(deck.pickUpCard("prometheus"));
+        player2.setPlayerCard(deck.pickUpCard("artemis"));
+
+        Worker worker1Player1 = player1.getWorkers().get(0);
+        Worker worker2Player1 = player1.getWorkers().get(1);
+        Worker worker1Player2 = player2.getWorkers().get(0);
+        Worker worker2Player2 = player2.getWorkers().get(1);
+        worker1Player1.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(0, 0)));
+        worker2Player1.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(4, 4)));
+        worker1Player2.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(1, 0)));
+        worker2Player2.setWorkerSlot(gameInstance.getBoard().getSlot(new Position(4, 3)));
+
+        turn.setUpGameTurn();
+
+        Slot startingSlot = gameInstance.getBoard().getSlot(new Position(0, 0));
+        Slot targetSlot = gameInstance.getBoard().getSlot(new Position(0, 1));
+        Slot opponentSlot = gameInstance.getBoard().getSlot(new Position(1, 0));
+        Slot buildingSlot = gameInstance.getBoard().getSlot(new Position(1, 1));
+        Slot buildBeforeSlot = gameInstance.getBoard().getSlot(new Position(0, 2));
+        buildingSlot.setBuilding(new Building(BuildingLevel.LEVEL1));
+
+        //TEST CANNOT_UNDO
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.cannotUndo, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        PlayerMove playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.UNDO,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+
+
+        //TEST CANNOT_SKIP
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.cannotSkipThisMove, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.SKIP,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+
+
+        //TEST_CHOSE_WORKER_NO_WORKER_IN_SLOT
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.noWorkerInSlot, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.CHOSE_WORKER,
+                new Position(3, 3),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+        gameManager.handlePlayerMove(playerMove);
+
+        //TEST_CHOSE_WORKER_CHOSE_NOT_YOUR_WORKER
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.choseNotYourWorker, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.CHOSE_WORKER,
+                worker1Player2.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+        gameManager.handlePlayerMove(playerMove);
+
+
+        //TEST_CHOSE_WORKER
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.CHOSE_WORKER,
+                worker1Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname()
+        );
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+        gameManager.handlePlayerMove(playerMove);
+
+
+        //TEST MOVE_STANDARD_MOVE_NOT_ALLOWED
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.moveNotAllowed, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        worker1Player1.move(startingSlot);
+        worker1Player2.move(opponentSlot);
+        playerMove = new PlayerMove(worker1Player1.getIdWorker(),
+                Actions.MOVE_STANDARD,
+                worker2Player1.getWorkerPosition(),
+                turn.getCurrentPlayer().getNickname());
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+        gameManager.handlePlayerMove(playerMove);
+
+
+        //TEST WRONG_TURN
+        doAnswer(invocation -> {
+            Object arg0 = invocation.getArgument(0);
+
+            assertEquals(Message.wrongTurnMessage, arg0);
+            return null;
+        }).when(remoteViewMock).errorMessage(any(String.class));
+
+        worker1Player1.move(startingSlot);
+        worker1Player2.move(opponentSlot);
+        playerMove = new PlayerMove(worker1Player2.getIdWorker(),
+                Actions.MOVE_STANDARD,
+                targetSlot.getSlotPosition(),
+                turn.getCurrentPlayer().getNickname());
+        playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
+        playerMove.setRemoteView(remoteViewMock);
+        gameManager.handlePlayerMove(playerMove);
     }
 
 //    @Test
@@ -501,12 +670,4 @@ public class GameManagerTest {
 //
 //        assertEquals(expectedBuildings, targetSlot.getBuildingsStatus());
 //    }
-
-    @Test
-    public void checkWinConditionsTest() {
-    }
-
-    @Test
-    public void checkTurnIsOverTest() {
-    }
 }

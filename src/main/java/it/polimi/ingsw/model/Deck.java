@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.HashMap;
@@ -32,12 +33,32 @@ public class Deck {
     }
 
     /**
+     * Get dynamically the specified file located in the resources folder.
+     *
+     * @param fileName The specified file name.
+     * @return Returns the file founded.
+     */
+    private File getFileFromResources(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("File \"" + fileName + "\" is not found!");
+        } else {
+            return new File(resource.getFile());
+        }
+    }
+
+    /**
      * Constructs the game deck by reading the XML file containing the description of the implemented gods
      */
     protected void buildDeck() {
         try {
             //Apertura file xml GodsDescription.xml, ed inizializzazione documento
-            File xmlGodsDescription = new File("src/main/resources/GodsDescription.xml");
+
+
+            File xmlGodsDescription = getFileFromResources("GodsDescription.xml");
+//            File xmlGodsDescription = new File("src/main/resources/GodsDescription.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

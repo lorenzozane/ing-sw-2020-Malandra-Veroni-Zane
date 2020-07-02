@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.net.URL;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 
@@ -461,12 +462,31 @@ public class Turn extends MessageForwarder {
     }
 
     /**
+     * Get dynamically the specified file located in the resources folder.
+     *
+     * @param fileName The specified file name.
+     * @return Returns the file founded.
+     */
+    private File getFileFromResources(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("File \"" + fileName + "\" is not found!");
+        } else {
+            return new File(resource.getFile());
+        }
+    }
+
+    /**
      * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
      * and read the win conditions
      */
     protected void setUpTurnSequence() {
         try {
-            File xmlChosenCards = new File("src/main/resources/GodsParameters.xml");
+            File xmlChosenCards = getFileFromResources("GodsParameters.xml");
+
+//            File xmlChosenCards = new File("src/main/resources/GodsParameters.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
