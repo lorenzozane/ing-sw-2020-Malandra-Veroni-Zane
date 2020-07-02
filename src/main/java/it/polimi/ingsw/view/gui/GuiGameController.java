@@ -184,7 +184,7 @@ public class GuiGameController {
 //            System.out.println("Cella cliccata: " + coordinate);
 
             Scene mainScene = buttonPress.getScene();
-            CheckBox checkBoxDome = (CheckBox) mainScene.lookup("#buttonDome"); //TODO: da togliere?
+            CheckBox checkBoxDome = (CheckBox) mainScene.lookup("#buttonDome");
             if (checkBoxDome.isSelected() &&
                     (currentMove != null && currentMove.getNextMove() == Actions.BUILD_DOME_ANY_LEVEL)) {
                 coordinate = coordinate.concat(" dome");
