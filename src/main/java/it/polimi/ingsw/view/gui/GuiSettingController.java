@@ -38,6 +38,9 @@ public class GuiSettingController {
         guiController.setGuiSettingController(this);
     }
 
+    @FXML
+    Label errorNickname;
+
     protected void setScene(Scene settingScene) {
         if (this.settingScene == null) {
             this.settingScene = settingScene;
@@ -56,8 +59,7 @@ public class GuiSettingController {
     protected void handleStringMessage(String message) {
         GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
 
-        if (message.equalsIgnoreCase(Message.chooseNickname) ||
-                message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
+        if (message.equalsIgnoreCase(Message.chooseNickname)) {
             for (Node node : gridSettings.getChildren()) {
                 if (node.getStyleClass().stream().anyMatch(x -> x.contains("nickname"))) {
                     node.setOpacity(1);
@@ -68,8 +70,13 @@ public class GuiSettingController {
                     node.setDisable(true);
                 }
             }
-        } else if (message.equalsIgnoreCase(Message.birthday) ||
+        }
+        else if(message.equalsIgnoreCase(Message.chooseNicknameAgain)) {
+            errorNickname.setVisible(true);
+        }
+        else if (message.equalsIgnoreCase(Message.birthday) ||
                 message.equalsIgnoreCase(Message.birthdayAgain)) {
+            errorNickname.setVisible(false);
             for (Node node : gridSettings.getChildren()) {
                 if (node.getStyleClass().stream().anyMatch(x -> x.contains("birthday"))) {
                     node.setOpacity(1);
@@ -162,6 +169,14 @@ public class GuiSettingController {
             DatePicker pickerBirthday = (DatePicker) settingScene.lookup("#dateBirthday");
 
             guiController.handleResponse(pickerBirthday.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+            GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("birthday"))) {
+                    node.setOpacity(0.5);
+                    node.setDisable(false);
+                }
+            }
         } catch (Exception ex) {
             System.out.println("Invalid date insert.");
         }
@@ -178,6 +193,13 @@ public class GuiSettingController {
             Button buttonClicked = (Button) event.getSource();
 
             guiController.handleResponse(buttonClicked.getText());
+            GridPane gridSettings = (GridPane) settingScene.lookup("#gridSettings");
+            for (Node node : gridSettings.getChildren()) {
+                if (node.getStyleClass().stream().anyMatch(x -> x.contains("number"))) {
+                    node.setOpacity(0.5);
+                    node.setDisable(false);
+                }
+            }
         }
     }
 
