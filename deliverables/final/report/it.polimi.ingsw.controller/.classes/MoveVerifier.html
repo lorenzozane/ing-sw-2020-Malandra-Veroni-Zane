@@ -1,0 +1,224 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MoveVerifier</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MoveVerifier (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoveVerifier</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76,7%
+  </span>
+  <span class="absValue">
+    (46/ 60)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.*;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Building.BuildingLevel;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Building.BuildingProperty;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.TurnEvents.Actions;
+<i>7</i>&nbsp;import it.polimi.ingsw.network.Message;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.Arrays;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public final class MoveVerifier {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private final Game gameInstance;
+<i>17</i>&nbsp;    private final Turn turn;
+<i>18</i>&nbsp;    private final GameManager gameManager;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Constructor of the MoveVerifier which assists the GameManager in the management of the game logic (movement and construction).
+<i>22</i>&nbsp;     *
+<i>23</i>&nbsp;     * @param gameInstance The current game instance.
+<i>24</i>&nbsp;     * @param gameManager The game manager instance.
+<i>25</i>&nbsp;     */
+<b class="fc"><i>26</i>&nbsp;    protected MoveVerifier(Game gameInstance, GameManager gameManager) {</b>
+<b class="fc"><i>27</i>&nbsp;        this.gameInstance = gameInstance;</b>
+<b class="fc"><i>28</i>&nbsp;        this.turn = gameInstance.getTurn();</b>
+<b class="fc"><i>29</i>&nbsp;        this.gameManager = gameManager;</b>
+<b class="fc"><i>30</i>&nbsp;    }</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    //If we wanted to write all methods as static, we should also pass all the game and turn
+<i>33</i>&nbsp;    //instance directly to the methods (and not having game and turn instances belonging to the class)
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Valid the request to move a worker in a specific slot
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param move The move that contains all the information related to the movement and the target slot
+<i>39</i>&nbsp;     * @return Returns a boolean who approves or refuses the movement request
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public boolean moveValidator(PlayerMove move) {
+<b class="fc"><i>42</i>&nbsp;        if (move == null || move.getMove().getActionType() != ActionType.MOVEMENT) {</b>
+<b class="nc"><i>43</i>&nbsp;            gameManager.setErrorMessage(Message.moveNotAllowed);</b>
+<b class="nc"><i>44</i>&nbsp;            return false;</b>
+<i>45</i>&nbsp;        }
+<b class="fc"><i>46</i>&nbsp;        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1) {</b>
+<b class="fc"><i>47</i>&nbsp;            gameManager.setErrorMessage(Message.moveNotAllowed);</b>
+<b class="fc"><i>48</i>&nbsp;            return false;</b>
+<i>49</i>&nbsp;        }
+<b class="fc"><i>50</i>&nbsp;        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME)) {</b>
+<b class="nc"><i>51</i>&nbsp;            gameManager.setErrorMessage(Message.domeOccupiedCellMessage);</b>
+<b class="nc"><i>52</i>&nbsp;            return false;</b>
+<i>53</i>&nbsp;        }
+<b class="fc"><i>54</i>&nbsp;        if (!move.getForcedMove()) {</b>
+<b class="fc"><i>55</i>&nbsp;            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) &gt; 1) {</b>
+<b class="nc"><i>56</i>&nbsp;                gameManager.setErrorMessage(Message.tooHighMoveMessage);</b>
+<b class="nc"><i>57</i>&nbsp;                return false;</b>
+<i>58</i>&nbsp;            }
+<b class="fc"><i>59</i>&nbsp;            if (!turn.canCurrentPlayerMoveUp() &amp;&amp; Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) &gt; 0) {</b>
+<b class="fc"><i>60</i>&nbsp;                gameManager.setErrorMessage(Message.tooHighMoveMessage);</b>
+<b class="fc"><i>61</i>&nbsp;                return false;</b>
+<i>62</i>&nbsp;            }
+<i>63</i>&nbsp;        }
+<b class="fc"><i>64</i>&nbsp;        if (move.getTargetSlot().getWorkerInSlot() != null) {</b>
+<b class="fc"><i>65</i>&nbsp;            if (move.getMove() != Actions.MOVE_OPPONENT_SLOT_FLIP &amp;&amp; move.getMove() != Actions.MOVE_OPPONENT_SLOT_PUSH) {</b>
+<b class="nc"><i>66</i>&nbsp;                gameManager.setErrorMessage(Message.occupiedCellMessage);</b>
+<b class="nc"><i>67</i>&nbsp;                return false;</b>
+<i>68</i>&nbsp;            }
+<i>69</i>&nbsp;        } else {
+<b class="fc"><i>70</i>&nbsp;            if (move.getMove() == Actions.MOVE_NOT_INITIAL_POSITION) {</b>
+<b class="fc"><i>71</i>&nbsp;                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -&gt; x.getMove()</b>
+<b class="fc"><i>72</i>&nbsp;                        .getActionType() == ActionType.MOVEMENT).reduce((first, second) -&gt; second).orElse(null);</b>
+<b class="fc"><i>73</i>&nbsp;                if (initialMove == null || move.getTargetSlot() == initialMove.getStartingSlot()) {</b>
+<b class="fc"><i>74</i>&nbsp;                    gameManager.setErrorMessage(Message.notInitialPositionMessage);</b>
+<b class="fc"><i>75</i>&nbsp;                    return false;</b>
+<i>76</i>&nbsp;                }
+<i>77</i>&nbsp;            }
+<i>78</i>&nbsp;//            } else if (move.getPlayer().getPlayerCard().getCardName().equalsIgnoreCase(&quot;prometheus&quot;) &amp;&amp;
+<i>79</i>&nbsp;//                    move.getMove() == Actions.MOVE_STANDARD) {
+<i>80</i>&nbsp;//
+<i>81</i>&nbsp;//            } else if (turn.getCurrentPlayerTurnSequence().getMoveSequence().contains(Actions.BUILD_BEFORE) &amp;&amp;
+<i>82</i>&nbsp;//                    move.getMove() == Actions.MOVE_STANDARD) {
+<i>83</i>&nbsp;//                PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -&gt; x.getMove() == Actions.BUILD_BEFORE)
+<i>84</i>&nbsp;//                        .reduce((first, second) -&gt; second).orElse(null);
+<i>85</i>&nbsp;//                if (initialMove != null)
+<i>86</i>&nbsp;//                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) &gt; 0) {
+<i>87</i>&nbsp;//                        gameManager.setErrorMessage(Message.tooHighMoveMessage);
+<i>88</i>&nbsp;//                        return false;
+<i>89</i>&nbsp;//                    }
+<i>90</i>&nbsp;//            }
+<i>91</i>&nbsp;        }
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;        return true;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    /**
+<i>97</i>&nbsp;     * Valid the request to build a new element in a specific slot
+<i>98</i>&nbsp;     *
+<i>99</i>&nbsp;     * @param move The move that contains all the information related to the new construction and the target slot
+<i>100</i>&nbsp;     * @return Returns a boolean who approves or refuses the new construction request
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public boolean buildValidator(PlayerMove move) {
+<b class="fc"><i>103</i>&nbsp;        if (move == null || move.getMove().getActionType() != ActionType.BUILDING) {</b>
+<b class="nc"><i>104</i>&nbsp;            gameManager.setErrorMessage(Message.moveNotAllowed);</b>
+<b class="nc"><i>105</i>&nbsp;            return false;</b>
+<i>106</i>&nbsp;        }
+<b class="fc"><i>107</i>&nbsp;        if (Slot.calculateDistance(move.getStartingSlot(), move.getTargetSlot()) != 1) {</b>
+<b class="nc"><i>108</i>&nbsp;            gameManager.setErrorMessage(Message.buildMoveError);</b>
+<b class="nc"><i>109</i>&nbsp;            return false;</b>
+<i>110</i>&nbsp;        }
+<b class="fc"><i>111</i>&nbsp;        if (move.getTargetSlot().getWorkerInSlot() != null) {</b>
+<b class="nc"><i>112</i>&nbsp;            gameManager.setErrorMessage(Message.occupiedCellMessage);</b>
+<b class="nc"><i>113</i>&nbsp;            return false;</b>
+<i>114</i>&nbsp;        }
+<b class="fc"><i>115</i>&nbsp;        if (move.getTargetSlot().getBuildingsStatus().contains(BuildingLevel.DOME)) {</b>
+<b class="fc"><i>116</i>&nbsp;            gameManager.setErrorMessage(Message.domeOccupiedCellMessage);</b>
+<b class="fc"><i>117</i>&nbsp;            return false;</b>
+<i>118</i>&nbsp;        }
+<b class="fc"><i>119</i>&nbsp;        if (move.getMove() == Actions.BUILD_NOT_SAME_PLACE) {</b>
+<b class="fc"><i>120</i>&nbsp;            PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -&gt; x.getMove()</b>
+<b class="fc"><i>121</i>&nbsp;                    .getActionType() == ActionType.BUILDING).reduce((first, second) -&gt; second).orElse(null);</b>
+<b class="fc"><i>122</i>&nbsp;            if (initialMove == null || move.getTargetSlot() == initialMove.getTargetSlot()) {</b>
+<b class="fc"><i>123</i>&nbsp;                gameManager.setErrorMessage(Message.buildNotSamePlaceMessage);</b>
+<b class="fc"><i>124</i>&nbsp;                return false;</b>
+<i>125</i>&nbsp;            }
+<b class="fc"><i>126</i>&nbsp;        } else if (move.getMove() == Actions.BUILD_SAME_PLACE_NOT_DOME) {</b>
+<b class="fc"><i>127</i>&nbsp;            PlayerMove initialMove = turn.getMovesPerformed().stream().filter(x -&gt; x.getMove()</b>
+<b class="fc"><i>128</i>&nbsp;                    .getActionType() == ActionType.BUILDING).reduce((first, second) -&gt; second).orElse(null);</b>
+<b class="fc"><i>129</i>&nbsp;            if (initialMove == null || move.getTargetSlot() != initialMove.getTargetSlot()) {</b>
+<b class="fc"><i>130</i>&nbsp;                gameManager.setErrorMessage(Message.mustBuildSamePlaceMessage);</b>
+<b class="fc"><i>131</i>&nbsp;                return false;</b>
+<i>132</i>&nbsp;            }
+<b class="fc"><i>133</i>&nbsp;            if (move.getTargetSlot().getConstructionTopLevel() == BuildingLevel.LEVEL3) {</b>
+<b class="fc"><i>134</i>&nbsp;                gameManager.setErrorMessage(Message.cantBuildADomeMessage);</b>
+<b class="fc"><i>135</i>&nbsp;                return false;</b>
+<i>136</i>&nbsp;            }
+<i>137</i>&nbsp;        }
+<i>138</i>&nbsp;
+<b class="fc"><i>139</i>&nbsp;        return true;</b>
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

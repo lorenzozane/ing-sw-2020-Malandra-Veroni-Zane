@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Worker</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Worker (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Worker</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,9%
+  </span>
+  <span class="absValue">
+    (10/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,9%
+  </span>
+  <span class="absValue">
+    (26/ 28)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Building.BuildingLevel;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Color.PlayerColor;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.io.Serializable;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Worker implements Serializable {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    private Player playerOwner;
+<i>11</i>&nbsp;    private String idWorker;
+<i>12</i>&nbsp;    private PlayerColor color;
+<i>13</i>&nbsp;    private Slot workerSlot;
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;    public Worker(Player playerOwner, int idWorkerInt) {</b>
+<b class="fc"><i>16</i>&nbsp;        this.playerOwner = playerOwner;</b>
+<b class="fc"><i>17</i>&nbsp;        this.idWorker = playerOwner.getNickname() + &quot;_&quot; + idWorkerInt;</b>
+<b class="fc"><i>18</i>&nbsp;    }</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public Player getPlayerOwner() {
+<b class="nc"><i>22</i>&nbsp;        return playerOwner;</b>
+<i>23</i>&nbsp;    }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public String getIdWorker() {
+<b class="fc"><i>26</i>&nbsp;        return idWorker;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    public PlayerColor getColor() {
+<b class="fc"><i>30</i>&nbsp;        return color;</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public Slot getWorkerSlot() {
+<b class="fc"><i>34</i>&nbsp;        return workerSlot;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public Position getWorkerPosition() {
+<b class="fc"><i>38</i>&nbsp;        return workerSlot.getSlotPosition();</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public void setColor(PlayerColor color) {
+<b class="fc"><i>42</i>&nbsp;        this.color = color;</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Set the worker in the slot specified
+<i>47</i>&nbsp;     *
+<i>48</i>&nbsp;     * @param workerSlot The slot target of the movement
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public void setWorkerSlot(Slot workerSlot) {
+<b class="fc"><i>51</i>&nbsp;        if (this.workerSlot != null)</b>
+<b class="fc"><i>52</i>&nbsp;            this.workerSlot.setWorkerInSlot(null);</b>
+<b class="fc"><i>53</i>&nbsp;        this.workerSlot = workerSlot;</b>
+<b class="fc"><i>54</i>&nbsp;        this.workerSlot.setWorkerInSlot(this);</b>
+<b class="fc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * Set new Worker&#39;s position
+<i>59</i>&nbsp;     *
+<i>60</i>&nbsp;     * @param moveHere New position
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    public void move(Slot moveHere) {
+<b class="fc"><i>63</i>&nbsp;        setWorkerSlot(moveHere);</b>
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Creation of a new building
+<i>68</i>&nbsp;     *
+<i>69</i>&nbsp;     * @param buildHere New construction position
+<i>70</i>&nbsp;     */
+<i>71</i>&nbsp;    public void build(Slot buildHere) {
+<b class="fc"><i>72</i>&nbsp;        BuildingLevel slotTopBuilding = buildHere.getConstructionTopLevel();</b>
+<b class="fc"><i>73</i>&nbsp;        Building newBuilding = new Building(BuildingLevel.getNextLevel(slotTopBuilding));</b>
+<b class="fc"><i>74</i>&nbsp;        buildHere.setBuilding(newBuilding);</b>
+<b class="fc"><i>75</i>&nbsp;    }</b>
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    /**
+<i>78</i>&nbsp;     * Creation of a new building, forcibly a dome
+<i>79</i>&nbsp;     *
+<i>80</i>&nbsp;     * @param buildHere New construction position
+<i>81</i>&nbsp;     * @param buildDome Boolean describing the choice to build forcibly a dome
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    public void forcedDomeBuild(Slot buildHere, boolean buildDome) {
+<b class="fc"><i>84</i>&nbsp;        if (buildDome) {</b>
+<b class="fc"><i>85</i>&nbsp;            Building newBuilding = new Building(BuildingLevel.DOME);</b>
+<b class="fc"><i>86</i>&nbsp;            buildHere.setBuilding(newBuilding);</b>
+<b class="fc"><i>87</i>&nbsp;        } else</b>
+<b class="nc"><i>88</i>&nbsp;            build(buildHere);</b>
+<b class="fc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Game</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Game (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (34/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Color.PlayerColor;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;import java.util.Arrays;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Game {
+<i>9</i>&nbsp;
+<b class="fc"><i>10</i>&nbsp;    private final Turn turn = new Turn(this);</b>
+<b class="fc"><i>11</i>&nbsp;    private final ArrayList&lt;Player&gt; playerList = new ArrayList&lt;&gt;();</b>
+<i>12</i>&nbsp;    private int playerNumber/* = 1*/;
+<b class="fc"><i>13</i>&nbsp;    private final Board board = new Board();</b>
+<b class="fc"><i>14</i>&nbsp;    private final Deck deck = new Deck(this);</b>
+<b class="fc"><i>15</i>&nbsp;    private final ArrayList&lt;PlayerColor&gt; colorList = new ArrayList&lt;&gt;();</b>
+<i>16</i>&nbsp;    private Player challengerPlayer;
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;    public Game() {</b>
+<b class="fc"><i>19</i>&nbsp;        colorList.addAll(Arrays.asList(PlayerColor.values()));</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public Turn getTurn() {
+<b class="fc"><i>23</i>&nbsp;        return turn;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public Board getBoard() {
+<b class="fc"><i>27</i>&nbsp;        return board.clone();</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public Deck getDeck() {
+<b class="fc"><i>31</i>&nbsp;        return deck;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public int getPlayerNumber() {
+<b class="fc"><i>35</i>&nbsp;        return playerNumber;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public void setPlayerNumber(int playerNumber) {
+<b class="fc"><i>39</i>&nbsp;        this.playerNumber = playerNumber;</b>
+<b class="fc"><i>40</i>&nbsp;    }</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Allows to know which PlayerColor are available to be chosen from the player.
+<i>44</i>&nbsp;     *
+<i>45</i>&nbsp;     * @return Returns the ArrayList containing the available color selectable.
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    public ArrayList&lt;PlayerColor&gt; getColorList() {
+<b class="fc"><i>48</i>&nbsp;        return colorList;</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;//    private void reAddColor(PlayerColor color){
+<i>52</i>&nbsp;//        colorList.add(color);
+<i>53</i>&nbsp;//    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * When a PlayerColor is chosen by a player is removed from the available color.
+<i>57</i>&nbsp;     *
+<i>58</i>&nbsp;     * @param delete The PlayerColor to be removed.
+<i>59</i>&nbsp;     */
+<i>60</i>&nbsp;    public void removeColor(PlayerColor delete) {
+<b class="fc"><i>61</i>&nbsp;        if (!colorList.isEmpty())</b>
+<b class="fc"><i>62</i>&nbsp;            colorList.remove(delete);</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Add the player instance to the game.
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @param newPlayer The player to be added to the game.
+<i>69</i>&nbsp;     * @throws IllegalAccessException Exception thrown if the player already exists or the number of player is greater
+<i>70</i>&nbsp;     *                                than the playerNumber.
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public void addPlayer(Player newPlayer) throws IllegalAccessException {
+<b class="fc"><i>73</i>&nbsp;        if (checkPlayer(newPlayer) &amp;&amp; playerList.size() &lt; playerNumber) {</b>
+<b class="fc"><i>74</i>&nbsp;            playerList.add(newPlayer);</b>
+<b class="fc"><i>75</i>&nbsp;            if (playerList.size() == playerNumber)</b>
+<b class="fc"><i>76</i>&nbsp;                turn.setPlayerOrder(playerList.toArray(new Player[0]));</b>
+<i>77</i>&nbsp;        } else
+<b class="nc"><i>78</i>&nbsp;            throw new IllegalAccessException();</b>
+<b class="fc"><i>79</i>&nbsp;    }</b>
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * Check if the player is already contained in the list of active players.
+<i>83</i>&nbsp;     *
+<i>84</i>&nbsp;     * @param newPlayer The player to be verified.
+<i>85</i>&nbsp;     * @return Returns a confirmation that the player is active in game or not.
+<i>86</i>&nbsp;     */
+<i>87</i>&nbsp;    private boolean checkPlayer(Player newPlayer) {
+<b class="fc"><i>88</i>&nbsp;        return !playerList.contains(newPlayer);</b>
+<i>89</i>&nbsp;    }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    /**
+<i>92</i>&nbsp;     * Remove the player with the name specified as parameter from the list of active players.
+<i>93</i>&nbsp;     *
+<i>94</i>&nbsp;     * @param nickname The nickname of the player you want to remove from the list of active players.
+<i>95</i>&nbsp;     */
+<i>96</i>&nbsp;    public void removePlayerByName(String nickname) {   //chiamata nel caso si sconnetta dal server prima di iniziare a giocare
+<b class="fc"><i>97</i>&nbsp;        playerList.removeIf(p -&gt; p.getNickname().equals(nickname));</b>
+<b class="fc"><i>98</i>&nbsp;    }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    public ArrayList&lt;Player&gt; getPlayerList() {
+<b class="fc"><i>101</i>&nbsp;        return this.playerList;</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    /**
+<i>105</i>&nbsp;     * Select the player instance that coincides with the string passed as parameter.
+<i>106</i>&nbsp;     *
+<i>107</i>&nbsp;     * @param playerNickname The nickname of the player you want to receive as Player instance.
+<i>108</i>&nbsp;     * @return Returns the player instance with the specified name.
+<i>109</i>&nbsp;     */
+<i>110</i>&nbsp;    public Player getPlayerByName(String playerNickname) {
+<b class="fc"><i>111</i>&nbsp;        return playerList.stream().filter(player -&gt; player.getNickname().equalsIgnoreCase(playerNickname)).findFirst().orElse(null);</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    /**
+<i>115</i>&nbsp;     * Select the worker instance that coincides with the string passed as parameter.
+<i>116</i>&nbsp;     *
+<i>117</i>&nbsp;     * @param workerId The worker ID of the worker you want to receive as Worker instance.
+<i>118</i>&nbsp;     * @return Returns the worker instance with the specified name.
+<i>119</i>&nbsp;     */
+<i>120</i>&nbsp;    public Worker getWorkerByName(String workerId) {
+<b class="fc"><i>121</i>&nbsp;        Worker workerFounded = null;</b>
+<b class="fc"><i>122</i>&nbsp;        for (Player player : playerList) {</b>
+<b class="fc"><i>123</i>&nbsp;            workerFounded = player.getWorkers().stream().filter(worker -&gt; worker.getIdWorker().equalsIgnoreCase(workerId)).findFirst().orElse(null);</b>
+<b class="fc"><i>124</i>&nbsp;            if (workerFounded != null)</b>
+<b class="fc"><i>125</i>&nbsp;                return workerFounded;</b>
+<b class="fc"><i>126</i>&nbsp;        }</b>
+<i>127</i>&nbsp;
+<b class="nc"><i>128</i>&nbsp;        return null;</b>
+<i>129</i>&nbsp;    }
+<i>130</i>&nbsp;}
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

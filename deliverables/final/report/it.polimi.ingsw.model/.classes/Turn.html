@@ -1,0 +1,677 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Turn</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Turn (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Turn</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (33/ 36)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75,5%
+  </span>
+  <span class="absValue">
+    (216/ 286)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.TurnEvents.*;
+<i>4</i>&nbsp;import it.polimi.ingsw.observer.MessageForwarder;
+<i>5</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>6</i>&nbsp;import org.w3c.dom.Document;
+<i>7</i>&nbsp;import org.w3c.dom.Element;
+<i>8</i>&nbsp;import org.w3c.dom.Node;
+<i>9</i>&nbsp;import org.w3c.dom.NodeList;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import javax.xml.parsers.DocumentBuilder;
+<i>12</i>&nbsp;import javax.xml.parsers.DocumentBuilderFactory;
+<i>13</i>&nbsp;import java.io.File;
+<i>14</i>&nbsp;import java.io.InputStream;
+<i>15</i>&nbsp;import java.net.URL;
+<i>16</i>&nbsp;import java.util.AbstractMap.SimpleEntry;
+<i>17</i>&nbsp;import java.util.*;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;/**
+<i>20</i>&nbsp; * Structure useful to contain the elements necessary to describe the course of the game turns
+<i>21</i>&nbsp; */
+<i>22</i>&nbsp;public class Turn extends MessageForwarder {
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    protected Game gameInstance;
+<b class="fc"><i>25</i>&nbsp;    protected Player currentPlayer = null;</b>
+<b class="fc"><i>26</i>&nbsp;    protected Worker currentWorker = null;</b>
+<b class="fc"><i>27</i>&nbsp;    protected ArrayList&lt;Player&gt; playerOrder = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>28</i>&nbsp;    protected HashMap&lt;Player, TurnSequence&gt; turnSequenceMap = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>29</i>&nbsp;    protected LinkedList&lt;SimpleEntry&lt;Player, StartupActions&gt;&gt; startupTurnSequence = new LinkedList&lt;&gt;();</b>
+<b class="fc"><i>30</i>&nbsp;    protected LinkedList&lt;PlayerMove&gt; movesPerformed = new LinkedList&lt;&gt;();</b>
+<b class="fc"><i>31</i>&nbsp;    protected int currentMoveIndex = 0;</b>
+<b class="fc"><i>32</i>&nbsp;    protected boolean startupPhase = true;</b>
+<b class="fc"><i>33</i>&nbsp;    protected String lastMovePerformedBy = null;</b>
+<b class="fc"><i>34</i>&nbsp;    protected boolean gameIsFinish = false;</b>
+<b class="fc"><i>35</i>&nbsp;    private final UpdateTurnMessageSender updateTurnMessageSender = new UpdateTurnMessageSender();</b>
+<i>36</i>&nbsp;
+<b class="fc"><i>37</i>&nbsp;    protected Turn(Game gameInstance) {</b>
+<b class="fc"><i>38</i>&nbsp;        this.gameInstance = gameInstance;</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public void addUpdateTurnMessageObserver(Observer&lt;UpdateTurnMessage&gt; observer) {
+<b class="fc"><i>42</i>&nbsp;        updateTurnMessageSender.addObserver(observer);</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public Player getCurrentPlayer() {
+<b class="fc"><i>46</i>&nbsp;        return currentPlayer;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public boolean isPlayerTurn(Player player) {
+<b class="fc"><i>50</i>&nbsp;        return player.equals(currentPlayer);</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public int getCurrentMoveIndex() {
+<b class="fc"><i>54</i>&nbsp;        return currentMoveIndex;</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public ArrayList&lt;Worker&gt; getCurrentPlayerWorkers() {
+<b class="fc"><i>58</i>&nbsp;        return currentPlayer.getWorkers();</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public void setCurrentWorker(Worker worker) {
+<b class="fc"><i>62</i>&nbsp;        currentWorker = worker;</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public Worker getCurrentWorker() {
+<b class="fc"><i>66</i>&nbsp;        if (currentWorker != null)</b>
+<b class="fc"><i>67</i>&nbsp;            return currentWorker;</b>
+<b class="nc"><i>68</i>&nbsp;        return null;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    protected void resetCurrentWorker() {
+<b class="fc"><i>72</i>&nbsp;        currentWorker = null;</b>
+<b class="fc"><i>73</i>&nbsp;    }</b>
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    public TurnSequence getCurrentPlayerTurnSequence() {
+<b class="fc"><i>76</i>&nbsp;        return turnSequenceMap.get(currentPlayer);</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    /**
+<i>80</i>&nbsp;     * Defines the player order based on age to create the ArrayList playerOrder
+<i>81</i>&nbsp;     *
+<i>82</i>&nbsp;     * @param players List of players
+<i>83</i>&nbsp;     * @throws IllegalArgumentException Is thrown if the number of players to compare does not match the numbers of players in game
+<i>84</i>&nbsp;     */
+<i>85</i>&nbsp;    protected void setPlayerOrder(Player... players) throws IllegalArgumentException {
+<b class="fc"><i>86</i>&nbsp;        if (playerOrder.isEmpty()) {</b>
+<b class="fc"><i>87</i>&nbsp;            if (players.length != gameInstance.getPlayerNumber())</b>
+<b class="nc"><i>88</i>&nbsp;                throw new IllegalArgumentException();</b>
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;            playerOrder.addAll(Arrays.asList(players));</b>
+<b class="fc"><i>91</i>&nbsp;            playerOrder.sort(Comparator.comparing(Player::getBirthday).reversed());</b>
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;            setUpStartupPhase();</b>
+<i>94</i>&nbsp;        }
+<b class="fc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /**
+<i>98</i>&nbsp;     * Populate the startup turn sequence of move to be performed by the player in order to start the game
+<i>99</i>&nbsp;     */
+<i>100</i>&nbsp;    protected void setUpStartupPhase() {
+<b class="fc"><i>101</i>&nbsp;        if (startupPhase &amp;&amp; playerOrder.size() == gameInstance.getPlayerNumber()) {</b>
+<b class="fc"><i>102</i>&nbsp;            for (Player player : playerOrder.subList(0, 2))</b>
+<b class="fc"><i>103</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(player, StartupActions.COLOR_REQUEST));</b>
+<b class="fc"><i>104</i>&nbsp;            if (playerOrder.size() &gt; 2)</b>
+<b class="nc"><i>105</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(playerOrder.get(playerOrder.size() - 1), StartupActions.PICK_LAST_COLOR));</b>
+<b class="fc"><i>106</i>&nbsp;            for (int i = 0; i &lt; playerOrder.size(); i++)</b>
+<b class="fc"><i>107</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(playerOrder.get(0), StartupActions.CHOOSE_CARD_REQUEST));</b>
+<b class="fc"><i>108</i>&nbsp;            for (Player player : playerOrder.subList(1, playerOrder.size()))</b>
+<b class="fc"><i>109</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(player, StartupActions.PICK_UP_CARD_REQUEST));</b>
+<b class="fc"><i>110</i>&nbsp;            startupTurnSequence.add(new SimpleEntry&lt;&gt;(playerOrder.get(0), StartupActions.PICK_LAST_CARD));</b>
+<b class="fc"><i>111</i>&nbsp;            for (Player player : playerOrder) {</b>
+<b class="fc"><i>112</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(player, StartupActions.PLACE_WORKER_1));</b>
+<b class="fc"><i>113</i>&nbsp;                startupTurnSequence.add(new SimpleEntry&lt;&gt;(player, StartupActions.PLACE_WORKER_2));</b>
+<b class="fc"><i>114</i>&nbsp;            }</b>
+<i>115</i>&nbsp;
+<b class="fc"><i>116</i>&nbsp;            updateTurn();</b>
+<i>117</i>&nbsp;        }
+<b class="fc"><i>118</i>&nbsp;    }</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;    /**
+<i>121</i>&nbsp;     * Set up the game turn after the game initialization
+<i>122</i>&nbsp;     */
+<i>123</i>&nbsp;    public void setUpGameTurn() {
+<b class="fc"><i>124</i>&nbsp;        if (startupPhase) {</b>
+<b class="fc"><i>125</i>&nbsp;            setUpTurnSequence();</b>
+<b class="fc"><i>126</i>&nbsp;            currentPlayer = null;</b>
+<b class="fc"><i>127</i>&nbsp;            currentMoveIndex = 0;</b>
+<b class="fc"><i>128</i>&nbsp;            startupPhase = false;</b>
+<b class="fc"><i>129</i>&nbsp;            updateTurn();</b>
+<i>130</i>&nbsp;        }
+<b class="fc"><i>131</i>&nbsp;    }</b>
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * Update the canMoveUp property of the other player
+<i>135</i>&nbsp;     *
+<i>136</i>&nbsp;     * @param canMoveUpValue New boolean value of the canMoveUp property
+<i>137</i>&nbsp;     */
+<i>138</i>&nbsp;    public void setOtherPlayerCanMoveUpTo(Boolean canMoveUpValue) {
+<b class="fc"><i>139</i>&nbsp;        for (Player player : turnSequenceMap.keySet())</b>
+<b class="fc"><i>140</i>&nbsp;            if (player != currentPlayer)</b>
+<b class="fc"><i>141</i>&nbsp;                turnSequenceMap.get(player).setCanMoveUp(canMoveUpValue);</b>
+<b class="fc"><i>142</i>&nbsp;    }</b>
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;    /**
+<i>145</i>&nbsp;     * Throughout the game allow to update the turn to the next move to be performed, or to the next player
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public void updateTurn() {
+<b class="fc"><i>148</i>&nbsp;        if (startupPhase)</b>
+<b class="fc"><i>149</i>&nbsp;            updateTurnStartup();</b>
+<i>150</i>&nbsp;        else
+<b class="fc"><i>151</i>&nbsp;            updateTurnInGame();</b>
+<b class="fc"><i>152</i>&nbsp;    }</b>
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    /**
+<i>155</i>&nbsp;     * Update the turn to the next move to be performed in the startup phase of the game
+<i>156</i>&nbsp;     */
+<i>157</i>&nbsp;    protected void updateTurnStartup() {
+<b class="fc"><i>158</i>&nbsp;        if (startupPhase) {</b>
+<b class="fc"><i>159</i>&nbsp;            if (currentMoveIndex &lt; startupTurnSequence.size()) {</b>
+<b class="fc"><i>160</i>&nbsp;                StartupActions nextStartupMove = startupTurnSequence.get(currentMoveIndex).getValue();</b>
+<b class="fc"><i>161</i>&nbsp;                currentPlayer = startupTurnSequence.get(currentMoveIndex).getKey();</b>
+<b class="fc"><i>162</i>&nbsp;                currentMoveIndex++;</b>
+<b class="fc"><i>163</i>&nbsp;                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(nextStartupMove, currentPlayer, gameInstance.getColorList());</b>
+<b class="fc"><i>164</i>&nbsp;                if (nextStartupMove == StartupActions.CHOOSE_CARD_REQUEST) {</b>
+<b class="fc"><i>165</i>&nbsp;                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getAvailableCardsToChoseCopy());</b>
+<b class="fc"><i>166</i>&nbsp;                } else if (nextStartupMove == StartupActions.PICK_UP_CARD_REQUEST || nextStartupMove == StartupActions.PICK_LAST_CARD) {</b>
+<b class="nc"><i>167</i>&nbsp;                    updateTurnMessage.setAvailableCards(gameInstance.getDeck().getChosenCardsCopy());</b>
+<b class="fc"><i>168</i>&nbsp;                } else if (nextStartupMove == StartupActions.PLACE_WORKER_1 || nextStartupMove == StartupActions.PLACE_WORKER_2) {</b>
+<b class="nc"><i>169</i>&nbsp;                    updateTurnMessage.setBoardCopy(gameInstance.getBoard());</b>
+<i>170</i>&nbsp;                }
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;
+<b class="fc"><i>173</i>&nbsp;                updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<b class="fc"><i>174</i>&nbsp;            } else</b>
+<b class="nc"><i>175</i>&nbsp;                setUpGameTurn();</b>
+<i>176</i>&nbsp;        }
+<b class="fc"><i>177</i>&nbsp;    }</b>
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;    /**
+<i>180</i>&nbsp;     * Update the turn to the next move to be performed, or to the next player
+<i>181</i>&nbsp;     */
+<i>182</i>&nbsp;    protected void updateTurnInGame() {
+<b class="fc"><i>183</i>&nbsp;        if (!startupPhase &amp;&amp; !gameIsFinish) {</b>
+<b class="fc"><i>184</i>&nbsp;            boolean setStuck = false;</b>
+<b class="fc"><i>185</i>&nbsp;            TurnSequence currentTurnSequence = getCurrentPlayerTurnSequence();</b>
+<b class="fc"><i>186</i>&nbsp;            if (currentPlayer == null || !(currentMoveIndex &lt; currentTurnSequence.getMoveSequence().size()))</b>
+<b class="fc"><i>187</i>&nbsp;                updateToNextPlayerTurn();</b>
+<i>188</i>&nbsp;            else
+<b class="fc"><i>189</i>&nbsp;                lastMovePerformedBy = currentPlayer.getNickname();</b>
+<i>190</i>&nbsp;
+<b class="fc"><i>191</i>&nbsp;            currentTurnSequence = getCurrentPlayerTurnSequence();</b>
+<b class="fc"><i>192</i>&nbsp;            if (currentMoveIndex &lt; currentTurnSequence.getMoveSequence().size()) {</b>
+<b class="fc"><i>193</i>&nbsp;                Actions nextMove = currentTurnSequence.getMoveSequence().get(currentMoveIndex);</b>
+<i>194</i>&nbsp;
+<b class="fc"><i>195</i>&nbsp;                if (nextMove == Actions.CHOSE_WORKER) {</b>
+<b class="fc"><i>196</i>&nbsp;                    int movableWorker = initialCheckMovableWorker();</b>
+<b class="fc"><i>197</i>&nbsp;                    if (movableWorker &lt; 1) {</b>
+<b class="nc"><i>198</i>&nbsp;                        lose(currentPlayer);</b>
+<b class="nc"><i>199</i>&nbsp;                        return;</b>
+<i>200</i>&nbsp;                    }
+<b class="fc"><i>201</i>&nbsp;                } else if (nextMove.getActionType() == Actions.ActionType.MOVEMENT &amp;&amp;</b>
+<i>202</i>&nbsp;                        currentWorker != null) {
+<b class="fc"><i>203</i>&nbsp;                    if (!checkIfNotStuck(currentWorker))</b>
+<b class="nc"><i>204</i>&nbsp;                        setStuck = true;</b>
+<b class="fc"><i>205</i>&nbsp;                } else if (nextMove.getActionType() == Actions.ActionType.BUILDING) {</b>
+<b class="fc"><i>206</i>&nbsp;                    if (!checkIfCanBuild(currentWorker))</b>
+<b class="nc"><i>207</i>&nbsp;                        setStuck = true;</b>
+<i>208</i>&nbsp;                }
+<i>209</i>&nbsp;
+<b class="fc"><i>210</i>&nbsp;                currentMoveIndex++;</b>
+<b class="fc"><i>211</i>&nbsp;                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), lastMovePerformedBy, nextMove, currentPlayer, currentWorker);</b>
+<b class="fc"><i>212</i>&nbsp;                if (setStuck)</b>
+<b class="nc"><i>213</i>&nbsp;                    updateTurnMessage.setStuck(true);</b>
+<b class="fc"><i>214</i>&nbsp;                updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<i>215</i>&nbsp;            }
+<i>216</i>&nbsp;        }
+<b class="fc"><i>217</i>&nbsp;    }</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;    /**
+<i>220</i>&nbsp;     * Update the currentPlayer to move to the next player&#39;s turn
+<i>221</i>&nbsp;     */
+<i>222</i>&nbsp;    protected void updateToNextPlayerTurn() {
+<b class="fc"><i>223</i>&nbsp;        if (!startupPhase) {</b>
+<b class="fc"><i>224</i>&nbsp;            if (currentPlayer == null) {</b>
+<b class="fc"><i>225</i>&nbsp;                lastMovePerformedBy = null;</b>
+<b class="fc"><i>226</i>&nbsp;                currentPlayer = playerOrder.get(0);</b>
+<i>227</i>&nbsp;            } else {
+<b class="fc"><i>228</i>&nbsp;                lastMovePerformedBy = currentPlayer.getNickname();</b>
+<b class="fc"><i>229</i>&nbsp;                currentPlayer = getNextPlayer();</b>
+<i>230</i>&nbsp;            }
+<i>231</i>&nbsp;        }
+<i>232</i>&nbsp;
+<b class="fc"><i>233</i>&nbsp;        resetCurrentWorker();</b>
+<b class="fc"><i>234</i>&nbsp;        movesPerformed.clear();</b>
+<b class="fc"><i>235</i>&nbsp;        currentMoveIndex = 0;</b>
+<b class="fc"><i>236</i>&nbsp;    }</b>
+<i>237</i>&nbsp;
+<i>238</i>&nbsp;    /**
+<i>239</i>&nbsp;     * Add to the movesPerformed list (necessary for the management of the UNDO function and
+<i>240</i>&nbsp;     * some game logic check) the move just performed
+<i>241</i>&nbsp;     *
+<i>242</i>&nbsp;     * @param lastMove Last move performed
+<i>243</i>&nbsp;     */
+<i>244</i>&nbsp;    public void addLastMovePerformed(PlayerMove lastMove) {
+<b class="fc"><i>245</i>&nbsp;        movesPerformed.add(lastMove);</b>
+<b class="fc"><i>246</i>&nbsp;    }</b>
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;    /**
+<i>249</i>&nbsp;     * Returns the game back to the state before the last move performed
+<i>250</i>&nbsp;     */
+<i>251</i>&nbsp;    public void restoreToLastMovePerformed() {
+<b class="fc"><i>252</i>&nbsp;        if (!movesPerformed.isEmpty()) {</b>
+<i>253</i>&nbsp;            do {
+<b class="fc"><i>254</i>&nbsp;                PlayerMove moveToRestore = movesPerformed.getLast();</b>
+<b class="fc"><i>255</i>&nbsp;                if (moveToRestore.getMove().getActionType() == Actions.ActionType.MOVEMENT) {</b>
+<i>256</i>&nbsp;                    //Invert the sequence of starting and target slot to make the reverse move
+<b class="fc"><i>257</i>&nbsp;                    Slot targetSlot = moveToRestore.getStartingSlot();</b>
+<b class="fc"><i>258</i>&nbsp;                    moveToRestore.getMovedWorker().move(targetSlot);</b>
+<b class="fc"><i>259</i>&nbsp;                } else if (moveToRestore.getMove().getActionType() == Actions.ActionType.BUILDING) {</b>
+<b class="nc"><i>260</i>&nbsp;                    moveToRestore.getTargetSlot().destroyTopBuilding();</b>
+<i>261</i>&nbsp;                }
+<i>262</i>&nbsp;
+<b class="fc"><i>263</i>&nbsp;                if (moveToRestore.getMove() == Actions.BUILD_BEFORE) {</b>
+<b class="nc"><i>264</i>&nbsp;                    turnSequenceMap.get(moveToRestore.getPlayerOwner()).setCanMoveUp(true);</b>
+<b class="fc"><i>265</i>&nbsp;                } else if (moveToRestore.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {</b>
+<b class="nc"><i>266</i>&nbsp;                    setOtherPlayerCanMoveUpTo(true);</b>
+<i>267</i>&nbsp;                }
+<b class="fc"><i>268</i>&nbsp;                movesPerformed.removeLast();</b>
+<i>269</i>&nbsp;            }
+<b class="fc"><i>270</i>&nbsp;            while (!movesPerformed.isEmpty() &amp;&amp; movesPerformed.getLast().getForcedMove());</b>
+<i>271</i>&nbsp;
+<b class="fc"><i>272</i>&nbsp;            if (currentMoveIndex &gt; 0)</b>
+<b class="fc"><i>273</i>&nbsp;                currentMoveIndex = currentMoveIndex - 2;</b>
+<i>274</i>&nbsp;
+<b class="fc"><i>275</i>&nbsp;            updateTurn();</b>
+<i>276</i>&nbsp;        }
+<b class="fc"><i>277</i>&nbsp;    }</b>
+<i>278</i>&nbsp;
+<i>279</i>&nbsp;    /**
+<i>280</i>&nbsp;     * Allows to know if there are moves to undo or not (useful for gui purpose)
+<i>281</i>&nbsp;     *
+<i>282</i>&nbsp;     * @return A boolean describing if there are moves to undo or not
+<i>283</i>&nbsp;     */
+<i>284</i>&nbsp;    public boolean areThereMovesToUndo() {
+<b class="fc"><i>285</i>&nbsp;        return !movesPerformed.isEmpty();</b>
+<i>286</i>&nbsp;    }
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;    /**
+<i>289</i>&nbsp;     * Check if, at the beginning of a turn, the player&#39;s workers have a slot adjacent them available to move on
+<i>290</i>&nbsp;     *
+<i>291</i>&nbsp;     * @return Returns an ArrayList of worker who can move in an adjacent slot
+<i>292</i>&nbsp;     */
+<i>293</i>&nbsp;    protected int initialCheckMovableWorker() {
+<b class="fc"><i>294</i>&nbsp;        ArrayList&lt;Worker&gt; movableWorkers = new ArrayList&lt;&gt;(2);</b>
+<b class="fc"><i>295</i>&nbsp;        for (Worker worker : getCurrentPlayerWorkers()) {</b>
+<b class="fc"><i>296</i>&nbsp;            boolean canMove = checkIfNotStuck(worker);</b>
+<i>297</i>&nbsp;
+<b class="fc"><i>298</i>&nbsp;            if (canMove)</b>
+<b class="fc"><i>299</i>&nbsp;                movableWorkers.add(worker);</b>
+<b class="fc"><i>300</i>&nbsp;        }</b>
+<i>301</i>&nbsp;
+<b class="fc"><i>302</i>&nbsp;        return movableWorkers.size();</b>
+<i>303</i>&nbsp;    }
+<i>304</i>&nbsp;
+<i>305</i>&nbsp;    /**
+<i>306</i>&nbsp;     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to move on
+<i>307</i>&nbsp;     *
+<i>308</i>&nbsp;     * @param worker The worker whose ability to move is to be checked
+<i>309</i>&nbsp;     * @return Returns a boolean who approves or refuses the possibility to move of the worker
+<i>310</i>&nbsp;     */
+<i>311</i>&nbsp;    public boolean checkIfNotStuck(Worker worker) {
+<b class="fc"><i>312</i>&nbsp;        boolean canMove = false;</b>
+<b class="fc"><i>313</i>&nbsp;        Slot workerSlot = worker.getWorkerSlot();</b>
+<b class="fc"><i>314</i>&nbsp;        ArrayList&lt;Slot&gt; slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);</b>
+<i>315</i>&nbsp;
+<b class="fc"><i>316</i>&nbsp;        int i = 0;</b>
+<b class="fc"><i>317</i>&nbsp;        while (!canMove &amp;&amp; i &lt; slotsToVerify.size()) {</b>
+<b class="fc"><i>318</i>&nbsp;            Slot slotToVerify = slotsToVerify.get(i);</b>
+<b class="fc"><i>319</i>&nbsp;            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) &lt; 2 &amp;&amp;</b>
+<b class="fc"><i>320</i>&nbsp;                    (getCurrentPlayerTurnSequence().isCanMoveUp() || Slot.calculateHeightDifference(workerSlot, slotToVerify) &lt; 1))</b>
+<b class="fc"><i>321</i>&nbsp;                if (!slotToVerify.getBuildingsStatus().contains(Building.BuildingLevel.DOME))</b>
+<b class="fc"><i>322</i>&nbsp;                    if (slotToVerify.getWorkerInSlot() == null ||</b>
+<b class="fc"><i>323</i>&nbsp;                            (!Collections.disjoint(getCurrentPlayerTurnSequence().getMoveSequence(), Arrays.asList(Actions.MOVE_OPPONENT_SLOT_FLIP, Actions.MOVE_OPPONENT_SLOT_PUSH)) &amp;&amp;</b>
+<b class="nc"><i>324</i>&nbsp;                                    !slotToVerify.getWorkerInSlot().getPlayerOwner().getNickname().equals(worker.getPlayerOwner().getNickname())))</b>
+<b class="fc"><i>325</i>&nbsp;                        canMove = true;</b>
+<b class="fc"><i>326</i>&nbsp;            i++;</b>
+<b class="fc"><i>327</i>&nbsp;        }</b>
+<i>328</i>&nbsp;
+<b class="fc"><i>329</i>&nbsp;        return canMove;</b>
+<i>330</i>&nbsp;    }
+<i>331</i>&nbsp;
+<i>332</i>&nbsp;    /**
+<i>333</i>&nbsp;     * Check if, at the beginning of a turn, the worker has a slot adjacent him available to build
+<i>334</i>&nbsp;     *
+<i>335</i>&nbsp;     * @param worker The worker whose ability to build is to be checked
+<i>336</i>&nbsp;     * @return Returns a boolean who approves or refuses the possibility to build of the worker
+<i>337</i>&nbsp;     */
+<i>338</i>&nbsp;    public boolean checkIfCanBuild(Worker worker) {
+<b class="fc"><i>339</i>&nbsp;        boolean canBuild = false;</b>
+<b class="fc"><i>340</i>&nbsp;        Slot workerSlot = worker.getWorkerSlot();</b>
+<b class="fc"><i>341</i>&nbsp;        ArrayList&lt;Slot&gt; slotsToVerify = gameInstance.getBoard().getAdjacentSlots(workerSlot);</b>
+<i>342</i>&nbsp;
+<b class="fc"><i>343</i>&nbsp;        int i = 0;</b>
+<b class="fc"><i>344</i>&nbsp;        while (!canBuild &amp;&amp; i &lt; slotsToVerify.size()) {</b>
+<b class="fc"><i>345</i>&nbsp;            Slot slotToVerify = slotsToVerify.get(i);</b>
+<b class="fc"><i>346</i>&nbsp;            if (Slot.calculateHeightDifference(workerSlot, slotToVerify) &lt; 2)</b>
+<b class="fc"><i>347</i>&nbsp;                if (slotToVerify.getWorkerInSlot() == null)</b>
+<b class="fc"><i>348</i>&nbsp;                    if (slotToVerify.getConstructionTopLevel() == null ||</b>
+<b class="nc"><i>349</i>&nbsp;                            slotToVerify.getConstructionTopLevel().hasProperty(Building.BuildingProperty.CAN_BUILD_ON_IT))</b>
+<b class="fc"><i>350</i>&nbsp;                        canBuild = true;</b>
+<i>351</i>&nbsp;
+<b class="fc"><i>352</i>&nbsp;            i++;</b>
+<b class="fc"><i>353</i>&nbsp;        }</b>
+<i>354</i>&nbsp;
+<b class="fc"><i>355</i>&nbsp;        return canBuild;</b>
+<i>356</i>&nbsp;    }
+<i>357</i>&nbsp;
+<i>358</i>&nbsp;    /**
+<i>359</i>&nbsp;     * Method that handle when a player win a game.
+<i>360</i>&nbsp;     *
+<i>361</i>&nbsp;     * @param winner The player who win the game.
+<i>362</i>&nbsp;     */
+<i>363</i>&nbsp;    public void win(Player winner) {
+<b class="nc"><i>364</i>&nbsp;        if (!startupPhase &amp;&amp; winner == currentPlayer) {</b>
+<b class="nc"><i>365</i>&nbsp;            gameIsFinish = true;</b>
+<b class="nc"><i>366</i>&nbsp;            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), winner.getNickname(), Actions.WIN, currentPlayer, currentWorker);</b>
+<b class="nc"><i>367</i>&nbsp;            updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<i>368</i>&nbsp;        }
+<b class="nc"><i>369</i>&nbsp;    }</b>
+<i>370</i>&nbsp;
+<i>371</i>&nbsp;    /**
+<i>372</i>&nbsp;     * Method that handle when a player lose  a game.
+<i>373</i>&nbsp;     *
+<i>374</i>&nbsp;     * @param loser The player who lose the game.
+<i>375</i>&nbsp;     */
+<i>376</i>&nbsp;    private void lose(Player loser) {
+<b class="nc"><i>377</i>&nbsp;        if (gameInstance.getPlayerNumber() &lt;= 2) {</b>
+<b class="nc"><i>378</i>&nbsp;            gameIsFinish = true;</b>
+<b class="nc"><i>379</i>&nbsp;            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);</b>
+<b class="nc"><i>380</i>&nbsp;            updateTurnMessage.setGameFinish(true);</b>
+<b class="nc"><i>381</i>&nbsp;            updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<b class="nc"><i>382</i>&nbsp;        } else {</b>
+<b class="nc"><i>383</i>&nbsp;            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), loser.getNickname(), Actions.LOSE, loser, null);</b>
+<b class="nc"><i>384</i>&nbsp;            updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<b class="nc"><i>385</i>&nbsp;            gameInstance.setPlayerNumber(gameInstance.getPlayerNumber() - 1);</b>
+<i>386</i>&nbsp;
+<b class="nc"><i>387</i>&nbsp;            for (Worker workerToDelete : loser.getWorkers()) {</b>
+<b class="nc"><i>388</i>&nbsp;                workerToDelete.move(new Slot(new Position(-1, -1)));</b>
+<b class="nc"><i>389</i>&nbsp;                workerToDelete = null;</b>
+<b class="nc"><i>390</i>&nbsp;            }</b>
+<i>391</i>&nbsp;
+<b class="nc"><i>392</i>&nbsp;            updateToNextPlayerTurn();</b>
+<b class="nc"><i>393</i>&nbsp;            updateTurn();</b>
+<b class="nc"><i>394</i>&nbsp;            playerOrder.removeIf(x -&gt; x.getNickname().equalsIgnoreCase(loser.getNickname()));</b>
+<i>395</i>&nbsp;        }
+<b class="nc"><i>396</i>&nbsp;    }</b>
+<i>397</i>&nbsp;
+<i>398</i>&nbsp;    /**
+<i>399</i>&nbsp;     * Method that handle when a player quit a game.
+<i>400</i>&nbsp;     *
+<i>401</i>&nbsp;     * @param playerWhoQuit The player who quit the game.
+<i>402</i>&nbsp;     */
+<i>403</i>&nbsp;    public void quit(Player playerWhoQuit) {
+<b class="nc"><i>404</i>&nbsp;        if (playerWhoQuit.getWorkers().get(0) != null)</b>
+<b class="nc"><i>405</i>&nbsp;            for (Worker workerToDelete : playerWhoQuit.getWorkers()) {</b>
+<b class="nc"><i>406</i>&nbsp;                workerToDelete.move(new Slot(new Position(-1, -1)));</b>
+<b class="nc"><i>407</i>&nbsp;                workerToDelete = null;</b>
+<b class="nc"><i>408</i>&nbsp;            }</b>
+<i>409</i>&nbsp;
+<b class="nc"><i>410</i>&nbsp;        if (!gameIsFinish) {</b>
+<i>411</i>&nbsp;            //Player quit during the active game
+<b class="nc"><i>412</i>&nbsp;            if (playerOrder.contains(playerWhoQuit)) {</b>
+<b class="nc"><i>413</i>&nbsp;                gameIsFinish = true;</b>
+<b class="nc"><i>414</i>&nbsp;                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.GAME_END, playerWhoQuit, null);</b>
+<b class="nc"><i>415</i>&nbsp;                updateTurnMessage.setGameFinish(true);</b>
+<b class="nc"><i>416</i>&nbsp;                updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<b class="nc"><i>417</i>&nbsp;                return;</b>
+<i>418</i>&nbsp;            } else {
+<i>419</i>&nbsp;                //Player quit while other player continue to player (he lose)
+<b class="nc"><i>420</i>&nbsp;                UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);</b>
+<b class="nc"><i>421</i>&nbsp;                updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<b class="nc"><i>422</i>&nbsp;                if (currentPlayer.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname())) { //Non dovrebbe mai verificarsi</b>
+<b class="nc"><i>423</i>&nbsp;                    updateToNextPlayerTurn();</b>
+<b class="nc"><i>424</i>&nbsp;                    updateTurn();</b>
+<i>425</i>&nbsp;                }
+<b class="nc"><i>426</i>&nbsp;            }</b>
+<i>427</i>&nbsp;        } else {
+<i>428</i>&nbsp;            //Player quit because the game is ended
+<b class="nc"><i>429</i>&nbsp;            UpdateTurnMessage updateTurnMessage = new UpdateTurnMessage(gameInstance.getBoard(), playerWhoQuit.getNickname(), Actions.QUIT, playerWhoQuit, null);</b>
+<b class="nc"><i>430</i>&nbsp;            updateTurnMessage.setGameFinish(true);</b>
+<b class="nc"><i>431</i>&nbsp;            updateTurnMessageSender.notifyAll(updateTurnMessage);</b>
+<i>432</i>&nbsp;        }
+<i>433</i>&nbsp;
+<b class="nc"><i>434</i>&nbsp;        playerOrder.removeIf(x -&gt; x.getNickname().equalsIgnoreCase(playerWhoQuit.getNickname()));</b>
+<b class="nc"><i>435</i>&nbsp;    }</b>
+<i>436</i>&nbsp;
+<i>437</i>&nbsp;    public boolean isGameIsFinish() {
+<b class="fc"><i>438</i>&nbsp;        return gameIsFinish;</b>
+<i>439</i>&nbsp;    }
+<i>440</i>&nbsp;
+<i>441</i>&nbsp;    /**
+<i>442</i>&nbsp;     * Returns the list of moves performed so far during the turn
+<i>443</i>&nbsp;     *
+<i>444</i>&nbsp;     * @return Returns a LinkedList of PlayerMove containing the moves performed by the user so far in this turn
+<i>445</i>&nbsp;     */
+<i>446</i>&nbsp;    public LinkedList&lt;PlayerMove&gt; getMovesPerformed() {
+<b class="fc"><i>447</i>&nbsp;        return movesPerformed;</b>
+<i>448</i>&nbsp;    }
+<i>449</i>&nbsp;
+<i>450</i>&nbsp;    /**
+<i>451</i>&nbsp;     * Returns the next player by cycling on the list of players sorted by age
+<i>452</i>&nbsp;     *
+<i>453</i>&nbsp;     * @return Return the next player to play
+<i>454</i>&nbsp;     */
+<i>455</i>&nbsp;    protected Player getNextPlayer() {
+<b class="fc"><i>456</i>&nbsp;        int index = playerOrder.indexOf(currentPlayer);</b>
+<i>457</i>&nbsp;
+<b class="fc"><i>458</i>&nbsp;        return playerOrder.get((index + 1) % playerOrder.size());</b>
+<i>459</i>&nbsp;    }
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;    /**
+<i>462</i>&nbsp;     * Returns the boolean that describes whether the player can move up during this turn or not
+<i>463</i>&nbsp;     *
+<i>464</i>&nbsp;     * @return A boolean describing the possibility of move up or not during this turn for the player
+<i>465</i>&nbsp;     */
+<i>466</i>&nbsp;    public boolean canCurrentPlayerMoveUp() {
+<b class="fc"><i>467</i>&nbsp;        return turnSequenceMap.get(currentPlayer).isCanMoveUp();</b>
+<i>468</i>&nbsp;    }
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;    /**
+<i>471</i>&nbsp;     * Returns the boolean that describes whether the player specified can move up during this turn or not
+<i>472</i>&nbsp;     *
+<i>473</i>&nbsp;     * @param player The specified player we want to know if can move up
+<i>474</i>&nbsp;     * @return A boolean describing the possibilità of move up or not during this turn for the player
+<i>475</i>&nbsp;     */
+<i>476</i>&nbsp;    public boolean canPlayerMoveUp(Player player) {
+<b class="fc"><i>477</i>&nbsp;        return turnSequenceMap.get(player).isCanMoveUp();</b>
+<i>478</i>&nbsp;    }
+<i>479</i>&nbsp;
+<i>480</i>&nbsp;    /**
+<i>481</i>&nbsp;     * Get dynamically the specified file located in the resources folder.
+<i>482</i>&nbsp;     *
+<i>483</i>&nbsp;     * @param fileName The specified file name.
+<i>484</i>&nbsp;     * @return Returns the file founded.
+<i>485</i>&nbsp;     */
+<i>486</i>&nbsp;    private InputStream getInputStreamFromResources(String fileName) {
+<b class="fc"><i>487</i>&nbsp;        ClassLoader classLoader = getClass().getClassLoader();</b>
+<i>488</i>&nbsp;
+<b class="fc"><i>489</i>&nbsp;        InputStream inputStream = classLoader.getResourceAsStream(fileName);</b>
+<i>490</i>&nbsp;//        URL resource = classLoader.getResource(fileName);
+<b class="fc"><i>491</i>&nbsp;        if (inputStream == null) {</b>
+<b class="nc"><i>492</i>&nbsp;            throw new IllegalArgumentException(&quot;File \&quot;&quot; + fileName + &quot;\&quot; is not found!&quot;);</b>
+<i>493</i>&nbsp;        } else {
+<b class="fc"><i>494</i>&nbsp;            return inputStream;</b>
+<i>495</i>&nbsp;        }
+<i>496</i>&nbsp;    }
+<i>497</i>&nbsp;
+<i>498</i>&nbsp;    /**
+<i>499</i>&nbsp;     * Set up the Turn Sequence of each player in game during the game set up. Builds up the standard sequence of moves
+<i>500</i>&nbsp;     * and read the win conditions
+<i>501</i>&nbsp;     */
+<i>502</i>&nbsp;    protected void setUpTurnSequence() {
+<i>503</i>&nbsp;        try {
+<b class="fc"><i>504</i>&nbsp;            InputStream xmlChosenCards = getInputStreamFromResources(&quot;GodsParameters.xml&quot;);</b>
+<i>505</i>&nbsp;
+<b class="fc"><i>506</i>&nbsp;            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();</b>
+<b class="fc"><i>507</i>&nbsp;            documentBuilderFactory.setIgnoringElementContentWhitespace(true);</b>
+<b class="fc"><i>508</i>&nbsp;            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();</b>
+<b class="fc"><i>509</i>&nbsp;            Document document = documentBuilder.parse(xmlChosenCards);</b>
+<b class="fc"><i>510</i>&nbsp;            document.normalizeDocument();</b>
+<i>511</i>&nbsp;
+<b class="fc"><i>512</i>&nbsp;            for (Player player : playerOrder) {</b>
+<b class="fc"><i>513</i>&nbsp;                ArrayList&lt;Actions&gt; moveSequence = loadMoveSequence(player, document);</b>
+<b class="fc"><i>514</i>&nbsp;                ArrayList&lt;WinConditions&gt; winConditions = loadWinCondition(player, document);</b>
+<i>515</i>&nbsp;
+<b class="fc"><i>516</i>&nbsp;                TurnSequence turnSequence = new TurnSequence(player, moveSequence, winConditions);</b>
+<b class="fc"><i>517</i>&nbsp;                turnSequenceMap.put(player, turnSequence);</b>
+<b class="fc"><i>518</i>&nbsp;            }</b>
+<b class="nc"><i>519</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="nc"><i>520</i>&nbsp;            System.out.println(ex.getMessage() + &quot;Exception thrown from Turn.setUpTurnSequence&quot;);</b>
+<b class="fc"><i>521</i>&nbsp;        }</b>
+<b class="fc"><i>522</i>&nbsp;    }</b>
+<i>523</i>&nbsp;
+<i>524</i>&nbsp;    /**
+<i>525</i>&nbsp;     * Builds up the standard sequence of moves for each player
+<i>526</i>&nbsp;     *
+<i>527</i>&nbsp;     * @param player   Player to create the move sequence for
+<i>528</i>&nbsp;     * @param document Document to read to extract all the player&#39;s turn parameters
+<i>529</i>&nbsp;     * @return Return the ArrayList of player&#39;s move sequence
+<i>530</i>&nbsp;     */
+<i>531</i>&nbsp;    private ArrayList&lt;Actions&gt; loadMoveSequence(Player player, Document document) {
+<i>532</i>&nbsp;        try {
+<b class="fc"><i>533</i>&nbsp;            NodeList list = document.getElementsByTagName(player.getPlayerCard().getCardName());</b>
+<b class="fc"><i>534</i>&nbsp;            Element godElement = (Element) list.item(0);</b>
+<b class="fc"><i>535</i>&nbsp;            list = godElement.getElementsByTagName(&quot;moveSequence&quot;);</b>
+<b class="fc"><i>536</i>&nbsp;            Element godElementMove = (Element) list.item(0);</b>
+<b class="fc"><i>537</i>&nbsp;            list = godElementMove.getChildNodes();</b>
+<i>538</i>&nbsp;
+<b class="fc"><i>539</i>&nbsp;            LinkedHashMap&lt;Actions, Integer&gt; moveSequence = new LinkedHashMap&lt;&gt;();</b>
+<b class="fc"><i>540</i>&nbsp;            int priority = 0;</b>
+<b class="fc"><i>541</i>&nbsp;            moveSequence.put(Actions.CHOSE_WORKER, 0);</b>
+<b class="fc"><i>542</i>&nbsp;            for (int i = 0; i &lt; list.getLength(); i++) {</b>
+<b class="fc"><i>543</i>&nbsp;                Node moveNode = list.item(i);</b>
+<b class="fc"><i>544</i>&nbsp;                if (moveNode.getNodeType() != Node.ELEMENT_NODE &amp;&amp; moveNode.getNextSibling() != null) {</b>
+<b class="fc"><i>545</i>&nbsp;                    Node sibling = moveNode.getNextSibling();</b>
+<b class="fc"><i>546</i>&nbsp;                    priority = Integer.parseInt(sibling.getAttributes().getNamedItem(&quot;priority&quot;).getTextContent());</b>
+<b class="fc"><i>547</i>&nbsp;                    moveSequence.put(Actions.valueOf(sibling.getTextContent()), priority);</b>
+<i>548</i>&nbsp;                }
+<i>549</i>&nbsp;            }
+<b class="fc"><i>550</i>&nbsp;            moveSequence.put(Actions.WAIT_FOR_UNDO, ++priority);</b>
+<b class="fc"><i>551</i>&nbsp;            List&lt;Map.Entry&lt;Actions, Integer&gt;&gt; listToSort = new LinkedList&lt;&gt;(moveSequence.entrySet());</b>
+<b class="fc"><i>552</i>&nbsp;            listToSort.sort(Map.Entry.comparingByValue());</b>
+<b class="fc"><i>553</i>&nbsp;            moveSequence.clear();</b>
+<b class="fc"><i>554</i>&nbsp;            for (Map.Entry&lt;Actions, Integer&gt; entry : listToSort)</b>
+<b class="fc"><i>555</i>&nbsp;                moveSequence.put(entry.getKey(), entry.getValue());</b>
+<i>556</i>&nbsp;
+<b class="fc"><i>557</i>&nbsp;            return new ArrayList&lt;&gt;(moveSequence.keySet());</b>
+<b class="nc"><i>558</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="nc"><i>559</i>&nbsp;            System.out.println(ex.getMessage() + &quot;Exception thrown from Turn.loadMoveSequence&quot;);</b>
+<b class="nc"><i>560</i>&nbsp;            return null;</b>
+<i>561</i>&nbsp;        }
+<i>562</i>&nbsp;    }
+<i>563</i>&nbsp;
+<i>564</i>&nbsp;    /**
+<i>565</i>&nbsp;     * Load the win condition for each player
+<i>566</i>&nbsp;     *
+<i>567</i>&nbsp;     * @param player   Player to read the win conditions for
+<i>568</i>&nbsp;     * @param document Document to read to extract all the player&#39;s win conditions
+<i>569</i>&nbsp;     * @return Return the ArrayList of player&#39;s win conditions
+<i>570</i>&nbsp;     */
+<i>571</i>&nbsp;    private ArrayList&lt;WinConditions&gt; loadWinCondition(Player player, Document document) {
+<i>572</i>&nbsp;        try {
+<b class="fc"><i>573</i>&nbsp;            NodeList list = document.getElementsByTagName(player.getPlayerCard().getCardName());</b>
+<b class="fc"><i>574</i>&nbsp;            Element godElement = (Element) list.item(0);</b>
+<b class="fc"><i>575</i>&nbsp;            list = godElement.getElementsByTagName(&quot;winConditions&quot;);</b>
+<b class="fc"><i>576</i>&nbsp;            Element godElementWin = (Element) list.item(0);</b>
+<b class="fc"><i>577</i>&nbsp;            list = godElementWin.getChildNodes();</b>
+<i>578</i>&nbsp;
+<b class="fc"><i>579</i>&nbsp;            ArrayList&lt;WinConditions&gt; winConditions = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>580</i>&nbsp;            for (int i = 0; i &lt; list.getLength(); i++) {</b>
+<b class="fc"><i>581</i>&nbsp;                Node winNode = list.item(i);</b>
+<b class="fc"><i>582</i>&nbsp;                if (winNode.getNodeType() != Node.ELEMENT_NODE &amp;&amp; winNode.getNextSibling() != null) {</b>
+<b class="fc"><i>583</i>&nbsp;                    Node sibling = winNode.getNextSibling();</b>
+<b class="fc"><i>584</i>&nbsp;                    winConditions.add(WinConditions.valueOf(sibling.getTextContent()));</b>
+<i>585</i>&nbsp;                }
+<i>586</i>&nbsp;            }
+<i>587</i>&nbsp;
+<b class="fc"><i>588</i>&nbsp;            return winConditions;</b>
+<b class="nc"><i>589</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="nc"><i>590</i>&nbsp;            System.out.println(ex.getMessage() + &quot;Exception thrown from Turn.loadWinCondition&quot;);</b>
+<b class="nc"><i>591</i>&nbsp;            return null;</b>
+<i>592</i>&nbsp;        }
+<i>593</i>&nbsp;    }
+<i>594</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>

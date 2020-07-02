@@ -1,0 +1,425 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameManager (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    92,3%
+  </span>
+  <span class="absValue">
+    (12/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,4%
+  </span>
+  <span class="absValue">
+    (127/ 156)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GameManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/ 4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    86,7%
+  </span>
+  <span class="absValue">
+    (13/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (128/ 160)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.*;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.TurnEvents.Actions;
+<i>5</i>&nbsp;import it.polimi.ingsw.network.Message;
+<i>6</i>&nbsp;import it.polimi.ingsw.observer.MessageForwarder;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.Timer;
+<i>9</i>&nbsp;import java.util.TimerTask;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;public class GameManager extends MessageForwarder {</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private final Game gameInstance;
+<i>16</i>&nbsp;    private final Turn turn;
+<i>17</i>&nbsp;    private final MoveVerifier moveVerifier;
+<b class="fc"><i>18</i>&nbsp;    private String errorMessage = &quot;&quot;;</b>
+<b class="fc"><i>19</i>&nbsp;    private Timer timer = new Timer();</b>
+<b class="fc"><i>20</i>&nbsp;    boolean undoDone = false;</b>
+<b class="fc"><i>21</i>&nbsp;    private final PlayerMoveReceiver playerMoveReceiver = new PlayerMoveReceiver();</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Constructor of the GameManager that deals with managing the game logic (movement and construction).
+<i>25</i>&nbsp;     *
+<i>26</i>&nbsp;     * @param gameInstance Is the current game instance.
+<i>27</i>&nbsp;     */
+<b class="fc"><i>28</i>&nbsp;    public GameManager(Game gameInstance) {</b>
+<b class="fc"><i>29</i>&nbsp;        this.gameInstance = gameInstance;</b>
+<b class="fc"><i>30</i>&nbsp;        this.turn = this.gameInstance.getTurn();</b>
+<b class="fc"><i>31</i>&nbsp;        this.moveVerifier = new MoveVerifier(this.gameInstance, this);</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    protected void setErrorMessage(String errorMessage) {
+<b class="fc"><i>35</i>&nbsp;        this.errorMessage = errorMessage;</b>
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    protected String getErrorMessage() {
+<b class="fc"><i>39</i>&nbsp;        return errorMessage;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Logic of game moves.
+<i>44</i>&nbsp;     *
+<i>45</i>&nbsp;     * @param move The player move containing the information about the worker and the target slot of the move.
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    protected synchronized void handleMove(PlayerMove move) {
+<b class="fc"><i>48</i>&nbsp;        if (!turn.isPlayerTurn(move.getPlayerOwner()) &amp;&amp;</b>
+<b class="nc"><i>49</i>&nbsp;                move.getMove() != Actions.QUIT) {</b>
+<b class="nc"><i>50</i>&nbsp;            if (turn.isGameIsFinish()) {</b>
+<b class="nc"><i>51</i>&nbsp;                move.getRemoteView().errorMessage(Message.canOnlyQuit);</b>
+<b class="nc"><i>52</i>&nbsp;                return;</b>
+<i>53</i>&nbsp;            }
+<b class="nc"><i>54</i>&nbsp;            move.getRemoteView().errorMessage(Message.wrongTurnMessage);</b>
+<b class="nc"><i>55</i>&nbsp;            return;</b>
+<i>56</i>&nbsp;        } else {
+<b class="fc"><i>57</i>&nbsp;            if (move.getMove() == Actions.QUIT) {</b>
+<b class="nc"><i>58</i>&nbsp;                turn.quit(move.getPlayerOwner());</b>
+<b class="nc"><i>59</i>&nbsp;                return;</b>
+<i>60</i>&nbsp;            }
+<i>61</i>&nbsp;        }
+<b class="fc"><i>62</i>&nbsp;        if (turn.isGameIsFinish()) {</b>
+<b class="nc"><i>63</i>&nbsp;            move.getRemoteView().errorMessage(Message.canOnlyQuit);</b>
+<b class="nc"><i>64</i>&nbsp;            return;</b>
+<i>65</i>&nbsp;        }
+<b class="fc"><i>66</i>&nbsp;        if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {</b>
+<b class="fc"><i>67</i>&nbsp;            if (move.getMove() == Actions.UNDO)</b>
+<b class="fc"><i>68</i>&nbsp;                if (turn.areThereMovesToUndo()) {</b>
+<b class="fc"><i>69</i>&nbsp;                    undoDone = true;</b>
+<b class="fc"><i>70</i>&nbsp;                    turn.restoreToLastMovePerformed();</b>
+<i>71</i>&nbsp;                } else {
+<b class="nc"><i>72</i>&nbsp;                    move.getRemoteView().errorMessage(Message.cannotUndo);</b>
+<b class="nc"><i>73</i>&nbsp;                    return;</b>
+<i>74</i>&nbsp;                }
+<b class="fc"><i>75</i>&nbsp;            else if (move.getMove() == Actions.SKIP)</b>
+<b class="fc"><i>76</i>&nbsp;                if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1).hasProperty(SKIPPABLE)) {</b>
+<b class="fc"><i>77</i>&nbsp;                    if (turn.getCurrentPlayerTurnSequence().getMoveSequence().get(turn.getCurrentMoveIndex() - 1) == Actions.BUILD_BEFORE)</b>
+<b class="fc"><i>78</i>&nbsp;                        turn.getCurrentPlayerTurnSequence().setCanMoveUp(true);</b>
+<b class="fc"><i>79</i>&nbsp;                    turn.addLastMovePerformed(move);</b>
+<b class="fc"><i>80</i>&nbsp;                    updateTurn();</b>
+<i>81</i>&nbsp;                } else {
+<b class="nc"><i>82</i>&nbsp;                    move.getRemoteView().errorMessage(Message.cannotSkipThisMove);</b>
+<b class="nc"><i>83</i>&nbsp;                    return;</b>
+<i>84</i>&nbsp;                }
+<b class="fc"><i>85</i>&nbsp;        } else if (move.getMove().getActionType() == Actions.ActionType.SETUP) {</b>
+<b class="fc"><i>86</i>&nbsp;            if (move.getMove() == Actions.CHOSE_WORKER) {</b>
+<b class="fc"><i>87</i>&nbsp;                if (move.getTargetSlot().getWorkerInSlot() != null) {</b>
+<b class="fc"><i>88</i>&nbsp;                    if (turn.getCurrentPlayer().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {</b>
+<b class="fc"><i>89</i>&nbsp;                        setCurrentWorker(move);</b>
+<i>90</i>&nbsp;                    } else {
+<b class="fc"><i>91</i>&nbsp;                        move.getRemoteView().errorMessage(Message.choseNotYourWorker);</b>
+<b class="fc"><i>92</i>&nbsp;                        return;</b>
+<i>93</i>&nbsp;                    }
+<i>94</i>&nbsp;                } else {
+<b class="fc"><i>95</i>&nbsp;                    move.getRemoteView().errorMessage(Message.noWorkerInSlot);</b>
+<b class="fc"><i>96</i>&nbsp;                    return;</b>
+<i>97</i>&nbsp;                }
+<b class="nc"><i>98</i>&nbsp;            } else if (move.getMove() == Actions.WAIT_FOR_UNDO) {</b>
+<b class="nc"><i>99</i>&nbsp;                updateTurn();</b>
+<i>100</i>&nbsp;            }
+<i>101</i>&nbsp;        }
+<i>102</i>&nbsp;//        if (turn.getCurrentWorker() == null)
+<i>103</i>&nbsp;//            workerToSet = true;
+<i>104</i>&nbsp;//        else if (!turn.getCurrentWorker().getIdWorker().equals(move.getMovedWorker().getIdWorker())) {
+<i>105</i>&nbsp;//            move.getRemoteView().errorMessage(Message.wrongWorkerMessage);
+<i>106</i>&nbsp;//            return;
+<i>107</i>&nbsp;//        }
+<b class="fc"><i>108</i>&nbsp;        else if (move.getMove().getActionType() == Actions.ActionType.MOVEMENT) {</b>
+<b class="fc"><i>109</i>&nbsp;            if (moveVerifier.moveValidator(move)) {</b>
+<i>110</i>&nbsp;                //Move in opponent slot handling
+<b class="fc"><i>111</i>&nbsp;                if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP || move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {</b>
+<b class="fc"><i>112</i>&nbsp;                    if (move.getTargetSlot().getWorkerInSlot() != null) {</b>
+<b class="fc"><i>113</i>&nbsp;                        if (!move.getPlayerOwner().getWorkers().contains(move.getTargetSlot().getWorkerInSlot())) {</b>
+<b class="fc"><i>114</i>&nbsp;                            PlayerMove opponentMove = null;</b>
+<b class="fc"><i>115</i>&nbsp;                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {</b>
+<b class="fc"><i>116</i>&nbsp;                                opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),</b>
+<i>117</i>&nbsp;                                        Actions.MOVE_STANDARD,
+<b class="fc"><i>118</i>&nbsp;                                        move.getStartingSlot().getSlotPosition(),</b>
+<b class="fc"><i>119</i>&nbsp;                                        turn.getCurrentPlayer().getNickname());</b>
+<b class="fc"><i>120</i>&nbsp;                                opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(opponentMove.getTargetPosition()));</b>
+<b class="fc"><i>121</i>&nbsp;                            } else if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_PUSH) {</b>
+<b class="fc"><i>122</i>&nbsp;                                Position backwardsSlotPosition = gameInstance.getBoard().getBackwardsSlotPosition(move.getStartingPosition(), move.getTargetPosition());</b>
+<b class="fc"><i>123</i>&nbsp;                                if (backwardsSlotPosition == null) {</b>
+<b class="nc"><i>124</i>&nbsp;                                    move.getRemoteView().errorMessage(Message.outOfBoardBorderMessage);</b>
+<b class="nc"><i>125</i>&nbsp;                                    return;</b>
+<i>126</i>&nbsp;                                }
+<b class="fc"><i>127</i>&nbsp;                                opponentMove = new PlayerMove(move.getTargetSlot().getWorkerInSlot().getIdWorker(),</b>
+<i>128</i>&nbsp;                                        Actions.MOVE_STANDARD,
+<i>129</i>&nbsp;                                        backwardsSlotPosition,
+<b class="fc"><i>130</i>&nbsp;                                        turn.getCurrentPlayer().getNickname());</b>
+<b class="fc"><i>131</i>&nbsp;                                opponentMove.setTargetSlot(gameInstance.getBoard().getSlot(backwardsSlotPosition));</b>
+<i>132</i>&nbsp;                            }
+<i>133</i>&nbsp;
+<b class="fc"><i>134</i>&nbsp;                            assert opponentMove != null;</b>
+<b class="fc"><i>135</i>&nbsp;                            opponentMove.setMovedWorker(gameInstance.getWorkerByName(opponentMove.getMovedWorkerId()));</b>
+<b class="fc"><i>136</i>&nbsp;                            opponentMove.setForcedMove(move.getPlayerOwner());</b>
+<i>137</i>&nbsp;
+<i>138</i>&nbsp;                            //Temporary movement of player&#39;s worker in a &quot;TempSlot&quot;
+<b class="fc"><i>139</i>&nbsp;                            if (move.getMove() == Actions.MOVE_OPPONENT_SLOT_FLIP) {</b>
+<b class="fc"><i>140</i>&nbsp;                                PlayerMove tempMove = new PlayerMove(move.getMovedWorker().getIdWorker(),</b>
+<i>141</i>&nbsp;                                        Actions.MOVE_STANDARD,
+<i>142</i>&nbsp;                                        new Position(-1, -1),
+<b class="fc"><i>143</i>&nbsp;                                        turn.getCurrentPlayer().getNickname());</b>
+<b class="fc"><i>144</i>&nbsp;                                tempMove.setTargetSlot(new Slot(tempMove.getTargetPosition()));</b>
+<b class="fc"><i>145</i>&nbsp;                                tempMove.setMovedWorker(gameInstance.getWorkerByName(tempMove.getMovedWorkerId()));</b>
+<b class="fc"><i>146</i>&nbsp;                                tempMove.setForcedMove(move.getPlayerOwner());</b>
+<b class="fc"><i>147</i>&nbsp;                                performMove(tempMove);</b>
+<i>148</i>&nbsp;                            }
+<i>149</i>&nbsp;
+<b class="fc"><i>150</i>&nbsp;                            if (moveVerifier.moveValidator(opponentMove))</b>
+<b class="fc"><i>151</i>&nbsp;                                performMove(opponentMove);</b>
+<i>152</i>&nbsp;                            else {
+<b class="nc"><i>153</i>&nbsp;                                move.getRemoteView().errorMessage(errorMessage);</b>
+<b class="nc"><i>154</i>&nbsp;                                return;</b>
+<i>155</i>&nbsp;                            }
+<b class="fc"><i>156</i>&nbsp;                        } else {</b>
+<b class="nc"><i>157</i>&nbsp;                            move.getRemoteView().errorMessage(Message.mustBeOpponentWorker);</b>
+<b class="nc"><i>158</i>&nbsp;                            return;</b>
+<i>159</i>&nbsp;                        }
+<i>160</i>&nbsp;                    }
+<i>161</i>&nbsp;                    //Move disabling opponent can move up handling
+<b class="fc"><i>162</i>&nbsp;                } else if (move.getMove() == Actions.MOVE_DISABLE_OPPONENT_UP) {</b>
+<b class="fc"><i>163</i>&nbsp;                    if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) &gt; 0)</b>
+<b class="fc"><i>164</i>&nbsp;                        turn.setOtherPlayerCanMoveUpTo(false);</b>
+<i>165</i>&nbsp;                    else
+<b class="nc"><i>166</i>&nbsp;                        turn.setOtherPlayerCanMoveUpTo(true);</b>
+<i>167</i>&nbsp;                }
+<i>168</i>&nbsp;
+<b class="fc"><i>169</i>&nbsp;                performMove(move);</b>
+<i>170</i>&nbsp;            } else {
+<i>171</i>&nbsp;                //TODO: Aggiungere a tutti gli altri casi d&#39;errore (serve?)
+<b class="fc"><i>172</i>&nbsp;                move.getRemoteView().resetBoard(gameInstance.getBoard());</b>
+<b class="fc"><i>173</i>&nbsp;                move.getRemoteView().errorMessage(errorMessage);</b>
+<b class="fc"><i>174</i>&nbsp;                return;</b>
+<i>175</i>&nbsp;            }
+<b class="fc"><i>176</i>&nbsp;        } else if (move.getMove().getActionType() == Actions.ActionType.BUILDING) {</b>
+<b class="fc"><i>177</i>&nbsp;            if (moveVerifier.buildValidator(move)) {</b>
+<b class="fc"><i>178</i>&nbsp;                if (move.getMove() == Actions.BUILD_DOME_ANY_LEVEL) {</b>
+<b class="fc"><i>179</i>&nbsp;                    performBuildingDome(move);</b>
+<b class="fc"><i>180</i>&nbsp;                    return;</b>
+<b class="fc"><i>181</i>&nbsp;                } else if (move.getMove() == Actions.BUILD_BEFORE) {</b>
+<b class="fc"><i>182</i>&nbsp;                    turn.getCurrentPlayerTurnSequence().setCanMoveUp(false);</b>
+<i>183</i>&nbsp;                }
+<i>184</i>&nbsp;
+<b class="fc"><i>185</i>&nbsp;                performBuilding(move);</b>
+<i>186</i>&nbsp;            } else {
+<b class="fc"><i>187</i>&nbsp;                move.getRemoteView().errorMessage(errorMessage);</b>
+<b class="fc"><i>188</i>&nbsp;                return;</b>
+<i>189</i>&nbsp;            }
+<i>190</i>&nbsp;        }
+<b class="fc"><i>191</i>&nbsp;    }</b>
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    /**
+<i>194</i>&nbsp;     * Makes the worker perform a move.
+<i>195</i>&nbsp;     *
+<i>196</i>&nbsp;     * @param move The player move containing the information about the worker and the target slot of the move.
+<i>197</i>&nbsp;     */
+<i>198</i>&nbsp;    protected void performMove(PlayerMove move) {
+<b class="fc"><i>199</i>&nbsp;        move.getMovedWorker().move(move.getTargetSlot());</b>
+<b class="fc"><i>200</i>&nbsp;        turn.addLastMovePerformed(move);</b>
+<b class="fc"><i>201</i>&nbsp;        if (!move.getForcedMove()) {</b>
+<b class="fc"><i>202</i>&nbsp;            if (!checkWinConditions(move))</b>
+<b class="fc"><i>203</i>&nbsp;                updateTurn();</b>
+<i>204</i>&nbsp;            else
+<b class="nc"><i>205</i>&nbsp;                turn.win(move.getPlayerOwner());</b>
+<i>206</i>&nbsp;        }
+<b class="fc"><i>207</i>&nbsp;    }</b>
+<i>208</i>&nbsp;
+<i>209</i>&nbsp;    /**
+<i>210</i>&nbsp;     * Makes the worker perform a build.
+<i>211</i>&nbsp;     *
+<i>212</i>&nbsp;     * @param move The player move containing the information about the worker and the target slot of the move.
+<i>213</i>&nbsp;     */
+<i>214</i>&nbsp;    protected void performBuilding(PlayerMove move) {
+<b class="fc"><i>215</i>&nbsp;        move.getMovedWorker().build(move.getTargetSlot());</b>
+<b class="fc"><i>216</i>&nbsp;        turn.addLastMovePerformed(move);</b>
+<b class="fc"><i>217</i>&nbsp;        updateTurn();</b>
+<b class="fc"><i>218</i>&nbsp;    }</b>
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;    /**
+<i>221</i>&nbsp;     * Makes the worker perform a build forcing it to be a dome.
+<i>222</i>&nbsp;     *
+<i>223</i>&nbsp;     * @param move The player move containing the information about the worker and the target slot of the move.
+<i>224</i>&nbsp;     */
+<i>225</i>&nbsp;    protected void performBuildingDome(PlayerMove move) {
+<b class="fc"><i>226</i>&nbsp;        move.getMovedWorker().forcedDomeBuild(move.getTargetSlot(), true);</b>
+<b class="fc"><i>227</i>&nbsp;        turn.addLastMovePerformed(move);</b>
+<b class="fc"><i>228</i>&nbsp;        updateTurn();</b>
+<b class="fc"><i>229</i>&nbsp;    }</b>
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;    /**
+<i>232</i>&nbsp;     * Set the current worker (the worker the player decided to play with) for the current turn.
+<i>233</i>&nbsp;     *
+<i>234</i>&nbsp;     * @param move The player move containing the information about the worker to set as current worker.
+<i>235</i>&nbsp;     */
+<i>236</i>&nbsp;    protected void setCurrentWorker(PlayerMove move) {
+<i>237</i>&nbsp;//        if (!move.getForcedMove() &amp;&amp; turn.getCurrentWorker() == null) {
+<b class="fc"><i>238</i>&nbsp;        turn.setCurrentWorker(move.getMovedWorker());</b>
+<b class="fc"><i>239</i>&nbsp;        turn.addLastMovePerformed(move);</b>
+<b class="fc"><i>240</i>&nbsp;        updateTurn();</b>
+<i>241</i>&nbsp;//        }
+<b class="fc"><i>242</i>&nbsp;    }</b>
+<i>243</i>&nbsp;
+<i>244</i>&nbsp;    /**
+<i>245</i>&nbsp;     * Check if the current player has made a move that leads to victory.
+<i>246</i>&nbsp;     *
+<i>247</i>&nbsp;     * @param move The player move containing the information about the worker and the target slot of the move.
+<i>248</i>&nbsp;     * @return Returns a boolean that describe if the player wins or not.
+<i>249</i>&nbsp;     */
+<i>250</i>&nbsp;    protected boolean checkWinConditions(PlayerMove move) {
+<b class="fc"><i>251</i>&nbsp;        boolean winner = false;</b>
+<i>252</i>&nbsp;
+<b class="fc"><i>253</i>&nbsp;        if (move.getPlayerOwner() == turn.getCurrentPlayer() &amp;&amp;</b>
+<b class="fc"><i>254</i>&nbsp;                turn.getCurrentPlayerTurnSequence().getWinConditions().contains(TurnEvents.WinConditions.WIN_DOUBLE_MOVE_DOWN)) {</b>
+<b class="nc"><i>255</i>&nbsp;            if (Slot.calculateHeightDifference(move.getStartingSlot(), move.getTargetSlot()) &lt;= -2)</b>
+<b class="nc"><i>256</i>&nbsp;                winner = true;</b>
+<i>257</i>&nbsp;        }
+<i>258</i>&nbsp;
+<b class="fc"><i>259</i>&nbsp;        if (move.getTargetSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL3 &amp;&amp;</b>
+<b class="nc"><i>260</i>&nbsp;                move.getStartingSlot().getConstructionTopLevel() == Building.BuildingLevel.LEVEL2)</b>
+<b class="nc"><i>261</i>&nbsp;            winner = true;</b>
+<i>262</i>&nbsp;
+<b class="fc"><i>263</i>&nbsp;        return winner;</b>
+<i>264</i>&nbsp;    }
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;    /**
+<i>267</i>&nbsp;     * Update the turn and, in case it&#39;s the last move of the turn, wait five seconds to allow the player to undo.
+<i>268</i>&nbsp;     */
+<i>269</i>&nbsp;    protected void updateTurn() {
+<i>270</i>&nbsp;        try {
+<b class="fc"><i>271</i>&nbsp;            boolean isLastMove = false;</b>
+<b class="fc"><i>272</i>&nbsp;            undoDone = false;</b>
+<b class="fc"><i>273</i>&nbsp;            timer.cancel();</b>
+<b class="fc"><i>274</i>&nbsp;            timer = new Timer();</b>
+<i>275</i>&nbsp;
+<b class="fc"><i>276</i>&nbsp;            if (turn.getCurrentMoveIndex() == turn.getCurrentPlayerTurnSequence().getMoveSequence().size())</b>
+<b class="fc"><i>277</i>&nbsp;                isLastMove = true;</b>
+<i>278</i>&nbsp;
+<b class="fc"><i>279</i>&nbsp;            if (isLastMove) {</b>
+<b class="fc"><i>280</i>&nbsp;                timer.schedule(</b>
+<b class="fc"><i>281</i>&nbsp;                        new TimerTask() {</b>
+<i>282</i>&nbsp;                            @Override
+<i>283</i>&nbsp;                            public void run() {
+<b class="nc"><i>284</i>&nbsp;                                if (!undoDone)</b>
+<b class="nc"><i>285</i>&nbsp;                                    turn.updateTurn();</b>
+<b class="nc"><i>286</i>&nbsp;                            }</b>
+<i>287</i>&nbsp;                        },
+<i>288</i>&nbsp;                        5000
+<i>289</i>&nbsp;                );
+<i>290</i>&nbsp;            } else
+<b class="fc"><i>291</i>&nbsp;                turn.updateTurn();</b>
+<b class="fc"><i>292</i>&nbsp;        } catch (Exception ex) {</b>
+<b class="fc"><i>293</i>&nbsp;            System.out.println(&quot;Exception thrown from GameManager.updateTurn. &quot; + ex.getMessage());</b>
+<b class="fc"><i>294</i>&nbsp;        }</b>
+<b class="fc"><i>295</i>&nbsp;    }</b>
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;    /**
+<i>298</i>&nbsp;     * Method to handle message received by the PlayerMoveReceiver.
+<i>299</i>&nbsp;     *
+<i>300</i>&nbsp;     * @param message The message to handle.
+<i>301</i>&nbsp;     */
+<i>302</i>&nbsp;    @Override
+<i>303</i>&nbsp;    protected void handlePlayerMove(PlayerMove message) {
+<b class="fc"><i>304</i>&nbsp;        errorMessage = &quot;&quot;;</b>
+<b class="fc"><i>305</i>&nbsp;        message.setPlayerOwner(gameInstance.getPlayerByName(message.getPlayerOwnerNickname()));</b>
+<b class="fc"><i>306</i>&nbsp;        if (message.getMove() != Actions.QUIT) {</b>
+<b class="fc"><i>307</i>&nbsp;            message.setMovedWorker(gameInstance.getWorkerByName(message.getMovedWorkerId()));</b>
+<b class="fc"><i>308</i>&nbsp;            message.setTargetSlot(gameInstance.getBoard().getSlot(message.getTargetPosition()));</b>
+<i>309</i>&nbsp;        }
+<b class="fc"><i>310</i>&nbsp;        handleMove(message);</b>
+<b class="fc"><i>311</i>&nbsp;    }</b>
+<i>312</i>&nbsp;
+<i>313</i>&nbsp;    public PlayerMoveReceiver getPlayerMoveReceiver() {
+<b class="nc"><i>314</i>&nbsp;        return playerMoveReceiver;</b>
+<i>315</i>&nbsp;    }
+<i>316</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 22:17</div>
+</div>
+</body>
+</html>
