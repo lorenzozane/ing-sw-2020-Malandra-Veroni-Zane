@@ -48,8 +48,8 @@ To launch the client with CLI use the following command:
 ```
 java -jar cli.jar [parameter1] [parameter2]
 ```
-parameter1: "server ip" (if null ip will be localhost).
-parameter2: "server port" (if null port will be 12345)
+- `parameter1` : "server ip" (if null ip will be localhost).
+- `parameter2` : "server port" (if null port will be 12345)
 
 #### GUI
 To launch the client with GUI use the following command:
@@ -62,8 +62,9 @@ To launch the client with GUI use the following command:
 ```
 java -jar server.jar [parameter1] [parameter2]
 ```
-parameter1: "server ip" (if null ip will be localhost).
-parameter2: "server port" (if null port will be 12345)
+
+- `parameter1` : "server ip" (if null ip will be localhost).
+- `parameter2` : "server port" (if null port will be 12345)
 
 
 ### How to generate jars
@@ -75,7 +76,7 @@ To create server's and cli's jar
 ```
 mvn clean install
 ```
--the jar will be in deliveries folder
+-The jar will be in deliveries folder
 
 To create gui's jar
 -Go to Maven
@@ -84,7 +85,7 @@ To create gui's jar
 ```
 mvn clean compile assembly:single
 ```
--the jar will be in deliveries folder
+-The jar will be in deliveries folder
 
 
 ## Group members
