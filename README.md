@@ -28,15 +28,16 @@ The following documentation includes a description for most of the classes and m
 
 ## Functionality
 ### Developed Features
-- Complete rules
-- CLI
-- GUI
-- Socket
+| Functionality | State |
+|:-----------------------|:------------------------------------:|
+| Basic rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Complete rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Multiple games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Undo | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 
-
-### Additional Features Developed
-- Multiple games
-- Undo
 
 ### How to play
 ### Client
