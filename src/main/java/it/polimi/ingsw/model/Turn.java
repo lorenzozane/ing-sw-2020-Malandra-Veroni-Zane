@@ -354,6 +354,10 @@ public class Turn extends MessageForwarder {
         return canBuild;
     }
 
+    /**
+     * Method that handle when a player win a game.
+     * @param winner
+     */
     public void win(Player winner) {
         if (!startupPhase && winner == currentPlayer) {
             gameIsFinish = true;
@@ -362,6 +366,10 @@ public class Turn extends MessageForwarder {
         }
     }
 
+    /**
+     * Method that handle when a player lose  a game.
+     * @param loser
+     */
     private void lose(Player loser) {
         if (gameInstance.getPlayerNumber() <= 2) {
             gameIsFinish = true;
@@ -384,6 +392,10 @@ public class Turn extends MessageForwarder {
         }
     }
 
+    /**
+     * Method that handle when a player quit a game.
+     * @param playerWhoQuit
+     */
     public void quit(Player playerWhoQuit) {
         if (playerWhoQuit.getWorkers().get(0) != null)
             for (Worker workerToDelete : playerWhoQuit.getWorkers()) {

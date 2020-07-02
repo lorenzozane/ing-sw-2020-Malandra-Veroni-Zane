@@ -6,12 +6,7 @@ package it.polimi.ingsw.view;
 public final class ViewMessage {
 
     //WinActions
-    public static String winner ="You win"/*
-            " ___ ___                   ________ __         __ \n" +
-                    "|   |   |.-----.--.--.    |  |  |  |__|.-----.|  |\n" +
-                    " \\     / |  _  |  |  |    |  |  |  |  ||     ||__|\n" +
-                    "  |___|  |_____|_____|    |________|__||__|__||__|\n" +
-                    "                                                  \n"*/;
+    public static String winner ="You win";
     public static String winOthers = " wins the game!";
     public static String lose = "You lose!";
     public static String loseOther = " lose!";

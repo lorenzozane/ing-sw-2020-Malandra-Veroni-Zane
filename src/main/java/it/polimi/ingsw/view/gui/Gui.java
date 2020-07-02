@@ -22,6 +22,11 @@ public class Gui extends Application {
         return primaryStage;
     }
 
+    /**
+     * Create the main stage for javafx and set the first scene.
+     * @param primaryStage is the main stage
+     * @throws Exception thrown when fxmlLoader fail opening a fxml file
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         GuiController guiController = GuiController.getInstance();
@@ -52,6 +57,11 @@ public class Gui extends Application {
 
     }
 
+    /**
+     * Method that set all Observer/Observable and set the settingScene
+     * @param networkScene
+     * @throws IOException
+     */
     private static void startupGame(Scene networkScene) throws IOException {
         GuiController guiController = GuiController.getInstance();
         View view = new View(guiController);

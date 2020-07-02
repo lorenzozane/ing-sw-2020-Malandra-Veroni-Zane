@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color.PlayerColor;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -237,6 +238,8 @@ public class Cli {
     public void showMessage(String messageToShow) {
         if(messageToShow.contains(Message.gameOver))
             System.out.println(Message.gameOverCli);
+        if(messageToShow.contains(ViewMessage.winner))
+            System.out.println(Message.winCli);
         else
             System.out.println(messageToShow);
     }

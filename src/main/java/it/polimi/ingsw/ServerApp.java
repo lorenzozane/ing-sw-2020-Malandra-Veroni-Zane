@@ -9,6 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ServerApp {
+    /**
+     * Main of Server.
+     * @param args IP and PORT to create a socket.
+     */
     public static void main(String[] args) {
         Server server;
         if (args.length == 2) {

@@ -13,7 +13,12 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class ClientApp {
+    /**
+     * Main of client with CLI interface.
+     * @param args IP and PORT to create a socket.
+     */
     public static void main(String[] args) {
         Client client;
         try {
