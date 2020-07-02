@@ -15,21 +15,19 @@ The following class diagrams represent the first, the model according to which t
 ### JavaDoc
 The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/)
 
-<!--
+
 ### Librerie e Plugins
-|Libreria/Plugin|Descrizione|
+|Lib/Plugin|Descripton|
 |---------------|-----------|
-|__maven__|strumento di gestione per software basati su Java e build automation|
-|__junit__|framework dedicato a Java per unit testing|
-|__jacoco__|strumento di supporto al testing per evidenziare le linne di codice coperte dagli unit test|
-|__mockito__|strumento di supporto al unit testing per realizzare oggetti "dummy"|
-|__gson__|libreria per il supporto al parsing di file in formato json|
-|__JavaFx__|libreria grafica di Java|
--->
+|__maven__|management tool for Java project and build automation|
+|__junit__|java testing framework|
+|__mockito__|testing support tool for create "dummy" object|
+|__JavaFx__|java graphics libraries|
+
 
 
 ## Functionality
-### Developed Features [Objective]
+### Developed Features
 - Complete rules
 - CLI
 - GUI
@@ -39,6 +37,54 @@ The following documentation includes a description for most of the classes and m
 ### Additional Features Developed
 - Multiple games
 - Undo
+
+### How to play
+### Client
+The client can decide to play with a Command Line Interface with his terminal or can choose a Graphics User Interface. His decision is independent of the others. All dependency are managed by Maven when build the jars. 
+#### CLI
+For a better experience is recommended a terminal that support ANSI escape code. 
+To launch the client with CLI use the following command:
+```
+java -jar cli.jar [parameter1] [parameter2]
+```
+parameter1: "server ip" (if null ip will be localhost).
+parameter2: "server port" (if null port will be 12345)
+
+#### GUI
+To launch the client with GUI use the following command:
+```
+java -jar gui.jar
+```
+
+### Server
+To launch the client with GUI use the following command:
+```
+java -jar server.jar [parameter1] [parameter2]
+```
+parameter1: "server ip" (if null ip will be localhost).
+parameter2: "server port" (if null port will be 12345)
+
+
+### How to generate jars
+In Maven there are 3 profile: server, cli, gui.
+To create server's and cli's jar 
+-Go to Maven
+-Select the server/cli profile
+-Launch the following maven command:
+```
+mvn clean install
+```
+-the jar will be in deliveries folder
+
+To create gui's jar
+-Go to Maven
+-Select the gui profile
+-Launch the following maven command:
+```
+mvn clean compile assembly:single
+```
+-the jar will be in deliveries folder
+
 
 ## Group members
 - [__Matteo Malandra__](https://github.com/matteomalandra)
