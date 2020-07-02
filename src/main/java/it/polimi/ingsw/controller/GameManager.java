@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,9 +46,9 @@ public class GameManager extends MessageForwarder {
      */
     protected synchronized void handleMove(PlayerMove move) {
         if (!turn.isPlayerTurn(move.getPlayerOwner()) &&
-                (move.getMove() != Actions.QUIT || move.getMove() == Actions.GAME)) {
+                move.getMove() != Actions.QUIT) {
             if (turn.isGameIsFinish()) {
-                move.getRemoteView().errorMessage(Message.canOnlyQuitOrGame);
+                move.getRemoteView().errorMessage(Message.canOnlyQuit);
                 return;
             }
             move.getRemoteView().errorMessage(Message.wrongTurnMessage);
@@ -58,13 +57,10 @@ public class GameManager extends MessageForwarder {
             if (move.getMove() == Actions.QUIT) {
                 turn.quit(move.getPlayerOwner());
                 return;
-            } else if (move.getMove() == Actions.GAME) {
-                //TODO: Sistemare se avremo tempo altrimenti togliere
-                return;
             }
         }
         if (turn.isGameIsFinish()) {
-            move.getRemoteView().errorMessage(Message.canOnlyQuitOrGame);
+            move.getRemoteView().errorMessage(Message.canOnlyQuit);
             return;
         }
         if (move.getMove().getActionType() == Actions.ActionType.COMMAND) {

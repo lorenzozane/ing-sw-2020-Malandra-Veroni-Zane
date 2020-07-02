@@ -147,10 +147,21 @@ public class Deck {
         }
     }
 
+    /**
+     * Remove the specified god card from the available card list.
+     *
+     * @param godCardName Name of the god you want to remove from the available ones.
+     */
     public void removeAvailableCard(String godCardName) {
         availableCardsToChose.removeIf(x -> x.getCardName().equals(godCardName.toLowerCase()));
     }
 
+    /**
+     * Verify if a string is a valid god card name.
+     *
+     * @param godCardName The string to verify.
+     * @return Returns a boolean that describe if the string is a valid god name or not.
+     */
     public boolean isAGodName(String godCardName) {
         return cardList.stream().anyMatch(x -> x.getCardName().equals(godCardName));
     }
@@ -200,11 +211,10 @@ public class Deck {
 //    }
 
     /**
-     * Return a copy of the ArrayList containing the game card list
+     * Return a copy of the ArrayList containing the game card list.
      *
-     * @return ArrayList containing the game card list
+     * @return ArrayList containing the game card list.
      */
-    //TODO: Test
     public ArrayList<GodsCard> getCardListCopy() {
         ArrayList<GodsCard> clonedCardList = new ArrayList<>(cardList.size());
         for (GodsCard card : cardList)
@@ -213,6 +223,11 @@ public class Deck {
         return clonedCardList;
     }
 
+    /**
+     * eturn a copy of the ArrayList containing the available cards.
+     *
+     * @return ArrayList containing the available cards.
+     */
     public ArrayList<GodsCard> getAvailableCardsToChoseCopy() {
         ArrayList<GodsCard> clonedCardList = new ArrayList<>(availableCardsToChose.size());
         for (GodsCard card : availableCardsToChose)
@@ -232,20 +247,5 @@ public class Deck {
             clonedChosenCards.add(card.getValue().clone());
 
         return clonedChosenCards;
-    }
-
-//    public HashMap<String, GodsCard> getChosenCardsCopy() {
-//        HashMap<String, GodsCard> clonedChosenCards = new HashMap<>(chosenCards.size());
-//        for (Map.Entry<String, GodsCard> card : chosenCards.entrySet())
-//            clonedChosenCards.put(card.getKey(), card.getValue().clone());
-//
-//        return clonedChosenCards;
-//    }
-
-    //TODO: View
-    public void printAllDeck() {
-        for (GodsCard godsCard : cardList) {
-            System.out.println(godsCard.toString());
-        }
     }
 }

@@ -6,12 +6,10 @@ import it.polimi.ingsw.model.TurnEvents.Actions;
 import it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty;
 import it.polimi.ingsw.model.TurnEvents.StartupActions;
 import it.polimi.ingsw.network.Client.UserInterface;
-import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.GuiController;
-import it.polimi.ingsw.view.gui.GuiGameController;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -117,8 +115,8 @@ public class View extends MessageForwarder {
             else{
                 if(messageToShow.equals(ViewMessage.choseYourWorker))
                     messageToShow = ViewMessage.choseYourWorkerGui;
-                if(messageToShow.equals(ViewMessage.quitOrNewGame))
-                    messageToShow = ViewMessage.quitOrNewGameGui;
+                if(messageToShow.equals(ViewMessage.quit))
+                    messageToShow = ViewMessage.quitGui;
                 if(messageToShow.equals(ViewMessage.buildDomeAnyLevel))
                     messageToShow = ViewMessage.buildDomeAnyLevelGui;
                 playerGui.showMessage(currentMove, messageToShow);
@@ -126,7 +124,6 @@ public class View extends MessageForwarder {
             return;
         }
 
-        //TODO: Spostare in showErrorMessage?
         if (messageToShow.contains("Error: "))
             repeatCurrentMove(currentMove);
     }
@@ -151,7 +148,6 @@ public class View extends MessageForwarder {
 //        if (chosenUserInterface == UserInterface.CLI && playerCli != null) {
 //            return playerCli.showMessageImmediateResponse(messageToShow);
 //        } else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-//            //TODO: Gui
 //        }
 //        return null;
 //    }
@@ -180,7 +176,7 @@ public class View extends MessageForwarder {
             stringSender.notifyAll(response);
 
         } else if (currentMove.getCurrentPlayer().getNickname().equals(playerOwnerNickname) ||
-                response.equalsIgnoreCase("quit") || response.equalsIgnoreCase("game")) {
+                response.equalsIgnoreCase("quit")) {
             if (currentMove.isStartupPhase()) {
                 PlayerMoveStartup moveStartupToSend = createPlayerMoveStartup();
 
@@ -209,8 +205,8 @@ public class View extends MessageForwarder {
 
                 sendPlayerMoveStartup(moveStartupToSend);
             } else if (gameIsFinish &&
-                    !(response.equalsIgnoreCase("quit") || response.equalsIgnoreCase("game"))) {
-                showErrorMessage(ViewMessage.canOnlyQuitOrGame);
+                    !(response.equalsIgnoreCase("quit"))) {
+                showErrorMessage(ViewMessage.canOnlyQuit);
                 return;
             } else {
                 if (response.equalsIgnoreCase("undo")) {
@@ -232,17 +228,10 @@ public class View extends MessageForwarder {
                 } else if (response.equalsIgnoreCase("quit")) {
                     PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.QUIT);
                     sendPlayerMove(playerMoveToSend);
-                } else if (response.equalsIgnoreCase("game")) {
-                    if (gameIsFinish) {
-                        PlayerMove playerMoveToSend = createPlayerMoveCommand(Actions.GAME);
-                        sendPlayerMove(playerMoveToSend);
-                    } else {
-                        showErrorMessage(ViewMessage.cannotGameDuringGame);
-                    }
                 } else if (currentMove.getNextMove() == Actions.WAIT_FOR_UNDO) {
                     showErrorMessage(ViewMessage.canOnlyUndo);
                 } else if (currentMove.getNextMove() == Actions.WIN) {
-                    showErrorMessage(ViewMessage.canOnlyQuitOrGame);
+                    showErrorMessage(ViewMessage.canOnlyQuit);
                 } else {
                     Worker workerInSlot;
 
@@ -286,7 +275,7 @@ public class View extends MessageForwarder {
             }
         } else {
             if (gameIsFinish)
-                showMessage(ViewMessage.canOnlyQuitOrGame);
+                showMessage(ViewMessage.canOnlyQuit);
             else
                 showMessage(ViewMessage.wrongTurnMessage);
             return;
@@ -503,12 +492,12 @@ public class View extends MessageForwarder {
                 if (message.isGameFinish())
                     gameIsFinish = true;
                 showMessage(ViewMessage.winner);
-                showMessage(ViewMessage.quitOrNewGame);
+                showMessage(ViewMessage.quit);
             } else if (message.getNextMove() == Actions.LOSE) {
                 if (message.isGameFinish())
                     gameIsFinish = true;
                 showMessage(ViewMessage.lose);
-                showMessage(ViewMessage.quitOrNewGame);
+                showMessage(ViewMessage.quit);
             } else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(ViewMessage.moveStandard);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -571,19 +560,19 @@ public class View extends MessageForwarder {
                 if (message.isGameFinish())
                     gameIsFinish = true;
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.winOthers);
-                showMessage(ViewMessage.quitOrNewGame);
+                showMessage(ViewMessage.quit);
             } else if (message.getNextMove() == Actions.LOSE) {
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.loseOther);
                 if (message.isGameFinish()) {
                     gameIsFinish = true;
                     showMessage(ViewMessage.winner);
-                    showMessage(ViewMessage.quitOrNewGame);
+                    showMessage(ViewMessage.quit);
                 }
             } else if (message.getNextMove() == Actions.GAME_END) {
                 if (message.isGameFinish())
                     gameIsFinish = true;
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.justQuit);
-                showMessage(ViewMessage.quitOrNewGame);
+                showMessage(ViewMessage.quit);
             } else if (message.getNextMove() == Actions.MOVE_STANDARD)
                 showMessage(message.getCurrentPlayer().getNickname() + ViewMessage.moveStandardOthers);
             else if (message.getNextMove() == Actions.MOVE_NOT_INITIAL_POSITION)
@@ -617,9 +606,6 @@ public class View extends MessageForwarder {
         if (userInterface == UserInterface.CLI && playerCli != null) {
             clearConsole(); //funziona solo fuori da IntelliJ
             playerCli.refreshBoard(newBoard);
-        } else if (userInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
-            //playerGui.refreshBoard()
         }
     }
 
@@ -629,9 +615,6 @@ public class View extends MessageForwarder {
     private void activateReadResponse() {
         if (chosenUserInterface == UserInterface.CLI && playerCli != null)
             playerCli.activateAsyncReadResponse();
-        else if (chosenUserInterface == UserInterface.GUI && playerGui != null) {
-            //TODO: Gui
-        }
 
         activeReadResponse = true;
     }

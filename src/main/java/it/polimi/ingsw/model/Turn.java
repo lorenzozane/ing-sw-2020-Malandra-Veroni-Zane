@@ -139,8 +139,6 @@ public class Turn extends MessageForwarder {
                 turnSequenceMap.get(player).setCanMoveUp(canMoveUpValue);
     }
 
-    //TODO: Possibile rendere protected?
-
     /**
      * Throughout the game allow to update the turn to the next move to be performed, or to the next player
      */

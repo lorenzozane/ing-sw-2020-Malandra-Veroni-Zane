@@ -4,7 +4,6 @@ package it.polimi.ingsw.network;
  * Class containing all the message that can be send to a player.
  */
 public final class Message {
-    //TODO: Possibile migliorare la gestione dei messaggi di tipo "errore" utilizzando delle enum
     public static String santorini =
                     "                                                \n" +
                     "                    __              __       __ \n" +
@@ -52,6 +51,6 @@ public final class Message {
     public static String mustBeOpponentWorker = "Error: You can only move in an opponent worker's slot (or an empty one)!";
     public static String cannotSkipThisMove = "Error: You can't skip this move!";
     public static String cannotUndo = "Error: You have not move to UNDO!";
-    public static String canOnlyQuitOrGame = "Error: You can only QUIT or GAME now!\n";
+    public static String canOnlyQuit = "Error: You can only QUIT now!\n";
 //    public static String wrongWorkerMessage = "Error: You must use the same worker during the entire turn!";
 }

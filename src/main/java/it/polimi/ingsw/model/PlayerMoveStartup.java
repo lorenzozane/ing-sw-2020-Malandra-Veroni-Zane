@@ -13,7 +13,7 @@ public class PlayerMoveStartup implements Serializable {
 
     private static final long serialVersionUID = -7581105397668977776L;
     private RemoteView remoteView;
-    private String playerOwnerNickname; //TODO: Volendo si può settare direttamente nella View (facendo un controllo successivo nella remoteView)
+    private String playerOwnerNickname;
     private Player playerOwner;
     private final StartupActions action;
     private PlayerColor chosenColor;

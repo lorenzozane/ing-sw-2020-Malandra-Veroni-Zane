@@ -52,10 +52,6 @@ public class Slot implements Serializable {
         return slotPosition;
     }
 
-    public void setSlotPosition(Position slotPosition) {
-        this.slotPosition = slotPosition;
-    }
-
     /**
      * Allows the construction of a new building
      *

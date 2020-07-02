@@ -56,11 +56,6 @@ public class Player implements Serializable {
             worker.setColor(this.playerColor);
     }
 
-    protected void setWorkerInBoard(Worker worker, Slot slot) throws IllegalAccessError {     //oppure chiamare il metodo passando entrambi i worker e settandoli entrambi
-        if (workers.contains(worker))
-            worker.setWorkerSlot(slot);
-    }
-
     public GodsCard getPlayerCard() {
         return playerCard;
     }

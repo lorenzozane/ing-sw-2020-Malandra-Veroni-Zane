@@ -120,11 +120,9 @@ public class Server {
         this.nicknameDatabase.add(nickname);
     }
 
-
     public Map<String, SocketConnection> getWaitingConnection() {
         return waitingConnection;
     }
-
 
     /**
      * Check if the input string about number of player is legal.

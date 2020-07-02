@@ -30,10 +30,10 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
     /**
-     * Constructor of SocketConnection
+     * Constructor of SocketConnection.
      *
-     * @param socket is the socket accepted by the server
-     * @param server is the server that accept the connection
+     * @param socket is the socket accepted by the server.
+     * @param server is the server that accept the connection.
      */
     public SocketConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -52,9 +52,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
 
     /**
-     * Send an object by socket
+     * Send an object by socket.
      *
-     * @param message The message we want to send out
+     * @param message The message we want to send out.
      */
     private synchronized void send(Object message) {
         try {
@@ -68,24 +68,22 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     }
 
-
     /**
-     * Close the socketConnection
+     * Close the socketConnection.
      */
     public synchronized void closeConnection() {
-        //send("Connection closed! socketConnection.closeconnection");
+        //send("Connection closed! socketConnection.closeConnection");
         try {
             socket.close();
-            System.out.println("Closing " + this.playerOwnerNickname + " onnection");
+            System.out.println("Closing " + this.playerOwnerNickname + " connection");
         } catch (IOException e) {
             System.out.println("Error during close " + this.playerOwnerNickname + " connection");
         }
         active = false;
     }
 
-
     /**
-     * Send an object by socket with thread
+     * Send an object by socket with thread.
      */
     public void asyncSend(Object message) {
         new Thread(() -> send(message)).start();
@@ -95,9 +93,8 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         return in;
     }
 
-
     /**
-     * It set the unique name, birthday for the client on register phase. Than wait until the game is started and keeps alive the socket
+     * It set the unique name, birthday for the client on register phase. Than wait until the game is started and keeps alive the socket.
      */
     @Override
     public void run() {
@@ -168,22 +165,20 @@ public class SocketConnection extends MessageForwarder implements Runnable {
         }
     }
 
-
     /**
-     * Check if the nickname chosen by client has not already been taken
+     * Check if the nickname chosen by client has not already been taken.
      *
-     * @return true if it is not legal otherwise false
+     * @return true if it is not legal otherwise false.
      */
     private boolean illegalNicknameChecker(String nickname) {
         return server.getNicknameDatabase().contains(nickname) || nickname.equals("");
     }
 
-
     /**
-     * Check if the input string about the birthday date is legal
+     * Check if the input string about the birthday date is legal.
      *
-     * @param s String from user input that must be checked
-     * @return true if the string is correctly formatted otherwise false
+     * @param s String from user input that must be checked.
+     * @return true if the string is correctly formatted otherwise false.
      */
     public static boolean dateChecker(String s) {
         try {
@@ -196,10 +191,9 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     }
 
-
     /**
      * Method to override to handle message received by the UpdateTurnMessageReceiver.
-     * Handle QUIT and GAME_END action
+     * Handle QUIT and GAME_END action.
      * @param message The message to handle.
      */
     @Override

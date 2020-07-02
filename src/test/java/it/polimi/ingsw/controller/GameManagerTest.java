@@ -174,8 +174,6 @@ public class GameManagerTest {
         assertEquals(targetSlot, worker1Player1.getWorkerSlot());
 
 
-        //TODO: Continuare con altri casi di TEST
-
         gameInstance.removePlayerByName(player1.getNickname());
         gameInstance.removePlayerByName(player2.getNickname());
     }
@@ -437,7 +435,6 @@ public class GameManagerTest {
         playerMove.setPlayerOwnerNickname(turn.getCurrentPlayer().getNickname());
         playerMove.setRemoteView(remoteView);
         gameManager.handlePlayerMove(playerMove);
-        //TODO: Come testare errori?
     }
 
     @Test

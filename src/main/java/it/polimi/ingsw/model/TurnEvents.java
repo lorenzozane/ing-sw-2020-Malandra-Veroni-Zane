@@ -27,7 +27,6 @@ public class TurnEvents implements Serializable {
     public enum Actions {
         UNDO(ActionType.COMMAND),
         SKIP(ActionType.COMMAND),
-        GAME(ActionType.COMMAND),
         QUIT(ActionType.COMMAND),
         CHOSE_WORKER(ActionType.SETUP),
         WAIT_FOR_UNDO(ActionType.SETUP),

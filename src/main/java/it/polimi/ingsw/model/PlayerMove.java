@@ -116,7 +116,6 @@ public class PlayerMove implements Serializable {
         return targetPosition;
     }
 
-    //TODO: Check se deve essere necessariamente public
     public void setForcedMove(Player player) {
         if (player.getNickname().equals(currentPlayer))
             forcedMove = true;

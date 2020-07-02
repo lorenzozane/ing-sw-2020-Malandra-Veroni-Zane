@@ -48,9 +48,9 @@ public class Game {
         return colorList;
     }
 
-    private void reAddColor(PlayerColor color){
-        colorList.add(color);
-    }
+//    private void reAddColor(PlayerColor color){
+//        colorList.add(color);
+//    }
 
     /**
      * When a PlayerColor is chosen by a player is removed from the available color.
