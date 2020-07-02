@@ -59,8 +59,9 @@ public class Gui extends Application {
 
     /**
      * Method that set all Observer/Observable and set the settingScene
-     * @param networkScene
-     * @throws IOException
+
+     * @param networkScene The network scene.
+     * @throws IOException Exception thrown if there are problems opening the fxml file.
      */
     private static void startupGame(Scene networkScene) throws IOException {
         GuiController guiController = GuiController.getInstance();

@@ -64,6 +64,7 @@ public class ClientApp {
      * Method to check the IPv4 format.
      *
      * @param ip choose from client.
+     * @return Returns a boolean that describe if the ip is in a valid format.
      */
     private static boolean checkIp(String ip) {
         Pattern pattern;
@@ -82,6 +83,7 @@ public class ClientApp {
      * Method to check the port number.
      *
      * @param port choose from client.
+     * @return Returns a boolean that describe if the port is in a valid format.
      */
     private static boolean checkPort(String port) {
         return (Integer.parseInt(port) > 1500 && Integer.parseInt(port) < 65535);

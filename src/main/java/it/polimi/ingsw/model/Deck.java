@@ -24,6 +24,8 @@ public class Deck {
 
     /**
      * Constructor of the game deck
+     *
+     * @param gameInstance The current game instance.
      */
     public Deck(Game gameInstance) {
         this.gameInstance = gameInstance;

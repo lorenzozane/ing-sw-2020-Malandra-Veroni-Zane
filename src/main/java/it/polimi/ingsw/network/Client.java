@@ -35,7 +35,11 @@ public class Client extends MessageForwarder {
     private final StringSender stringSender = new StringSender();
 
     /**
-     * Constructor of Client
+     * Constructor of Client.
+     *
+     * @param ip The IP to create the connection with the server.
+     * @param port The PORT to create the connection with the server.
+     * @throws IOException Is thrown if an I/O error occurs when opening the socket.
      */
     public Client(String ip, int port) throws IOException {
         this.ip = ip;
@@ -98,7 +102,9 @@ public class Client extends MessageForwarder {
     }
 
     /**
-     * Send an object by socket with thread
+     * Send an object by socket with thread.
+     *
+     * @param message The message to be sended.
      */
     public void asyncSend(Object message) {
         new Thread(() -> send(message)).start();

@@ -38,7 +38,9 @@ public class TurnSequence {
     }
 
     /**
-     * Enables or Disables the ability to move up to the player during his turn
+     * Enables or Disables the ability to move up to the player during his turn.
+     *
+     * @param canMoveUpValue The boolean describing if set the ability to move up or not.
      */
     public void setCanMoveUp(Boolean canMoveUpValue) {
         canMoveUp = canMoveUpValue;

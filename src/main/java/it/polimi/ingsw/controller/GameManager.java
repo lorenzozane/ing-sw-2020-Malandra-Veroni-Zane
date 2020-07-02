@@ -245,6 +245,7 @@ public class GameManager extends MessageForwarder {
      * Check if the current player has made a move that leads to victory.
      *
      * @param move The player move containing the information about the worker and the target slot of the move.
+     * @return Returns a boolean that describe if the player wins or not.
      */
     protected boolean checkWinConditions(PlayerMove move) {
         boolean winner = false;

@@ -82,6 +82,8 @@ public class Server {
     /**
      * Constructor of Server.
      *
+     * @param ip The IP needed to create the ServerSocket.
+     * @param port The PORT needed to create the ServerSocket.
      * @throws IOException Is thrown if an I/O error occurs when opening the socket.
      */
     public Server(InetAddress ip, int port) throws IOException {
@@ -199,6 +201,8 @@ public class Server {
 
     /**
      * Handle the input to receive the number of player.
+     *
+     * @param c The SocketConnection of the creator.
      */
     private void creatorSetup(SocketConnection c) {
         c.asyncSend(Message.chooseNoPlayer);
@@ -233,6 +237,10 @@ public class Server {
 
     /**
      * Setting game observer/observable and start the game.
+     *
+     * @param gameInstance The new game instance.
+     * @param usersReadyCopy ArrayList of user ready to initiate the game.
+     * @param waitingConnectionCopy List of the ready user's connection.
      */
     private void gameSettings(Game gameInstance, ArrayList<Player> usersReadyCopy, Map<String, SocketConnection> waitingConnectionCopy) {
         GameManager gameManager = new GameManager(gameInstance);
@@ -261,6 +269,8 @@ public class Server {
 
     /**
      * Deregister a client when he sent a QUIT and alert the other player that the game is ended.
+     *
+     * @param nickname The nickname of the player to disconnect from the game.
      */
     public void deregisterOnePlayer(String nickname) {
         AtomicBoolean toDelete = new AtomicBoolean(false);

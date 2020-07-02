@@ -82,6 +82,8 @@ public class SocketConnection extends MessageForwarder implements Runnable {
 
     /**
      * Send an object by socket with thread.
+     *
+     * @param message The message to be send.
      */
     public void asyncSend(Object message) {
         new Thread(() -> send(message)).start();
@@ -166,6 +168,7 @@ public class SocketConnection extends MessageForwarder implements Runnable {
     /**
      * Check if the nickname chosen by client has not already been taken.
      *
+     * @param nickname The nickname to be checked.
      * @return true if it is not legal otherwise false.
      */
     private boolean illegalNicknameChecker(String nickname) {

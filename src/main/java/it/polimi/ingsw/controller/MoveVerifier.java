@@ -18,9 +18,10 @@ public final class MoveVerifier {
     private final GameManager gameManager;
 
     /**
-     * Constructor of the MoveVerifier which assists the GameManager in the management of the game logic (movement and construction)
+     * Constructor of the MoveVerifier which assists the GameManager in the management of the game logic (movement and construction).
      *
-     * @param gameInstance Is the current game instance
+     * @param gameInstance The current game instance.
+     * @param gameManager The game manager instance.
      */
     protected MoveVerifier(Game gameInstance, GameManager gameManager) {
         this.gameInstance = gameInstance;
