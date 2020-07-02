@@ -44,6 +44,24 @@
       <version>11.0.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>11.0.2</version>
+      <classifier>win</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>11.0.2</version>
+      <classifier>linux</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>11.0.2</version>
+      <classifier>mac</classifier>
+    </dependency>
   </dependencies>
   <profiles>
     <profile>
@@ -52,6 +70,9 @@
       </activation>
       <id>Server</id>
       <build>
+        <finalName>
+          GC49-1.0-SERVER
+        </finalName>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -75,6 +96,9 @@
     <profile>
       <id>Cli</id>
       <build>
+        <finalName>
+          GC49-1.0-CLI
+        </finalName>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -98,6 +122,9 @@
     <profile>
       <id>Gui</id>
       <build>
+        <finalName>
+          GC49-1.0-GUI-jar-with-dependencies
+        </finalName>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>

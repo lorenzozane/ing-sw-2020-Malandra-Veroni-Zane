@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,14 +36,16 @@ public class Deck {
      * @param fileName The specified file name.
      * @return Returns the file founded.
      */
-    private File getFileFromResources(String fileName) {
+    private InputStream getInputStreamFromResources(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
 
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+//        URL resource = classLoader.getResource(fileName);
+
+        if (inputStream == null) {
             throw new IllegalArgumentException("File \"" + fileName + "\" is not found!");
         } else {
-            return new File(resource.getFile());
+            return inputStream;
         }
     }
 
@@ -55,10 +55,8 @@ public class Deck {
     protected void buildDeck() {
         try {
             //Apertura file xml GodsDescription.xml, ed inizializzazione documento
+            InputStream xmlGodsDescription = getInputStreamFromResources("GodsDescription.xml");
 
-
-            File xmlGodsDescription = getFileFromResources("GodsDescription.xml");
-//            File xmlGodsDescription = new File("src/main/resources/GodsDescription.xml");
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setIgnoringElementContentWhitespace(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
