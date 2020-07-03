@@ -47,7 +47,7 @@ To run, requires at least Java 9 (Version 53).
 For a better experience is recommended a terminal that support ANSI escape code (WSL, Linux).  
 To launch the client with CLI use the following command:  
 ```
-java -jar cli.jar [parameter1] [parameter2]
+java -jar GC49-1.0-CLI.jar [parameter1] [parameter2]
 ```
 - `parameter1` : "server ip" (if null ip will be localhost).
 - `parameter2` : "server port" (if null port will be 12345)
@@ -57,14 +57,14 @@ To run, requires at least Java 10 (Version 54).
 Since WSL does not support graphical user interface, to run it is recommended to use cmd.exe.  
 To launch the client with GUI use the following command:  
 ```
-java -jar gui.jar
+java -jar GC49-1.0-GUI-jar-with-dependencies.jar
 ```
 
 ### Server
 To run, requires at least Java 9 (Version 53).  
 To launch the client with GUI use the following command:  
 ```
-java -jar server.jar [parameter1] [parameter2]
+java -jar GC49-1.0-SERVER.jar [parameter1] [parameter2]
 ```
 
 - `parameter1` : "server ip" (if null ip will be localhost).
@@ -89,7 +89,7 @@ To create gui's jar
 ```
 mvn clean compile assembly:single
 ```
--The jar will be in deliveries folder
+-The jar will be in target folder
 
 
 ## Group members
