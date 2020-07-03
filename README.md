@@ -9,8 +9,8 @@ The following documentation includes the documents created for the design of the
 ### UML
 
 The following class diagrams represent the first, the model according to which the game should have been implemented, the second instead contains the final product diagrams in the critical parts found.
-- [Initials UML](https://github.com/)
-- [Final UML](https://github.com/)
+- [Initials UML](https://github.com/lorenzozane98/ing-sw-2020-Malandra-Veroni-Zane/blob/master/deliverables/final/uml/uml_iniziale.pdf)
+- [Final UML](https://github.com/lorenzozane98/ing-sw-2020-Malandra-Veroni-Zane/tree/master/deliverables/final/uml/completed)
 
 ### JavaDoc
 The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/lorenzozane98/ing-sw-2020-Malandra-Veroni-Zane/tree/master/deliverables/final/javadoc)  
