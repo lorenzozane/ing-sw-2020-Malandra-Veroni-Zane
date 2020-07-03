@@ -123,7 +123,7 @@
       <id>Gui</id>
       <build>
         <finalName>
-          GC49-1.0-GUI-jar-with-dependencies
+          GC49-1.0-GUI
         </finalName>
         <plugins>
           <plugin>
