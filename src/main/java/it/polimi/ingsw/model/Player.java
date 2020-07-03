@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The active game player, with all it's information.
+ */
 public class Player implements Serializable {
 
     private String nickname;

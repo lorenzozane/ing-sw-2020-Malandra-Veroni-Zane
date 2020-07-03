@@ -10,6 +10,9 @@ import java.util.TimerTask;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
 
+/**
+ * Handle the game logic during the active play.
+ */
 public class GameManager extends MessageForwarder {
 
     private final Game gameInstance;

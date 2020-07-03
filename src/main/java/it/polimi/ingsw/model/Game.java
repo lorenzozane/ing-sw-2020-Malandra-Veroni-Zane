@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Color.PlayerColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Main game instance.
+ */
 public class Game {
 
     private final Turn turn = new Turn(this);

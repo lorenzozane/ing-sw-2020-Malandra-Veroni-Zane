@@ -7,6 +7,9 @@ import it.polimi.ingsw.view.View;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 
+/**
+ * Handle all the gui logic.
+ */
 public class GuiController {
 
     private static GuiController instance = null;

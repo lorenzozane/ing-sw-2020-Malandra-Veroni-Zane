@@ -85,7 +85,7 @@
                 </manifest>
               </archive>
               <outputDirectory>
-                deliverables/server.jar
+                deliverables/final/jar
               </outputDirectory>
             </configuration>
           </plugin>
@@ -111,7 +111,7 @@
                 </manifest>
               </archive>
               <outputDirectory>
-                deliverables/cli.jar
+                deliverables/final/jar
               </outputDirectory>
             </configuration>
           </plugin>
@@ -137,7 +137,7 @@
                 </manifest>
               </archive>
               <outputDirectory>
-                deliverables/gui.jar
+                deliverables/final/jar
               </outputDirectory>
             </configuration>
           </plugin>

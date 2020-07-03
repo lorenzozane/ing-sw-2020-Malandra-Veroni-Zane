@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handle the gui logic during the initial connection of the players.
+ */
 public class GuiNetworkController {
     private GuiController guiController;
     private Scene networkScene;

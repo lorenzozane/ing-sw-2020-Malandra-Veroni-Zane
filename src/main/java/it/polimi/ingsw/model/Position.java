@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+/**
+ * Possible positions on the game board.
+ */
 public class Position implements Serializable {
 
     private static final long serialVersionUID = -3555337604374755501L;

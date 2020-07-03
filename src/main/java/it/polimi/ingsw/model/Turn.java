@@ -17,7 +17,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 
 /**
- * Structure useful to contain the elements necessary to describe the course of the game turns
+ * Structure useful to contain the elements necessary to describe the course of the game turns.
  */
 public class Turn extends MessageForwarder {
 

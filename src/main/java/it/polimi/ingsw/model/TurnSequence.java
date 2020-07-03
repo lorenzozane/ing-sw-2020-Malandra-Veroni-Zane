@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.TurnEvents.*;
 
 import java.util.ArrayList;
 
+/**
+ * The turn sequence of moves performable by a player.
+ */
 public class TurnSequence {
 
     private final Player playerOwner;

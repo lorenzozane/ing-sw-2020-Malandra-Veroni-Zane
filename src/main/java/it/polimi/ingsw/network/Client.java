@@ -13,6 +13,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Client instance that communicate with the server.
+ */
 public class Client extends MessageForwarder {
 
     public enum UserInterface {
