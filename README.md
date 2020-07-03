@@ -13,10 +13,10 @@ The following class diagrams represent the first, the model according to which t
 - [Final UML](https://github.com/)
 
 ### JavaDoc
-The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/)  
+The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/lorenzozane98/ing-sw-2020-Malandra-Veroni-Zane/tree/master/deliverables/final/javadoc)  
 
 
-### Librerie e Plugins
+### Libraries and Plugins
 |Lib/Plugin|Descripton|
 |---------------|-----------|
 |__maven__|management tool for Java project and build automation|
