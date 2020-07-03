@@ -44,7 +44,7 @@
       <version>11.0.2</version>
     </dependency>
 
-    <dependency>
+    <!-- <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
       <version>11.0.2</version>
@@ -61,7 +61,7 @@
       <artifactId>javafx-graphics</artifactId>
       <version>11.0.2</version>
       <classifier>mac</classifier>
-    </dependency>
+    </dependency>-->
   </dependencies>
   <profiles>
     <profile>
