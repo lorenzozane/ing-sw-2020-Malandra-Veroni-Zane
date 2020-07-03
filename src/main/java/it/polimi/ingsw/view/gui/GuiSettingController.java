@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handle the gui logic during the startup phase.
+ */
 public class GuiSettingController {
 
     private GuiController guiController;

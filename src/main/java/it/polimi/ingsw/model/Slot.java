@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.model.Building.*;
 import static it.polimi.ingsw.model.Building.BuildingProperty.*;
 
+/**
+ * Slots of the game board.
+ */
 public class Slot implements Serializable {
 
     private final Building[] buildingsStatus = new Building[4];

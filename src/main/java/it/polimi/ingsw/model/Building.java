@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-
+/**
+ * Buildings that the player can build on the board game.
+ */
 public class Building implements Serializable {
 
     public enum BuildingProperty {

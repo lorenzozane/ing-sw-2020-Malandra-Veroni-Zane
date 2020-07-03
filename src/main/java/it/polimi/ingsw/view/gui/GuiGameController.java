@@ -15,7 +15,9 @@ import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
-
+/**
+ * Handle the gui logic during the active game.
+ */
 public class GuiGameController {
 
     private GuiController guiController;

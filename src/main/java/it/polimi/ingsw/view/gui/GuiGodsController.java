@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Handle the gui logic during the gods chose.
+ */
 public class GuiGodsController {
 
     private GuiController guiController;

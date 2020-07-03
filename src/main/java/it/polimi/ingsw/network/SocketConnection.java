@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
+/**
+ * SocketConnection that allows to communicate between the client and the server.
+ */
 public class SocketConnection extends MessageForwarder implements Runnable {
 
     //private final Game gameInstance;

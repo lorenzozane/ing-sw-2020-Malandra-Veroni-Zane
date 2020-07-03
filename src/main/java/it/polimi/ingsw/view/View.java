@@ -14,6 +14,9 @@ import it.polimi.ingsw.view.gui.GuiController;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Handle the client side view of each player.
+ */
 public class View extends MessageForwarder {
 
     private String playerOwnerNickname;

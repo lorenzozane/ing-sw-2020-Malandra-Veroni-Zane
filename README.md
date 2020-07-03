@@ -13,10 +13,10 @@ The following class diagrams represent the first, the model according to which t
 - [Final UML](https://github.com/)
 
 ### JavaDoc
-The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/)
+The following documentation includes a description for most of the classes and methods used, it follows Java documentation techniques and can be consulted at the following address: [Javadoc](https://github.com/lorenzozane98/ing-sw-2020-Malandra-Veroni-Zane/tree/master/deliverables/final/javadoc)  
 
 
-### Librerie e Plugins
+### Libraries and Plugins
 |Lib/Plugin|Descripton|
 |---------------|-----------|
 |__maven__|management tool for Java project and build automation|
@@ -41,10 +41,11 @@ The following documentation includes a description for most of the classes and m
 
 ### How to play
 ### Client
-The client can decide to play with a Command Line Interface with his terminal or can choose a Graphics User Interface. His decision is independent of the others. All dependency are managed by Maven when build the jars. 
+The client can decide to play with a Command Line Interface with his terminal or can choose a Graphics User Interface. His decision is independent of the others. All dependency are managed by Maven when build the jars.  
 #### CLI
-For a better experience is recommended a terminal that support ANSI escape code. 
-To launch the client with CLI use the following command:
+To run, requires at least Java 9 (Version 53).  
+For a better experience is recommended a terminal that support ANSI escape code (WSL, Linux).  
+To launch the client with CLI use the following command:  
 ```
 java -jar cli.jar [parameter1] [parameter2]
 ```
@@ -52,13 +53,16 @@ java -jar cli.jar [parameter1] [parameter2]
 - `parameter2` : "server port" (if null port will be 12345)
 
 #### GUI
-To launch the client with GUI use the following command:
+To run, requires at least Java 10 (Version 54).  
+Since WSL does not support graphical user interface, to run it is recommended to use cmd.exe.  
+To launch the client with GUI use the following command:  
 ```
 java -jar gui.jar
 ```
 
 ### Server
-To launch the client with GUI use the following command:
+To run, requires at least Java 9 (Version 53).  
+To launch the client with GUI use the following command:  
 ```
 java -jar server.jar [parameter1] [parameter2]
 ```
@@ -68,20 +72,20 @@ java -jar server.jar [parameter1] [parameter2]
 
 
 ### How to generate jars
-In Maven there are 3 profile: server, cli, gui.
-To create server's and cli's jar 
--Go to Maven
--Select the server/cli profile
--Launch the following maven command:
+In Maven there are 3 profile: server, cli, gui.  
+To create server's and cli's jar  
+-Go to Maven  
+-Select the server/cli profile  
+-Launch the following maven command:  
 ```
 mvn clean install
 ```
 -The jar will be in deliveries folder
 
-To create gui's jar
--Go to Maven
--Select the gui profile
--Launch the following maven command:
+To create gui's jar  
+-Go to Maven  
+-Select the gui profile  
+-Launch the following maven command:  
 ```
 mvn clean compile assembly:single
 ```

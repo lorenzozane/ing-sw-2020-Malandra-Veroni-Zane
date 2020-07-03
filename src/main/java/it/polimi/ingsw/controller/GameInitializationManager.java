@@ -8,7 +8,9 @@ import it.polimi.ingsw.view.ViewMessage;
 
 import java.util.ArrayList;
 
-
+/**
+ * Handle the game logic during the startup phase.
+ */
 public class GameInitializationManager extends MessageForwarder {
 
     private final Game gameInstance;

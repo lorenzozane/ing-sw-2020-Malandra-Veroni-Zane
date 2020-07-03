@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+/**
+ * Color useful to the game experience.
+ */
 public enum Color implements Serializable {
 
     ANSI_GREEN("\u001B[32m"),

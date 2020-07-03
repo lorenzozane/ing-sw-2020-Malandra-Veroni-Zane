@@ -17,6 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Server that handle all the connection logic between players.
+ */
 public class Server {
     private static final int DEFAULT_PORT = 12345;
     private final ServerSocket serverSocket;

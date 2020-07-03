@@ -11,6 +11,9 @@ import java.util.Arrays;
 
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionType;
 
+/**
+ * Verify the correctness of the player's moves.
+ */
 public final class MoveVerifier {
 
     private final Game gameInstance;

@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.SocketConnection;
 import it.polimi.ingsw.observer.MessageForwarder;
 import it.polimi.ingsw.observer.Observer;
 
+/**
+ * Allow to the game instance (server side) to communicate with a specific player.
+ */
 public class RemoteView extends MessageForwarder {
 
     private final String playerOwner;

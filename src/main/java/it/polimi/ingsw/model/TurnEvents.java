@@ -7,7 +7,7 @@ import java.util.EnumSet;
 import static it.polimi.ingsw.model.TurnEvents.Actions.ActionProperty.SKIPPABLE;
 
 /**
- * Enums useful to describe the possible actions and win conditions available to players
+ * Enums useful to describe the possible actions and win conditions available to players.
  */
 public class TurnEvents implements Serializable {
 

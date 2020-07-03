@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Gui Main instance. Startup the graphical user interface.
+ */
 public class Gui extends Application {
 
     protected static Client client;

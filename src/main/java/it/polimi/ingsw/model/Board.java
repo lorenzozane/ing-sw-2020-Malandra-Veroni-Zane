@@ -3,6 +3,9 @@ package it.polimi.ingsw.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Describe the board of the game.
+ */
 public class Board implements Cloneable, Serializable {
 
     private static final long serialVersionUID = 4116564860427433236L;

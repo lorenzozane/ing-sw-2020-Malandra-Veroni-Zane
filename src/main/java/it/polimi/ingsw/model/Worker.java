@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Color.PlayerColor;
 
 import java.io.Serializable;
 
+/**
+ * Player's worker, the active pawn of the game.
+ */
 public class Worker implements Serializable {
 
     private Player playerOwner;
