@@ -43,7 +43,8 @@ The following documentation includes a description for most of the classes and m
 ### Client
 The client can decide to play with a Command Line Interface with his terminal or can choose a Graphics User Interface. His decision is independent of the others. All dependency are managed by Maven when build the jars. 
 #### CLI
-For a better experience is recommended a terminal that support ANSI escape code. 
+To run, requires at least Java 9 (Version 53).
+For a better experience is recommended a terminal that support ANSI escape code (WSL, Linux).
 To launch the client with CLI use the following command:
 ```
 java -jar cli.jar [parameter1] [parameter2]
@@ -52,12 +53,15 @@ java -jar cli.jar [parameter1] [parameter2]
 - `parameter2` : "server port" (if null port will be 12345)
 
 #### GUI
+To run, requires at least Java 10 (Version 54).
+Since WSL does not support graphical user interface, to run it is recommended to use cmd.exe.
 To launch the client with GUI use the following command:
 ```
 java -jar gui.jar
 ```
 
 ### Server
+To run, requires at least Java 9 (Version 53).
 To launch the client with GUI use the following command:
 ```
 java -jar server.jar [parameter1] [parameter2]
